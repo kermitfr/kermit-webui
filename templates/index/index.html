@@ -1,0 +1,117 @@
+{% extends "theme/meta.html" %}
+
+{% block navbar %}{% endblock %}
+
+{% block content %}
+<script type="text/javascript">
+	function callMcollective(url) {
+		$.getJSON(url, {}, function(json) {
+			$("#response-container").empty();
+			$.each(json, function(i,resp){
+            	content = '<h2>' + resp.sender + '</h2>';
+            	content += '<ul>';
+            	content += '<li> Status Code: ' + resp.statuscode+ '</li>';
+            	content += '<li> Status Message: ' + resp.statusmsg+ '</li>';
+            	content += '<li> Data: ' + JSON.stringify(resp.data) + '</li>';
+            	content += '</ul>';
+            	$(content).appendTo("#response-container");
+          });
+		});
+	}
+
+	$(function() {
+		$("#accordion").accordion({
+			header : "h3"
+		});
+	});
+
+</script>
+<br/>
+<br/>
+<div style="width: 300px; float: left;" >
+	<div id="accordion">
+		<div>
+			<h3><a href="#">Default Operations</a></h3>
+			<div>
+				<table width="246" border="0" cellspacing="0" cellpadding="2" style="table-layout:fixed;overflow:hidden;wrap:false;padding-left:0px;padding-right:0px;" class="listTable" id="isc_11Atable">
+					<tbody></tbody>
+					<colgroup>
+						<col width="246">
+					</colgroup>
+					<tbody>
+						<tr>
+							<td height="22" align="left" class="treeCell" style="padding-top: 0px; padding-bottom: 0px; width: 246px; overflow: hidden;">
+							<div style="overflow:hidden;WIDTH:242px;" cellclipdiv="true">
+								<nobr>
+									<table cellspacing="0" cellpadding="0" style="margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;" class="treeCell">
+										<tbody>
+											<tr>
+												<td class="treeCell" style="margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;"></td><td class="treeCell" style=";margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;"><img width="22" height="1" border="0" align="TEXTTOP" suppress="TRUE" src="{{STATIC_URL}}images/blank.gif"><img width="16" height="16" border="0" align="absmiddle" suppress="TRUE" name="isc_119icon_0" src="{{STATIC_URL}}images/icons/AutoDiscovery_16.png"></td><td class="treeCell" style=";margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;padding-left:3px;">
+												<nobr>
+													Discovery Queue
+												</nobr></td>
+											</tr>
+										</tbody>
+									</table>
+								</nobr>
+							</div></td>
+						</tr>
+						<tr>
+							<td height="22" align="left" class="treeCell" style="padding-top: 0px; padding-bottom: 0px; width: 246px; overflow: hidden;">
+							<div style="overflow:hidden;WIDTH:242px; cursor: pointer;" onclick="callMcollective('/restapi/mcollective/no-filter/rpcutil/inventory/');" cellclipdiv="true">
+								<nobr>
+									<table cellspacing="0" cellpadding="0" style="margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;" class="treeCell">
+										<tbody>
+											<tr>
+												<td class="treeCell" style="margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;"></td><td class="treeCell" style=";margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;"><img width="22" height="1" border="0" align="TEXTTOP" suppress="TRUE" src="{{STATIC_URL}}images/blank.gif"><img width="16" height="16" border="0" align="absmiddle" suppress="TRUE" name="isc_119icon_1" src="{{STATIC_URL}}images/icons/folder_open.png"></td><td class="treeCell" style=";margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;padding-left:3px;">
+												<nobr>
+													Inventory
+												</nobr></td>
+											</tr>
+										</tbody>
+									</table>
+								</nobr>
+							</div></td>
+						</tr>
+						<tr>
+							<td height="22" align="left" class="treeCell" style="padding-top: 0px; padding-bottom: 0px; width: 246px; overflow: hidden;">
+							<div style="overflow:hidden;WIDTH:242px; cursor: pointer;" cellclipdiv="true" onclick="callMcollective('/restapi/mcollective/no-filter/rpcutil/ping/')">
+								<nobr>
+									<table cellspacing="0" cellpadding="0" style="margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;" class="treeCell">
+										<tbody>
+											<tr>
+												<td class="treeCell" style="margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;"></td><td class="treeCell" style=";margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;"><img width="22" height="1" border="0" align="TEXTTOP" suppress="TRUE" src="{{STATIC_URL}}images/blank.gif"><img width="16" height="16" border="0" align="absmiddle" suppress="TRUE" name="isc_119icon_2" src="{{STATIC_URL}}images/icons/Platform_up_16.png"></td><td class="treeCell" style=";margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;padding-left:3px;">
+												<nobr>
+													Ping
+												</nobr></td>
+											</tr>
+										</tbody>
+									</table>
+								</nobr>
+							</div></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div>
+			<h3><a href="#">Second</a></h3>
+			<div>
+				Phasellus mattis tincidunt nibh.
+			</div>
+		</div>
+		<div>
+			<h3><a href="#">Third</a></h3>
+			<div>
+				Nam dui erat, auctor a, dignissim quis.
+			</div>
+		</div>
+	</div>
+</div>
+
+<div style="margin-left: 320px; border: 1px double">
+	<div style="position: relative; background-image: '{{STATIC_URL}}images/background.png'; background-repeat: repeat; border: 1px solid grey;">Response</div> 	
+	<div id="response-container"></div>
+</div>
+
+{% endblock %} 

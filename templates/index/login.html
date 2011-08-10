@@ -1,0 +1,84 @@
+{% extends "theme/meta.html" %}
+
+{% block navbar %}{% endblock %}
+
+{% block content %}
+
+<h1>Welcome!</h1>
+<p>
+This is the access panel to the Byte-Code collaboration and enterprise management platform.
+In order to login you need a valid corporate account released by Byte-Code IT group. 
+</p>
+
+<p>
+    {% block login %}
+        {% if form.errors %}
+        <div class="error">
+        <p>Your username and password didn't match. Please try again.</p>
+        </div>
+        {% endif %}
+        
+        <div class="login">
+            <form method="post" action=".">
+            <table>
+                <tr><td><b>{{ form.username.label_tag }}</b></td><td>{{ form.username }}</td></tr>
+                <tr><td><b>{{ form.password.label_tag }}</b></td><td>{{ form.password }}</td></tr>
+                <tr><td><b></b></td><td><input type="submit" value="login" /></td></tr>
+            </table>
+        
+            <input type="hidden" name="next" value="{{ next }}" />
+            </form>
+        </div>
+    {% endblock %}
+</p>
+
+<p>
+<div class="h1 section-title">COMPANY OVERVIEW</div>
+                     <div class="h2 section-text-company">
+Byte-Code is an IT consulting firm focused on providing <span class="only-bold">opensource solutions to enterprise-class companies</span>; a solution is a fine mix of technology, processes and people enabling our client’s core business to grow steadily.
+We help our international clients <span class="only-bold">laying solid IT foundations with consultancy, training and custom development</span> on mainstream opensource technologies.
+</div>
+<div class="download-profile">
+    <a href="http://www.byte-code.com/materials/byte-code.pdf">Dowload Company Profile</a>
+
+</div>
+<div class="h1 section-title-small">ENTERPRISE</div>
+<div class="h2 section-text-company">
+Enterprise class customer have to face many IT architectural challenges, ranging from operating in a globally distributed environment to integration of legacy systems with newer ones.
+Even more enterprises have to implement rock-solid solutions to provide <span class="only-bold">99.999%</span> uptime of services to not disrupt the business operations.
+</div>
+<div class="h1 section-title-small">OPENSOURCE</div>
+<div class="h2 section-text-company">
+Byte-Code solutions are 100% opensource: the reason is that opensource development model guarantees top level
+code quality and the highest ability to follow international standards.
+With thousands of world-wide contributor, opensource code bases are constantly under revision of top notch developers,
+that have to interoperate and, in order to do that successfully,have to strictly follow open and available best practices.
+</div>
+<div class="h1 section-title-small">INNOVATION</div>
+<div class="h2 section-text-company">
+
+Evolving fast and effectively heterogeneous infrastructures,
+typical of many company datacenters with decades of
+history, is a challenge that every company must face to stay
+competitive in a global environment.
+The main risk of not following a constant, but controlled and
+safe, path to innovation is the “immobility” of the IT services,
+de facto damaging the core business processes by slowing
+down or stopping them.
+An enterprise IT infrastructure has to be reliable, flexible
+and future-proof.
+</div>
+<div class="h1 section-title-small">UPSTREAM</div>
+<div class="h2 section-text-company">
+<span class="only-bold">“We don’t wait for the new version, we do it”</span><br>
+Byte-Code believes that active collaboration with opensource communities is a key factor in order to produce
+innovative and future-proof solutions, because bringing upstream custom developments is a way to ensure that
+the codebase will be constantly updated and maintained, effectively reducing maintenance costs and preventing
+obsolescence.For those reasons <span class="only-bold">Byte-Code</span> is active on many communities, including the <span class="only-bold">Fedora Project</span> (the <span class="only-bold">Red Hat Enterprise Linux</span> upstream project) and <span class="only-bold">JBoss Application Server.</span>
+
+<br><br>
+</div>
+
+</p>
+
+{% endblock %}

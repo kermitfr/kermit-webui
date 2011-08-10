@@ -1,0 +1,14 @@
+{% extends "index/login.html" %}
+
+
+{% block login %}
+<div class="login">
+    <br /><br />
+    <h2>Don't forget...</h2>
+    <h4>to fill the <a href="{{ link }}">survey</a> about our Intranet!</h4>
+    <br /><br />
+    <div align="right">
+        <a href="{% url index %}">Login again...</a>
+    </div>
+</div>
+{% endblock %}

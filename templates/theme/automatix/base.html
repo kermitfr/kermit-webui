@@ -1,0 +1,282 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Expires" content="-1">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Max-Age" content="0">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<link rel="stylesheet" type="text/css" media="screen" href="{{STATIC_URL}}css/win.css"/>
+		<link rel="stylesheet" type="text/css" media="screen" href="{{STATIC_URL}}css/layout.css"/>
+		<link href="{{STATIC_URL}}css/default.css" rel="stylesheet" type="text/css"/>
+		<link href="{{STATIC_URL}}css/alphacube.css" rel="stylesheet" type="text/css"/>
+		<link href="{{STATIC_URL}}css/debug.css" rel="stylesheet" type="text/css"/>
+		<link rel="stylesheet" type="text/css" media="screen" href="{{STATIC_URL}}css/menu.css"/>
+		<link rel="icon" type="image/png" href="{{STATIC_URL}}images/favicon.png"/>
+		<link rel="apple-touch-icon" href="{{STATIC_URL}}images/favicon.png"/>
+		<script type="text/javascript" src="{{STATIC_URL}}js/jquery-1.6.2.min.js"></script>
+		<link type="text/css" href="{{STATIC_URL}}css/jquery-ui-1.8.15.custom.css" rel="stylesheet" />
+		<script type="text/javascript" src="{{STATIC_URL}}js/jquery-ui-1.8.15.custom.min.js"></script>
+		<script>
+			jQuery.fn.center = function() {
+				this.css("position", "absolute");
+				this.css("top", ($(window).height() -   this.height()) / 2 + $(window).scrollTop() + "px");
+				this.css("left", ($(window).width() -   this.width()) / 2 + $(window).scrollLeft() + "px");
+				return this;
+			}
+			jQuery.ajaxSetup({
+				beforeSend : function() {
+					$('#loading').show()
+				},
+				complete : function() {
+					$('#loading').hide()
+				},
+				error : function() {
+					$('#loading').hide()
+				},
+				success : function() {
+				}
+			});
+
+			// implement JSON.stringify serialization
+			JSON.stringify = JSON.stringify ||
+			function(obj) {
+				var t = typeof (obj);
+				if(t != "object" || obj === null) {
+					// simple data type
+					if(t == "string")
+						obj = '"' + obj + '"';
+					return String(obj);
+				} else {
+					// recurse array or object
+					var n, v, json = [], arr = (obj && obj.constructor == Array);
+					for(n in obj) {
+						v = obj[n];
+						t = typeof (v);
+						if(t == "string")
+							v = '"' + v + '"';
+						else if(t == "object" && v !== null)
+							v = JSON.stringify(v);
+						json.push(( arr ? "" : '"' + n + '":') + String(v));
+					}
+					return ( arr ? "[" : "{") + String(json) + ( arr ? "]" : "}");
+				}
+			};
+
+		</script>
+	</head>
+	<body>
+		<div id="loading">
+			<div id="loader">
+				<p><img src="{{STATIC_URL}}images/ajax-loader.gif" />
+				</p>
+			</div>
+		</div>
+		<div class="mainContent">
+			<!-- Site header-->
+			<div onscroll="return isc_MenuBarView_0.$lh()" style="position: absolute; left: 0px; top: 0px; width: 1525px; height: 37px; z-index: 200216; padding: 0px; -moz-box-sizing: border-box; overflow: hidden;" class="normal" eventproxy="isc_MenuBarView_0" id="isc_1C">
+				<div style="POSITION:relative;VISIBILITY:inherit;Z-INDEX:200216;CURSOR:default;" eventproxy="isc_MenuBarView_0" id="isc_1D">
+					&nbsp;
+					<div onscroll="return isc_ToolStrip_0.$lh()" style="position: absolute; left: 0px; top: 0px; width: 1525px; height: 37px; z-index: 200360; background-image: url(&quot;{{STATIC_URL}}images/header/header_bg.png&quot;); background-repeat: repeat; padding: 0px; -moz-box-sizing: border-box; overflow: hidden; cursor: default;" class="toolStrip" eventproxy="isc_ToolStrip_0" id="isc_1N">
+						<div style="POSITION:relative;VISIBILITY:inherit;Z-INDEX:200360;CURSOR:default;" eventproxy="isc_ToolStrip_0" id="isc_1O">
+							&nbsp;
+							<div onscroll="return isc_Img_2.$lh()" style="position: absolute; left: 0px; top: 3px; width: 80px; height: 28px; z-index: 200378; -moz-box-sizing: border-box; overflow: hidden; cursor: default;" class="normal" eventproxy="isc_Img_2" id="isc_1Q">
+								<div style="POSITION:relative;VISIBILITY:inherit;Z-INDEX:200378;CURSOR:default;" eventproxy="isc_Img_2" id="isc_1P"><img width="80" height="28" border="0" align="TEXTTOP" suppress="TRUE" name="isc_1Pmain" src="{{STATIC_URL}}images/header/atomatix_logo.png">
+								</div>
+							</div>
+							<div onscroll="return isc_MenuBarView_LinkBar_0.$lh()" style="position: absolute; left: 100px; top: 1px; width: 1277px; height: 32px; z-index: 200396; padding: 0px; -moz-box-sizing: border-box; overflow: hidden; cursor: default;" class="normal" eventproxy="isc_MenuBarView_LinkBar_0" id="isc_1R">
+								<div style="POSITION:relative;VISIBILITY:inherit;Z-INDEX:200396;CURSOR:default;" eventproxy="isc_MenuBarView_LinkBar_0" id="isc_1S">
+									&nbsp;
+									<div onscroll="return isc_Img_3.$lh()" style="position: absolute; left: 0px; top: 0px; width: 1px; height: 32px; z-index: 200414; -moz-box-sizing: border-box; overflow: hidden;" class="normal" eventproxy="isc_Img_3" id="isc_1U">
+										<div style="POSITION:relative;VISIBILITY:inherit;Z-INDEX:200414;CURSOR:default;" eventproxy="isc_Img_3" id="isc_1T"><img width="1" height="32" border="0" align="TEXTTOP" suppress="TRUE" name="isc_1Tmain" src="{{STATIC_URL}}images/header/header_bg_line.png">
+										</div>
+									</div>
+									<div onscroll="return isc_VLayout_0.$lh()" style="position: absolute; left: 1px; top: 0px; width: 100px; height: 32px; z-index: 200432; padding: 0px; -moz-box-sizing: border-box; overflow: hidden; cursor: default;" class="TopSectionLinkDivSelected" eventproxy="isc_VLayout_0" id="isc_1V">
+										<div style="POSITION:relative;VISIBILITY:inherit;Z-INDEX:200432;CURSOR:default;" eventproxy="isc_VLayout_0" id="isc_1W">
+											&nbsp;
+											<div onscroll="return isc_LocatableLabel_0.$lh()" style="position: absolute; left: 0px; top: 9px; width: 100px; height: 15px; z-index: 200450; -moz-box-sizing: border-box; overflow: hidden; cursor: default;" class="TopSectionLinkSelected" eventproxy="isc_LocatableLabel_0" id="isc_1X">
+												<div style="POSITION:relative;VISIBILITY:inherit;Z-INDEX:200450;CURSOR:default;" eventproxy="isc_LocatableLabel_0" id="isc_1Y">
+													<table width="100%" height="100%" cellspacing="0" cellpadding="0">
+														<tbody>
+															<tr>
+																<td valign="center" align="center" class="inheritColor"><a href="#Dashboards" class="menuBar">Dashboard</a></td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div onscroll="return isc_Img_4.$lh()" style="position: absolute; left: 101px; top: 0px; width: 1px; height: 32px; z-index: 200468; -moz-box-sizing: border-box; overflow: hidden;" class="normal" eventproxy="isc_Img_4" id="isc_20">
+										<div style="POSITION:relative;VISIBILITY:inherit;Z-INDEX:200468;CURSOR:default;" eventproxy="isc_Img_4" id="isc_1Z"><img width="1" height="32" border="0" align="TEXTTOP" suppress="TRUE" name="isc_1Zmain" src="{{STATIC_URL}}images/header/header_bg_line.png">
+										</div>
+									</div>
+									<div onscroll="return isc_VLayout_1.$lh()" style="position: absolute; left: 102px; top: 0px; width: 100px; height: 32px; z-index: 200486; padding: 0px; -moz-box-sizing: border-box; overflow: hidden; cursor: default;" class="TopSectionLinkDiv" eventproxy="isc_VLayout_1" id="isc_21">
+										<div style="POSITION:relative;VISIBILITY:inherit;Z-INDEX:200486;CURSOR:default;" eventproxy="isc_VLayout_1" id="isc_22">
+											&nbsp;
+											<div onscroll="return isc_LocatableLabel_1.$lh()" style="position: absolute; left: 0px; top: 9px; width: 100px; height: 15px; z-index: 200504; -moz-box-sizing: border-box; overflow: hidden; cursor: default;" class="TopSectionLink" eventproxy="isc_LocatableLabel_1" id="isc_23">
+												<div style="POSITION:relative;VISIBILITY:inherit;Z-INDEX:200504;CURSOR:default;" eventproxy="isc_LocatableLabel_1" id="isc_24">
+													<table width="100%" height="100%" cellspacing="0" cellpadding="0">
+														<tbody>
+															<tr>
+																<td valign="center" align="center" class="inheritColor"><a href="#Inventory" class="menuBar">Inventory</a></td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div onscroll="return isc_Img_5.$lh()" style="position: absolute; left: 202px; top: 0px; width: 1px; height: 32px; z-index: 200522; -moz-box-sizing: border-box; overflow: hidden;" class="normal" eventproxy="isc_Img_5" id="isc_26">
+										<div style="POSITION:relative;VISIBILITY:inherit;Z-INDEX:200522;CURSOR:default;" eventproxy="isc_Img_5" id="isc_25"><img width="1" height="32" border="0" align="TEXTTOP" suppress="TRUE" name="isc_25main" src="{{STATIC_URL}}images/header/header_bg_line.png">
+										</div>
+									</div>
+									<div onscroll="return isc_VLayout_2.$lh()" style="position: absolute; left: 203px; top: 0px; width: 100px; height: 32px; z-index: 200540; padding: 0px; -moz-box-sizing: border-box; overflow: hidden;" class="TopSectionLinkDiv" eventproxy="isc_VLayout_2" id="isc_27">
+										<div style="POSITION:relative;VISIBILITY:inherit;Z-INDEX:200540;CURSOR:default;" eventproxy="isc_VLayout_2" id="isc_28">
+											&nbsp;
+											<div onscroll="return isc_LocatableLabel_2.$lh()" style="position: absolute; left: 0px; top: 9px; width: 100px; height: 15px; z-index: 200558; -moz-box-sizing: border-box; overflow: hidden;" class="TopSectionLink" eventproxy="isc_LocatableLabel_2" id="isc_29">
+												<div style="POSITION:relative;VISIBILITY:inherit;Z-INDEX:200558;CURSOR:default;" eventproxy="isc_LocatableLabel_2" id="isc_2A">
+													<table width="100%" height="100%" cellspacing="0" cellpadding="0">
+														<tbody>
+															<tr>
+																<td valign="center" align="center" class="inheritColor"><a href="#Reports" class="menuBar">Reports</a></td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div onscroll="return isc_Img_6.$lh()" style="position: absolute; left: 303px; top: 0px; width: 1px; height: 32px; z-index: 200576; -moz-box-sizing: border-box; overflow: hidden;" class="normal" eventproxy="isc_Img_6" id="isc_2C">
+										<div style="POSITION:relative;VISIBILITY:inherit;Z-INDEX:200576;CURSOR:default;" eventproxy="isc_Img_6" id="isc_2B"><img width="1" height="32" border="0" align="TEXTTOP" suppress="TRUE" name="isc_2Bmain" src="{{STATIC_URL}}images/header/header_bg_line.png">
+										</div>
+									</div>
+									<div onscroll="return isc_VLayout_3.$lh()" style="position: absolute; left: 304px; top: 0px; width: 100px; height: 32px; z-index: 200594; padding: 0px; -moz-box-sizing: border-box; overflow: hidden;" class="TopSectionLinkDiv" eventproxy="isc_VLayout_3" id="isc_2D">
+										<div style="POSITION:relative;VISIBILITY:inherit;Z-INDEX:200594;CURSOR:default;" eventproxy="isc_VLayout_3" id="isc_2E">
+											&nbsp;
+											<div onscroll="return isc_LocatableLabel_3.$lh()" style="position: absolute; left: 0px; top: 9px; width: 100px; height: 15px; z-index: 200612; -moz-box-sizing: border-box; overflow: hidden;" class="TopSectionLink" eventproxy="isc_LocatableLabel_3" id="isc_2F">
+												<div style="POSITION:relative;VISIBILITY:inherit;Z-INDEX:200612;CURSOR:default;" eventproxy="isc_LocatableLabel_3" id="isc_2G">
+													<table width="100%" height="100%" cellspacing="0" cellpadding="0">
+														<tbody>
+															<tr>
+																<td valign="center" align="center" class="inheritColor"><a href="#Bundles" class="menuBar">Bundles</a></td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div onscroll="return isc_Img_7.$lh()" style="position: absolute; left: 404px; top: 0px; width: 1px; height: 32px; z-index: 200630; -moz-box-sizing: border-box; overflow: hidden;" class="normal" eventproxy="isc_Img_7" id="isc_2I">
+										<div style="POSITION:relative;VISIBILITY:inherit;Z-INDEX:200630;CURSOR:default;" eventproxy="isc_Img_7" id="isc_2H"><img width="1" height="32" border="0" align="TEXTTOP" suppress="TRUE" name="isc_2Hmain" src="{{STATIC_URL}}images/header/header_bg_line.png">
+										</div>
+									</div>
+									<div onscroll="return isc_VLayout_4.$lh()" style="position: absolute; left: 405px; top: 0px; width: 100px; height: 32px; z-index: 200648; padding: 0px; -moz-box-sizing: border-box; overflow: hidden;" class="TopSectionLinkDiv" eventproxy="isc_VLayout_4" id="isc_2J">
+										<div style="POSITION:relative;VISIBILITY:inherit;Z-INDEX:200648;CURSOR:default;" eventproxy="isc_VLayout_4" id="isc_2K">
+											&nbsp;
+											<div onscroll="return isc_LocatableLabel_4.$lh()" style="position: absolute; left: 0px; top: 9px; width: 100px; height: 15px; z-index: 200666; -moz-box-sizing: border-box; overflow: hidden;" class="TopSectionLink" eventproxy="isc_LocatableLabel_4" id="isc_2L">
+												<div style="POSITION:relative;VISIBILITY:inherit;Z-INDEX:200666;CURSOR:default;" eventproxy="isc_LocatableLabel_4" id="isc_2M">
+													<table width="100%" height="100%" cellspacing="0" cellpadding="0">
+														<tbody>
+															<tr>
+																<td valign="center" align="center" class="inheritColor"><a href="#Administration" class="menuBar">Administration</a></td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div onscroll="return isc_Img_8.$lh()" style="position: absolute; left: 505px; top: 0px; width: 1px; height: 32px; z-index: 200684; -moz-box-sizing: border-box; overflow: hidden;" class="normal" eventproxy="isc_Img_8" id="isc_2O">
+										<div style="POSITION:relative;VISIBILITY:inherit;Z-INDEX:200684;CURSOR:default;" eventproxy="isc_Img_8" id="isc_2N"><img width="1" height="32" border="0" align="TEXTTOP" suppress="TRUE" name="isc_2Nmain" src="{{STATIC_URL}}images/header/header_bg_line.png">
+										</div>
+									</div>
+									<div onscroll="return isc_VLayout_5.$lh()" style="position: absolute; left: 506px; top: 0px; width: 100px; height: 32px; z-index: 200702; padding: 0px; -moz-box-sizing: border-box; overflow: hidden;" class="TopSectionLinkDiv" eventproxy="isc_VLayout_5" id="isc_2P">
+										<div style="POSITION:relative;VISIBILITY:inherit;Z-INDEX:200702;CURSOR:default;" eventproxy="isc_VLayout_5" id="isc_2Q">
+											&nbsp;
+											<div onscroll="return isc_LocatableLabel_5.$lh()" style="position: absolute; left: 0px; top: 9px; width: 100px; height: 15px; z-index: 200720; -moz-box-sizing: border-box; overflow: hidden;" class="TopSectionLink" eventproxy="isc_LocatableLabel_5" id="isc_2R">
+												<div style="POSITION:relative;VISIBILITY:inherit;Z-INDEX:200720;CURSOR:default;" eventproxy="isc_LocatableLabel_5" id="isc_2S">
+													<table width="100%" height="100%" cellspacing="0" cellpadding="0">
+														<tbody>
+															<tr>
+																<td valign="center" align="center" class="inheritColor"><a href="#Help" class="menuBar">Help</a></td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div onscroll="return isc_Img_9.$lh()" style="position: absolute; left: 606px; top: 0px; width: 1px; height: 32px; z-index: 200738; -moz-box-sizing: border-box; overflow: hidden;" class="normal" eventproxy="isc_Img_9" id="isc_2U">
+										<div style="POSITION:relative;VISIBILITY:inherit;Z-INDEX:200738;CURSOR:default;" eventproxy="isc_Img_9" id="isc_2T"><img width="1" height="32" border="0" align="TEXTTOP" suppress="TRUE" name="isc_2Tmain" src="{{STATIC_URL}}images/header/header_bg_line.png">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div onscroll="return isc_HLayout_0.$lh()" style="position: absolute; left: 1397px; top: 0px; width: 106px; height: 15px; z-index: 200756; padding: 0px; margin: 10px; -moz-box-sizing: border-box; overflow: hidden;" class="normal" eventproxy="isc_HLayout_0" id="isc_2V">
+								&nbsp;
+								<div onscroll="return isc_LocatableLabel_6.$lh()" style="position: absolute; left: 0px; top: 0px; width: 51px; height: 15px; z-index: 200774; -moz-box-sizing: border-box; overflow: hidden;" eventproxy="isc_LocatableLabel_6" id="isc_2X">
+									<div style="POSITION:relative;VISIBILITY:inherit;Z-INDEX:200774;CURSOR:default;" eventproxy="isc_LocatableLabel_6" id="isc_2Y">
+										<table width="100%" height="100%" cellspacing="0" cellpadding="0">
+											<tbody>
+												<tr>
+													<td valign="center" align="left" class="normal">admin</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div onscroll="return isc_Label_0.$lh()" style="position: absolute; left: 51px; top: 0px; width: 12px; height: 15px; z-index: 200792; -moz-box-sizing: border-box; overflow: hidden;" eventproxy="isc_Label_0" id="isc_2Z">
+									<div style="POSITION:relative;VISIBILITY:inherit;Z-INDEX:200792;CURSOR:default;" eventproxy="isc_Label_0" id="isc_30">
+										<table width="100%" height="100%" cellspacing="0" cellpadding="0">
+											<tbody>
+												<tr>
+													<td valign="center" align="center" class="normal"> | </td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div onscroll="return isc_LocatableLabel_7.$lh()" style="position: absolute; left: 63px; top: 0px; width: 43px; height: 15px; z-index: 200810; -moz-box-sizing: border-box; overflow: hidden;" eventproxy="isc_LocatableLabel_7" id="isc_31">
+									<div style="POSITION:relative;VISIBILITY:inherit;Z-INDEX:200810;CURSOR:default;" eventproxy="isc_LocatableLabel_7" id="isc_32">
+										<table width="100%" height="100%" cellspacing="0" cellpadding="0">
+											<tbody>
+												<tr>
+													<td valign="center" align="left" class="normal"><a href="#LogOut">Logout</a></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="content-full">
+			<!-- section hedaerconetent -->
+			{% block bigcontent %} <!-- main conetent -->
+			<div class="central-content">
+				{% block navbar %}
+				<p>
+					<table>
+						<tr>
+							<td style="vertical-align:middle"><a href="{% url index %}"><img src="/static/img/menu-16.png" align="middle" /></a></td>
+							<td style="vertical-align:middle"><a href="{% url index %}"> Main Menu</a></td>
+							<td width="30"></td>
+							{% block extra-manu %}{% endblock%}
+						</tr>
+					</table>
+					<br />
+				</p>
+				{% endblock %}
+				<p>
+					{% block content %}{% endblock %}
+				</p>
+			</div>
+			{% endblock %} <div class="closed-bar"></div>
+		</div>
+		<div class="footer"></div>
+		</div>
+	</body>
+</html>
