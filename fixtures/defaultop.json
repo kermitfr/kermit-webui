@@ -1,0 +1,28 @@
+[
+  {
+    "model": "defaultop.operation",
+    "pk": 1,
+    "fields": {
+      "name": "Ping",
+      "description": "Ping all MCollective connected client",
+      "url": "/restapi/mcollective-template/ping/no-filter/rpcutil/ping/",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "with_template": true
+      
+    }
+  },
+  {
+    "model": "defaultop.operation",
+    "pk": 2,
+    "fields": {
+      "name": "Inventory",
+      "description": "Get servers Inventory",
+      "url": "/restapi/mcollective/no-filter/rpcutil/inventory/",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "with_template": false
+      
+    }
+  }
+]
