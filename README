@@ -16,3 +16,9 @@ In this file 'src/automatix/settings.py' we have configured the access to the Ru
 RUBY_REST_BASE_URL="http://localhost:4567/mcollective/"
 
 If you have a different configuration you can just change this property with your preferred address.
+
+Before startup the server for the first time you need to configure your Django database with default data.
+To do this you have to run:
+
+python src/automatix/manage.py syncdb
+to create an empty database and fill it up with all default data.

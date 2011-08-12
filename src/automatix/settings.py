@@ -122,6 +122,12 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
+    'automatix.django_widgets',
+    'automatix.defaultop',
+)
+
+FIXTURE_DIRS = (
+   '/home/mmornati/projects/automatix/fixtures/',
 )
 
 # A sample logging configuration. The only tangible logging
