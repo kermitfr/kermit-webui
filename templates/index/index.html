@@ -39,10 +39,6 @@
 			header : "h3"
 		});
 	});
-	$(document).ready(function() {
-		// Updating actual Server Status
-		callMcollectiveWithTemplateRsp('/restapi/mcollective-template/ping/no-filter/rpcutil/ping/', 'actual-server-status');
-	});
 
 </script>
 
@@ -54,8 +50,8 @@
 		{% include "widgets/sample.html" %}
 	</ul>
 	<ul id="column2" class="column">
-		{% include "widgets/serverstatus.html" %}
-		{% include "widgets/opresponse.html" %}
+		{% widget "DashBoardServerStatus" %}
+		{% widget "DashBoardOpResults" %}
 	</ul>
 </div>
 {% endblock %} 

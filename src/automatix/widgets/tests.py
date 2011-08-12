@@ -1,4 +1,4 @@
-from automatix.django_widgets.base import Widget
+from automatix.widgets.base import Widget
 
 import unittest
 

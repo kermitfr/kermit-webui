@@ -122,8 +122,10 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
-    'automatix.django_widgets',
+    'automatix.widgets',
     'automatix.defaultop',
+    'automatix.puppetclasses', 
+    'automatix.serverstatus',
 )
 
 FIXTURE_DIRS = (
@@ -138,18 +140,35 @@ FIXTURE_DIRS = (
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
     'handlers': {
         'mail_admins': {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler'
-        }
+        },
+        'console':{
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+            'formatter': 'simple'
+        },
     },
     'loggers': {
         'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
+            'handlers': ['mail_admins', 'console'],
+            'level': 'INFO',
             'propagate': True,
         },
+        'automatix': {
+            'handlers': ['console', 'mail_admins'],
+            'level': 'INFO',
+        }
     }
 }
 

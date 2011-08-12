@@ -1,7 +1,7 @@
 from django.template.loader import get_template
 from django.template.context import Context
 from django.core.exceptions import ImproperlyConfigured
-from automatix.django_widgets import loading
+from automatix.widgets import loading
 from django.conf import settings
 
 class WidgetBase(type):

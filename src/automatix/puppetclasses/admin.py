@@ -13,7 +13,7 @@ class PuppetClassAdmin(admin.ModelAdmin):
         ("General",   {'fields': ['name']}),
         ("Details",   {'fields': ['description', 'icon', 'enabled']}),         
     ]
-    list_display = ('name', 'url')
+    list_display = ('name', 'description')
     search_fields = ['name']
     
 admin.site.register(PuppetClass, PuppetClassAdmin)
