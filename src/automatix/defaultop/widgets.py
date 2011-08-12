@@ -15,3 +15,5 @@ class DashBoardDefaultOps(Widget):
         widget_context = {"operations":operations}
         return dict(super_context.items() + widget_context.items())
     
+    
+    
