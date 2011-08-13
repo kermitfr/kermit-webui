@@ -1,8 +1,33 @@
 This is a WebUI server for MCollective management
 
 It is written with Django 1.3 and Python 2.6 (but it works without problem with Python 2.4 too).
+So, first of all, you need to install this framework/language. Here a complete lists of packages required for webui:
+ * Django-1.3-2.1.el5.noarch.rpm (to be ported in Kermit repo)
+ * python-httplib2
+ * python-json
+ * python-simplejson
 
-To start the application, for development, you just need to type:
+After packages installation you need to configure some application stuffs. In file 'settings.py' Django require some absolute path to locate sqlite db file (used for develoment), images, templates, ...
+So, at the moment, considering that we are in a hard development, we just have a standard configuration that will be changend later for realeses.
+In 'settings.py' file any reference to /home/mmornati/projects/automatix/(...) should be modified by your personal path.
+
+Another thing you may want to change is the Ruby MCollective Rest Server (by default considered on the same machine of webui, for security reasons). In 'settings.py' file you need to change the line:
+
+RUBY_REST_BASE_URL="http://localhost:4567/mcollective/"
+
+with what you prefer.
+
+
+Now you are ready to configure your database (sqlite or what you have configured in settings.py). To do this run:
+
+python src/automatix/manage.py syncdb
+
+from the project root path. If all works well you should see messages about tables creation and default data filling. During this setup (the first time) you need to configure the django admin user too (necessary to enter in the admin area).
+
+  NOTE:
+  If you have problem about "module messages not found" you are probably using the default EL5 Django version (1.1.4). The message module was introduced in Django 1.2.  So please upgrade it.
+
+At the end of this process you car startup your application server and explorer the webui application. To do this, simply run:
 
 python src/automatix/manage.py runserver
 
@@ -10,15 +35,8 @@ and then access to the application using:
 
 http://localhost:8000
 
-CONFIGURATION:
-In this file 'src/automatix/settings.py' we have configured the access to the Ruby Mcollective RestServer, by default on the same machine of this project
+If you need to let access from other machines (you can't access using a brower on localhost) you need to bind the Django server on external network interface (or use the "all interfaces" wildcard). So, use this command:
 
-RUBY_REST_BASE_URL="http://localhost:4567/mcollective/"
+python src/automatix/manage.py runserver 0.0.0.0:8000
 
-If you have a different configuration you can just change this property with your preferred address.
-
-Before startup the server for the first time you need to configure your Django database with default data.
-To do this you have to run:
-
-python src/automatix/manage.py syncdb
-to create an empty database and fill it up with all default data.
+that will start server binded on any found interface using port 8000 (that you can naturally change)
