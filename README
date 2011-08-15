@@ -1,4 +1,4 @@
-This is a WebUI server for the management of MCollective.
+This is a WebUI for the management of MCollective.
 
 It is written with Django 1.3 and Python 2.6 (but it works fine with Python 2.4
 too).
@@ -9,6 +9,7 @@ list of packages required for the webui:
  * python-httplib2
  * python-json
  * python-simplejson
+ * (python-sqlite2 if you use a sqlite database)
 
 One way to get those packages for el5/centos 5 is the KERMIT repository :
 http://www.kermit.fr/repo/rpm/
@@ -18,8 +19,8 @@ In the file 'settings.py', Django require some absolute path to locate the
 sqlite db file (used for development), images, templates, etc. 
 
 So, at the moment, considering that we are in intensive development, we just
-have a basic configuration that will be changed later for the release.
-In the file 'settings.py', any reference to /home/mmornati/projects/automatix/
+have a rough configuration that will be changed later for the release.
+In the file 'settings.py', any reference to /home/mmornati/projects/webui/
 (...) should be modified with your own path.
 
 Another thing you may want to change is the Ruby MCollective Rest Server. By
@@ -31,7 +32,7 @@ RUBY_REST_BASE_URL="http://localhost:4567/mcollective/"
 Now you are ready to configure your database (sqlite or what you have configured
 in settings.py). To do this run:
 
-python src/automatix/manage.py syncdb
+python src/webui/manage.py syncdb
 
 from the project root path.
 
@@ -46,7 +47,7 @@ Django 1.2.  So please upgrade it.
 At the end of this process you can start your application server and explore the
 webui application. To do this, simply run:
 
-python src/automatix/manage.py runserver
+python src/webui/manage.py runserver
 
 and then access to the application at:
 
@@ -56,7 +57,7 @@ If you need to enable access from other machines (i.e. you can't use a browser
 on localhost) you need to bind the Django server on external network interface
 (or use the "all interfaces" wildcard). So, use this command:
 
-python src/automatix/manage.py runserver 0.0.0.0:8000
+python src/webui/manage.py runserver 0.0.0.0:8000
 
 This will start the server bounded to any network and using port 8000 
 (you can also change the port, of course)
