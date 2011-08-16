@@ -1,10 +1,10 @@
 Summary: Mcollective WebUI
-Name: kermit
+Name: kermit-webui
 Version: 0.0.1
 Release: 1
 License: GPL
 Group: Applications/System
-URL: https://github.com/thinkfr/automatix
+URL: https://github.com/thinkfr/webui
 Source: %{name}-%{version}.tar.gz
 Requires: httpd, Django, python, mod_python, python-httplib2
 #, python-json, python-simplejson

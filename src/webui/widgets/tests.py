@@ -1,4 +1,4 @@
-from kermit.widgets.base import Widget
+from webui.widgets.base import Widget
 
 import unittest
 

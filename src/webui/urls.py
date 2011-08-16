@@ -8,8 +8,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    # url(r'^$', 'kermit.views.home', name='home'),
-    # url(r'^kermit/', include('kermit.foo.urls')),
+    # url(r'^$', 'webui.views.home', name='home'),
+    # url(r'^webui/', include('webui.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
@@ -17,7 +17,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     
-    (r'^restapi/', include('kermit.restserver.urls')),
-    (r'^index/(.*)', include('kermit.index.urls')),
-    (r'', include('kermit.index.urls')),
+    (r'^restapi/', include('webui.restserver.urls')),
+    (r'^index/(.*)', include('webui.index.urls')),
+    (r'', include('webui.index.urls')),
 )

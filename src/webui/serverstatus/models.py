@@ -1,5 +1,5 @@
 from django.db import models
-from kermit.puppetclasses.models import PuppetClass
+from webui.puppetclasses.models import PuppetClass
 
 class Agent(models.Model):
     name = models.CharField(max_length=255)

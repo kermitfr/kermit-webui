@@ -4,7 +4,7 @@ Created on Aug 11, 2011
 @author: mmornati
 '''
 
-from kermit.defaultop.models import Operation
+from webui.defaultop.models import Operation
 from django.contrib import admin
     
 

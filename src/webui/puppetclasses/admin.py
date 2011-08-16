@@ -4,7 +4,7 @@ Created on Aug 11, 2011
 @author: mmornati
 '''
 
-from kermit.puppetclasses.models import PuppetClass
+from webui.puppetclasses.models import PuppetClass
 from django.contrib import admin
     
 

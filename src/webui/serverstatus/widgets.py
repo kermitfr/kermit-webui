@@ -3,9 +3,9 @@ Created on Aug 12, 2011
 
 @author: mmornati
 '''
-from kermit.widgets.base import Widget
-from kermit.defaultop.models import Operation
-from kermit.restserver import views
+from webui.widgets.base import Widget
+from webui.defaultop.models import Operation
+from webui.restserver import views
 import logging
 
 logger = logging.getLogger(__name__)

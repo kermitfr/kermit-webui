@@ -1,4 +1,4 @@
-from kermit.index.models import Menu
+from webui.index.models import Menu
 from django.contrib import admin
 
 

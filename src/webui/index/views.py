@@ -3,8 +3,8 @@ from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.template import RequestContext
-from kermit.index.models import *
-from kermit.defaultop.models import Operation
+from webui.index.models import *
+from webui.defaultop.models import Operation
 
 def index(request):
     #if not request.user.is_authenticated():
