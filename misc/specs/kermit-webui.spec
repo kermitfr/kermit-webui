@@ -6,8 +6,7 @@ License: GPL
 Group: Applications/System
 URL: https://github.com/thinkfr/webui
 Source: %{name}-%{version}.tar.gz
-Requires: httpd, Django, python, mod_python, python-httplib2
-#, python-json, python-simplejson
+Requires: httpd, Django, python, mod_python, python-httplib2, python-simplejson
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch: noarch
 
