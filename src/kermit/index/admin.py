@@ -1,4 +1,4 @@
-from automatix.index.models import Menu
+from kermit.index.models import Menu
 from django.contrib import admin
 
 

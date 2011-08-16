@@ -1,4 +1,4 @@
-from automatix.widgets.base import Widget
+from kermit.widgets.base import Widget
 
 import unittest
 

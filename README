@@ -9,7 +9,7 @@ So, first of all, you need to install this framework/language. Here a complete l
 
 After packages installation you need to configure some application stuffs. In file 'settings.py' Django require some absolute path to locate sqlite db file (used for develoment), images, templates, ...
 So, at the moment, considering that we are in a hard development, we just have a standard configuration that will be changend later for realeses.
-In 'settings.py' file any reference to /home/mmornati/projects/automatix/(...) should be modified by your personal path.
+In 'settings.py' file any reference to /home/mmornati/projects/kermit/(...) should be modified by your personal path.
 
 Another thing you may want to change is the Ruby MCollective Rest Server (by default considered on the same machine of webui, for security reasons). In 'settings.py' file you need to change the line:
 
@@ -20,7 +20,7 @@ with what you prefer.
 
 Now you are ready to configure your database (sqlite or what you have configured in settings.py). To do this run:
 
-python src/automatix/manage.py syncdb
+python src/kermit/manage.py syncdb
 
 from the project root path. If all works well you should see messages about tables creation and default data filling. During this setup (the first time) you need to configure the django admin user too (necessary to enter in the admin area).
 
@@ -29,7 +29,7 @@ from the project root path. If all works well you should see messages about tabl
 
 At the end of this process you car startup your application server and explorer the webui application. To do this, simply run:
 
-python src/automatix/manage.py runserver
+python src/kermit/manage.py runserver
 
 and then access to the application using:
 
@@ -37,6 +37,6 @@ http://localhost:8000
 
 If you need to let access from other machines (you can't access using a brower on localhost) you need to bind the Django server on external network interface (or use the "all interfaces" wildcard). So, use this command:
 
-python src/automatix/manage.py runserver 0.0.0.0:8000
+python src/kermit/manage.py runserver 0.0.0.0:8000
 
 that will start server binded on any found interface using port 8000 (that you can naturally change)

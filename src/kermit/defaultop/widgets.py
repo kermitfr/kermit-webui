@@ -3,8 +3,8 @@ Created on Aug 12, 2011
 
 @author: mmornati
 '''
-from automatix.widgets.base import Widget
-from automatix.defaultop.models import Operation
+from kermit.widgets.base import Widget
+from kermit.defaultop.models import Operation
 
 class DashBoardDefaultOps(Widget):
     template = "widgets/basecommands.html"

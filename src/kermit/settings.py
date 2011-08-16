@@ -1,4 +1,4 @@
-# Django settings for automatix project.
+# Django settings for kermit project.
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -12,7 +12,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '/home/mmornati/projects/automatix/src/sqlite.db',                      # Or path to database file if using sqlite3.
+        'NAME': '/home/mmornati/projects/kermit/src/sqlite.db',                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -72,7 +72,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/home/mmornati/projects/automatix/static',
+    '/home/mmornati/projects/kermit/static',
 
 )
 
@@ -102,13 +102,13 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'automatix.urls'
+ROOT_URLCONF = 'kermit.urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative path
-    '/home/mmornati/projects/automatix/templates'
+    '/home/mmornati/projects/kermit/templates'
 )
 
 INSTALLED_APPS = (
@@ -122,14 +122,14 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
-    'automatix.widgets',
-    'automatix.defaultop',
-    'automatix.puppetclasses', 
-    'automatix.serverstatus',
+    'kermit.widgets',
+    'kermit.defaultop',
+    'kermit.puppetclasses', 
+    'kermit.serverstatus',
 )
 
 FIXTURE_DIRS = (
-   '/home/mmornati/projects/automatix/fixtures/',
+   '/home/mmornati/projects/kermit/fixtures/',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -165,7 +165,7 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
-        'automatix': {
+        'kermit': {
             'handlers': ['console', 'mail_admins'],
             'level': 'INFO',
         }

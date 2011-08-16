@@ -6,7 +6,7 @@ Created on Aug 10, 2011
 
 from django.conf.urls.defaults import patterns, url
 
-urlpatterns = patterns('automatix.restserver.views',
+urlpatterns = patterns('kermit.restserver.views',
   #Response without templating
   url(r'^mcollective/(?P<filters>[\w|\W]+)/(?P<agent>[\w|\W]+)/(?P<action>[\w|\W]+)/$', 'get', name = "mcollective-rest-server"),
   url(r'^mcollective/(?P<filters>[\w|\W]+)/(?P<agent>[\w|\W]+)/(?P<action>[\w|\W]+)/(?P<args>[\w|\W]+)/$', 'get', name = "mcollective-rest-server"),

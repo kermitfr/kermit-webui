@@ -3,9 +3,9 @@ Created on Aug 12, 2011
 
 @author: mmornati
 '''
-from automatix.widgets.base import Widget
-from automatix.defaultop.models import Operation
-from automatix.restserver import views
+from kermit.widgets.base import Widget
+from kermit.defaultop.models import Operation
+from kermit.restserver import views
 import logging
 
 logger = logging.getLogger(__name__)

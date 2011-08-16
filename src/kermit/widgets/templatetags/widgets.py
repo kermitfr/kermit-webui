@@ -1,5 +1,5 @@
 from django import template
-from automatix.widgets.loading import registry
+from kermit.widgets.loading import registry
 register = template.Library()
 
 @register.simple_tag
