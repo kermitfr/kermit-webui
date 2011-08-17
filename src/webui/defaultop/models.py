@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 class Operation(models.Model):
     name = models.CharField(max_length=255)
@@ -7,6 +8,9 @@ class Operation(models.Model):
     icon = models.CharField(max_length=255)
     url = models.CharField(max_length=65000)
     with_template = models.BooleanField(default=False)
+    order = models.IntegerField(default=0)
+    created_time = models.DateTimeField(default=datetime.now())
+    updated_time = models.DateTimeField(default=datetime.now())
     
     def __unicode__(self):
         return self.name

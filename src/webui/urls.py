@@ -6,6 +6,11 @@ from django.contrib import admin
 from django.contrib import admin
 admin.autodiscover()
 
+#Look for cron jobs
+import django_cron
+django_cron.autodiscover()
+
+
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'webui.views.home', name='home'),
@@ -18,6 +23,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     
     (r'^restapi/', include('webui.restserver.urls')),
+    (r'^puppetclasses/', include('webui.puppetclasses.urls')),
     (r'^index/(.*)', include('webui.index.urls')),
     (r'', include('webui.index.urls')),
 )

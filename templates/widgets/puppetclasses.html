@@ -1,0 +1,54 @@
+<script>
+	$(document).ready(function() {
+		$("#classestree")
+			.jstree({
+				// the `plugins` array allows you to configure the active plugins on this instance
+				"plugins" : [ 
+					"themes","json_data","ui","crrm","cookies","dnd","search","types","hotkeys","contextmenu" 
+				],
+				"json_data" : { 
+					// This tree is ajax enabled - as this is most common, and maybe a bit more complex
+					// All the options are almost the same as jQuery's AJAX (read the docs)
+					"ajax" : {
+						// the URL to fetch the data
+						"url" : "/puppetclasses/tree",
+						// the `data` function is executed in the instance's scope
+						// the parameter is the node being loaded 
+						// (may be -1, 0, or undefined when loading the root nodes)
+						"data" : function (n) { 
+							// the result is fed to the AJAX request `data` option
+							return { 
+								"operation" : "get_children", 
+								"id" : n.attr ? n.attr("id").replace("node_","") : -1 
+							}; 
+						}
+					},
+				},
+
+			})
+			.bind("select_node.jstree", function (event, data) { 
+				alert(data.rslt.obj.attr("id"));
+				//onclick="callMcollectiveWithTemplateRsp('{{RUBY_REST_BASE_URL}}restapi/mcollective-template/nodeinfo/class_filter={{selected_class.name}}/nodeinfo/basicinfo/', 'response-container')"
+			})
+		.delegate("a", "click", function (event, data) { event.preventDefault(); })
+		setTimeout(function () { $("#classestree").jstree("set_focus"); }, 500);
+	});
+
+</script>
+<li class="widget color-white" id="intro">
+	<div class="widget-head">
+		<h3>Classes</h3>
+	</div>
+	<div class="widget-content">
+		<div id="classestree">
+			<ul>
+				{% for selected_class in classes %}
+				<li id="node_{{selected_class.pk}}">
+					<!--<img width="16" height="16" border="0" align="absmiddle" suppress="TRUE" name="isc_119icon_0" src="{{settings.STATIC_URL}}images/icons/{{selected_class.icon}}">-->
+						<a>{{selected_class.name}}</a>
+				</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+</li>

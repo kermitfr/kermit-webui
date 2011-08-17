@@ -4,7 +4,7 @@ import django
 # used as starting points for various other paths
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
-print SITE_ROOT
+#MEDIA_ROOT = os.path.join(SITE_ROOT, 'assets')
 # Django settings for the webui.
 
 DEBUG = True
@@ -129,6 +129,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
+    'webui.django_cron',
     'webui.widgets',
     'webui.defaultop',
     'webui.puppetclasses', 
@@ -184,3 +185,5 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_LINK = ""
 
 RUBY_REST_BASE_URL="http://localhost:4567/mcollective/"
+
+CRON_POLLING_FREQUENCY=5

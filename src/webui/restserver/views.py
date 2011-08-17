@@ -8,7 +8,7 @@ from django.http import HttpResponse
 from django.conf import settings
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-import simplejson as json
+from django.utils import simplejson as json
 import logging
 
 logger = logging.getLogger(__name__)

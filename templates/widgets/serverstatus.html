@@ -1,15 +1,63 @@
-<script>
-	$(document).ready(function() {
-		// Updating actual Server Status
-		//callMcollectiveWithTemplateRsp('/restapi/mcollective-template/ping/no-filter/rpcutil/ping/', 'actual-server-status');
-	});
+<style type="text/css">
+table.serverstatus {
+	border-width: 2px;
+	border-spacing: 2px;
+	border-style: outset;
+	border-color: gray;
+	border-collapse: collapse;
+	background-color: white;
+	width: 100%;
+}
+table.serverstatus th {
+	border-width: 1px;
+	padding: 1px;
+	border-style: groove;
+	border-color: black;
+	background-color: white;
+	-moz-border-radius: ;
+}
+table.serverstatus td {
+	border-width: 1px;
+	padding: 1px;
+	border-style: groove;
+	border-color: black;
+	-moz-border-radius: ;
+	text-align: center;
+}
+table.serverstatus tr.even {
+	background: #CCCCCC;
+	}
+table.serverstatus tr.odd {
+	background: #F0F0F0
+	}
+</style>
 
-</script>
 <li class="widget color-white">
 	<div class="widget-head">
 		<h3>Server Status</h3>
 	</div>
 	<div class="widget-content">
-		<div id="actual-server-status"></div>
+		<br/>
+		<div id="actual-server-status">
+			<table class="serverstatus">
+				<thead>
+					<th width="60px">Online</th>
+					<th>Hostname</th>
+					<th>Operating System</th>
+					<th>Architecture</th>
+				</thead>
+				<tbody>
+					{% for server in servers %}
+					<tr class="{% cycle odd,even %}">
+						<td width="60px"><img src="{{settings.STATIC_URL}}images/icons/{% if server.online %}online.png{% else %}offline.png{% endif %}" style="border: 0px; height: 15px;margin: 3px;float:none;"/></td>
+						<td>{{server.hostname}}</td>
+						<td>{{server.os}}</td>
+						<td>{{server.architecture}}</td>
+					</tr>	
+					{% endfor %}
+				</tbody>
+			</table>			
+		</div>
+		<br/>
 	</div>
 </li>

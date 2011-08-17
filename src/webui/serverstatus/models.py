@@ -1,17 +1,28 @@
 from django.db import models
 from webui.puppetclasses.models import PuppetClass
+from datetime import datetime
 
 class Agent(models.Model):
     name = models.CharField(max_length=255)
+    enabled = models.BooleanField(default=True)
+    icon = models.CharField(max_length=255)
+    created_time = models.DateTimeField(default=datetime.now())
+    updated_time = models.DateTimeField(default=datetime.now())
+    
+    def __unicode__(self):
+        return self.name
 
 class Server(models.Model):
     hostname = models.CharField(max_length=255)
     os = models.CharField(max_length=255)
     architecture = models.CharField(max_length=255)
-    deleted = models.BooleanField()
+    deleted = models.BooleanField(default=False)
     icon = models.CharField(max_length=255)
-    classes = models.ManyToManyField(PuppetClass)
+    puppet_classes = models.ManyToManyField(PuppetClass)
     agents = models.ManyToManyField(Agent)
+    online = models.BooleanField(default=True)
+    created_time = models.DateTimeField(default=datetime.now())
+    updated_time = models.DateTimeField(default=datetime.now())
     
     def __unicode__(self):
-        return self.name
+        return self.hostname
