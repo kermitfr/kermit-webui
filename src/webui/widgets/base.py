@@ -19,6 +19,7 @@ class Widget(object):
     __metaclass__ = WidgetBase
     template = ""
     login_required = False
+    db_reference = None
     
     def __init__(self, user):
         self.user = user

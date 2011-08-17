@@ -1,71 +1,34 @@
-<li class="widget color-white" id="intro">
-	<div class="widget-head">
-		<h3>Default Operations</h3>
-	</div>
-	<div class="widget-content">
-		<div>
-			<table width="246" border="0" cellspacing="0" cellpadding="2" style="table-layout:fixed;overflow:hidden;wrap:false;padding-left:0px;padding-right:0px;" class="listTable" id="isc_11Atable">
-				<tbody></tbody>
-				<colgroup>
-					<col width="246">
-				</colgroup>
-				<tbody>
-					{% for operation in operations %}
-					<tr>
-						<td height="22" align="left" class="treeCell" style="padding-top: 0px; padding-bottom: 0px; width: 246px; overflow: hidden;">
-						<div style="overflow:hidden;WIDTH:242px;cursor: pointer;" cellclipdiv="true" onclick="{%if operation.with_template %}callMcollectiveWithTemplateRsp{% else %}callMcollective{% endif %}('{{operation.url}}', 'response-container')">
-							<nobr>
-								<table cellspacing="0" cellpadding="0" style="margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;" class="treeCell">
-									<tbody>
-										<tr>
-											<td class="treeCell" style="margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;"></td><td class="treeCell" style=";margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;"><img width="16" height="16" border="0" align="absmiddle" suppress="TRUE" name="isc_119icon_0" src="{{settings.STATIC_URL}}images/icons/{{operation.icon}}"></td><td class="treeCell" style=";margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;padding-left:3px;">
-											<nobr>
-												{{operation.name}}
-											</nobr></td>
-										</tr>
-									</tbody>
-								</table>
-							</nobr>
-						</div></td>
-					</tr>
-					{% endfor %}
-					<!--
-					<tr>
-						<td height="22" align="left" class="treeCell" style="padding-top: 0px; padding-bottom: 0px; width: 246px; overflow: hidden;">
-						<div style="overflow:hidden;WIDTH:242px; cursor: pointer;" onclick="callMcollective('/restapi/mcollective/no-filter/rpcutil/inventory/', 'response-container');" cellclipdiv="true">
-							<nobr>
-								<table cellspacing="0" cellpadding="0" style="margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;" class="treeCell">
-									<tbody>
-										<tr>
-											<td class="treeCell" style="margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;"></td><td class="treeCell" style=";margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;"><img width="16" height="16" border="0" align="absmiddle" suppress="TRUE" name="isc_119icon_1" src="{{STATIC_URL}}images/icons/folder_open.png"></td><td class="treeCell" style=";margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;padding-left:3px;">
-											<nobr>
-												Inventory
-											</nobr></td>
-										</tr>
-									</tbody>
-								</table>
-							</nobr>
-						</div></td>
-					</tr>
-					<tr>
-						<td height="22" align="left" class="treeCell" style="padding-top: 0px; padding-bottom: 0px; width: 246px; overflow: hidden;">
-						<div style="overflow:hidden;WIDTH:242px; cursor: pointer;" cellclipdiv="true" onclick="callMcollectiveWithTemplateRsp('/restapi/mcollective-template/ping/no-filter/rpcutil/ping/', 'response-container')">
-							<nobr>
-								<table cellspacing="0" cellpadding="0" style="margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;" class="treeCell">
-									<tbody>
-										<tr>
-											<td class="treeCell" style="margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;"></td><td class="treeCell" style=";margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;"><img width="16" height="16" border="0" align="absmiddle" suppress="TRUE" name="isc_119icon_2" src="{{STATIC_URL}}images/icons/Platform_up_16.png"></td><td class="treeCell" style=";margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;padding-left:3px;">
-											<nobr>
-												Ping
-											</nobr></td>
-										</tr>
-									</tbody>
-								</table>
-							</nobr>
-						</div></td>
-					</tr>-->
-				</tbody>
-			</table>
-		</div>
-	</div>
-</li>
+{% extends "widgets/base_widget.html" %}
+
+{% block widget-content %}
+<div>
+	<table width="246" border="0" cellspacing="0" cellpadding="2" style="table-layout:fixed;overflow:hidden;wrap:false;padding-left:0px;padding-right:0px;" class="listTable" id="isc_11Atable">
+		<tbody></tbody>
+		<colgroup>
+			<col width="246">
+		</colgroup>
+		<tbody>
+			{% for operation in operations %}
+			<tr>
+				<td height="22" align="left" class="treeCell" style="padding-top: 0px; padding-bottom: 0px; width: 246px; overflow: hidden;">
+				<div style="overflow:hidden;WIDTH:242px;cursor: pointer;" cellclipdiv="true" onclick="{%if operation.with_template %}callMcollectiveWithTemplateRsp{% else %}callMcollective{% endif %}('{{operation.url}}', 'response-container')">
+					<nobr>
+						<table cellspacing="0" cellpadding="0" style="margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;" class="treeCell">
+							<tbody>
+								<tr>
+									<td class="treeCell" style="margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;"></td><td class="treeCell" style=";margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;"><img width="16" height="16" border="0" align="absmiddle" suppress="TRUE" name="isc_119icon_0" src="{{settings.STATIC_URL}}images/icons/{{operation.icon}}"></td><td class="treeCell" style=";margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;padding-left:3px;">
+									<nobr>
+										{{operation.name}}
+									</nobr></td>
+								</tr>
+							</tbody>
+						</table>
+					</nobr>
+				</div></td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+
+{% endblock %}

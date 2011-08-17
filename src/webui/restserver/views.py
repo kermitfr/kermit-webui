@@ -10,6 +10,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils import simplejson as json
 import logging
+from webui.widgets.loading import registry
 
 logger = logging.getLogger(__name__)
 
@@ -44,4 +45,23 @@ def getWithTemplate(request, template, filters, agent, action, args=None):
         return render_to_response( templatePath, data,
             context_instance = RequestContext( request ) )
     return response
+
+
+def executeAction(request, action):
+    logger.info("Executing action " + action)
+    actions = Actions()
+    actionToExecute = getattr(actions, action)
+    actionToExecute()
+    return HttpResponse('')
+
+class Actions():
+
+    def refresh_dashboard(self):
+        logger.info("Getting all Widgets from database")
+        registry.reset_cache()
+        widgets_list = registry.get_widgets_dashboard()
+        for key, widgets in widgets_list.items():
+            for widget in widgets:
+                retrieved = registry.get_widget(widget['name'])
+                retrieved.db_reference = widget
 

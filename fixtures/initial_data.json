@@ -1,4 +1,4 @@
-[
+[ 
   {
     "model": "defaultop.operation",
     "pk": 1,
@@ -25,9 +25,6 @@
       "order": 1
     }
   },
-  
-  
-  
   {
     "model": "puppetclasses.puppetclass",
     "pk": 1,
@@ -227,6 +224,63 @@
       "enabled": true,
       "parent": 11,
       "order": 4
+    }
+  },
+  
+  {
+    "model": "widgets.widget",
+    "pk": 1,
+    "fields": {
+      "name": "DashBoardDefaultOps",
+      "title": "Default Operations",
+      "description": "MCollective default operations",
+      "icon": "",
+      "enabled": true,
+      "modifiable": false,
+      "column": 1,
+      "order": 1
+    }
+  },
+  {
+    "model": "widgets.widget",
+    "pk": 2,
+    "fields": {
+      "name": "DashBoardPuppetClasses",
+      "title": "Clesses",
+      "description": "Puppet Classes Widget",
+      "icon": "",
+      "enabled": true,
+      "modifiable": true,
+      "column": 1,
+      "order": 2
+    }
+  },
+  {
+    "model": "widgets.widget",
+    "pk": 3,
+    "fields": {
+      "name": "DashBoardServerStatus",
+      "title": "Servers Status",
+      "description": "Server Status Widget",
+      "icon": "",
+      "enabled": true,
+      "modifiable": true,
+      "column": 2,
+      "order": 1
+    }
+  },
+  {
+    "model": "widgets.widget",
+    "pk": 4,
+    "fields": {
+      "name": "DashBoardOpResults",
+      "title": "Operation Result",
+      "description": "Default Operation Result Widget",
+      "icon": "",
+      "enabled": true,
+      "modifiable": true,
+      "column": 2,
+      "order": 2
     }
   }
 ]

@@ -27,13 +27,6 @@
 		});
 	}
 
-	function executeScript(url) {
-		$("#response-container").empty();
-		$.get(url, function(data) {
-			$('#response-container').html(data);
-		});
-	}
-
 	$(function() {
 		$("#accordion").accordion({
 			header : "h3"
@@ -45,13 +38,13 @@
 <br/>
 <br/>
 <div id="columns">
-	<ul id="column1" class="column">
-		{% widget "DashBoardDefaultOps" %}
-		{% widget "DashBoardPuppetClasses" %}
-	</ul>
-	<ul id="column2" class="column">
-		{% widget "DashBoardServerStatus" %}
-		{% widget "DashBoardOpResults" %}
-	</ul>
+	{% for column_id, content in widgets.items%}
+		<ul id="column{{column_id}}" class="column">
+			{% for current_widget in content%}
+				{% widget current_widget.name %}
+			{% endfor %}
+		</ul>
+		
+	{% endfor %}
 </div>
 {% endblock %} 

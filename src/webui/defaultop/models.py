@@ -3,9 +3,9 @@ from datetime import datetime
 
 class Operation(models.Model):
     name = models.CharField(max_length=255)
-    description = models.CharField(max_length=255)
+    description = models.CharField(max_length=255, null=True)
     enabled = models.BooleanField()
-    icon = models.CharField(max_length=255)
+    icon = models.CharField(max_length=255, null=True)
     url = models.CharField(max_length=65000)
     with_template = models.BooleanField(default=False)
     order = models.IntegerField(default=0)
