@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 def hostInventory(request, hostname):
     prefix = '*oasinventory-'
-    suffix = '-pretty.json'
+    suffix = '-compact.json'
     logger.info("Calling Inventory for " + hostname)
     toSearch = settings.AMQP_RECEIVER_FOLDER + '/' + prefix + hostname + suffix
     filesFound = glob.glob(toSearch)

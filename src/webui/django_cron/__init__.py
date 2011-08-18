@@ -21,6 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
 from base import Job, cronScheduler
+from webui.django_cron.models import Cron
 
 def autodiscover():
 	"""
@@ -30,6 +31,14 @@ def autodiscover():
 	"""
 	import imp
 	from django.conf import settings
+	
+	#Verifying if we have an error in database
+	#i.e. Django was shutdown during cron execution
+	cron_values = Cron.objects.all()
+	if len(cron_values.values())>0 & cron_values[0].executing:
+		cron_object = cron_values[0]
+		cron_object.executing = False
+		cron_object.save()
 
 	for app in settings.INSTALLED_APPS:
 		# For each app, we need to look for an cron.py inside that app's

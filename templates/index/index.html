@@ -5,26 +5,52 @@
 
 {% block content %}
 <script type="text/javascript">
+
+	function sendRequestToMcollective(url, destination, type) {
+		$("#" + destination).empty();
+
+		$.ajax({
+			// The link we are accessing.
+			url : url,
+			// The type of request.
+			type : "get",
+			// The type of data that is getting returned.
+			dataType : "html",
+			error : function() {
+				//TODO: Show error message
+				$('#loading').hide();
+			},
+			beforeSend : function() {
+				$('#loading').show();
+			},
+			complete : function() {
+				$('#loading').hide();
+			},
+			success : function(data) {
+				if (type == 'json') {
+					var jsonObj = jQuery.parseJSON(data);
+					$.each(jsonObj, function(i, resp) {
+						content = '<h2>' + resp.sender + '</h2>';
+						content += '<ul>';
+						content += '<li> Status Code: ' + resp.statuscode + '</li>';
+						content += '<li> Status Message: ' + resp.statusmsg + '</li>';
+						content += '<li> Data: ' + JSON.stringify(resp.data) + '</li>';
+						content += '</ul>';
+						$(content).appendTo("#" + destination);
+					});
+				} else {
+					$("#" + destination).html(data);
+				}
+			}
+		});	
+	}
+	
 	function callMcollective(url, destination) {
-		$.getJSON(url, {}, function(json) {
-			$("#" + destination).empty();
-			$.each(json, function(i, resp) {
-				content = '<h2>' + resp.sender + '</h2>';
-				content += '<ul>';
-				content += '<li> Status Code: ' + resp.statuscode + '</li>';
-				content += '<li> Status Message: ' + resp.statusmsg + '</li>';
-				content += '<li> Data: ' + JSON.stringify(resp.data) + '</li>';
-				content += '</ul>';
-				$(content).appendTo("#" + destination);
-			});
-		});
+		sendRequestToMcollective(url, destination, 'json')		
 	}
 
 	function callMcollectiveWithTemplateRsp(url, destination) {
-		$("#" + destination).empty();
-		$.get(url, function(data) {
-			$("#" + destination).html(data);
-		});
+		sendRequestToMcollective(url, destination, 'html')
 	}
 
 	$(function() {
@@ -34,17 +60,15 @@
 	});
 
 </script>
-
 <br/>
 <br/>
 <div id="columns">
 	{% for column_id, content in widgets.items%}
-		<ul id="column{{column_id}}" class="column">
-			{% for current_widget in content%}
-				{% widget current_widget.name %}
-			{% endfor %}
-		</ul>
-		
+	<ul id="column{{column_id}}" class="column">
+		{% for current_widget in content%}
+		{% widget current_widget.name %}
+		{% endfor %}
+	</ul>
 	{% endfor %}
 </div>
 {% endblock %} 
