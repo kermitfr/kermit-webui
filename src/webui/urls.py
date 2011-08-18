@@ -22,6 +22,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     
+    (r'^server/', include('webui.serverdetails.urls')),
     (r'^restapi/', include('webui.restserver.urls')),
     (r'^puppetclasses/', include('webui.puppetclasses.urls')),
     (r'^index/(.*)', include('webui.index.urls')),

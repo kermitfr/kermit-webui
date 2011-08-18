@@ -187,3 +187,5 @@ LOGOUT_LINK = ""
 RUBY_REST_BASE_URL="http://localhost:4567/mcollective/"
 
 CRON_POLLING_FREQUENCY=5
+
+AMQP_RECEIVER_FOLDER='/tmp'
