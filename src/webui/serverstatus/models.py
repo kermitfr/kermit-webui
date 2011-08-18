@@ -21,6 +21,7 @@ class Server(models.Model):
     puppet_classes = models.ManyToManyField(PuppetClass)
     agents = models.ManyToManyField(Agent)
     online = models.BooleanField(default=True)
+    puppet_path = models.CharField(max_length=65000, null=True)
     created_time = models.DateTimeField(default=datetime.now())
     updated_time = models.DateTimeField(default=datetime.now())
     

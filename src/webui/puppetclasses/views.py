@@ -8,33 +8,24 @@ logger = logging.getLogger(__name__)
 
 class QueryMethods():
     
-    def get_children(self, id):
-        logger.info("Calling get_children method with id: " + str(id))
-        parent = ''
-        if id == -1:
-            parent = None
-        else:
-            parent = id
-            
+    def get_tree_nodes(self, level, path):
+        logger.info("Calling get_tree_nodes for level: " + str(level))
         #Call for parent
-        classes = PuppetClass.objects.filter(enabled=True, parent=parent)
+        classes = PuppetClass.objects.filter(enabled=True, level=level+1)
         data = []
         for puppetclass in classes:
-            #children = self.get_child_data(puppetclass)
-            hasChildren = len(puppetclass.children.all())>0
-            children = []
-            if not hasChildren:
-                logger.info("Retrieving servers contained in class " + puppetclass.name)
-                #Getting server in current class
-                servers = Server.objects.filter(puppet_classes=puppetclass)
-                for server in servers:
-                    childata = {"title":server.hostname, "url": "/server/details/"+server.hostname+"/"}
-                    children.append(childata) 
-                 
-            content = {"isFolder": "true", "isLazy": "true", "title": puppetclass.name, "id":puppetclass.pk}
-            if len(children)>0:
-                content['children'] = children
+            content = {"isFolder": "true", "isLazy": "true", "title": puppetclass.name, "level":puppetclass.level, "key":puppetclass.name}
             data.append(content)
+        
+        if path:
+            #We cannot use / inside rest url, so / was substituted by _
+            #Here we revert this change to obtain a correct path
+            path = path.replace('_', '/')
+            logger.info("Looking for servers in path: " + path)
+            servers = Server.objects.filter(puppet_path=path)
+            for server in servers:
+                serverdata = {"title":server.hostname, "url": "/server/details/"+server.hostname+"/", "key":server.hostname}
+                data.append(serverdata)
              
         return json.dumps(data)
     
@@ -55,10 +46,8 @@ class QueryMethods():
             
         return childlist
         
-def query(request):
-    operation = request.GET['operation']
-    node_id = request.GET['id']
+def query(request, operation, level, path=None):
     query_methods = QueryMethods()
     methodToCall = getattr(query_methods, operation)
-    int_node_id = int(node_id)
-    return HttpResponse(methodToCall(int_node_id))
+    int_node_id = int(level)
+    return HttpResponse(methodToCall(int_node_id, path))

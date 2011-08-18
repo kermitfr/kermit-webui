@@ -20,7 +20,7 @@ class UpdateServerStatus(Job):
         """
         
         #run every n seconds
-        run_every = 5
+        run_every = 3600
 
         def job(self):
             logger.info("Running Job UpdateServerStatus")
@@ -46,6 +46,8 @@ class UpdateServerStatus(Job):
                             self.add_puppet_classes(retrieved_server, server['data']['classes'])
                             #Add agents
                             self.add_agents(retrieved_server, server['data']['agentlist'])
+                            #Create PuppetClass Path
+                            self.create_path(retrieved_server, server['data']['classes'])
                             retrieved_server.save()
                         else: 
                             logger.info("Creating new server with name " + server_name)
@@ -60,8 +62,11 @@ class UpdateServerStatus(Job):
                             self.add_puppet_classes(new_server, server['data']['classes'])
                             #Add agents
                             self.add_agents(new_server, server['data']['agentlist'])
+                            #Create PuppetClass Path
+                            self.create_path(new_server, server['data']['classes'])
 
                             new_server.save()
+                        
                         #Retrieving not updated/created server and set them to OFFLINE
                         logger.info("Checking offline servers")
                         not_updated = Server.objects.filter(updated_time__lt=update_time)
@@ -91,6 +96,16 @@ class UpdateServerStatus(Job):
                     logger.info("Discovered new agent " + agent)
                     new_agent = Agent.objects.create(name=agent)
                     server.agents.add(new_agent) 
+        
+        def create_path(self, server, puppet_classes):
+            path = ''
+            for i in range (0, 5):
+                level_classes = PuppetClass.objects.filter(level=i).values_list('name', flat=True)
+                extracted_class = iter(set(puppet_classes).intersection(set(level_classes))).next()
+                if extracted_class:
+                    path = path + '/' + extracted_class
+            
+            server.puppet_path=path
                 
                 
 cronScheduler.register(UpdateServerStatus)

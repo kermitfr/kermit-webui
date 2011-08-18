@@ -8,9 +8,15 @@
 	      // The event was bound to the <span> tag, but the node object
 	      // is stored in the parent <li> tag
 	      var node = $.ui.dynatree.getNode(el);
+	      var filterType
+	      if (node.data.isFolder) {
+	      	filterType = "class_filter"
+	      } else {
+	      	filterType = "identity_filter"
+	      }
 	      switch( action ) {
 	      	case "ping":
-	      	callMcollectiveWithTemplateRsp('/restapi/mcollective-template/ping/identity_filter=' + node.data.title + '/rpcutil/ping/', 'response-container');
+	      		callMcollectiveWithTemplateRsp('/restapi/mcollective-template/ping/' + filterType + '=' + node.data.title + '/rpcutil/ping/', 'response-container');
 	      	break;
 	      }
 	    });
@@ -25,21 +31,19 @@
 			},
 			autoFocus : false, // Set focus to first child, when expanding or lazy-loading.
 			onCreate: function(node, span){
-        		//alert(span);
-        		if (node.data.isFolder == false) {
-        			bindContextMenu(span);
-        		}
+				bindContextMenu(span);
       		},
 			initAjax : {
-				url : "/puppetclasses/tree?operation=get_children&id=1",
+				url : "/puppetclasses/tree/get_tree_nodes/-1/",
 				data : {
 					mode : "funnyMode"
 				}
 			},
 
 			onLazyRead : function(node) {
+				path = node.getKeyPath().replace(/\//g, "_");
 				node.appendAjax({
-					url : "/puppetclasses/tree?operation=get_children&id="+node.data.id,
+					url : "/puppetclasses/tree/get_tree_nodes/"+node.data.level+"/"+path+"/",
 					data : {
 						key : node.data.key,
 						mode : "funnyMode"
