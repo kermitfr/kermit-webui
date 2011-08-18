@@ -19,7 +19,7 @@
 		<script type="text/javascript" src="{{STATIC_URL}}js/jquery-ui-1.8.15.custom.min.js"></script>
 		<script type="text/javascript" src="{{STATIC_URL}}js/jquery-hotkeys/jquery.hotkeys.js"></script>
 		<!-- DynaTree-->
-		<link href="{{STATIC_URL}}css/dynatree/skin/ui.dynatree.css" rel="stylesheet" type="text/css">
+		<link href="{{STATIC_URL}}css/dynatree/kermit/ui.dynatree.css" rel="stylesheet" type="text/css">
   		<script src="{{STATIC_URL}}js/dynatree/jquery.dynatree.js" type="text/javascript"></script>
   		<!-- JQuery Cookie -->
 		<script type="text/javascript" src="{{STATIC_URL}}js/jquery-cookie/jquery.cookie.js"></script>
@@ -35,21 +35,6 @@
 				this.css("left", ($(window).width() -   this.width()) / 2 + $(window).scrollLeft() + "px");
 				return this;
 			}
-			/*jQuery.ajaxSetup({
-				beforeSend : function() {
-					$('#loading').show()
-				},
-				complete : function() {
-					$('#loading').hide()
-				},
-				error : function() {
-					$('#loading').hide()
-				},
-				success : function() {
-				},
-				timeout: 15000
-			});
-*/
 			// implement JSON.stringify serialization
 			JSON.stringify = JSON.stringify ||
 			function(obj) {
