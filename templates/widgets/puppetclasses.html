@@ -36,6 +36,9 @@
 	      	case "ping":
 	      		callMcollectiveWithTemplateRsp('/restapi/mcollective-template/ping/' + filtersList + '/rpcutil/ping/', 'response-container');
 	      	break;
+	      	case "inventory":
+	      		callMcollective('/restapi/mcollective/' + filtersList + '/rpcutil/inventory/', 'response-container');
+	      	break;
 	      }
 	    });
 	  };
@@ -143,6 +146,7 @@
  <!-- Definition of context menu -->
   <ul id="myMenu" class="contextMenu">
     <li class="edit"><a href="#ping">Ping</a></li>
+    <li class="edit"><a href="#inventory">Inventory</a></li>
   </ul>
 
 <div id="classestree"></div>
