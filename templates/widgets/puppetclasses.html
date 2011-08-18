@@ -9,14 +9,32 @@
 	      // is stored in the parent <li> tag
 	      var node = $.ui.dynatree.getNode(el);
 	      var filterType
+	      //Verifying if the context menu is for a folder or for a server
 	      if (node.data.isFolder) {
 	      	filterType = "class_filter"
 	      } else {
 	      	filterType = "identity_filter"
 	      }
+	      
+	      //If we are working on a folder the filter should be for the complete path and not for the single folder selected
+	      var filtersList = ''
+	      if (node.data.isFolder) {
+	      	var classes = node.getKeyPath().split('/');
+	      	for (i in classes) {
+	      		if (classes[i]!='') {
+	      			if (filtersList != '') {
+	      				filtersList += ';'
+	      			}
+	      			filtersList += filterType + '=' + classes[i];
+	      		}
+	      	}
+	      } else {
+	      	filtersList += filterType + '=' + node.data.title
+	      }
+	      
 	      switch( action ) {
 	      	case "ping":
-	      		callMcollectiveWithTemplateRsp('/restapi/mcollective-template/ping/' + filterType + '=' + node.data.title + '/rpcutil/ping/', 'response-container');
+	      		callMcollectiveWithTemplateRsp('/restapi/mcollective-template/ping/' + filtersList + '/rpcutil/ping/', 'response-container');
 	      	break;
 	      }
 	    });
