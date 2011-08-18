@@ -2,83 +2,126 @@
 
 {% block widget-content %}
 <script>
+	function bindContextMenu(span) {
+	    // Add context menu to this node:
+	    $(span).contextMenu({menu: "myMenu"}, function(action, el, pos) {
+	      // The event was bound to the <span> tag, but the node object
+	      // is stored in the parent <li> tag
+	      var node = $.ui.dynatree.getNode(el);
+	      switch( action ) {
+	      	case "ping":
+	      	callMcollectiveWithTemplateRsp('/restapi/mcollective-template/ping/identity_filter=' + node.data.title + '/rpcutil/ping/', 'response-container');
+	      	break;
+	      }
+	    });
+	  };
+
 	$(document).ready(function() {
-		$("#classestree").jstree({
-			// the `plugins` array allows you to configure the active plugins on this instance
-			"plugins" : ["themes", "json_data", "ui", "crrm", "cookies", "dnd", "search", "types", "hotkeys", "contextmenu"],
-			"json_data" : {
-				// This tree is ajax enabled - as this is most common, and maybe a bit more complex
-				// All the options are almost the same as jQuery's AJAX (read the docs)
-				"ajax" : {
-					// the URL to fetch the data
-					"url" : "/puppetclasses/tree",
-					// the `data` function is executed in the instance's scope
-					// the parameter is the node being loaded
-					// (may be -1, 0, or undefined when loading the root nodes)
-					"data" : function(n) {
-						// the result is fed to the AJAX request `data` option
-						return {
-							"operation" : "get_children",
-							"id" : n.attr ? n.attr("id").replace("node_", "") : -1
-						};
-					}
-				},
+		$("#classestree").dynatree({
+			title : "Puppet Classes",
+			fx : {
+				height : "toggle",
+				duration : 200
 			},
-			"types" : {
-				"valid_children" : ["drive"],
-				"types" : {
-					"default" : {
-						"valid_children" : "none",
-						"icon" : {
-							"image" : "{{settings.STATIC_URL}}images/icons/widget_puppetclasses/server.png"
-						}
-					},
-					"folder" : {
-						// can have files and other folders inside of it, but NOT `drive` nodes
-						"valid_children" : ["default", "folder"],
-						"icon" : {
-							"image" : "{{settings.STATIC_URL}}images/icons/widget_puppetclasses/folder.png"
-						}
-					},
-					// The `drive` nodes
-					"drive" : {
-						// can have files and folders inside, but NOT other `drive` nodes
-						"valid_children" : ["default", "folder"],
-						"icon" : {
-							"image" : "/static/v.1.0pre/_demo/root.png"
-						},
-						// those prevent the functions with the same name to be used on `drive` nodes
-						// internally the `before` event is used
-						"start_drag" : false,
-						"move_node" : false,
-						"delete_node" : false,
-						"remove" : false
-					}
+			autoFocus : false, // Set focus to first child, when expanding or lazy-loading.
+			onCreate: function(node, span){
+        		//alert(span);
+        		if (node.data.isFolder == false) {
+        			bindContextMenu(span);
+        		}
+      		},
+			initAjax : {
+				url : "/puppetclasses/tree?operation=get_children&id=1",
+				data : {
+					mode : "funnyMode"
 				}
 			},
-		})
-		//.bind("select_node.jstree", function (event, data) {
-		//	alert(data.rslt.obj.attr("id"));
-		//onclick="callMcollectiveWithTemplateRsp('{{RUBY_REST_BASE_URL}}restapi/mcollective-template/nodeinfo/class_filter={{selected_class.name}}/nodeinfo/basicinfo/', 'response-container')"
-		//})
-		.delegate("a", "click", function(event, data) {
-			event.preventDefault();
-		})
-		setTimeout(function() {
-			$("#classestree").jstree("set_focus");
-		}, 500);
+
+			onLazyRead : function(node) {
+				node.appendAjax({
+					url : "/puppetclasses/tree?operation=get_children&id="+node.data.id,
+					data : {
+						key : node.data.key,
+						mode : "funnyMode"
+					}
+				});
+				// .. but here we use a local file instead:
+			},
+			onQueryActivate : function(activate, node) {
+				
+				//        return false;
+			},
+			onActivate : function(node) {
+				
+			},
+			onDeactivate : function(node) {
+				logMsg("onDeactivate(%o)", node);
+				$("#echoActive").text("-");
+			},
+			onQuerySelect : function(select, node) {
+				logMsg("onQuerySelect(%o, %o)", select, node);
+				if(node.data.isFolder)
+					return false;
+			},
+			onSelect : function(select, node) {
+				logMsg("onSelect(%o, %o)", node);
+				var s = node.tree.getSelectedNodes().join(", ");
+				$("#echoSelected").text(s);
+			},
+			onQueryExpand : function(expand, node) {
+				logMsg("onQueryExpand(%o, %o)", expand, node);
+				//        return false;
+			},
+			onExpand : function(expand, node) {
+				logMsg("onExpand(%o, %o)", expand, node);
+			},
+			onFocus : function(node) {
+				logMsg("onFocus(%o)", node);
+				$("#echoFocused").text(node.data.title);
+				// Auto-activate focused node after 2 seconds
+				node.scheduleAction("activate", 2000);
+			},
+			onBlur : function(node) {
+				logMsg("onBlur(%o)", node);
+				$("#echoFocused").text("-");
+			},
+			onClick : function(node, event) {
+				logMsg("onClick(%o, %o)", node, event);
+				// Close menu on click
+		        if( $(".contextMenu:visible").length > 0 ){
+		          $(".contextMenu").hide();
+		//          return false;
+		        }
+		        if(node.data.url)
+					window.location.href = node.data.url;
+				if(event.shiftKey && node.isLazy)
+					alert("ctrl");
+				//return false;
+			},
+			onDblClick : function(node, event) {
+				logMsg("onDblClick(%o, %o)", node, event);
+				node.toggleSelect();
+			},
+			onKeydown : function(node, event) {
+				logMsg("onKeydown(%o, %o)", node, event);
+				switch( event.which ) {
+					case 32:
+						// [space]
+						node.toggleSelect();
+						return false;
+				}
+			},
+			onKeypress : function(node, event) {
+				logMsg("onKeypress(%o, %o)", node, event);
+			}
+		});
 	});
 
 </script>
+ <!-- Definition of context menu -->
+  <ul id="myMenu" class="contextMenu">
+    <li class="edit"><a href="#ping">Ping</a></li>
+  </ul>
 
-<div id="classestree">
-	<ul>
-		{% for selected_class in classes %}
-		<li id="node_{{selected_class.pk}}">
-			<!--<img width="16" height="16" border="0" align="absmiddle" suppress="TRUE" name="isc_119icon_0" src="{{settings.STATIC_URL}}images/icons/{{selected_class.icon}}">-->
-			<a>{{selected_class.name}}</a>
-		</li>
-		{% endfor %}
-	</ul>
-</div>
+<div id="classestree"></div>
 {% endblock %} 

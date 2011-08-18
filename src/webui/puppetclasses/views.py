@@ -20,8 +20,20 @@ class QueryMethods():
         classes = PuppetClass.objects.filter(enabled=True, parent=parent)
         data = []
         for puppetclass in classes:
-            children = self.get_child_data(puppetclass)
-            content = {"progressive_render": "true", "data": puppetclass.name, "attr":{"id":puppetclass.pk, "rel":"folder"}, "children":children}
+            #children = self.get_child_data(puppetclass)
+            hasChildren = len(puppetclass.children.all())>0
+            children = []
+            if not hasChildren:
+                logger.info("Retrieving servers contained in class " + puppetclass.name)
+                #Getting server in current class
+                servers = Server.objects.filter(puppet_classes=puppetclass)
+                for server in servers:
+                    childata = {"title":server.hostname, "url": "/server/details/"+server.hostname+"/"}
+                    children.append(childata) 
+                 
+            content = {"isFolder": "true", "isLazy": "true", "title": puppetclass.name, "id":puppetclass.pk}
+            if len(children)>0:
+                content['children'] = children
             data.append(content)
              
         return json.dumps(data)
@@ -29,8 +41,8 @@ class QueryMethods():
     def get_child_data(self, current_node):
         childlist = []
         for child in current_node.children.all():
-            children = self.get_child_data(child)
-            childata = {"data":child.name, "attr":{"id":child.pk, "rel":"folder"}, "children":children}
+            #children = self.get_child_data(child)
+            childata = {"isFolder":"true", "isLazy": "true", "title":child.name, "id":current_node.pk}
             childlist.append(childata) 
            
         if len(childlist) == 0:
@@ -38,7 +50,7 @@ class QueryMethods():
             #Getting server in current class
             servers = Server.objects.filter(puppet_classes=current_node)
             for server in servers:
-                childata = {"data":server.hostname, "attr":{"id":server.pk, "rel":"default"}}
+                childata = {"title":server.hostname, "url": "/server/details/"+server.hostname+"/"}
                 childlist.append(childata) 
             
         return childlist

@@ -62,7 +62,7 @@
     "model": "puppetclasses.puppetclass",
     "pk": 4,
     "fields": {
-      "name": "steresdotcom",
+      "name": "storesdotcom",
       "description": "Stores.Com Class",
       "icon": "Platform_up_16.png",
       "enabled": true,
