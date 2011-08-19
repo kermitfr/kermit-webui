@@ -10,10 +10,10 @@ from django.contrib import admin
 
 class ServerAdmin(admin.ModelAdmin):
     fieldsets = [
-        ("General",   {'fields': ['hostname']}),
+        ("General",   {'fields': ['hostname', 'fqdn']}),
         ("Details",   {'fields': ['os', 'architecture', 'deleted', 'icon', 'puppet_classes', 'agents', 'online', 'puppet_path']}),         
     ]
-    list_display = ('hostname', 'os', 'architecture')
+    list_display = ('hostname', 'fqdn', 'os', 'architecture')
     search_fields = ['hostname']
     
 admin.site.register(Server, ServerAdmin)

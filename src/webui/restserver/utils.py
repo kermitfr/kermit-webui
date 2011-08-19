@@ -40,7 +40,7 @@ class Actions(object):
                 retrieved.db_reference = widget
                 
     def refresh_server_basic_info(self):
-        logger.info("Calling Refresh Inventory")
+        logger.info("Calling Refresh Basic Info")
         ops = Operations()
         ops.server_basic_info()
         
@@ -76,6 +76,10 @@ class Operations(object):
                                 retrieved_server.architecture = server['data']['facts']['architecture']
                             except KeyError:
                                 retrieved_server.architecture = 'Unknown' 
+                            try:
+                                retrieved_server.fqdn = server['data']['facts']['fqdn']
+                            except KeyError:
+                                retrieved_server.fqdn = retrieved_server.hostname
                         else:
                             retrieved_server.os = 'Unknown'
                             retrieved_server.architecture = 'Unknown'
