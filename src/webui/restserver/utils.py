@@ -66,49 +66,12 @@ class Operations(object):
                     if query_response:
                         retrieved_server = query_response[0]
                         logger.info("Updating Server information " + server_name)
-                        retrieved_server.online = True
-                        if server['data'].has_key('facts'):
-                            try:
-                                retrieved_server.os = server['data']['facts']['lsbdistdescription']
-                            except KeyError:
-                                retrieved_server.os = 'Unknown'
-                            try:
-                                retrieved_server.architecture = server['data']['facts']['architecture']
-                            except KeyError:
-                                retrieved_server.architecture = 'Unknown' 
-                            try:
-                                retrieved_server.fqdn = server['data']['facts']['fqdn']
-                            except KeyError:
-                                retrieved_server.fqdn = retrieved_server.hostname
-                        else:
-                            retrieved_server.os = 'Unknown'
-                            retrieved_server.architecture = 'Unknown'
-                        retrieved_server.updated_time = update_time
-                        #Add puppet_classes
-                        self.add_puppet_classes(retrieved_server, server['data']['classes'])
-                        #Add agents
-                        self.add_agents(retrieved_server, server['data']['agentlist'])
-                        #Create PuppetClass Path
-                        self.create_path(retrieved_server, server['data']['classes'])
+                        self.complete_server_info(retrieved_server, server, update_time)
                         retrieved_server.save()
                     else: 
                         logger.info("Creating new server with name " + server_name)
                         new_server = Server.objects.create(hostname=server_name)
-                        if server['data']['facts']:
-                            new_server.os = server['data']['facts']['lsbdistdescription']
-                            new_server.architecture = server['data']['facts']['architecture']
-                        else:
-                            new_server.os = 'Unknown'
-                            new_server.architecture = 'Unknown'
-                        new_server.online = True
-                        new_server.updated_time = update_time
-                        #Add puppet_classes
-                        self.add_puppet_classes(new_server, server['data']['classes'])
-                        #Add agents
-                        self.add_agents(new_server, server['data']['agentlist'])
-                        #Create PuppetClass Path
-                        self.create_path(new_server, server['data']['classes'])
-    
+                        self.complete_server_info(new_server, server, update_time)
                         new_server.save()
                     
                     #Retrieving not updated/created server and set them to OFFLINE
@@ -121,6 +84,31 @@ class Operations(object):
         except Exception, err:
             logger.error('ERROR: ' + str(err))
             
+    def complete_server_info(self, server, mcresponse, update_time):
+        server.online = True
+        if mcresponse['data'].has_key('facts'):
+            try:
+                server.os = mcresponse['data']['facts']['lsbdistdescription']
+            except KeyError:
+                server.os = 'Unknown'
+            try:
+                server.architecture = mcresponse['data']['facts']['architecture']
+            except KeyError:
+                server.architecture = 'Unknown' 
+            try:
+                server.fqdn = mcresponse['data']['facts']['fqdn']
+            except KeyError:
+                server.fqdn = server.hostname
+        else:
+            server.os = 'Unknown'
+            server.architecture = 'Unknown'
+        server.updated_time = update_time
+        #Add puppet_classes
+        self.add_puppet_classes(server, mcresponse['data']['classes'])
+        #Add agents
+        self.add_agents(server, mcresponse['data']['agentlist'])
+        #Create PuppetClass Path
+        self.create_path(server, mcresponse['data']['classes'])
        
     def server_inventory(self):
         try: 
