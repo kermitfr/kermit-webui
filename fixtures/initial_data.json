@@ -1,5 +1,429 @@
 [ 
   {
+    "pk": 22,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_logentry",
+      "name": "Can add log entry",
+      "content_type": 8
+    }
+  },
+  {
+    "pk": 23,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_logentry",
+      "name": "Can change log entry",
+      "content_type": 8
+    }
+  },
+  {
+    "pk": 24,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_logentry",
+      "name": "Can delete log entry",
+      "content_type": 8
+    }
+  },
+  {
+    "pk": 4,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_group",
+      "name": "Can add group",
+      "content_type": 2
+    }
+  },
+  {
+    "pk": 5,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_group",
+      "name": "Can change group",
+      "content_type": 2
+    }
+  },
+  {
+    "pk": 6,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_group",
+      "name": "Can delete group",
+      "content_type": 2
+    }
+  },
+  {
+    "pk": 10,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_message",
+      "name": "Can add message",
+      "content_type": 4
+    }
+  },
+  {
+    "pk": 11,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_message",
+      "name": "Can change message",
+      "content_type": 4
+    }
+  },
+  {
+    "pk": 12,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_message",
+      "name": "Can delete message",
+      "content_type": 4
+    }
+  },
+  {
+    "pk": 1,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_permission",
+      "name": "Can add permission",
+      "content_type": 1
+    }
+  },
+  {
+    "pk": 2,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_permission",
+      "name": "Can change permission",
+      "content_type": 1
+    }
+  },
+  {
+    "pk": 3,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_permission",
+      "name": "Can delete permission",
+      "content_type": 1
+    }
+  },
+  {
+    "pk": 7,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_user",
+      "name": "Can add user",
+      "content_type": 3
+    }
+  },
+  {
+    "pk": 8,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_user",
+      "name": "Can change user",
+      "content_type": 3
+    }
+  },
+  {
+    "pk": 9,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_user",
+      "name": "Can delete user",
+      "content_type": 3
+    }
+  },
+  {
+    "pk": 13,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_contenttype",
+      "name": "Can add content type",
+      "content_type": 5
+    }
+  },
+  {
+    "pk": 14,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_contenttype",
+      "name": "Can change content type",
+      "content_type": 5
+    }
+  },
+  {
+    "pk": 15,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_contenttype",
+      "name": "Can delete content type",
+      "content_type": 5
+    }
+  },
+  {
+    "pk": 34,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_operation",
+      "name": "Can add operation",
+      "content_type": 12
+    }
+  },
+  {
+    "pk": 35,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_operation",
+      "name": "Can change operation",
+      "content_type": 12
+    }
+  },
+  {
+    "pk": 36,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_operation",
+      "name": "Can delete operation",
+      "content_type": 12
+    }
+  },
+  {
+    "pk": 28,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_cron",
+      "name": "Can add cron",
+      "content_type": 10
+    }
+  },
+  {
+    "pk": 29,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_cron",
+      "name": "Can change cron",
+      "content_type": 10
+    }
+  },
+  {
+    "pk": 30,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_cron",
+      "name": "Can delete cron",
+      "content_type": 10
+    }
+  },
+  {
+    "pk": 25,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_job",
+      "name": "Can add job",
+      "content_type": 9
+    }
+  },
+  {
+    "pk": 26,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_job",
+      "name": "Can change job",
+      "content_type": 9
+    }
+  },
+  {
+    "pk": 27,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_job",
+      "name": "Can delete job",
+      "content_type": 9
+    }
+  },
+  {
+    "pk": 37,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_puppetclass",
+      "name": "Can add puppet class",
+      "content_type": 13
+    }
+  },
+  {
+    "pk": 38,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_puppetclass",
+      "name": "Can change puppet class",
+      "content_type": 13
+    }
+  },
+  {
+    "pk": 39,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_puppetclass",
+      "name": "Can delete puppet class",
+      "content_type": 13
+    }
+  },
+  {
+    "pk": 40,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_agent",
+      "name": "Can add agent",
+      "content_type": 14
+    }
+  },
+  {
+    "pk": 41,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_agent",
+      "name": "Can change agent",
+      "content_type": 14
+    }
+  },
+  {
+    "pk": 42,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_agent",
+      "name": "Can delete agent",
+      "content_type": 14
+    }
+  },
+  {
+    "pk": 43,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_server",
+      "name": "Can add server",
+      "content_type": 15
+    }
+  },
+  {
+    "pk": 44,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_server",
+      "name": "Can change server",
+      "content_type": 15
+    }
+  },
+  {
+    "pk": 45,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_server",
+      "name": "Can delete server",
+      "content_type": 15
+    }
+  },
+  {
+    "pk": 16,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_session",
+      "name": "Can add session",
+      "content_type": 6
+    }
+  },
+  {
+    "pk": 17,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_session",
+      "name": "Can change session",
+      "content_type": 6
+    }
+  },
+  {
+    "pk": 18,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_session",
+      "name": "Can delete session",
+      "content_type": 6
+    }
+  },
+  {
+    "pk": 19,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_site",
+      "name": "Can add site",
+      "content_type": 7
+    }
+  },
+  {
+    "pk": 20,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_site",
+      "name": "Can change site",
+      "content_type": 7
+    }
+  },
+  {
+    "pk": 21,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_site",
+      "name": "Can delete site",
+      "content_type": 7
+    }
+  },
+  {
+    "pk": 31,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_widget",
+      "name": "Can add widget",
+      "content_type": 11
+    }
+  },
+  {
+    "pk": 32,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_widget",
+      "name": "Can change widget",
+      "content_type": 11
+    }
+  },
+  {
+    "pk": 33,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_widget",
+      "name": "Can delete widget",
+      "content_type": 11
+    }
+  },
+  {
+    "pk": 1,
+    "model": "auth.user",
+    "fields": {
+      "username": "admin",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_superuser": true,
+      "is_staff": true,
+      "last_login": "2011-08-19 07:05:31",
+      "groups": [],
+      "user_permissions": [],
+      "password": "sha1$bb477$bb3df8e3e7c6b06440dc0259588e5fd083d21c33",
+      "email": "admin@admin.com",
+      "date_joined": "2011-08-19 07:05:09"
+    }
+  },
+
+  {
     "model": "defaultop.operation",
     "pk": 1,
     "fields": {
@@ -251,7 +675,7 @@
     "pk": 2,
     "fields": {
       "name": "DashBoardPuppetClasses",
-      "title": "Clesses",
+      "title": "Classes",
       "description": "Puppet Classes Widget",
       "icon": "",
       "enabled": true,

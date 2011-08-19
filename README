@@ -26,13 +26,13 @@ RUBY_REST_BASE_URL="http://localhost:4567/mcollective/"
 Now you are ready to configure your database (sqlite or what you have configured
 in settings.py). To do this run:
 
-python src/webui/manage.py syncdb
+python src/webui/manage.py syncdb --noinput
 
 from the project root path.
 
 If all works fine you should see messages about the creation of tables and
-filling of default data. During this setup (the first time) you need to 
-configure the django admin user too (necessary to enter in the admin area).
+filling of default data. During this setup a Django admin user is created by default with credentials:
+admin/admin.
 
 NOTE: if you have an error "module messages not found" you are probably using
 the default el5 Django version (1.1.4). The message module was introduced in
@@ -60,5 +60,6 @@ This will start the server bounded to any network and using port 8000
 
 Quick and dirty version :
 
-python src/webui/manage.py syncdb
+python src/webui/manage.py syncdb --noinput
 python src/webui/manage.py runserver 0.0.0.0:8000
+
