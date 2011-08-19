@@ -56,4 +56,9 @@ python src/webui/manage.py runserver 0.0.0.0:8000
 This will start the server bounded to any network and using port 8000 
 (you can also change the port, of course)
 
+---
 
+Quick and dirty version :
+
+python src/webui/manage.py syncdb
+python src/webui/manage.py runserver 0.0.0.0:8000
