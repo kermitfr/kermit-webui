@@ -35,10 +35,11 @@ def autodiscover():
 	#Verifying if we have an error in database
 	#i.e. Django was shutdown during cron execution
 	cron_values = Cron.objects.all()
-	if len(cron_values.values())>0 & cron_values[0].executing:
-		cron_object = cron_values[0]
-		cron_object.executing = False
-		cron_object.save()
+	if len(cron_values.values())>0:
+		if cron_values[0].executing:
+			cron_object = cron_values[0]
+			cron_object.executing = False
+			cron_object.save()
 
 	for app in settings.INSTALLED_APPS:
 		# For each app, we need to look for an cron.py inside that app's

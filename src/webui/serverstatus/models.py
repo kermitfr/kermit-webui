@@ -5,7 +5,7 @@ from datetime import datetime
 class Agent(models.Model):
     name = models.CharField(max_length=255)
     enabled = models.BooleanField(default=True)
-    icon = models.CharField(max_length=255)
+    icon = models.CharField(max_length=255, null=True)
     created_time = models.DateTimeField(default=datetime.now())
     updated_time = models.DateTimeField(default=datetime.now())
     
@@ -17,7 +17,7 @@ class Server(models.Model):
     os = models.CharField(max_length=255)
     architecture = models.CharField(max_length=255)
     deleted = models.BooleanField(default=False)
-    icon = models.CharField(max_length=255)
+    icon = models.CharField(max_length=255, null=True)
     puppet_classes = models.ManyToManyField(PuppetClass)
     agents = models.ManyToManyField(Agent)
     online = models.BooleanField(default=True)

@@ -17,11 +17,6 @@ After the installation of the packages you'll need to configure the application.
 In the file 'settings.py', Django require some absolute path to locate the
 sqlite db file (used for development), images, templates, etc. 
 
-So, at the moment, considering that we are in intensive development, we just
-have a rough configuration that will be changed later for the release.
-In the file 'settings.py', any reference to /home/mmornati/projects/webui/
-(...) should be modified with your own path.
-
 Another thing you may want to change is the Ruby MCollective Rest Server. By
 default it is set on the same machine as the webui, for security reasons.
 In the file 'settings.py' you need to adjust the line:

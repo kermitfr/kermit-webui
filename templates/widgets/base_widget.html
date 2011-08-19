@@ -1,4 +1,4 @@
-<li class="widget color-{%if widget.db_reference.color %}{{widget.db_reference.color}}{% else %}white{% endif %}" {%if not widget.db_reference.modifiable %}id="intro{% endif %}">
+<li class="widget color-{%if widget.db_reference.color %}{{widget.db_reference.color}}{% else %}white{% endif %}" id="{{widget.db_reference.name}}" movable="{{widget.db_reference.movable}} removable="{{widget.db_reference.removable}} editable="{{widget.db_reference.editable}}">
 	<div class="widget-head">
 		<h3>{{widget.db_reference.title}}</h3>
 	</div>

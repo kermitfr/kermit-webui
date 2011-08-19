@@ -242,7 +242,6 @@
       "description": "MCollective default operations",
       "icon": "",
       "enabled": true,
-      "modifiable": false,
       "column": 1,
       "order": 1
     }
@@ -256,7 +255,6 @@
       "description": "Puppet Classes Widget",
       "icon": "",
       "enabled": true,
-      "modifiable": true,
       "column": 1,
       "order": 2
     }
@@ -270,7 +268,6 @@
       "description": "Server Status Widget",
       "icon": "",
       "enabled": true,
-      "modifiable": true,
       "column": 2,
       "order": 1
     }
@@ -284,7 +281,6 @@
       "description": "Default Operation Result Widget",
       "icon": "",
       "enabled": true,
-      "modifiable": true,
       "column": 2,
       "order": 2
     }

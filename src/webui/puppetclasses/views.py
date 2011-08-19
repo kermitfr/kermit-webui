@@ -6,7 +6,7 @@ from webui.serverstatus.models import Server
 
 logger = logging.getLogger(__name__)
 
-class QueryMethods():
+class QueryMethods(object):
     
     def get_tree_nodes(self, level, path):
         logger.info("Calling get_tree_nodes for level: " + str(level))

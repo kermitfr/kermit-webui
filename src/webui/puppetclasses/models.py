@@ -7,7 +7,6 @@ class PuppetClass(models.Model):
     enabled = models.BooleanField(default=True)
     icon = models.CharField(max_length=255, null=True)
     level = models.IntegerField(default=0, null=False)
-    #parent = models.ForeignKey('self', null=True, blank=True, related_name='children')
     parent = models.CharField(max_length=255, null=True)
     order = models.IntegerField(default=0)
     created_time = models.DateTimeField(default=datetime.now())

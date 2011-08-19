@@ -17,14 +17,16 @@ var iNettuts = {
             removable: true,
             collapsible: true,
             editable: true,
+            refreshable: false,
             colorClasses : ['color-yellow', 'color-red', 'color-blue', 'color-white', 'color-orange', 'color-green']
         },
         widgetIndividual : {
-            intro : {
+            DashBoardDefaultOps : {
                 movable: false,
                 removable: false,
                 collapsible: false,
-                editable: false
+                editable: false,
+                refreshable: false
             }
         }
     },
@@ -47,6 +49,7 @@ var iNettuts = {
             settings = this.settings;
             
         $(settings.widgetSelector, $(settings.columns)).each(function () {
+        	//alert($('#' +this.id).attr('closable'));
             var thisWidgetSettings = iNettuts.getWidgetSettings(this.id);
             if (thisWidgetSettings.removable) {
                 $('<a href="#" class="remove">CLOSE</a>').mousedown(function (e) {
@@ -104,6 +107,15 @@ var iNettuts = {
                     $(this).css({backgroundPosition: ''})
                         .parents(settings.widgetSelector)
                             .find(settings.contentSelector).show();
+                    return false;
+                }).prependTo($(settings.handleSelector,this));
+            }
+            
+            if (thisWidgetSettings.refreshable) {
+                $('<a href="#" class="refresh">REFRESH</a>').mousedown(function (e) {
+                    e.stopPropagation();    
+                }).click(function () {
+                    alert('calling refresh url');
                     return false;
                 }).prependTo($(settings.handleSelector,this));
             }

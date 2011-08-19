@@ -4,7 +4,6 @@ Created on Aug 12, 2011
 @author: mmornati
 '''
 from webui.widgets.base import Widget
-from webui.restserver import views
 import logging
 from webui.serverstatus.models import Server
 

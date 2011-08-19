@@ -54,7 +54,7 @@ def executeAction(request, action):
     actionToExecute()
     return HttpResponse('')
 
-class Actions():
+class Actions(object):
 
     def refresh_dashboard(self):
         logger.info("Getting all Widgets from database")
