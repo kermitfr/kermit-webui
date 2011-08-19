@@ -73,8 +73,12 @@ def server_inventory():
                     retrieved_server = query_response[0]
                     logger.info("Updating Server information " + server_name)
                     retrieved_server.online = True
-                    retrieved_server.os = server['data']['facts']['lsbdistdescription']
-                    retrieved_server.architecture = server['data']['facts']['architecture']
+                    if server['data']['facts']:
+                        retrieved_server.os = server['data']['facts']['lsbdistdescription']
+                        retrieved_server.architecture = server['data']['facts']['architecture']
+                    else:
+                        retrieved_server.os = 'Unknown'
+                        retrieved_server.architecture = 'Unknown'
                     retrieved_server.updated_time = update_time
                     #Add puppet_classes
                     add_puppet_classes(retrieved_server, server['data']['classes'])
@@ -86,10 +90,12 @@ def server_inventory():
                 else: 
                     logger.info("Creating new server with name " + server_name)
                     new_server = Server.objects.create(hostname=server_name)
-                    print server['data']['facts']['lsbdistdescription']
-                    print server['data']['facts']['architecture']
-                    new_server.os = server['data']['facts']['lsbdistdescription']
-                    new_server.architecture = server['data']['facts']['architecture']
+                    if server['data']['facts']:
+                        new_server.os = server['data']['facts']['lsbdistdescription']
+                        new_server.architecture = server['data']['facts']['architecture']
+                    else:
+                        new_server.os = 'Unknown'
+                        new_server.architecture = 'Unknown'
                     new_server.online = True
                     new_server.updated_time = update_time
                     #Add puppet_classes
