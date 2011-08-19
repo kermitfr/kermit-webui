@@ -3,10 +3,10 @@
 .widget-head a.remove  {
     float: right;
     display: inline;
-    background: url(/static/images/dashboard/buttons.gif) no-repeat -24px 0;
-    width: 14px;
-    height: 14px;
-    margin: 8px 4px 8px 0;
+    background: url(/static/images/widgets/close.png) no-repeat;
+    width: 24px;
+    height: 24px;
+    margin: 3px 4px 8px 0;
     text-indent: -9999em;
     outline: none;
 }
@@ -14,22 +14,35 @@
 .widget-head a.edit  {
     float: right;
     display: inline;
-    background: url(/static/images/dashboard/buttons.gif) no-repeat;
+    background: url(/static/images/widgets/edit.png) no-repeat;
     width: 24px;
-    height: 14px;
+    height: 24px;
     text-indent: -9999em;
-    margin: 8px 4px 8px 4px;
+    margin: 3px 4px 8px 0px;
+    outline: none;
+}
+
+
+.widget-head a.refresh  {
+    float: right;
+    display: inline;
+    background: url(/static/images/widgets/refresh.png) no-repeat;
+    width: 24px;
+    height: 24px;
+    text-indent: -9999em;
+    margin: 3px 4px 8px 0px;
     outline: none;
 }
 
 .widget-head a.collapse  {
     float: left;
     display: inline;
-    background: url(/static/images/dashboard/buttons.gif) no-repeat -52px 0;
-    width: 14px;
-    height: 14px;
+    background: url(/static/images/widgets/expand-collapse.png) no-repeat;
+    width: 24px;
+    height: 24px;
     text-indent: -9999em;
-    margin: 8px 0 8px 4px;
+    background-position: -24px 0;
+    margin: 3px 0 8px 4px;
     outline: none;
 }
 

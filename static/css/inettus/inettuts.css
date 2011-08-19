@@ -22,20 +22,6 @@ a {color:white;}
 	{color:#FFF;}
 /* End Colors */
 
-/* Head section */
-#head {
-    background: #000 url(/static/images/dashboard/head-bg.png) repeat-x;
-    height: 100px;
-}
-#head h1 {
-    line-height: 100px;
-    color: #FFF;
-    text-align: center;
-    background: url(/static/images/dashboard/inettuts.png) no-repeat center;
-    text-indent: -9999em
-}
-/* End Head Section */
-
 /* Columns section */
 #columns .column {
     float: left;

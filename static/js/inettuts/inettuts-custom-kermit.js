@@ -32,7 +32,7 @@ var iNettuts = {
     },
 
     init : function () {
-        this.attachStylesheet('/static/css/inettuts.js.css');
+        this.attachStylesheet('/static/css/inettus/inettuts.js.css');
         this.addWidgetControls();
         this.makeSortable();
     },
@@ -49,9 +49,31 @@ var iNettuts = {
             settings = this.settings;
             
         $(settings.widgetSelector, $(settings.columns)).each(function () {
-        	//alert($('#' +this.id).attr('closable'));
             var thisWidgetSettings = iNettuts.getWidgetSettings(this.id);
-            if (thisWidgetSettings.removable) {
+            var removable = thisWidgetSettings.removable;
+            var movable = thisWidgetSettings.movable;
+            var collapsible = thisWidgetSettings.collapsible;
+            var editable = thisWidgetSettings.editable;
+            var refreshable = thisWidgetSettings.refreshable;
+      		var refreshUrl = '';
+            if ($('#' +this.id).attr('removable')) {
+            	removable = $('#' +this.id).attr('removable')=='True'	
+            }
+            if ($('#' +this.id).attr('movable')) {
+            	movable = $('#' +this.id).attr('movable')=='True';	
+            } 
+            if ($('#' +this.id).attr('collapsible')) {
+            	collapsible = $('#' +this.id).attr('collapsible')=='True';	
+            }
+            if ($('#' +this.id).attr('refreshable')) {
+            	refreshable = $('#' +this.id).attr('refreshable')=='True';
+            	refreshUrl = $('#' +this.id).attr('refreshUrl');
+            }
+            if ($('#' +this.id).attr('editable')) {
+            	editable = $('#' +this.id).attr('editable')=='True';
+            }
+            
+            if (removable) {
                 $('<a href="#" class="remove">CLOSE</a>').mousedown(function (e) {
                     e.stopPropagation();    
                 }).click(function () {
@@ -68,11 +90,11 @@ var iNettuts = {
                 }).appendTo($(settings.handleSelector, this));
             }
             
-            if (thisWidgetSettings.editable) {
+            if (editable) {
                 $('<a href="#" class="edit">EDIT</a>').mousedown(function (e) {
                     e.stopPropagation();    
                 }).toggle(function () {
-                    $(this).css({backgroundPosition: '-66px 0', width: '55px'})
+                    $(this).css({backgroundPosition: '0 0', width: '24px'})
                         .parents(settings.widgetSelector)
                             .find('.edit-box').show().find('input').focus();
                     return false;
@@ -95,11 +117,11 @@ var iNettuts = {
                     .insertAfter($(settings.handleSelector,this));
             }
             
-            if (thisWidgetSettings.collapsible) {
+            if (collapsible) {
                 $('<a href="#" class="collapse">COLLAPSE</a>').mousedown(function (e) {
                     e.stopPropagation();    
                 }).toggle(function () {
-                    $(this).css({backgroundPosition: '-38px 0'})
+                    $(this).css({backgroundPosition: '0 0'})
                         .parents(settings.widgetSelector)
                             .find(settings.contentSelector).hide();
                     return false;
@@ -111,13 +133,13 @@ var iNettuts = {
                 }).prependTo($(settings.handleSelector,this));
             }
             
-            if (thisWidgetSettings.refreshable) {
+            if (refreshable) {
                 $('<a href="#" class="refresh">REFRESH</a>').mousedown(function (e) {
                     e.stopPropagation();    
                 }).click(function () {
-                    alert('calling refresh url');
+                    alert('calling refresh url: ' + refreshUrl);
                     return false;
-                }).prependTo($(settings.handleSelector,this));
+                }).appendTo($(settings.handleSelector, this));
             }
         });
         
