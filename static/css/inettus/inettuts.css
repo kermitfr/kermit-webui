@@ -45,10 +45,8 @@ a {color:white;}
 	/* #columns #column1 { background: url(/static/images/dashboard/column-bg-left.png) no-repeat right top; }
 	#columns #column3 { background: url(/static/images/dashboard/column-bg-right.png) no-repeat left top; }
 	*/
-#columns #column1 .widget { margin: 30px 35px 0 25px; }
-#columns #column3 .widget { margin: 30px 25px 0 35px; }
 #columns .widget {
-    margin: 30px 20px 0 20px;
+    margin: 10px 5px 0 5px;
     padding: 2px;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
