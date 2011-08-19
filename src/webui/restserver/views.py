@@ -73,9 +73,15 @@ def server_inventory():
                     retrieved_server = query_response[0]
                     logger.info("Updating Server information " + server_name)
                     retrieved_server.online = True
-                    if server['data']['facts']:
-                        retrieved_server.os = server['data']['facts']['lsbdistdescription']
-                        retrieved_server.architecture = server['data']['facts']['architecture']
+                    if server['data'].has_key('facts'):
+                        try:
+                            retrieved_server.os = server['data']['facts']['lsbdistdescription']
+                        except KeyError:
+                            retrieved_server.os = 'Unknown'
+                        try:
+                            retrieved_server.architecture = server['data']['facts']['architecture']
+                        except KeyError:
+                            retrieved_server.architecture = 'Unknown' 
                     else:
                         retrieved_server.os = 'Unknown'
                         retrieved_server.architecture = 'Unknown'
