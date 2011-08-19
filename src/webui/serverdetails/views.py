@@ -4,7 +4,7 @@ from webui import settings
 from django.template.context import RequestContext
 from django.shortcuts import render_to_response
 import glob
-from django.utils.safestring import mark_safe
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -15,6 +15,7 @@ def hostInventory(request, hostname):
     logger.info("Calling Inventory for " + hostname)
     toSearch = settings.AMQP_RECEIVER_FOLDER + '/' + prefix + hostname + suffix
     filesFound = glob.glob(toSearch)
+    filesFound.sort(key=lambda x: os.path.getmtime(x), reverse=True)
     if not len(filesFound) == 1:
         logger.warn("More than one inventory files found! Using just the first one")
         logger.warn(filesFound)           

@@ -6,7 +6,7 @@ Created on Aug 16, 2011
 
 from webui.django_cron import cronScheduler, Job
 import logging
-from webui.restserver.views import server_inventory
+from webui.restserver.utils import Operations
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +20,8 @@ class UpdateServerStatus(Job):
 
         def job(self):
             logger.info("Running Job UpdateServerStatus")
-            server_inventory()
+            ops = Operations()
+            ops.server_basic_info()
                 
                 
 cronScheduler.register(UpdateServerStatus)
