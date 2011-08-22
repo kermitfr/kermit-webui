@@ -13,7 +13,7 @@ from django.contrib import admin
 from django.conf import settings
 
 # grappelli imports
-from grappelli.settings import *
+from webui.grappelli.settings import *
 
 register = template.Library()
 

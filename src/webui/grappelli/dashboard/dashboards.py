@@ -8,8 +8,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.contrib.contenttypes.models import ContentType
 
-from grappelli.dashboard import modules
-from grappelli.dashboard.utils import get_admin_site_name
+from webui.grappelli.dashboard import modules
+from webui.grappelli.dashboard.utils import get_admin_site_name
 from django import forms
 
 class Dashboard(object):

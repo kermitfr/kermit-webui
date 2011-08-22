@@ -11,7 +11,7 @@ import math
 from django import template
 from django.core.urlresolvers import reverse
 
-from grappelli.dashboard.utils import get_admin_site_name, get_index_dashboard
+from webui.grappelli.dashboard.utils import get_admin_site_name, get_index_dashboard
 
 register = template.Library()
 tag_func = register.inclusion_tag('grappelli/dashboard/dummy.html', takes_context=True)

@@ -3,36 +3,29 @@
 {% block widget-content %}
 <style type="text/css">
 table.serverstatus {
-border-width: 2px;
-border-spacing: 2px;
-border-style: outset;
-border-color: gray;
-border-collapse: collapse;
-background-color: white;
-width: 100%;
+	border-width: 2px;
+	border-spacing: 2px;
+	border-style: outset;
+	border-color: gray;
+	border-collapse: collapse;
+	background-color: white;
+	width: 100%;
 }
+
 table.serverstatus th {
-border-width: 1px;
-padding: 1px;
-border-style: groove;
-border-color: black;
-background-color: white;
--moz-border-radius: ;
+	font-size: 12px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	color: #000;
 }
-table.serverstatus td {
-border-width: 1px;
-padding: 1px;
-border-style: groove;
-border-color: black;
--moz-border-radius: ;
-text-align: center;
-}
+
 table.serverstatus tr.even {
-background: #CCCCCC;
+	background: #CCCCCC;
 }
 table.serverstatus tr.odd {
-background: #F0F0F0
+	background: #F0F0F0
 }
+
 </style>
 <br/>
 <div id="actual-server-status">
@@ -46,7 +39,7 @@ background: #F0F0F0
 		<tbody>
 			{% for server in servers %}
 			<tr class="{% cycle odd,even %}">
-				<td width="60px"><img src="{{settings.STATIC_URL}}images/icons/{% if server.online %}online.png{% else %}offline.png{% endif %}" style="border: 0px; height: 15px;margin: 3px;float:none;"/></td>
+				<td width="5%"><img src="{{settings.STATIC_URL}}images/icons/{% if server.online %}online.png{% else %}offline.png{% endif %}" style="border: 0px; height: 15px;margin: 3px;float:none;"/></td>
 				<td><a href="/server/details/{{server.hostname}}/">{{server.hostname}}</a></td>
 				<td>{{server.os}}</td>
 				<td>{{server.architecture}}</td>

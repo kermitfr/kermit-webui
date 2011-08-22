@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% load i18n %}
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Expires" content="-1">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Max-Age" content="0">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<!-- FqvIcon -->
+		<link rel="icon" type="image/png" href="{{STATIC_URL}}images/favicon.png"/>
+		<link rel="apple-touch-icon" href="{{STATIC_URL}}images/favicon.png"/>
+		{% block stylesheets %}
+		<link href="{{STATIC_URL}}css/kermit/base.css" rel="stylesheet" type="text/css" />
+		<link href="{{STATIC_URL}}css/kermit/jquery-ui-grappelli-extensions.css" rel="stylesheet" type="text/css" />
+		<link href="{{STATIC_URL}}css/kermit/loader.css" rel="stylesheet" type="text/css" />
+		<link href="{{STATIC_URL}}css/kermit/jquery-ui-1.8.15.custom.css" rel="stylesheet" type="text/css" />
+		
+		<!-- INettus -->
+		<link href="{{STATIC_URL}}css/inettus/inettuts.css" rel="stylesheet" type="text/css" />
+		<!-- DynaTree -->
+		<link href="{{STATIC_URL}}css/dynatree/kermit/ui.dynatree.css" rel="stylesheet" type="text/css">
+		<!-- JQuery Context Menu -->
+		<link href="{{STATIC_URL}}css/jquery-context-menu/jquery.contextMenu.css" rel="stylesheet" type="text/css" >
+		<link href="{{STATIC_URL}}css/kermit/kermit-skin-default.css" rel="stylesheet" type="text/css" />
+		{% endblock %} <!-- EXTRASTYLES -->
+		{% block extrastyle %}{% endblock %} <!-- JAVASCRIPTS -->
+		{% block javascripts %} <script type="text/javascript" src="{{STATIC_URL}}js/jquery-1.6.2.min.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}js/jquery-ui-1.8.15.custom.min.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}js/jquery-hotkeys/jquery.hotkeys.js"></script>
+		<!-- DynaTree-->
+		<script src="{{STATIC_URL}}js/dynatree/jquery.dynatree.js" type="text/javascript"></script>
+		<!-- JQuery Cookie -->
+		<script type="text/javascript" src="{{STATIC_URL}}js/jquery-cookie/jquery.cookie.js"></script>
+		<!-- JQuery Context Menu-->
+		<script src="{{STATIC_URL}}js/jquery-context-menu/jquery.contextMenu.js" type="text/javascript"></script>
+		<script>
+			jQuery.fn.center = function() {
+				this.css("position", "absolute");
+				this.css("top", ($(window).height() - this.height()) / 2 + $(window).scrollTop() + "px");
+				this.css("left", ($(window).width() - this.width()) / 2 + $(window).scrollLeft() + "px");
+				return this;
+			}
+			// implement JSON.stringify serialization
+			JSON.stringify = JSON.stringify ||
+			function(obj) {
+				var t = typeof (obj);
+				if(t != "object" || obj === null) {
+					// simple data type
+					if(t == "string")
+						obj = '"' + obj + '"';
+					return String(obj);
+				} else {
+					// recurse array or object
+					var n, v, json = [], arr = (obj && obj.constructor == Array);
+					for(n in obj) {
+						v = obj[n];
+						t = typeof (v);
+						if(t == "string")
+							v = '"' + v + '"';
+						else if(t == "object" && v !== null)
+							v = JSON.stringify(v);
+						json.push(( arr ? "" : '"' + n + '":') + String(v));
+					}
+					return ( arr ? "[" : "{") + String(json) + ( arr ? "]" : "}");
+				}
+			};
+
+		</script>
+		{% endblock %}
+
+		{% block extrahead %}{% endblock %}
+	</head>
+	<body class="{% block bodyclass %}{% endblock %}">
+		<div id="loading">
+			<div id="loader">
+				<p><img src="{{STATIC_URL}}images/ajax-loader.gif" />
+				</p>
+			</div>
+		</div>
+		{% include "theme/kermit/header.html" %} 
+		<!-- BREADCRUMBS -->
+		{% block breadcrumbs %}
+		<div id="breadcrumbs">
+			<a href="/">{% trans 'Home' %}</a>{% if title %} &rsaquo; {{ title }}{% endif %}
+		</div>
+		{% endblock %}
+		{% if messages %}
+		<ul class="messagelist">
+			{% for message in messages %}
+			<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+				{{ message }}</li>
+				{% endfor %}
+		</ul>
+		{% endif %}
+		<div id="container">
+			<!-- section hedaerconetent -->
+			{% block bigcontent %} <!-- main conetent -->
+			<div class="central-content">
+				{% block navbar %}
+				<p>
+					<table>
+						<tr>
+							<td style="vertical-align:middle"><a href="{% url index %}"><img src="/static/img/menu-16.png" align="middle" /></a></td>
+							<td style="vertical-align:middle"><a href="{% url index %}"> Main Menu</a></td>
+							<td width="30"></td>
+							{% block extra-manu %}{% endblock%}
+						</tr>
+					</table>
+					<br />
+				</p>
+				{% endblock %}
+				<p>
+					{% block content %}{% endblock %}
+				</p>
+			</div>
+			{% endblock %} <div class="closed-bar"></div>
+		</div>
+		<div class="footer"></div>
+		<script type="text/javascript" src="{{STATIC_URL}}js/inettuts/inettuts-custom-kermit.js"></script>
+	</body>
+</html>

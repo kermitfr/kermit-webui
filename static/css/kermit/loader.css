@@ -1,0 +1,19 @@
+#loading {
+	display: none;
+}
+#loading {
+	display: none;
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 99999999;
+	background-image: url("/static/images/transparentbg.png");
+}
+
+#loader {
+	position: relative;
+	left: 50%;
+	top: 50%;
+}

@@ -1,2 +1,2 @@
-from grappelli.dashboard.dashboards import *
-from grappelli.dashboard.registry import *
+from webui.grappelli.dashboard.dashboards import *
+from webui.grappelli.dashboard.registry import *

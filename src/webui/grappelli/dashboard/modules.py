@@ -10,7 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.itercompat import is_iterable
 
 # GRAPPELL IMPORTS
-from grappelli.dashboard.utils import AppListElementMixin
+from webui.grappelli.dashboard.utils import AppListElementMixin
 
 
 class DashboardModule(object):
