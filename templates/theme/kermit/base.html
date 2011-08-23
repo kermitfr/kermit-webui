@@ -15,10 +15,10 @@
 		<link href="{{STATIC_URL}}css/kermit/loader.css" rel="stylesheet" type="text/css" />
 		<link href="{{STATIC_URL}}css/kermit/jquery-ui-1.8.15.custom.css" rel="stylesheet" type="text/css" />
 		
-		<!-- INettus -->
-		<link href="{{STATIC_URL}}css/inettus/inettuts.css" rel="stylesheet" type="text/css" />
 		<!-- DynaTree -->
 		<link href="{{STATIC_URL}}css/dynatree/kermit/ui.dynatree.css" rel="stylesheet" type="text/css">
+		<!-- INettus -->
+		<link href="{{STATIC_URL}}css/inettus/inettuts.css" rel="stylesheet" type="text/css" />
 		<!-- JQuery Context Menu -->
 		<link href="{{STATIC_URL}}css/jquery-context-menu/jquery.contextMenu.css" rel="stylesheet" type="text/css" >
 		<link href="{{STATIC_URL}}css/kermit/kermit-skin-default.css" rel="stylesheet" type="text/css" />
@@ -80,9 +80,6 @@
 		{% include "theme/kermit/header.html" %} 
 		<!-- BREADCRUMBS -->
 		{% block breadcrumbs %}
-		<div id="breadcrumbs">
-			<a href="/">{% trans 'Home' %}</a>{% if title %} &rsaquo; {{ title }}{% endif %}
-		</div>
 		{% endblock %}
 		{% if messages %}
 		<ul class="messagelist">

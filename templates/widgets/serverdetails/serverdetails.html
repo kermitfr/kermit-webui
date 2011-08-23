@@ -1,77 +1,77 @@
 {% extends "widgets/base_widget.html" %}
+{% load i18n %}
+
+{% block widget-extra-title %}{{hostname}}{% endblock %}
 
 {% block widget-content %}
 <script>
+	function getDetails(url, destination, selectedElement) {
+		$("#" + destination).empty();
+		$.ajax({
+			// The link we are accessing.
+			url : url,
+			// The type of request.
+			type : "get",
+			// The type of data that is getting returned.
+			dataType : "html",
+			error : function() {
+				//TODO: Show error message
+				$('#loading').hide();
+			},
+			beforeSend : function() {
+				$(selectedElement).append("<img id='contextualAjaxSpinner' src='/static/images/small-loader.gif'/>");
+
+			},
+			complete : function() {
+				$("#contextualAjaxSpinner").remove();
+			},
+			success : function(data) {
+				$("#" + destination).html(data);
+			}
+		});
+	}
+	
 	function bindContextMenu(span) {
 	    // Add context menu to this node:
-	    $(span).contextMenu({menu: "myMenu"}, function(action, el, pos) {
+	    $(span).contextMenu({menu: "serverMenu"}, function(action, el, pos) {
 	      // The event was bound to the <span> tag, but the node object
 	      // is stored in the parent <li> tag
 	      var node = $.ui.dynatree.getNode(el);
-	      var filterType
-	      //Verifying if the context menu is for a folder or for a server
-	      if (node.data.isFolder) {
-	      	filterType = "class_filter"
-	      } else {
-	      	filterType = "identity_filter"
-	      }
-	      
-	      //If we are working on a folder the filter should be for the complete path and not for the single folder selected
-	      var filtersList = ''
-	      if (node.data.isFolder) {
-	      	var classes = node.getKeyPath().split('/');
-	      	for (i in classes) {
-	      		if (classes[i]!='') {
-	      			if (filtersList != '') {
-	      				filtersList += ';'
-	      			}
-	      			filtersList += filterType + '=' + classes[i];
-	      		}
-	      	}
-	      } else {
-	      	filtersList += filterType + '=' + node.data.title
+	      var selectedType = node.data.type;
+	      var url
+	      if (selectedType == 'instance') {
+	      	url = "/server/details/{{hostname}}/" + node.data.key + '/';
 	      }
 	      
 	      switch( action ) {
-	      	case "ping":
-	      		callMcollectiveWithTemplateRsp('/restapi/mcollective-template/ping/' + filtersList + '/rpcutil/ping/', 'response-container');
-	      	break;
-	      	case "inventory":
-	      		callMcollective('/restapi/mcollective/' + filtersList + '/rpcutil/inventory/', 'response-container');
+	      	case "details":
+	      		getDetails(url, 'actual-resource-details');
 	      	break;
 	      }
 	    });
 	  };
-
+	
 	$(document).ready(function() {
-		$("#classestree").dynatree({
-			title : "Puppet Classes",
+		$("#details-tree").dynatree({
+			title : "Server {{hostname}} Details",
+			imagePath:"/static/images/servertree/",
 			fx : {
 				height : "toggle",
 				duration : 200
 			},
 			autoFocus : false, // Set focus to first child, when expanding or lazy-loading.
 			onCreate: function(node, span){
-				bindContextMenu(span);
+				//if (node.data.type == 'instance') {
+					//bindContextMenu(span);
+				//}
       		},
 			initAjax : {
-				url : "/puppetclasses/tree/get_tree_nodes/-1/",
+				url : "/server/tree/{{hostname}}/",
 				data : {
 					mode : "funnyMode"
 				}
 			},
 
-			onLazyRead : function(node) {
-				path = node.getKeyPath().replace(/\//g, "_");
-				node.appendAjax({
-					url : "/puppetclasses/tree/get_tree_nodes/"+node.data.level+"/"+path+"/",
-					data : {
-						key : node.data.key,
-						mode : "funnyMode"
-					}
-				});
-				// .. but here we use a local file instead:
-			},
 			onQueryActivate : function(activate, node) {
 				
 				//        return false;
@@ -91,7 +91,6 @@
 			onSelect : function(select, node) {
 				logMsg("onSelect(%o, %o)", node);
 				var s = node.tree.getSelectedNodes().join(", ");
-				$("#echoSelected").text(s);
 			},
 			onQueryExpand : function(expand, node) {
 				logMsg("onQueryExpand(%o, %o)", expand, node);
@@ -112,15 +111,15 @@
 			},
 			onClick : function(node, event) {
 				logMsg("onClick(%o, %o)", node, event);
+				if (event.target.tagName == 'SPAN' && event.target.classList == 'dynatree-expander') {
+					//expand collpse
+				} else {
+					if (node.data.type == 'instance') {
+						
+						getDetails("/server/details/{{hostname}}/" + node.data.key + '/', 'actual-resource-details', event.target.parentNode);
+					}	
+				}
 				// Close menu on click
-		        if( $(".contextMenu:visible").length > 0 ){
-		          $(".contextMenu").hide();
-		//          return false;
-		        }
-		        if(node.data.url)
-					window.location.href = node.data.url;
-				if(event.shiftKey && node.isLazy)
-					alert("ctrl");
 				//return false;
 			},
 			onDblClick : function(node, event) {
@@ -141,18 +140,13 @@
 			}
 		});
 	});
-
 </script>
- <!-- Definition of context menu -->
-  <ul id="myMenu" class="contextMenu">
-    <li class="edit"><a href="#ping">Ping</a></li>
-    <li class="edit"><a href="#inventory">Inventory</a></li>
-    <li class="sub"><a href="#inventory">Actions</a>
-    	<ul id="sub1" class="contextMenu">
-    		<li><a href="">Sub</a></li>
-    	</ul>
-    </li>
-  </ul>
-
-<div id="classestree"></div>
+<br/>
+<ul id="serverMenu" class="contextMenu">
+    <li class="edit"><a href="#details">{% trans 'Details'%}</a></li>
+</ul>
+<div id="details-tree">
+	
+</div>
+<br/>
 {% endblock %} 

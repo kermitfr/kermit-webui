@@ -1,0 +1,76 @@
+{% load i18n %}
+<strong>{% trans 'Datasources' %}</strong>
+<table>
+	<thead>
+		<tr>
+			<th>{% trans 'Name' %}</th>
+			<th>{% trans 'Server' %}</th>
+			<th>{% trans 'Instance' %}</th>
+			<th>{% trans 'User' %}</th>
+			<th>{% trans 'Max-Connections' %}</th>
+			<th>{% trans 'Min-Connections' %}</th>
+			<th>{% trans 'Cached Statements' %}</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for datasource in datasources%}
+			<tr>
+				<td>{{datasource.name}}</td>
+				<td>{{datasource.bddserver}}</td>
+				<td>{{datasource.bddinstance}}</td>
+				<td>{{datasource.user}}</td>
+				<td>{{datasource.max_connections}}</td>
+				<td>{{datasource.min_connections}}</td>
+				<td>{{datasource.num_cached_statements}}</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+<br/>
+<strong>{% trans 'OC4J Options'%}</strong>
+<table>
+	<thead>
+		<th>{% trans 'Option'%}</th>
+	</thead>
+	<tbody>
+		{% for opt in oc4j_options%}
+			<tr>
+				<td>
+					{{opt}}
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+<br/>
+<strong>{% trans 'Java Start Options'%}</strong>
+<table>
+	<thead>
+		<th>{% trans 'Option'%}</th>
+	</thead>
+	<tbody>
+		{% for opt in java_start_options%}
+			<tr>
+				<td>
+					{{opt}}
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+<br/>
+<strong>{% trans 'Java Stop Options'%}</strong>
+<table>
+	<thead>
+		<th>{% trans 'Option'%}</th>
+	</thead>
+	<tbody>
+		{% for opt in java_stop_options%}
+			<tr>
+				<td>
+					{{opt}}
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>

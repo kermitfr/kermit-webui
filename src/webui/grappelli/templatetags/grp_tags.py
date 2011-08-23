@@ -14,6 +14,7 @@ from django.conf import settings
 
 # grappelli imports
 from webui.grappelli.settings import *
+from django.utils.translation import get_language
 
 register = template.Library()
 

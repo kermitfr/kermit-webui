@@ -136,6 +136,7 @@ INSTALLED_APPS = (
     'webui.defaultop',
     'webui.puppetclasses', 
     'webui.serverstatus',
+    'webui.serverdetails',
     'webui.grappelli',
 )
 

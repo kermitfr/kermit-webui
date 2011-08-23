@@ -7,7 +7,7 @@ from webui.widgets.base import Widget
 from webui.defaultop.models import Operation
 
 class DashBoardDefaultOps(Widget):
-    template = "widgets/basecommands.html"
+    template = "widgets/defaultop/basecommands.html"
     
     def get_context(self):
         super_context = super(self.__class__,self).get_context()
@@ -16,7 +16,7 @@ class DashBoardDefaultOps(Widget):
         return dict(super_context.items() + widget_context.items())
     
 class DashBoardOpResults(Widget):
-    template = "widgets/opresponse.html"
+    template = "widgets/defaultop/opresponse.html"
     
     def get_context(self):
         super_context = super(self.__class__,self).get_context()

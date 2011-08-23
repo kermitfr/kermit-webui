@@ -31,11 +31,11 @@ class Widget(object):
         """
         return {"settings": settings}
 
-    def render(self):
+    def render(self, args):
         """
         Render the widget's template and return the rendered contents.
         """
         template = get_template(self.template)
         data = self.get_context()
-        data.update(widget=self, user=self.user)
+        data.update(widget=self, user=self.user, args=args)
         return template.render(Context(data))

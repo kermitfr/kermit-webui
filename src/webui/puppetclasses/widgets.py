@@ -7,7 +7,7 @@ from webui.widgets.base import Widget
 from webui.puppetclasses.models import PuppetClass
 
 class DashBoardPuppetClasses(Widget):
-    template = "widgets/puppetclasses.html"
+    template = "widgets/puppetclasses/puppetclasses.html"
     
     def get_context(self):
         super_context = super(self.__class__,self).get_context()

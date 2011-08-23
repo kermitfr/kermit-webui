@@ -78,11 +78,11 @@ a {color:white;}
     padding: 0.8em 0;
     border-bottom: 1px solid #666;
 }
-#columns .widget .widget-content img {
+/*#columns .widget .widget-content img {
     float: right;
     margin: 10px;
     border: 1px solid #FFF;
-}
+}*/
 #columns .widget .widget-content pre {
     padding: 0.5em 5px;
     color: #EEE;

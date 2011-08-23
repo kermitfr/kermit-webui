@@ -1,13 +1,19 @@
 {% extends "theme/meta.html" %}
 {% load widgets %}
+{% load i18n %}
 
 {% block navbar %}{% endblock %}
+
+{% block breadcrumbs %}
+<div id="breadcrumbs">
+	<a href="/">{% trans 'Home' %}</a>{% if title %} &rsaquo; {{ title }}{% endif %}
+</div>
+{% endblock %}
 
 {% block bodyclass %}dashboard{% endblock %}
 
 {% block content %}
 <script type="text/javascript">
-
 	function sendRequestToMcollective(url, destination, type) {
 		$("#" + destination).empty();
 
@@ -29,7 +35,7 @@
 				$('#loading').hide();
 			},
 			success : function(data) {
-				if (type == 'json') {
+				if(type == 'json') {
 					var jsonObj = jQuery.parseJSON(data);
 					$.each(jsonObj, function(i, resp) {
 						content = '<h2>' + resp.sender + '</h2>';
@@ -44,11 +50,11 @@
 					$("#" + destination).html(data);
 				}
 			}
-		});	
+		});
 	}
-	
+
 	function callMcollective(url, destination) {
-		sendRequestToMcollective(url, destination, 'json')		
+		sendRequestToMcollective(url, destination, 'json')
 	}
 
 	function callMcollectiveWithTemplateRsp(url, destination) {

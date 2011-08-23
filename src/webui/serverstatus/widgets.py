@@ -10,7 +10,7 @@ from webui.serverstatus.models import Server
 logger = logging.getLogger(__name__)
 
 class DashBoardServerStatus(Widget):
-    template = "widgets/serverstatus.html"
+    template = "widgets/serverstatus/serverstatus.html"
     
     def get_context(self):
         super_context = super(self.__class__,self).get_context()
