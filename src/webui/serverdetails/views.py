@@ -26,7 +26,7 @@ def getDetailsTree(request, hostname):
         db_instances = {'title': 'Instances', 'isFolder':"true", "key":"instance", "icon":"app_server.png", "type":"instances"}
         dbs = []
         for instance in server_info:
-            db = {'title':instance['id'], "key":instance['id'], "icon":"web_instance.png", "type":"instance"}
+            db = {'title':instance['id'], "key":instance['id'], "icon":"web_instance.png", "type":"instance", "detailsEnabled":"true"}
             #Configuring Applications
             logger.debug('Configuring Applications')
             applications = {'title': 'Applications', 'isFolder':"true", "key":"applications", "icon":"folder_applications.png", "type":"applications"}
@@ -38,7 +38,7 @@ def getDetailsTree(request, hostname):
             
             #Configuring Datasources
             logger.debug('Configuring Datasources')
-            datasources = {'title': 'Datasources', 'isFolder':"true", "key":"datasources", "icon":"folder_database.png", "type":"datasources"}
+            datasources = {'title': 'Datasources', 'isFolder':"true", "key":instance['id'], "icon":"folder_database.png", "type":"datasources", "detailsEnabled":"true"}
             dss = []
             for datasource in instance['datasource']:
                 datasource = {'title':datasource['name'], "key":datasource['name'], "type":"datasource"}
@@ -55,16 +55,44 @@ def getDetailsTree(request, hostname):
     data.append(content)
     return HttpResponse(json.dumps(data))
 
-def instanceInventory(request, hostname, instance_name):
+def instanceInventory(request, hostname, resource_name):
     server_info = read_server_info(hostname)
     if server_info:
         instance = None 
         for server in server_info:
-            if server['id'] == instance_name:
+            if server['id'] == resource_name:
+                instance = server
+                break 
+        return render_to_response('server/instance.html', {"base_url": settings.BASE_URL, "java_stop_options":instance['java-stop-options'], "java_start_options":instance['java-start-options'], "oc4j_options":instance['oc4j-options'], "hostname": hostname}, context_instance=RequestContext(request))
+    else:
+        return render_to_response('server/instance.html', {"base_url": settings.BASE_URL, "hostname": hostname}, context_instance=RequestContext(request))
+
+
+def datasourceListInventory(request, hostname, resource_name):
+    server_info = read_server_info(hostname)
+    if server_info:
+        instance = None 
+        for server in server_info:
+            if server['id'] == resource_name:
                 instance = server
                 break 
         for datasource in instance['datasource']:
             convert_keys_names(datasource)
-        return render_to_response('server/instance.html', {"base_url": settings.BASE_URL, "datasources": instance['datasource'], "java_stop_options":instance['java-stop-options'], "java_start_options":instance['java-start-options'], "oc4j_options":instance['oc4j-options'], "hostname": hostname}, context_instance=RequestContext(request))
+        return render_to_response('server/datasource.html', {"base_url": settings.BASE_URL, "datasources": instance['datasource']}, context_instance=RequestContext(request))
     else:
-        return render_to_response('server/instance.html', {"base_url": settings.BASE_URL, "hostname": hostname}, context_instance=RequestContext(request))
+        return render_to_response('server/datasource.html', {"base_url": settings.BASE_URL, "hostname": hostname}, context_instance=RequestContext(request))
+
+
+def datasourceInventory(request, hostname, resource_name):
+    server_info = read_server_info(hostname)
+    if server_info:
+        instance = None 
+        for server in server_info:
+            if server['id'] == resource_name:
+                instance = server
+                break 
+        for datasource in instance['datasource']:
+            convert_keys_names(datasource)
+        return render_to_response('server/datasource.html', {"base_url": settings.BASE_URL, "datasources": instance['datasource']}, context_instance=RequestContext(request))
+    else:
+        return render_to_response('server/datasource.html', {"base_url": settings.BASE_URL, "hostname": hostname}, context_instance=RequestContext(request))

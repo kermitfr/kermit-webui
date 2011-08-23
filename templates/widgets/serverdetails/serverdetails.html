@@ -6,7 +6,6 @@
 {% block widget-content %}
 <script>
 	function getDetails(url, destination, selectedElement) {
-		$("#" + destination).empty();
 		$.ajax({
 			// The link we are accessing.
 			url : url,
@@ -16,11 +15,10 @@
 			dataType : "html",
 			error : function() {
 				//TODO: Show error message
-				$('#loading').hide();
+				$("#contextualAjaxSpinner").remove();
 			},
 			beforeSend : function() {
 				$(selectedElement).append("<img id='contextualAjaxSpinner' src='/static/images/small-loader.gif'/>");
-
 			},
 			complete : function() {
 				$("#contextualAjaxSpinner").remove();
@@ -30,26 +28,6 @@
 			}
 		});
 	}
-	
-	function bindContextMenu(span) {
-	    // Add context menu to this node:
-	    $(span).contextMenu({menu: "serverMenu"}, function(action, el, pos) {
-	      // The event was bound to the <span> tag, but the node object
-	      // is stored in the parent <li> tag
-	      var node = $.ui.dynatree.getNode(el);
-	      var selectedType = node.data.type;
-	      var url
-	      if (selectedType == 'instance') {
-	      	url = "/server/details/{{hostname}}/" + node.data.key + '/';
-	      }
-	      
-	      switch( action ) {
-	      	case "details":
-	      		getDetails(url, 'actual-resource-details');
-	      	break;
-	      }
-	    });
-	  };
 	
 	$(document).ready(function() {
 		$("#details-tree").dynatree({
@@ -81,7 +59,6 @@
 			},
 			onDeactivate : function(node) {
 				logMsg("onDeactivate(%o)", node);
-				$("#echoActive").text("-");
 			},
 			onQuerySelect : function(select, node) {
 				logMsg("onQuerySelect(%o, %o)", select, node);
@@ -90,7 +67,6 @@
 			},
 			onSelect : function(select, node) {
 				logMsg("onSelect(%o, %o)", node);
-				var s = node.tree.getSelectedNodes().join(", ");
 			},
 			onQueryExpand : function(expand, node) {
 				logMsg("onQueryExpand(%o, %o)", expand, node);
@@ -114,11 +90,19 @@
 				if (event.target.tagName == 'SPAN' && event.target.classList == 'dynatree-expander') {
 					//expand collpse
 				} else {
-					if (node.data.type == 'instance') {
-						
-						getDetails("/server/details/{{hostname}}/" + node.data.key + '/', 'actual-resource-details', event.target.parentNode);
-					}	
+					var selectedType = node.data.type;
+					var url = "/server/details/{{hostname}}/" + node.data.key;
+	      			if (selectedType == 'instance') {
+	      				url = url + '/instance/';
+	      			} else if (selectedType == 'datasources') {
+	      				url = url + '/datasources/';	
+	      			}
+					if (node.data.detailsEnabled == 'true') {
+						getDetails(url, 'actual-resource-details', event.target.parentNode);
+						return false;
+					}
 				}
+				return true;
 				// Close menu on click
 				//return false;
 			},
