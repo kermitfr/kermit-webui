@@ -1,0 +1,15 @@
+{% extends "widgets/base_widget.html" %}
+{% load i18n %}
+
+{% block widget-extra-title %}{{hostname}}{% endblock %}
+
+{% block widget-content %}
+<br/>
+<div id="summary">
+	<strong>{% trans 'Host Name'%}</strong>: {{server.hostname}}<br/>
+	<strong>{% trans 'OS'%}</strong>: {{server.os}}<br/>
+	<strong>{% trans 'Architecture'%}</strong>: {{server.architecture}}<br/>
+	<strong>{% trans 'FQDN'%}</strong>: {{server.fqdn}}<br/>
+	<strong>{% trans 'Online'%}</strong>: <img src="{{settings.STATIC_URL}}images/icons/{% if server.online %}online.png{% else %}offline.png{% endif %}" style="border: 0px; height: 15px;margin: 0px;float:none;"/><br/>
+</div>	
+{% endblock %}

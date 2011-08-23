@@ -33,11 +33,10 @@ class Actions(object):
     def refresh_dashboard(self):
         logger.info("Getting all Widgets from database")
         registry.reset_cache()
-        widgets_list = registry.get_widgets_dashboard()
-        for key, widgets in widgets_list.items():
-            for widget in widgets:
-                retrieved = registry.get_widget(widget['name'])
-                retrieved.db_reference = widget
+        widgets_list = registry.refresh_widgets()
+        for widget in widgets_list:
+            retrieved = registry.get_widget(widget['name'])
+            retrieved.db_reference = widget
                 
     def refresh_server_basic_info(self):
         logger.info("Calling Refresh Basic Info")

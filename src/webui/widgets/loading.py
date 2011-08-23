@@ -48,6 +48,11 @@ class WidgetCache(object):
                 col_widgets = Widget.objects.filter(column=i, enabled=True).order_by('order')
                 self.widgets_dashboard[str(i)] = col_widgets.values()
         return self.widgets_dashboard
+    
+    def refresh_widgets(self):
+        logger.info("Refreshing all database widgets in memory")
+        #By default just two column are supported
+        return Widget.objects.filter().values()
                 
     
     def check_widget_on_db(self, name):

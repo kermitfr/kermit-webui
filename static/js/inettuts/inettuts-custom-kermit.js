@@ -27,6 +27,13 @@ var iNettuts = {
                 collapsible: false,
                 editable: false,
                 refreshable: false
+            }, 
+            ServerDetails : {
+                movable: false,
+                removable: false,
+                collapsible: false,
+                editable: false,
+                refreshable: false
             }
         }
     },

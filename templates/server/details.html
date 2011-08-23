@@ -14,9 +14,10 @@
 <br/><br/>
 <div id="columns">
 	<ul id="column1" class="column">
-		{% widget "ServerDetails" hostname%}
+		{% widget "ServerDetails" hostname %}
 	</ul>
 	<ul id="column2" class="column">
+		{% widget "ServerSummary" hostname %}
 		{% widget "SelectedResourceDetails"%}	
 	</ul>
 </div>
