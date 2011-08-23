@@ -1,49 +1,45 @@
-{% load i18n %}
-
-<strong>{% trans 'OC4J Options'%}</strong>
-<table>
-	<thead>
-		<th>{% trans 'Option'%}</th>
-	</thead>
-	<tbody>
-		{% for opt in oc4j_options%}
+{% load i18n %} 
+<img src="{{static_url}}images/icons/app-settings.png" height="64px" style="float:left;"/>
+<div style="padding: 0px 0px 0px 70px;">
+	<strong>{% trans 'OC4J Options'%}</strong>
+	<table>
+		<thead>
+			<th>{% trans 'Option'%}</th>
+		</thead>
+		<tbody>
+			{% for opt in oc4j_options%}
 			<tr>
-				<td>
-					{{opt}}
-				</td>
+				<td> {{opt}} </td>
 			</tr>
-		{% endfor %}
-	</tbody>
-</table>
-<br/>
-<strong>{% trans 'Java Start Options'%}</strong>
-<table>
-	<thead>
-		<th>{% trans 'Option'%}</th>
-	</thead>
-	<tbody>
-		{% for opt in java_start_options%}
+			{% endfor %}
+		</tbody>
+	</table>
+	<br/>
+	<strong>{% trans 'Java Start Options'%}</strong>
+	<table>
+		<thead>
+			<th>{% trans 'Option'%}</th>
+		</thead>
+		<tbody>
+			{% for opt in java_start_options%}
 			<tr>
-				<td>
-					{{opt}}
-				</td>
+				<td> {{opt}} </td>
 			</tr>
-		{% endfor %}
-	</tbody>
-</table>
-<br/>
-<strong>{% trans 'Java Stop Options'%}</strong>
-<table>
-	<thead>
-		<th>{% trans 'Option'%}</th>
-	</thead>
-	<tbody>
-		{% for opt in java_stop_options%}
+			{% endfor %}
+		</tbody>
+	</table>
+	<br/>
+	<strong>{% trans 'Java Stop Options'%}</strong>
+	<table>
+		<thead>
+			<th>{% trans 'Option'%}</th>
+		</thead>
+		<tbody>
+			{% for opt in java_stop_options%}
 			<tr>
-				<td>
-					{{opt}}
-				</td>
+				<td> {{opt}} </td>
 			</tr>
-		{% endfor %}
-	</tbody>
-</table>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>

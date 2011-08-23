@@ -90,13 +90,7 @@
 				if (event.target.tagName == 'SPAN' && event.target.classList == 'dynatree-expander') {
 					//expand collpse
 				} else {
-					var selectedType = node.data.type;
-					var url = "/server/details/{{hostname}}/" + node.data.key;
-	      			if (selectedType == 'instance') {
-	      				url = url + '/instance/';
-	      			} else if (selectedType == 'datasources') {
-	      				url = url + '/datasources/';	
-	      			}
+					var url = "/server/details/{{hostname}}/" + node.data.instance + '/' + node.data.key + '/' + node.data.type + '/';
 					if (node.data.detailsEnabled == 'true') {
 						getDetails(url, 'actual-resource-details', event.target.parentNode);
 						return false;

@@ -5,6 +5,7 @@
 
 {% block widget-content %}
 <br/>
+<img src="{{settings.STATIC_URL}}images/icons/server.png" height="64px" style="float:left;"/>
 <div id="summary">
 	<strong>{% trans 'Host Name'%}</strong>: {{server.hostname}}<br/>
 	<strong>{% trans 'OS'%}</strong>: {{server.os}}<br/>

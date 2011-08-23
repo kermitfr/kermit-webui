@@ -1,0 +1,41 @@
+{% load i18n %}
+
+<img src="{{static_url}}images/icons/application.png" height="64px" style="float:left;"/>
+<div style="border: 1px solid #9A9A9A; padding: 10px 10px 10px 70px;">
+	<strong>{{instance_id}}</strong> <br/>
+	<strong>{% trans 'Server' %}</strong>: {{hostname}} <br/>
+	<strong>{% trans 'Application Name' %}</strong>: {{application.name}} <br/>
+	<strong>{% trans 'Application Version' %}</strong>: {{application.appliver.version}} <br/>
+	<strong>{% trans 'Application Date' %}</strong>: {{application.appliver.versionDate}} <br/>
+	<strong>{% trans 'Context' %}</strong>: {{application.root}} <br/>
+	<strong>{% trans 'Load On Startup' %}</strong>: {{application.load_on_startup}} <br/>
+</div>
+
+<br/>
+<table>
+	<thead>
+		<tr>
+			<th>{% trans 'Name' %}</th>
+			<th>{% trans 'Server' %}</th>
+			<th>{% trans 'Instance' %}</th>
+			<th>{% trans 'User' %}</th>
+			<th>{% trans 'Max-Connections' %}</th>
+			<th>{% trans 'Min-Connections' %}</th>
+			<th>{% trans 'Cached Statements' %}</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for datasource in application.poollist%}
+			<tr>
+				<td>{{datasource.name}}</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+<br/>
