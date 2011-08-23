@@ -1,5 +1,5 @@
 {% load i18n %} 
-<img src="{{static_url}}images/icons/datasource.png" height="64px" style="float:left;"/>
+<img src="{{static_url}}images/icons/datasources.png" height="64px" style="float:left;"/>
 <div style="padding: 0px 0px 0px 70px;">
 	<strong>{% trans 'Datasources' %}</strong>
 	<table>
@@ -15,6 +15,7 @@
 			</tr>
 		</thead>
 		<tbody>
+			{% for datasource in datasources%}
 			<tr>
 				<td>{{datasource.name}}</td>
 				<td>{{datasource.bddserver}}</td>
@@ -24,6 +25,7 @@
 				<td>{{datasource.min_connections}}</td>
 				<td>{{datasource.num_cached_statements}}</td>
 			</tr>
+			{% endfor %}
 		</tbody>
 	</table>
 </div>

@@ -41,7 +41,7 @@ def getDetailsTree(request, hostname):
             datasources = {'title': 'Datasources', 'isFolder':"true", "key":"datasources", "icon":"folder_database.png", "type":"datasources", "instance":instance['id'], "detailsEnabled":"true"}
             dss = []
             for datasource in instance['datasource']:
-                datasource = {'title':datasource['name'], "key":datasource['name'], "icon":"datasource.png", "type":"datasource", "instance":instance['id']}
+                datasource = {'title':datasource['name'], "key":datasource['name'], "icon":"datasource.png", "type":"datasource", "instance":instance['id'], "detailsEnabled":"true"}
                 dss.append(datasource)
             datasources['children'] = dss
             
@@ -78,9 +78,9 @@ def datasourceListInventory(request, hostname, instance_name, resource_name):
                 break 
         for datasource in instance['datasource']:
             convert_keys_names(datasource)
-        return render_to_response('server/datasource.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "datasources": instance['datasource']}, context_instance=RequestContext(request))
+        return render_to_response('server/datasources.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "datasources": instance['datasource']}, context_instance=RequestContext(request))
     else:
-        return render_to_response('server/datasource.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))
+        return render_to_response('server/datasources.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))
 
 
 def datasourceInventory(request, hostname, instance_name, resource_name):
@@ -91,9 +91,14 @@ def datasourceInventory(request, hostname, instance_name, resource_name):
             if server['id'] == instance_name:
                 instance = server
                 break 
-        for datasource in instance['datasource']:
-            convert_keys_names(datasource)
-        return render_to_response('server/datasource.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "datasources": instance['datasource']}, context_instance=RequestContext(request))
+        resource_name = resource_name.replace('_', '/')
+        datasource = None
+        for current in instance['datasource']:
+            if current['name'] == resource_name:
+                datasource = current
+                convert_keys_names(datasource)
+                break
+        return render_to_response('server/datasource.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "datasource": datasource}, context_instance=RequestContext(request))
     else:
         return render_to_response('server/datasource.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))
 
