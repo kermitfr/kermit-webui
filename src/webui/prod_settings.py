@@ -19,7 +19,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': SITE_ROOT + '/db/sqlite.db',   # Or path to database file if using sqlite3.
+        'NAME': SITE_ROOT + '/../db/sqlite.db',   # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -81,7 +81,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/var/www/kermit/',
+    '/var/www/kermit-webui/',
 
 )
 
@@ -117,7 +117,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative path
-    SITE_ROOT + '/templates'
+    SITE_ROOT + '/../templates'
 )
 
 INSTALLED_APPS = (
@@ -141,7 +141,7 @@ INSTALLED_APPS = (
 )
 
 FIXTURE_DIRS = (
-   '/etc/kermit/fixtures/',
+   '/etc/kermit-webui/fixtures/',
 )
 
 # A sample logging configuration. The only tangible logging

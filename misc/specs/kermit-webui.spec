@@ -17,6 +17,7 @@ Mcollective WebUI
 %setup -n %{name}
 
 %build
+python ./src/webui/manage.py syncdb --noinput
 
 %install
 %{__rm} -rf $RPM_BUILD_ROOT
@@ -29,14 +30,16 @@ Mcollective WebUI
 %{__mkdir} -p $RPM_BUILD_ROOT/var/www/%{name}/uploads
 
 %{__cp} -R ./src/* $RPM_BUILD_ROOT/usr/share/%{name}
+%{__cp} -Rf ./src/webui/prod_settings.py $RPM_BUILD_ROOT/usr/share/%{name}/webui/settings.py
+%{__cp} -R ./src/sqlite.db $RPM_BUILD_ROOT/usr/share/%{name}/db
+
 %{__cp} -R ./templates $RPM_BUILD_ROOT/usr/share/%{name}
 %{__cp} -R ./static $RPM_BUILD_ROOT/var/www/%{name}
 %{__cp} -R ./fixtures $RPM_BUILD_ROOT/etc/%{name}
-%{__cp} -R ./scripts $RPM_BUILD_ROOT/etc/%{name}
+%{__cp} -R ./misc/scripts $RPM_BUILD_ROOT/etc/%{name}
 %{__cp} -R ./README $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}
 %{__cp} ./misc/httpd.conf/kermit-webui.conf $RPM_BUILD_ROOT/etc/httpd/conf.d
 #%{__cp} -R ./misc/sql $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}
-#%{__cp} -R ./misc/sql/sqlite.dat $RPM_BUILD_ROOT/var/www/%{name}
 #%{__ln_s} -f ../../usr/share/%{name}/settings.py $RPM_BUILD_ROOT/etc/%{name}/
 
 
@@ -51,7 +54,9 @@ Mcollective WebUI
 
 %config /etc/httpd/conf.d/*
 #%config /usr/share/%{name}/settings.py
-%config /var/www/%{name}/sqlite.dat
+%config /usr/share/%{name}/db/sqlite.db
+%attr(0777,apache,apache) %dir /usr/share/%{name}/db
+%attr(0777,apache,apache) %dir /usr/share/%{name}/db/sqlite.db
 %attr(0750,apache,apache) %dir /var/www/%{name}/uploads
 
 %pre
