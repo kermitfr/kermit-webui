@@ -6,7 +6,7 @@ License: GPL
 Group: Applications/System
 URL: https://github.com/thinkfr/webui
 Source: %{name}-%{version}.tar.gz
-Requires: httpd, Django, python, mod_python, python-httplib2, python-simplejson
+Requires: httpd, Django, python, mod_wsgi, python-httplib2
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch: noarch
 
@@ -23,6 +23,7 @@ Mcollective WebUI
 %{__mkdir} -p $RPM_BUILD_ROOT/etc/httpd/conf.d
 %{__mkdir} -p $RPM_BUILD_ROOT/etc/%{name}
 %{__mkdir} -p $RPM_BUILD_ROOT/usr/share/%{name}
+%{__mkdir} -p $RPM_BUILD_ROOT/usr/share/%{name}/db
 %{__mkdir} -p $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}
 %{__mkdir} -p $RPM_BUILD_ROOT/var/www/%{name}
 %{__mkdir} -p $RPM_BUILD_ROOT/var/www/%{name}/uploads
@@ -31,8 +32,9 @@ Mcollective WebUI
 %{__cp} -R ./templates $RPM_BUILD_ROOT/usr/share/%{name}
 %{__cp} -R ./static $RPM_BUILD_ROOT/var/www/%{name}
 %{__cp} -R ./fixtures $RPM_BUILD_ROOT/etc/%{name}
+%{__cp} -R ./scripts $RPM_BUILD_ROOT/etc/%{name}
 %{__cp} -R ./README $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}
-%{__cp} ./misc/httpd.conf/%{name}.conf $RPM_BUILD_ROOT/etc/httpd/conf.d
+%{__cp} ./misc/httpd.conf/kermit-webui.conf $RPM_BUILD_ROOT/etc/httpd/conf.d
 #%{__cp} -R ./misc/sql $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}
 #%{__cp} -R ./misc/sql/sqlite.dat $RPM_BUILD_ROOT/var/www/%{name}
 #%{__ln_s} -f ../../usr/share/%{name}/settings.py $RPM_BUILD_ROOT/etc/%{name}/
