@@ -134,6 +134,7 @@ INSTALLED_APPS = (
     'webui.django_cron',
     'webui.widgets',
     'webui.defaultop',
+    'webui.agent',
     'webui.puppetclasses', 
     'webui.serverstatus',
     'webui.serverdetails',
@@ -179,7 +180,7 @@ LOGGING = {
         },
         'webui': {
             'handlers': ['console', 'mail_admins'],
-            'level': 'INFO',
+            'level': 'DEBUG',
         }
     }
 }

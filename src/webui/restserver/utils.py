@@ -5,28 +5,15 @@ Created on Aug 19, 2011
 '''
 from django.utils import simplejson as json
 from datetime import datetime
-from webui.serverstatus.models import Server, Agent
+from webui.serverstatus.models import Server
 from webui.puppetclasses.models import PuppetClass
 import logging
-import httplib2
-from django.conf import settings
 from webui.widgets.loading import registry
+from webui.agent.models import Agent
+from webui.agent.utils import update_agents_info
+from webui.restserver.communication import callRestServer
 
 logger = logging.getLogger(__name__)
-
-def callRestServer(filters, agent, action, args=None):
-    http = httplib2.Http()
-    url = settings.RUBY_REST_BASE_URL
-    url += filters + "/"
-    url += agent + "/"
-    url += action + "/"
-    if args:
-        url += args + "/"
-    logger.info('Calling RestServer on: ' + url)
-    response, content = http.request(url, "GET")
-    logger.info('Response: ' + str(response))
-    logger.info('Content: ' + str(content))
-    return response, content
 
 class Actions(object):
 
@@ -47,6 +34,13 @@ class Actions(object):
         logger.info("Calling Refresh Inventory")
         ops = Operations()
         ops.server_inventory()
+    
+    def update_agents(self):
+        logger.info("Calling Update Agents Info")
+        try: 
+            update_agents_info()
+        except Exception, err:
+            logger.error('ERROR: ' + str(err))
 
 class Operations(object):
     
@@ -114,7 +108,7 @@ class Operations(object):
             response, content = callRestServer('no-filter', 'a7xinventory', 'oasinv')
         except Exception, err:
             logger.error('ERROR: ' + str(err))
-            
+    
     def add_puppet_classes(self, server, puppet_classes):
         for current in puppet_classes:
             retrieved = PuppetClass.objects.filter(name=current)

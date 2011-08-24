@@ -1,16 +1,7 @@
 from django.db import models
 from webui.puppetclasses.models import PuppetClass
 from datetime import datetime
-
-class Agent(models.Model):
-    name = models.CharField(max_length=255)
-    enabled = models.BooleanField(default=True)
-    icon = models.CharField(max_length=255, null=True)
-    created_time = models.DateTimeField(default=datetime.now())
-    updated_time = models.DateTimeField(default=datetime.now())
-    
-    def __unicode__(self):
-        return self.name
+from webui.agent.models import Agent
 
 class Server(models.Model):
     hostname = models.CharField(max_length=255)

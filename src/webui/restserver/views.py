@@ -8,7 +8,8 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils import simplejson as json
 import logging
-from webui.restserver.utils import Actions, callRestServer
+from webui.restserver.utils import Actions
+from webui.restserver.communication import callRestServer
 
 logger = logging.getLogger(__name__)
 
