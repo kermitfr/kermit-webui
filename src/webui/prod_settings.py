@@ -188,7 +188,7 @@ BASE_URL=""
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_LINK = ""
 
-RUBY_REST_BASE_URL="http://localhost:4567/mcollective/"
+RUBY_REST_BASE_URL="http://127.0.0.1:4567/mcollective/"
 
 CRON_POLLING_FREQUENCY=60
 
