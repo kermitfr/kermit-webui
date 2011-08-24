@@ -137,8 +137,10 @@ class Operations(object):
         path = ''
         for i in range (0, 5):
             level_classes = PuppetClass.objects.filter(level=i).values_list('name', flat=True)
-            extracted_class = iter(set(puppet_classes).intersection(set(level_classes))).next()
-            if extracted_class:
-                path = path + '/' + extracted_class
+            intersection = set(puppet_classes).intersection(set(level_classes))
+            if intersection:
+                extracted_class = iter(intersection).next()
+                if extracted_class:
+                    path = path + '/' + extracted_class
         
         server.puppet_path=path

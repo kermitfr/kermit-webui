@@ -28,7 +28,7 @@ class QueryMethods(object):
         #We cannot use / inside rest url, so / was substituted by _
         #Here we revert this change to obtain a correct path
         logger.info("Looking for servers in path: " + path)
-        servers = Server.objects.filter(puppet_path=path)
+        servers = Server.objects.filter(puppet_path=path, deleted=False)
         for server in servers:
             serverdata = {"title":server.hostname, "url": "/server/details/"+server.hostname+"/", "key":server.hostname}
             data.append(serverdata)
