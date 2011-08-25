@@ -60,4 +60,3 @@ def update_info(agent):
                             
             else:
                 logger.warn("Agent " + agent.name + " as no DDL configured!!")
-    

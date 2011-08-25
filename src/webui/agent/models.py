@@ -1,5 +1,11 @@
 from django.db import models
 from datetime import datetime
+from django import forms
+
+type_mapping = {'CharField':forms.CharField(max_length=100), 'TextField': forms.CharField(widget=forms.Textarea),
+        'BooleanField':forms.BooleanField(required=False),
+        'URLField': forms.URLField(), 'EmailField': forms.EmailField()
+        }
 
 class Agent(models.Model):
     name = models.CharField(max_length=255)

@@ -1,0 +1,124 @@
+{% extends "widgets/base_widget.html" %}
+
+{% block widget-content %}
+<script>
+
+	function getExecutionForm(agent, action) {
+		url = '/agent/action/get_dialog_form/'+agent+'/'+action+'/';
+		$.ajax({
+			// The link we are accessing.
+			url : url,
+			// The type of request.
+			type : "get",
+			// The type of data that is getting returned.
+			dataType : "html",
+			error : function() {
+				//TODO: Show error message
+				//$('#loading').hide();
+				alert('error');
+			},
+			beforeSend : function() {
+				//$('#loading').show();
+			},
+			complete : function() {
+				//$('#loading').hide();
+			},
+			success : function(data) {
+				if (data!='None') {
+					$("#execution-dialog").html(data);
+					$("#execution-dialog").dialog({modal: true});
+					$("#execution-dialog").show();
+				} else {
+					callMcollective('/restapi/mcollective/no-filter/'+agent+'/'+action+'/', 'response-container'); 
+				}
+				
+			}
+		});
+	}
+
+	$(document).ready(function() {
+		$("#execution-dialog").hide();
+		$("#agentstree").dynatree({
+			title : "Agents Installed",
+			fx : {
+				height : "toggle",
+				duration : 200
+			},
+			autoFocus : false, // Set focus to first child, when expanding or lazy-loading.
+			onCreate: function(node, span){
+				bindContextMenu(span);
+      		},
+			initAjax : {
+				url : "/agent/action/get_action_tree/",
+				data : {
+					mode : "funnyMode"
+				}
+			},
+
+			onQueryActivate : function(activate, node) {
+				
+				//        return false;
+			},
+			onActivate : function(node) {
+				
+			},
+			onDeactivate : function(node) {
+				logMsg("onDeactivate(%o)", node);
+			},
+			onQuerySelect : function(select, node) {
+				logMsg("onQuerySelect(%o, %o)", select, node);
+				if(node.data.isFolder)
+					return false;
+			},
+			onSelect : function(select, node) {
+				logMsg("onSelect(%o, %o)", node);
+				var s = node.tree.getSelectedNodes().join(", ");
+				$("#echoSelected").text(s);
+			},
+			onQueryExpand : function(expand, node) {
+				logMsg("onQueryExpand(%o, %o)", expand, node);
+				//        return false;
+			},
+			onExpand : function(expand, node) {
+				logMsg("onExpand(%o, %o)", expand, node);
+			},
+			onFocus : function(node) {
+				logMsg("onFocus(%o)", node);
+				// Auto-activate focused node after 2 seconds
+				node.scheduleAction("activate", 2000);
+			},
+			onBlur : function(node) {
+				logMsg("onBlur(%o)", node);
+				$("#echoFocused").text("-");
+			},
+			onClick : function(node, event) {
+				logMsg("onClick(%o, %o)", node, event);
+				if (node.data.isFolder == false) {
+					getExecutionForm(node.data.agent, node.data.key);	
+				}
+			},
+			onDblClick : function(node, event) {
+				logMsg("onDblClick(%o, %o)", node, event);
+				node.toggleSelect();
+			},
+			onKeydown : function(node, event) {
+				logMsg("onKeydown(%o, %o)", node, event);
+				switch( event.which ) {
+					case 32:
+						// [space]
+						node.toggleSelect();
+						return false;
+				}
+			},
+			onKeypress : function(node, event) {
+				logMsg("onKeypress(%o, %o)", node, event);
+			}
+		});
+	});
+
+</script>
+
+<div id="execution-dialog"></div>
+
+<div id="agentstree"></div>
+{% endblock %} 
