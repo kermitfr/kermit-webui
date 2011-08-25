@@ -1,0 +1,12 @@
+
+<h3>Status of service {{arguments.service}}</h3>
+{% for resp in content %}
+	<span>
+		<img src="{{settings.STATIC_URL}}images/icons/Platform_up_16.png" style="margin-right: 10px"/><strong>{{resp.sender}}</strong>: 
+		{% if resp.data.status == 'running'%}
+			<img src="{{settings.STATIC_URL}}images/icons/online.png"/>&nbsp{{resp.data.status}}
+		{% else %}
+			<img src="{{settings.STATIC_URL}}images/icons/offline.png"/>&nbsp{{resp.data.status}}
+		{% endif %}
+	</span><br/>
+{% endfor %}

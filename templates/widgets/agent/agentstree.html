@@ -26,7 +26,7 @@
 			success : function(data) {
 				if (data!='None') {
 					$("#execution-dialog").html(data);
-					$("#execution-dialog").dialog({modal: true});
+					$("#execution-dialog").dialog({modal: true, title: agent+'-'+action+' execution...', minHeight: 200, minWidth: 500});
 					$("#execution-dialog").show();
 				} else {
 					callMcollective('/restapi/mcollective/no-filter/'+agent+'/'+action+'/', 'response-container'); 

@@ -2,13 +2,12 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.utils import simplejson as json
 import logging
 from webui.agent.models import Agent, Action
-from django.template.loader import render_to_string
-from django import forms
+from django.template.loader import render_to_string, get_template
 from webui.agent.form import create_action_form
 from django.template.context import RequestContext
-import traceback
-import sys
 from webui.restserver.communication import callRestServer
+from django.template.base import TemplateDoesNotExist
+from webui import settings
 
 logger = logging.getLogger(__name__)
 
@@ -85,7 +84,14 @@ def execute_action_form(request, agent, action, xhr=None):
                 response, content = callRestServer("no-filter", agent, action, arguments)
                 if response.status == 200:
                     jsonObj = json.loads(content)
-                    rdict.update({'response': jsonObj})
+                    try:
+                        template_name = 'agents/'+agent+'/'+action+'.html'
+                        get_template(template_name)
+                        rendered_template = render_to_string(template_name, {'settings':settings, 'content': jsonObj, 'agent': agent, 'action': action, 'arguments':form.cleaned_data})
+                        rdict.update({'response': rendered_template, 'type':'html'})
+                    except TemplateDoesNotExist, e:
+                        logger.debug('No template found for ' + agent + ' - ' + action + '! Using default JSON viewer')
+                        rdict.update({'response': jsonObj, 'type':'json'})
                 
             # Make a json whatsit to send back.
             json_data = json.dumps(rdict, ensure_ascii=False)
