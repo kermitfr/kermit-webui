@@ -8,17 +8,18 @@ from webui.platforms.utils import convert_keys_names
 logger = logging.getLogger(__name__)
 
 
-def instanceInventory(request, hostname, instance_name, resource_name):
+def instanceInventory(request, hostname, resource_name):
     server_info = read_server_info(hostname)
     if server_info:
-        instance = None 
-        for server in server_info:
-            if server['id'] == instance_name:
-                instance = server
-                break 
-        return render_to_response('platforms/oc4j/instance.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "java_stop_options":instance['java-stop-options'], "java_start_options":instance['java-start-options'], "oc4j_options":instance['oc4j-options'], "hostname": hostname}, context_instance=RequestContext(request))
+        selected_instance = None
+        for instance in server_info["instances"]:
+            if instance['name'] == resource_name:
+                selected_instance = instance
+                break
+        convert_keys_names(selected_instance)
+        return render_to_response('platforms/weblogic/instance.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL,"hostname":hostname, "instance": selected_instance}, context_instance=RequestContext(request))
     else:
-        return render_to_response('platforms/oc4j/instance.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))
+        return render_to_response('platforms/weblogic/instance.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))
 
 
 def datasourceListInventory(request, hostname, instance_name, resource_name):
@@ -73,3 +74,23 @@ def applicationInventory(request, hostname, instance_name, resource_name):
         return render_to_response('platforms/oc4j/application.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))
 
 
+def consoleInventory(request, hostname, resource_name):
+    server_info = read_server_info(hostname)
+    if server_info:
+        db_console = server_info["console"]
+        convert_keys_names(db_console)
+        return render_to_response('platforms/weblogic/console.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL,"hostname":hostname, "console": db_console}, context_instance=RequestContext(request))
+    else:
+        return render_to_response('platforms/weblogic/console.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))
+
+def nodeManagerInventory(request, hostname, resource_name):
+    server_info = read_server_info(hostname)
+    if server_info:
+        #TODO: Modify and add managing of more than one nodemanager
+        db_nodemanager = server_info["nodemanagers"][0]
+        convert_keys_names(db_nodemanager)
+        for nm in db_nodemanager["node_manager"]:
+            convert_keys_names(nm)
+        return render_to_response('platforms/weblogic/nodemanager.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL,"hostname":hostname, "nodemanager": db_nodemanager}, context_instance=RequestContext(request))
+    else:
+        return render_to_response('platforms/weblogic/nodemanager.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))

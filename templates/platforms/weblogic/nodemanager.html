@@ -1,0 +1,13 @@
+{% load i18n %}
+
+<img src="{{static_url}}images/icons/application.png" height="64px" style="float:left;"/>
+<div style="border: 1px solid #9A9A9A; padding: 10px 10px 10px 70px;">
+	<strong>{% trans 'Node Manager Name' %}</strong>: {{nodemanager.name}} <br/>
+	{% for man in nodemanager.node_manager%}
+	<strong>{% trans 'Listen Address' %}</strong>: {{man.listen_address}} <br/>
+	<strong>{% trans 'Listen Port' %}</strong>: {{man.listen_port}} <br/>
+	<strong>{% trans 'NM-Type' %}</strong>: {{man.nm_type}} <br/>
+	<br/>
+	{% endfor%}
+</div>
+<br/>

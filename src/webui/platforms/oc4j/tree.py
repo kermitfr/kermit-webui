@@ -1,7 +1,6 @@
 from webui.platforms.oc4j.communication import read_server_info
 
 import logging
-from django.http import HttpResponse
 
 logger = logging.getLogger(__name__)
 
@@ -11,7 +10,7 @@ def getDetailsTree(hostname):
     base_url = '/platform/oc4j/details/'
     #Configuring Instances
     if server_info:
-        content = {"isFolder": "true", "title": 'OC4J', "key":'OC4J', "icon":"server.png"}
+        content = {"isFolder": "true", "title": 'OC4J', "key":'OC4J', "icon":"oracle_logo.png"}
         logger.debug('Configuring Instances')
         db_instances = {'title': 'Instances', 'isFolder':"true", "key":"instance", "icon":"app_server.png", "type":"instances"}
         dbs = []
