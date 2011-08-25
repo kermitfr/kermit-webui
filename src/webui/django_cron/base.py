@@ -55,7 +55,6 @@ class CronScheduler(object):
 		"""
 		Register the given Job with the scheduler class
 		"""
-		
 		job_instance = job_class()
 		
 		if not isinstance(job_instance, Job):

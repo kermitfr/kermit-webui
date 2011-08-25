@@ -90,13 +90,8 @@
 				if (event.target.tagName == 'SPAN' && event.target.classList == 'dynatree-expander') {
 					//expand collpse
 				} else {
-					element_key = node.data.key;
-					if (node.data.key.indexOf('/')!=-1) {
-						element_key = element_key.replace('/', '_');
-					}
-					var url = "/server/details/{{hostname}}/" + node.data.instance + '/' + element_key + '/' + node.data.type + '/';
 					if (node.data.detailsEnabled == 'true') {
-						getDetails(url, 'actual-resource-details', event.target.parentNode);
+						getDetails(node.data.url, 'actual-resource-details', event.target.parentNode);
 						return false;
 					}
 				}

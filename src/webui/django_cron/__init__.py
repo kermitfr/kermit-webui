@@ -21,7 +21,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
 from base import Job, cronScheduler
-from webui.django_cron.models import Cron
+from models import Cron
+import logging
+
+logger = logging.getLogger(__name__)
 
 def autodiscover():
 	"""
@@ -62,12 +65,40 @@ def autodiscover():
 		# its admin.py doesn't exist
 		try:
 			imp.find_module('cron', app_path)
+			# Step 3: import the app's cron file. If this has errors we want them
+			# to bubble up.
+			__import__("%s.cron" % app)
 		except ImportError:
-			continue
+			logger.debug('Cannot find cron in %s' % app) 
 
-		# Step 3: import the app's cron file. If this has errors we want them
-		# to bubble up.
-		__import__("%s.cron" % app)
+		# Step 4: Verifying for subapps cron
+				
+		try:
+			fp, pathname, description = imp.find_module('settings', app_path)
+			mod = imp.load_module('settings', fp, pathname, description)
+			if mod.SUB_APPS:
+				logger.debug('Executing subapps Cron inventory for %s' % app)
+				for sub in mod.SUB_APPS:
+					sub_app = app + '.' + sub
+					try:
+						sub_app_path = __import__(sub_app, {}, {}, [sub_app.split('.')[-1]]).__path__
+					except AttributeError:
+						continue
+					# Step 2: use imp.find_module to find the app's admin.py. For some
+					# reason imp.find_module raises ImportError if the app can't be found
+					# but doesn't actually try to import the module. So skip this app if
+					# its admin.py doesn't exist
+					try:
+						imp.find_module('cron', sub_app_path)
+					except ImportError:
+						continue
+					
+					# Step 3: import the app's cron file. If this has errors we want them
+					# to bubble up.
+					__import__("%s.cron" % sub_app)
+
+		except:
+			logger.debug('No subapp module found for ' + app)
 		
-	# Step 4: once we find all the cron jobs, start the cronScheduler
+	# Step 5: once we find all the cron jobs, start the cronScheduler
 	cronScheduler.execute()

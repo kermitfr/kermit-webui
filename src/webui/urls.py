@@ -11,6 +11,7 @@ import django_cron
 django_cron.autodiscover()
 
 
+
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'webui.views.home', name='home'),
@@ -28,5 +29,6 @@ urlpatterns = patterns('',
     (r'^puppetclasses/', include('webui.puppetclasses.urls')),
     (r'^agent/', include('webui.agent.urls')),
     (r'^index/(.*)', include('webui.index.urls')),
+    (r'^platform/', include('webui.platforms.urls')),
     (r'', include('webui.index.urls')),
 )
