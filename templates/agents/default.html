@@ -1,7 +1,12 @@
 <h3>Response from {{agent}} - {{action}}</h3>
 {% for resp in content %}
 	<div style="padding: 5px">
-		<img src="{{settings.STATIC_URL}}images/icons/Platform_up_16.png" style="margin-right: 10px"/><strong>{{resp.sender}}</strong>: 
+		<img src="{{settings.STATIC_URL}}images/icons/Platform_up_16.png" style="margin-right: 10px"/><strong>{{resp.sender}}</strong>
+		{% if resp.statuscode == 0 %}
+			<img src="{{settings.STATIC_URL}}images/icons/ok.png" style="height: 16px;"/>
+		{% else %}
+			<img src="{{settings.STATIC_URL}}images/icons/ko.png" style="height: 16px;"/> {{resp.statusmsg}}
+		{% endif %} 
 		<div class="infohighlight">
 		{% for content,data in resp.data.items %}
 			{% for key,value in outputs.items %}
