@@ -4,7 +4,7 @@ Version: 0.0.1
 Release: 1
 License: GPL
 Group: Applications/System
-URL: https://github.com/thinkfr/webui
+URL: https://github.com/thinkfr/kermit-webui
 Source: %{name}-%{version}.tar.gz
 Requires: httpd, Django, python, mod_wsgi, python-httplib2
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
