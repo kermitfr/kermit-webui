@@ -98,4 +98,4 @@ rpms: build manpage sdist
 	--define "_sourcedir  %{_topdir}" \
 	--define "vendor Think" \
 	-ba misc/specs/kermit-webui.spec
-	echo $(NEW_RELEASE) > version
+	echo $(NEWRELEASE) > version
