@@ -1,13 +1,13 @@
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.utils import simplejson as json
 import logging
-from webui.agent.models import Agent, Action
-from django.template.loader import render_to_string, get_template
+from webui.agent.models import Agent
+from django.template.loader import render_to_string
 from webui.agent.form import create_action_form
 from django.template.context import RequestContext
 from webui.restserver.communication import callRestServer
-from django.template.base import TemplateDoesNotExist
-from webui import settings
+from webui.restserver.template import render_agent_template, get_action_inputs
+
 
 logger = logging.getLogger(__name__)
 
@@ -83,32 +83,8 @@ def execute_action_form(request, agent, action, xhr=None):
                 logger.debug("Arguments for MCollective call " + arguments)
                 response, content = callRestServer("no-filter", agent, action, arguments)
                 if response.status == 200:
-                    jsonObj = json.loads(content)
-                    try:
-                        template_name = 'agents/'+agent+'/'+action+'.html'
-                        get_template(template_name)
-                        rendered_template = render_to_string(template_name, {'settings':settings, 'content': jsonObj, 'agent': agent, 'action': action, 'arguments':form.cleaned_data})
-                        rdict.update({'response': rendered_template, 'type':'html'})
-                    except TemplateDoesNotExist, e:
-                        try:
-                            logger.debug('No template found for ' + agent + ' - ' + action + '! Using default agent template')
-                            template_name = 'agents/default.html'
-                            get_template(template_name)
-                            logger.debug('Getting DDL output information')
-                            outputs = get_action_outputs(agent, action)
-                            if outputs:
-                                rendered_template = render_to_string(template_name, {'settings':settings, 'content': jsonObj, 'outputs':outputs,'agent': agent, 'action': action, 'arguments':form.cleaned_data})
-                                rdict.update({'response': rendered_template, 'type':'html'})
-                            else:
-                                logger.debug('No DDL outputs found for ' + agent + ' ' + action + '. Send default JSON')
-                                rdict.update({'response': jsonObj, 'type':'json'})
-                        except:
-                            logger.debug('No template found for ' + agent + ' - ' + action + '! Using default JSON viewer')
-                            rdict.update({'response': jsonObj, 'type':'json'})
-                
-            # Make a json whatsit to send back.
-            json_data = json.dumps(rdict, ensure_ascii=False)
-
+                    json_data = render_agent_template(rdict, content, form.cleaned_data, agent, action)
+             
             # And send it off.
             return HttpResponse(json_data, mimetype='application/javascript')
         # It's a normal submit - non ajax.
@@ -120,26 +96,3 @@ def execute_action_form(request, agent, action, xhr=None):
         # It's not post so make a new form
         logger.warn("Cannot access this page using GET")
         raise Http404
-   
-   
-def get_action_inputs(agent, action):
-    agent_db = Agent.objects.get(name=agent)
-    if agent_db:
-        action_db = Action.objects.get(name=action, agent=agent_db)
-        if action_db:
-                if len(action_db.inputs.values()) > 0:
-                    return action_db.inputs.values()
-    return None
-
-def get_action_outputs(agent, action):
-    agent_db = Agent.objects.get(name=agent)
-    if agent_db:
-        action_db = Action.objects.get(name=action, agent=agent_db)
-        if action_db:
-                if len(action_db.outputs.values()) > 0:
-                    output_dict = {}
-                    for out in action_db.outputs.values():
-                        output_dict[out['name']] = out['display_as']
-                        
-                    return output_dict
-    return None

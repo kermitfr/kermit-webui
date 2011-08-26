@@ -14,7 +14,7 @@
 
 {% block content %}
 <script type="text/javascript">
-	function sendRequestToMcollective(url, destination, type) {
+	function sendRequestToMcollective(url, destination) {
 		$("#" + destination).empty();
 
 		$.ajax({
@@ -23,7 +23,7 @@
 			// The type of request.
 			type : "get",
 			// The type of data that is getting returned.
-			dataType : "html",
+			dataType : "json",
 			error : function() {
 				//TODO: Show error message
 				$('#loading').hide();
@@ -35,30 +35,31 @@
 				$('#loading').hide();
 			},
 			success : function(data) {
-				if(type == 'json') {
-					var jsonObj = jQuery.parseJSON(data);
-					$.each(jsonObj, function(i, resp) {
+				$("#" + destination).empty();
+				if (data.type == 'json') {
+					for (i in data.response) {
+						resp = data.response[i];
 						content = '<strong>' + resp.sender + '</strong>';
 						content += '<ul>';
 						content += '<li> Status Code: ' + resp.statuscode + '</li>';
 						content += '<li> Status Message: ' + resp.statusmsg + '</li>';
 						content += '<li> Data: ' + JSON.stringify(resp.data) + '</li>';
 						content += '</ul>';
-						$(content).appendTo("#" + destination);
-					});
-				} else {
-					$("#" + destination).html(data);
+						$(content).appendTo("#response-container");	
+					}
+				} else if (data.type == 'html') {
+					$("#" + destination).html(data.response);	
 				}
 			}
 		});
 	}
 
 	function callMcollective(url, destination) {
-		sendRequestToMcollective(url, destination, 'json')
+		sendRequestToMcollective(url, destination)
 	}
 
 	function callMcollectiveWithTemplateRsp(url, destination) {
-		sendRequestToMcollective(url, destination, 'html')
+		sendRequestToMcollective(url, destination)
 	}
 </script>
 <br/>

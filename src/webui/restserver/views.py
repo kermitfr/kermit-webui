@@ -10,13 +10,15 @@ from django.utils import simplejson as json
 import logging
 from webui.restserver.utils import Actions
 from webui.restserver.communication import callRestServer
+from webui.restserver.template import render_agent_template
 
 logger = logging.getLogger(__name__)
 
 def get(request, filters, agent, action, args=None):
     response, content = callRestServer(filters, agent, action, args)
     if response.status == 200:
-        return HttpResponse(content, mimetype="application/json")
+        json_data = render_agent_template({}, content, {}, agent, action)
+        return HttpResponse(json_data, mimetype="application/json")
     return response
 
 def getWithTemplate(request, template, filters, agent, action, args=None):
