@@ -83,7 +83,7 @@ def execute_action_form(request, agent, action, xhr=None):
                 logger.debug("Arguments for MCollective call " + arguments)
                 response, content = callRestServer("no-filter", agent, action, arguments)
                 if response.status == 200:
-                    json_data = render_agent_template(rdict, content, form.cleaned_data, agent, action)
+                    json_data = render_agent_template(request, rdict, content, form.cleaned_data, agent, action)
              
             # And send it off.
             return HttpResponse(json_data, mimetype='application/javascript')

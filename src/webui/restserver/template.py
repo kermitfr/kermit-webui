@@ -10,15 +10,16 @@ from django.template.loader import render_to_string, get_template
 from django.utils import simplejson as json
 import logging
 from webui.agent.models import Agent, Action
+from django.template.context import RequestContext
 
 logger = logging.getLogger(__name__)
 
-def render_agent_template(resp_dict, content, form_data, agent, action):
+def render_agent_template(request, resp_dict, content, form_data, agent, action):
     jsonObj = json.loads(content)
     try:
         template_name = 'agents/'+agent+'/'+action+'.html'
         get_template(template_name)
-        rendered_template = render_to_string(template_name, {'settings':settings, 'content': jsonObj, 'agent': agent, 'action': action, 'arguments':form_data})
+        rendered_template = render_to_string(template_name, {'settings':settings, 'content': jsonObj, 'agent': agent, 'action': action, 'arguments':form_data, 'page_context': RequestContext( request )})
         resp_dict.update({'response': rendered_template, 'type':'html'})
     except TemplateDoesNotExist, e:
         try:
@@ -28,7 +29,7 @@ def render_agent_template(resp_dict, content, form_data, agent, action):
             logger.debug('Getting DDL output information')
             outputs = get_action_outputs(agent, action)
             if outputs:
-                rendered_template = render_to_string(template_name, {'settings':settings, 'content': jsonObj, 'outputs':outputs,'agent': agent, 'action': action, 'arguments':form_data})
+                rendered_template = render_to_string(template_name, {'settings':settings, 'content': jsonObj, 'outputs':outputs,'agent': agent, 'action': action, 'arguments':form_data, 'page_context': RequestContext( request )})
                 resp_dict.update({'response': rendered_template, 'type':'html'})
             else:
                 logger.debug('No DDL outputs found for ' + agent + ' ' + action + '. Send default JSON')

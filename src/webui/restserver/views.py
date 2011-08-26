@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 def get(request, filters, agent, action, args=None):
     response, content = callRestServer(filters, agent, action, args)
     if response.status == 200:
-        json_data = render_agent_template({}, content, {}, agent, action)
+        json_data = render_agent_template(request, {}, content, {}, agent, action)
         return HttpResponse(json_data, mimetype="application/json")
     return response
 

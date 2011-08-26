@@ -1,0 +1,80 @@
+{% load i18n mkrange split %}
+
+{% for c in content %}
+	<img src="{{settings.STATIC_URL}}images/icons/Platform_up_16.png" style="margin-right: 10px; margin-top: 10px;"/><strong>{{c.sender}}</strong>
+	<br/><br/>
+	<img class="introicon" src="{{settings.STATIC_URL}}images/icons/node-manager.png"/>
+	<div class="infohighlight">
+		<fieldset class="infohighlight">
+		<legend><b>{% trans 'MCollective Details'%}</b></legend>
+			<strong>{% trans 'Main Collective' %}</strong>: {{c.data.main_collective}} <br/>
+			<strong>{% trans 'All Collectives' %}</strong>: {{c.data.listen_address}} <br/>
+			<strong>{% trans 'Version' %}</strong>: {{c.data.version}} <br/>
+			<strong>{% trans 'Agents' %}</strong>: {{c.data.agents}} <br/>
+		</fieldset>
+		<fieldset class="infohighlight">
+		<legend><b>{% trans 'Server Details'%}</b></legend>
+			{% if c.data.facts.type == 'Notebook'%}
+				<img class="introicon" src="{{settings.STATIC_URL}}images/icons/notebook.png"/>
+			{% else %}
+				<img class="introicon" src="{{settings.STATIC_URL}}images/icons/server.png"/>
+			{% endif %}
+			<div class="info">
+				<strong>{% trans 'Processors count' %}</strong>: {{c.data.facts.processorcount}}<br/>
+				<ul>
+					<!-- TODO: Change with something dynamic -->
+					{% if c.data.facts.processor0%}
+						<li>{{c.data.facts.processor0}}</li>
+					{% endif %}
+					{% if c.data.facts.processor1%}
+						<li>{{c.data.facts.processor1}}</li>
+					{% endif %}
+					{% if c.data.facts.processor2%}
+						<li>{{c.data.facts.processor2}}</li>
+					{% endif %}
+					{% if c.data.facts.processor3%}
+						<li>{{c.data.facts.processor3}}</li>
+					{% endif %}
+				</ul>
+				<strong>{% trans 'Manufacturer' %}</strong>: {{c.data.facts.manufacturer}} <br/>
+				<strong>{% trans 'Product Name' %}</strong>: {{c.data.facts.productname}} <br/>
+				<strong>{% trans 'Serial Number' %}</strong>: {{c.data.facts.serialnumber}} <br/>
+				<strong>{% trans 'Hardware Model' %}</strong>: {{c.data.facts.hardwaremodel}} <br/>
+				<strong>{% trans 'Uptime' %}</strong>: {{c.data.facts.uptime}} <br/>
+			</div>
+		</fieldset>
+		<fieldset class="infohighlight">
+		<legend><b>{% trans 'Memory Details'%}</b></legend>
+			<img class="introicon" src="{{settings.STATIC_URL}}images/icons/memory.png"/>
+			<div class="info">
+				<strong>{% trans 'Total Memory' %}</strong>: {{c.data.facts.memorysize}}<br/>
+				<strong>{% trans 'Free Memory' %}</strong>: {{c.data.facts.memoryfree}} <br/>
+				<strong>{% trans 'Total Swap' %}</strong>: {{c.data.facts.swapsize}} <br/>
+				<strong>{% trans 'Free Swap' %}</strong>: {{c.data.facts.swapfree}} <br/>
+			</div>
+		</fieldset>
+		<fieldset class="infohighlight">
+		<legend><b>{% trans 'Operating System Details'%}</b></legend>
+			<img class="introicon" src="{{settings.STATIC_URL}}images/icons/operating_system.png"/>
+			<div class="info">
+				<strong>{% trans 'OS' %}</strong>: {{c.data.facts.lsbdistdescription}}<br/>
+				<strong>{% trans 'Architecture' %}</strong>: {{c.data.facts.architecture}}<br/>
+				<strong>{% trans 'Kernel' %}</strong>: {{c.data.facts.kernel}} <br/>
+				<strong>{% trans 'Kernel Release' %}</strong>: {{c.data.facts.kernelrelease}} <br/>
+				<strong>{% trans 'Kernel Major Version' %}</strong>: {{c.data.facts.kernelmajversion}} <br/>
+				<strong>{% trans 'Kernel Version' %}</strong>: {{c.data.facts.kernelversion}} <br/>
+			</div>
+		</fieldset>
+		<fieldset class="infohighlight">
+		<legend><b>{% trans 'Network'%}</b></legend>
+			<img class="introicon" src="{{settings.STATIC_URL}}images/icons/network.png"/>
+			<div class="info">
+				<strong>{% trans 'Hostname' %}</strong>: {{c.data.facts.hostname}}<br/>
+				<strong>{% trans 'Domain' %}</strong>: {{c.data.facts.domain}}<br/>
+				<strong>{% trans 'Interfaces' %}</strong>: {{c.data.facts.interfaces}} <br/>
+			</div>
+		</fieldset>
+	</div>
+	{% endfor %}
+<br/>
+

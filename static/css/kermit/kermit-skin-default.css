@@ -1913,5 +1913,11 @@ div.infohighlight {
 }
 
 div.info {
-	padding: 10px 10px 10px 70px;
+	padding: 10px 10px 10px 80px;
+}
+
+fieldset.infohighlight {
+	border: 1px solid #dfdfdf; 
+	padding: 10px;
+	margin-top: 10px;
 }

@@ -54,3 +54,16 @@ def nodeManagerInventory(request, hostname, resource_name):
         return render_to_response('platforms/weblogic/nodemanager.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL,"hostname":hostname, "nodemanager": db_nodemanager}, context_instance=RequestContext(request))
     else:
         return render_to_response('platforms/weblogic/nodemanager.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))
+
+def applicationInventory(request, hostname, resource_name):
+    server_info = read_server_info(hostname)
+    if server_info:
+        selected_app = None
+        for app in server_info["applications"]:
+            if app['name'] == resource_name:
+                selected_app = app
+                break
+        convert_keys_names(selected_app)
+        return render_to_response('platforms/weblogic/application.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL,"hostname":hostname, "application": selected_app}, context_instance=RequestContext(request))
+    else:
+        return render_to_response('platforms/weblogic/application.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))

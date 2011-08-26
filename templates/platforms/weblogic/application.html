@@ -1,0 +1,9 @@
+{% load i18n %}
+
+<img class="introicon" src="{{static_url}}images/icons/application.png"/>
+<div class="infohighlight">
+	<strong>{% trans 'Application Name' %}</strong>: {{application.name}} <br/>
+	<strong>{% trans 'Type' %}</strong>: {{application.module_type}} <br/>
+	<strong>{% trans 'Source Path' %}</strong>: {{application.source_path}} <br/>
+</div>
+<br/>
