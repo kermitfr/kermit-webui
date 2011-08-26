@@ -13,15 +13,15 @@ def getDetailsTree(hostname):
         children = []
         logger.debug('Configuring Console')
         db_console = server_info["console"]
-        console = {'title':db_console['name'], "key":db_console['name'], "icon":"datasource.png", "type":"console", "instance":db_console['name'],"detailsEnabled":"true", 'url': reverse('weblogic_console_details', kwargs={'hostname':hostname, 'resource_name':db_console['name']})}
+        console = {'title':db_console['name'], "key":db_console['name'], "icon":"console.png", "type":"console", "instance":db_console['name'],"detailsEnabled":"true", 'url': reverse('weblogic_console_details', kwargs={'hostname':hostname, 'resource_name':db_console['name']})}
         children.append(console)
         content['children'] = children 
         
         logger.debug('Configuring Node Managers')
-        db_nodemanagers = {'title': 'Node Managers', 'isFolder':"true", "key":"nodemanagers", "icon":"folder_database.png", "type":"nodemanagers"}
+        db_nodemanagers = {'title': 'Node Managers', 'isFolder':"true", "key":"nodemanagers", "icon":"node-manager.png", "type":"nodemanagers"}
         nodemanagers = []
         for nodemanager in server_info['nodemanagers']:
-            db = {'title':nodemanager['name'], "key":nodemanager['name'], "icon":"datasource.png", "type":"nodemanager", "instance":nodemanager['name'],"detailsEnabled":"true", 'url': reverse('weblogic_nodemanager_details', kwargs={'hostname':hostname, 'resource_name':nodemanager['name']})}
+            db = {'title':nodemanager['name'], "key":nodemanager['name'], "icon":"manager.png", "type":"nodemanager", "instance":nodemanager['name'],"detailsEnabled":"true", 'url': reverse('weblogic_nodemanager_details', kwargs={'hostname':hostname, 'resource_name':nodemanager['name']})}
             nodemanagers.append(db)
         db_nodemanagers['children'] = nodemanagers
         children.append(db_nodemanagers)

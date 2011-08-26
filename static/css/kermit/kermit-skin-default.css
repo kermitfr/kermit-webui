@@ -1858,3 +1858,60 @@ tbody th:first-child, tbody td:first-child {
 tbody tr:last-child td, tbody tr:last-child th {
     border-bottom: 0;
 }
+
+/* Tables for server details */
+table.server-details {
+    border-collapse: collapse;
+    font-family: "Lucida Sans Unicode","Lucida Grande",Sans-Serif;
+    font-size: 12px;
+    text-align: left;
+}
+
+table.server-details thead th.rounded-init {
+    background: url("/static/images/left.png") no-repeat scroll left -1px #B9C9FE;
+}
+
+table.server-details thead th.rounded-end {
+    background: url("/static/images/right.png") no-repeat scroll right -1px #B9C9FE;
+}
+
+table.server-details th {
+    background: none repeat scroll 0 0 #B9C9FE;
+    color: #003399;
+    font-size: 13px;
+    font-weight: normal;
+    padding: 8px;
+}
+
+table.server-details td {
+    background: none repeat scroll 0 0 #E8EDFF;
+    border-top: 1px solid #FFFFFF;
+    color: #666699;
+    padding: 8px;
+}
+
+/* Css to display commands/properties */
+div.codestyle {
+  background: #000;
+  border: 3px groove #ccc;
+  color: #ccc;
+  display: block;
+  padding: 5px;
+  width: auto;
+}
+
+/*Intro Icon Style */
+img.introicon {
+	float:left;
+	padding: 5px;
+	height: 64px;
+}
+
+div.infohighlight {
+	border: 1px solid #dfdfdf; 
+	padding: 10px 10px 10px 70px;
+}
+
+div.info {
+	padding: 10px 10px 10px 70px;
+}

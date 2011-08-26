@@ -1,7 +1,7 @@
 {% load i18n %}
 
-<img src="{{static_url}}images/icons/application.png" height="64px" style="float:left;"/>
-<div style="border: 1px solid #9A9A9A; padding: 10px 10px 10px 70px;">
+<img class="introicon" src="{{static_url}}images/icons/app-settings.png"/>
+<div class="info">
 	<strong>{% trans 'Instance Name' %}</strong>: {{instance.name}} <br/>
 	<strong>{% trans 'Server Name' %}</strong>: {{instance.machine}} <br/>
 	<strong>{% trans 'Listen Address' %}</strong>: {{instance.listen_address}} <br/>
@@ -9,34 +9,20 @@
 	{% if instance.arguments%}
 	<br>
 	<strong>{% trans 'Instance Arguments'%}</strong>
-	<table>
-		<thead>
-			<th>{% trans 'Argument'%}</th>
-		</thead>
-		<tbody>
-			{% for opt in instance.arguments%}
-			<tr>
-				<td> {{opt}} </td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+	<div class="codestyle">
+		{% for opt in instance.arguments%}
+			{{opt}} <br/>
+		{% endfor %}
+	</div>
 	{% endif %}
 	{% if instance.class_path%}
 	<br>
 	<strong>{% trans 'Instance Classpath'%}</strong>
-	<table>
-		<thead>
-			<th>{% trans 'Classpath Resource'%}</th>
-		</thead>
-		<tbody>
-			{% for cp in instance.class_path%}
-			<tr>
-				<td> {{cp}} </td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+	<div class="codestyle">
+		{% for cp in instance.class_path%}
+			{{cp}} <br/>
+		{% endfor %}
+	</div>
 	{% endif%}
 </div>
 <br/>

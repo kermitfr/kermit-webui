@@ -12,7 +12,17 @@ def convert_keys_names(dict):
         if key.__contains__('-'):
             dict[key.replace('-', '_')]=value
             dict.pop(key, value)
+            if type(value).__name__=='dict':
+                convert_keys_names(value)
+            elif type(value).__name__=='list':
+                check_list(value)
 
+def check_list(list):
+    for content in list:
+        if type(content).__name__=='dict':
+            convert_keys_names(content)
+        elif type(content).__name__=='list':
+            check_list(content)
 
 def read_file_info(hostname, prefix, suffix):
     if hostname:

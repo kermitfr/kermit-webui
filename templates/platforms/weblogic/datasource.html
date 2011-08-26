@@ -1,0 +1,54 @@
+{% load i18n %} 
+<img class="introicon" src="{{static_url}}images/icons/datasource.png"/>
+<div class="info">
+	<strong>{% trans 'Datasource' %}</strong>
+	{% if not datasource.data_source_params %}
+		<table class="server-details">
+			<thead>
+				<tr>
+					<th>{% trans 'Name' %}</th>
+					<th>{% trans 'User' %}</th>
+					<th>{% trans 'Min-Connections' %}</th>
+					<th>{% trans 'Max-Connections' %}</th>
+					<th>{% trans 'Cached Statements' %}</th>
+					<th>{% trans 'Test Connection' %}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{{datasource.name}}</td>
+					<td>{{datasource.properties}}</td>
+					<td>{{datasource.pool_params.initial_capacity}}</td>
+					<td>{{datasource.pool_params.max_capacity}}</td>
+					<td>{{datasource.pool_params.statement_cache_size}}</td>
+					<td>{{datasource.pool_params.test_connections_on_reserve}}</td>
+				</tr>
+			</tbody>
+		</table>
+	{% else %}
+	<strong>{% trans 'Algorithm Type'%}</strong>: {{datasource.data_source_params.algorithm_type}} <br/>
+	<strong>{% trans 'Failover Request If Busy'%}</strong>: {{datasource.data_source_params.failover_request_if_busy}} <br/>
+	<strong>{% trans 'Datasource List'%}</strong> <br/>
+	<table class="server-details">
+			<thead>
+				<tr>
+					<th>{% trans 'Datasource Name' %}</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for ds in datasource.data_source_params.data_source_list%}
+				<tr>
+					<td>{{ds}}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+	<hr/>
+	<strong>{% trans 'Target'%}</strong> <br/>
+	<ul>
+		{% for target in datasource.target%}
+		<li> {{target}}</li>
+		{% endfor %}
+	</ul>
+</div>
