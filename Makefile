@@ -1,5 +1,4 @@
-VERSION		= $(shell echo `awk '{ print $$1 }' version`)
-RELEASE		= $(shell echo `awk '{ print $$2 }' version`)
+VERSION		= $(shell git shortlog | grep -E '^[ ]+\w+' | wc -l)
 NEWRELEASE	= $(shell echo $$(($(RELEASE) + 1)))
 
 MESSAGESPOT=po/messages.pot
@@ -25,6 +24,8 @@ bumprelease:
 
 build: clean
 	echo $(TOPDIR)
+	echo "- Create Changelog file"
+	git shortlog > changelog.txt
 	echo "- Create new $(TMPDIR)/$(BUILDDIR)"
 	mkdir -p $(TMPDIR)/$(BUILDDIR)
 	mkdir -p $(TMPDIR)/$(BUILDDIR)/$(PROGRAMNAME)
@@ -98,4 +99,3 @@ rpms: build manpage sdist
 	--define "_sourcedir  %{_topdir}" \
 	--define "vendor Think" \
 	-ba misc/specs/kermit-webui.spec
-	echo $(NEWRELEASE) > version
