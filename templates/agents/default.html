@@ -1,0 +1,14 @@
+<h3>Response from {{agent}} - {{action}}</h3>
+{% for resp in content %}
+	<span>
+		<img src="{{settings.STATIC_URL}}images/icons/Platform_up_16.png" style="margin-right: 10px"/><strong>{{resp.sender}}</strong>: 
+		<br/>
+		{% for content,data in resp.data.items %}
+			{% for key,value in outputs.items %}
+			 {% if key == content %}
+			 	<b>{{value}}</b>: {{data}} <br>
+			 {% endif %} 
+			{% endfor%}
+		{% endfor %}
+	</span><br/>
+{% endfor %}
