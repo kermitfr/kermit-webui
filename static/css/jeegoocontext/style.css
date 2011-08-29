@@ -1,0 +1,16 @@
+﻿
+table{border-collapse:collapse}
+p{padding-bottom:15px}
+a img{border:0}
+ul, ol{list-style-position:inside}
+.clear{clear:both}
+#outer{position:relative; width:900px; margin:0 auto; min-height:100%; background:#fff}
+* html #outer{height:100%}
+/*Content*/
+#content{padding:30px}
+#content h2{color:#8b2323; font-size:1.4em; padding-bottom:10px}
+/*Active context*/
+.active{background:#d2ffa6}
+.context{border:solid 0 #6c0}
+/* button */
+input.button{margin:0 20px 20px 0; padding:5px 10px}

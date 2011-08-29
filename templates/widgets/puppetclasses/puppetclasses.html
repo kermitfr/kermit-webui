@@ -3,47 +3,72 @@
 {% block widget-content %}
 <script>
 	function bindContextMenu(span) {
-	    // Add context menu to this node:
-	    $(span).contextMenu({menu: "myMenu"}, function(action, el, pos) {
-	      // The event was bound to the <span> tag, but the node object
-	      // is stored in the parent <li> tag
-	      var node = $.ui.dynatree.getNode(el);
-	      var filterType
-	      //Verifying if the context menu is for a folder or for a server
-	      if (node.data.isFolder) {
-	      	filterType = "class_filter"
-	      } else {
-	      	filterType = "identity_filter"
-	      }
-	      
-	      //If we are working on a folder the filter should be for the complete path and not for the single folder selected
-	      var filtersList = ''
-	      if (node.data.isFolder) {
-	      	var classes = node.getKeyPath().split('/');
-	      	for (i in classes) {
-	      		if (classes[i]!='') {
-	      			if (filtersList != '') {
-	      				filtersList += ';'
-	      			}
-	      			filtersList += filterType + '=' + classes[i];
-	      		}
-	      	}
-	      } else {
-	      	filtersList += filterType + '=' + node.data.title
-	      }
-	      
-	      switch( action ) {
-	      	case "ping":
-	      		callMcollectiveWithTemplateRsp('/restapi/mcollective-template/ping/' + filtersList + '/rpcutil/ping/', 'response-container');
-	      	break;
-	      	case "inventory":
-	      		callMcollective('/restapi/mcollective/' + filtersList + '/rpcutil/inventory/', 'response-container');
-	      	break;
-	      }
-	    });
-	  };
+		// Add context menu to this node:
+		$(span).jeegoocontext('menu', {
+			widthOverflowOffset : 0,
+			heightOverflowOffset : -80,
+			submenuLeftOffset : -4,
+			submenuTopOffset : -5,
+			onSelect : function(e, context) {
+				var node = $.ui.dynatree.getNode(context);
+				var filterType
+				//Verifying if the context menu is for a folder or for a server
+				if(node.data.isFolder) {
+					filterType = "class_filter"
+				} else {
+					filterType = "identity_filter"
+				}
+
+				//If we are working on a folder the filter should be for the complete path and not for the single folder selected
+				var filtersList = ''
+				if(node.data.isFolder) {
+					var classes = node.getKeyPath().split('/');
+					for(i in classes) {
+						if(classes[i] != '') {
+							if(filtersList != '') {
+								filtersList += ';'
+							}
+							filtersList += filterType + '=' + classes[i];
+						}
+					}
+				} else {
+					filtersList += filterType + '=' + node.data.title
+				}
+				if($(this).attr('type') == "agent") {
+					getExecutionForm('context-execution-dialog', $(this).attr('agent'), $(this).attr('action'), filtersList, 'response-container')
+				} else if($(this).attr('type') == "operation") {
+					var url = $(this).attr('url');
+					//Supposing that all default operations are unfiltered
+					//TODO: Make a complete refactor of this part
+					url = url.replace('no-filter', filtersList);
+					sendRequestToMcollective(url, 'response-container');			
+				}
+
+				$(context).animate({
+					borderWidth : '0',
+					paddingLeft : '0',
+					paddingTop : '0',
+					paddingBottom : '0',
+					paddingRight : '0'
+				}, 200);
+			},
+			onHover : function(e, context) {
+				if($(this).hasClass('disabled'))
+					return false;
+			},
+			onShow : function(e, context) {
+
+			},
+			onHide : function(e, context) {
+
+			}
+		});
+
+	};
+
 
 	$(document).ready(function() {
+		$("#context-execution-dialog").hide();
 		$("#classestree").dynatree({
 			title : "Puppet Classes",
 			fx : {
@@ -51,9 +76,9 @@
 				duration : 200
 			},
 			autoFocus : false, // Set focus to first child, when expanding or lazy-loading.
-			onCreate: function(node, span){
+			onCreate : function(node, span) {
 				bindContextMenu(span);
-      		},
+			},
 			initAjax : {
 				url : "/puppetclasses/tree/get_tree_nodes/-1/",
 				data : {
@@ -64,7 +89,7 @@
 			onLazyRead : function(node) {
 				path = node.getKeyPath().replace(/\//g, "_");
 				node.appendAjax({
-					url : "/puppetclasses/tree/get_tree_nodes/"+node.data.level+"/"+path+"/",
+					url : "/puppetclasses/tree/get_tree_nodes/" + node.data.level + "/" + path + "/",
 					data : {
 						key : node.data.key,
 						mode : "funnyMode"
@@ -73,11 +98,11 @@
 				// .. but here we use a local file instead:
 			},
 			onQueryActivate : function(activate, node) {
-				
+
 				//        return false;
 			},
 			onActivate : function(node) {
-				
+
 			},
 			onDeactivate : function(node) {
 				logMsg("onDeactivate(%o)", node);
@@ -113,11 +138,11 @@
 			onClick : function(node, event) {
 				logMsg("onClick(%o, %o)", node, event);
 				// Close menu on click
-		        if( $(".contextMenu:visible").length > 0 ){
-		          $(".contextMenu").hide();
-		//          return false;
-		        }
-		        if(node.data.url)
+				if($(".contextMenu:visible").length > 0) {
+					$(".contextMenu").hide();
+					//          return false;
+				}
+				if(node.data.url)
 					window.location.href = node.data.url;
 				if(event.shiftKey && node.isLazy)
 					alert("ctrl");
@@ -143,11 +168,40 @@
 	});
 
 </script>
- <!-- Definition of context menu -->
-  <ul id="myMenu" class="contextMenu">
-    <li class="edit"><a href="#ping">Ping</a></li>
-    <li class="edit"><a href="#inventory">Inventory</a></li>
-  </ul>
-
+<!--  Context menu -->
+<div class="context">
+	<ul id="menu" class="jeegoocontext cm_default">
+		<li class="icon">
+			<span class="icon folder"></span>Agents
+			<ul>
+				{%for agent in agents %}
+					{% if agent.actions.values %}
+						<li class="icon">
+							<span class="icon folder"></span>{{agent.name}}
+							<ul>
+								{%for action in agent.actions.values %}
+								<li class="icon" type="agent" agent="{{agent.name}}" action="{{action.name}}">
+									<span class="icon file"></span>{{action.name}}
+								</li>
+								{% endfor %}
+							</ul>
+						</li>
+					{% endif %}
+				{% endfor %}
+			</ul>
+		</li>
+		<li class="icon">
+			<span class="icon folder"></span>Operations
+			<ul>
+				{%for op in operations %}
+				<li class="icon" type="operation" url="{{op.url}}">
+					<span class="icon file"></span>{{op.name}}
+				</li>
+				{% endfor %}
+			</ul>
+		</li>
+	</ul>
+</div>
+<div id="context-execution-dialog"></div>
 <div id="classestree"></div>
 {% endblock %} 

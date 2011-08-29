@@ -20,11 +20,13 @@
 		<!-- INettus -->
 		<link href="{{STATIC_URL}}css/inettus/inettuts.css" rel="stylesheet" type="text/css" />
 		<!-- JQuery Context Menu -->
-		<link href="{{STATIC_URL}}css/jquery-context-menu/jquery.contextMenu.css" rel="stylesheet" type="text/css" >
+		<link href="{{STATIC_URL}}css/jeegoocontext/style.css" rel="stylesheet" type="text/css" />
+		<link href="{{STATIC_URL}}css/jeegoocontext/skins/cm_default/style.css" rel="Stylesheet" type="text/css" />
+		
 		<link href="{{STATIC_URL}}css/kermit/kermit-skin-default.css" rel="stylesheet" type="text/css" />
 		{% endblock %} <!-- EXTRASTYLES -->
 		{% block extrastyle %}{% endblock %} <!-- JAVASCRIPTS -->
-		{% block javascripts %} <
+		{% block javascripts %} 
 		<script type="text/javascript" src="{{STATIC_URL}}js/jquery-1.6.2.min.js"></script>
 		<script type="text/javascript" src="{{STATIC_URL}}js/jquery-ui-1.8.15.custom.min.js"></script>
 		<script type="text/javascript" src="{{STATIC_URL}}js/jquery-hotkeys/jquery.hotkeys.js"></script>
@@ -34,7 +36,10 @@
 		<!-- JQuery Cookie -->
 		<script type="text/javascript" src="{{STATIC_URL}}js/jquery-cookie/jquery.cookie.js"></script>
 		<!-- JQuery Context Menu-->
-		<script src="{{STATIC_URL}}js/jquery-context-menu/jquery.contextMenu.js" type="text/javascript"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}js/jeegoocontext/jquery.jeegoocontext.js"></script>
+		
+		<!-- Kermit Scripts-->
+		<script type="text/javascript" src="{{STATIC_URL}}js/kermit/kermit.js"></script>
 		<script>
 			jQuery.fn.center = function() {
 				this.css("position", "absolute");

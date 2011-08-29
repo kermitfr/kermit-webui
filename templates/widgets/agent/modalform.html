@@ -9,7 +9,7 @@
 	$(document).ready(function() {
 		// prepare Options Object
 		var options = {
-			url : '{% url actionform agent action "xhr"%}', // Here we pass the xhr flag
+			url : '{% url actionform agent action filters dialog_name response_container "xhr"%}', // Here we pass the xhr flag
 			dataType : 'json',
 			success : parseResponse, //What to call after a reply from Django
 			beforeSubmit : beforeForm
@@ -20,7 +20,6 @@
 	});
 	
 	function parseResponse(data) {
-		var destination = 'response-container';
 		$('#loading').hide();
 		if(data) {
 			// Build a var. NOTE: Make sure your id name (this is a div) is NOT THE SAME
@@ -42,7 +41,7 @@
 				// re-enable the submit button, coz user has to fix stuff.
 //				$('#bt').attr("disabled", "");
 			} else {
-				$("#" + destination).empty();
+				$("#" + data.response_container).empty();
 				if (data.type == 'json') {
 					for (i in data.response) {
 						resp = data.response[i];
@@ -52,13 +51,13 @@
 						content += '<li> Status Message: ' + resp.statusmsg + '</li>';
 						content += '<li> Data: ' + JSON.stringify(resp.data) + '</li>';
 						content += '</ul>';
-						$(content).appendTo("#response-container");	
+						$(content).appendTo("#" + data.response_container);	
 					}
 				} else if (data.type == 'html') {
-					$("#" + destination).html(data.response);	
+					$("#" + data.response_container).html(data.response);	
 				}
 				
-				$("#execution-dialog").dialog('close');
+				$("#" + data.dialog_name).dialog('close');
 			}
 		} else {
 			//DON'T PANIC :D
@@ -84,7 +83,7 @@
 <div id="emsg">
 	&nbsp;
 </div>
-<form action="{% url actionform agent action None %}" method="post" id="tf">
+<form action="{% url actionform agent action filters dialog_name response_container None %}" method="post" id="tf">
 	{% csrf_token %}
 	<fieldset>
 		{{ form.as_p }}

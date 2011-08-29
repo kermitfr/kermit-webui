@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 class QueryMethods(object):
     
-    def get_action_tree(self, request, agent, action):
+    def get_action_tree(self, request, agent, action, filters, dialog_name, response_container):
         agents = Agent.objects.filter(enabled=True)
         data = []
         for agent in agents:
@@ -30,23 +30,23 @@ class QueryMethods(object):
              
         return json.dumps(data)
     
-    def get_dialog_form(self, request, agent, action):
+    def get_dialog_form(self, request, agent, action, filters, dialog_name, response_container):
         inputs = get_action_inputs(agent, action)
         if inputs:
             logger.debug('Rendering form')
             form = create_action_form(inputs)
-            return render_to_string('widgets/agent/modalform.html', {'agent':agent, 'action':action, 'form':form()}, context_instance=RequestContext(request))
+            return render_to_string('widgets/agent/modalform.html', {'agent':agent, 'action':action, 'filters':filters, 'form':form(), 'dialog_name': dialog_name, 'response_container': response_container}, context_instance=RequestContext(request))
         else:
             logger.debug('No parameters required')
             return None
         return None       
      
-def query(request, operation, agent=None, action=None):
+def query(request, operation, agent=None, action=None, filters='no-filter', dialog_name=None, response_container=None):
     query_methods = QueryMethods()
     methodToCall = getattr(query_methods, operation)
-    return HttpResponse(methodToCall(request, agent, action))
+    return HttpResponse(methodToCall(request, agent, action, filters, dialog_name, response_container))
 
-def execute_action_form(request, agent, action, xhr=None):
+def execute_action_form(request, agent, action, filters, dialog_name, response_container, xhr=None):
     if request.method == "POST":
         inputs = get_action_inputs(agent, action)
         logger.debug("Recreating form")
@@ -59,7 +59,7 @@ def execute_action_form(request, agent, action, xhr=None):
             # Validate the form:
             clean = form.is_valid()
             # Make some dicts to get passed back to the browser
-            rdict = {'bad':'false'}
+            rdict = {'bad':'false', 'agent':agent, 'action':action, 'dialog_name':dialog_name, 'response_container':response_container, 'filters':filters }
             if not clean:
                 rdict.update({'bad':'true'})
                 d = {}
@@ -67,7 +67,7 @@ def execute_action_form(request, agent, action, xhr=None):
                 for e in form.errors.iteritems():
                     d.update({e[0]:unicode(e[1])}) # e[0] is the id, unicode(e[1]) is the error HTML.
                 # Bung all that into the dict
-                rdict.update({'errs': d, 'agent':agent, 'action':action })
+                rdict.update({'errs': d })
             else:
                 logger.debug("Parameters check: OK.")
                 logger.debug("Creating args")
@@ -81,7 +81,7 @@ def execute_action_form(request, agent, action, xhr=None):
                         arguments = arguments + input['name'] + '=' + form.cleaned_data[input['name']] 
                 
                 logger.debug("Arguments for MCollective call " + arguments)
-                response, content = callRestServer("no-filter", agent, action, arguments)
+                response, content = callRestServer(filters, agent, action, arguments)
                 if response.status == 200:
                     json_data = render_agent_template(request, rdict, content, form.cleaned_data, agent, action)
              

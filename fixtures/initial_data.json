@@ -429,7 +429,7 @@
     "fields": {
       "name": "Ping",
       "description": "Ping all MCollective connected client",
-      "url": "/restapi/mcollective-template/ping/no-filter/rpcutil/ping/",
+      "url": "/restapi/mcollective/no-filter/rpcutil/ping/",
       "icon": "Platform_up_16.png",
       "enabled": true,
       "with_template": true,
@@ -667,7 +667,7 @@
       "icon": "",
       "enabled": true,
       "column": 1,
-      "order": 1
+      "order": 2
     }
   },
   {
@@ -680,7 +680,7 @@
       "icon": "",
       "enabled": true,
       "column": 1,
-      "order": 2
+      "order": 3
     }
   },
   {
@@ -707,6 +707,19 @@
       "enabled": true,
       "column": 2,
       "order": 2
+    }
+  },
+  {
+    "model": "widgets.widget",
+    "pk": 5,
+    "fields": {
+      "name": "AgentsTree",
+      "title": "Installed Agents",
+      "description": "Mcollective Installed Agents",
+      "icon": "",
+      "enabled": true,
+      "column": 1,
+      "order": 1
     }
   }
 ]
