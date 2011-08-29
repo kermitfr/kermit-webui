@@ -67,7 +67,14 @@ def applicationInventory(request, hostname, instance_name, resource_name):
         for app in instance['applilist']:
             if app['name'] == resource_name:
                 selected_app = app
-                convert_keys_names(selected_app)
+        #Retrieving datasource information
+        for pool in selected_app['poollist']:
+            for ds in instance['datasource']:
+                if ds['name'] == pool['name']:
+                    convert_keys_names(ds)  
+                    pool['datasource'] = ds
+                    break
+        convert_keys_names(selected_app)        
         return render_to_response('platforms/oc4j/application.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL,"hostname":hostname, "instance_id":instance['id'] ,"application": selected_app}, context_instance=RequestContext(request))
     else:
         return render_to_response('platforms/oc4j/application.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))

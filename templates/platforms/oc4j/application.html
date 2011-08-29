@@ -30,15 +30,15 @@
 			</tr>
 		</thead>
 		<tbody>
-			{% for datasource in application.poollist%}
+			{% for pool in application.poollist%}
 			<tr>
-				<td>{{datasource.name}}</td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
+				<td>{{pool.name}}</td>
+				<td>{{pool.datasource.bddserver}}</td>
+				<td>{{pool.datasource.bddinstance}}</td>
+				<td>{{pool.datasource.user}}</td>
+				<td>{{pool.datasource.max_connections}}</td>
+				<td>{{pool.datasource.min_connections}}</td>
+				<td>{{pool.datasource.num_cached_statements}}</td>
 			</tr>
 			{% endfor %}
 		</tbody>
