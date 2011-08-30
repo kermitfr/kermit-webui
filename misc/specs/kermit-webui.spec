@@ -69,8 +69,8 @@ python ./src/webui/manage.py syncdb --noinput
 
 %post
 if [ "$1" -le "1" ] ; then # First install
-/usr/sbin/semodule fcontext -a -t httpd_sys_content_t /usr/share/%{name}
-/usr/sbin/semodule fcontext -a -t httpd_sys_content_t "/usr/share/%{name}/db(/.*)?"
+/usr/sbin/semanage fcontext -a -t httpd_sys_content_t /usr/share/%{name}
+/usr/sbin/semanage fcontext -a -t httpd_sys_content_t "/usr/share/%{name}/db(/.*)?"
 /sbin/restorecon -R /usr/share/%{name}
 /sbin/service httpd restart > /dev/null 2>&1
 fi
