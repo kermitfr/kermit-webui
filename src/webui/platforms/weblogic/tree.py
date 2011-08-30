@@ -37,7 +37,7 @@ def getDetailsTree(hostname):
             logger.debug('Configuring Applications')
             applications = {'title': 'Applications', 'isFolder':"true", "key":"applications", "icon":"folder_applications.png", "type":"applications"}
             apps = []
-            for appli in server_info['applications']:
+            for appli in server_info['applilist']:
                 if instance['name'] == appli['target']:
                     app = {'title':appli['name'], "key":appli['name'], "icon":"application.png", "type":"application", "instance":instance['name'], "detailsEnabled":"true", 'url': reverse('weblogic_application_details', kwargs={'hostname':hostname, 'resource_name':appli['name']})}
                     apps.append(app)
