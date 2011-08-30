@@ -104,6 +104,14 @@ class Operations(object):
         self.create_path(server, mcresponse['data']['classes'])
        
     def server_inventory(self):
+        #TODO: Refactor making it dynamic with Platforms
+        logger.debug("Calling OC4J Inventory")
+        try: 
+            response, content = callRestServer('no-filter', 'a7xinventory', 'oasinv')
+        except Exception, err:
+            logger.error('ERROR: ' + str(err))
+            
+        logger.debug("Calling WebLoginc Inventory")
         try: 
             response, content = callRestServer('no-filter', 'a7xinventory', 'oasinv')
         except Exception, err:
