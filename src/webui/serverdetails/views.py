@@ -27,7 +27,9 @@ def getDetailsTree(request, hostname):
             fp, pathname, description = imp.find_module('tree', platform_path)
             mod = imp.load_module('tree', fp, pathname, description)
             platform_data = mod.getDetailsTree(hostname)
-            children.append(platform_data)
+            if platform_data:
+                print platform_data
+                children.append(platform_data)
         except:
             logger.debug('No module tree found for %s' % platform_path)
     
