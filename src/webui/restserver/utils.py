@@ -113,7 +113,7 @@ class Operations(object):
             
         logger.debug("Calling WebLoginc Inventory")
         try: 
-            response, content = callRestServer('no-filter', 'a7xinventory', 'oasinv')
+            response, content = callRestServer('no-filter', 'a7xinventory', 'webloinv')
         except Exception, err:
             logger.error('ERROR: ' + str(err))
     

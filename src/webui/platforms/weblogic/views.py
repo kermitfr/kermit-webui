@@ -59,7 +59,7 @@ def applicationInventory(request, hostname, resource_name):
     server_info = read_server_info(hostname)
     if server_info:
         selected_app = None
-        for app in server_info["applications"]:
+        for app in server_info["applilist"]:
             if app['name'] == resource_name:
                 selected_app = app
                 break
