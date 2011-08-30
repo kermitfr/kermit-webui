@@ -68,8 +68,20 @@ python ./src/webui/manage.py syncdb --noinput
 %pre
 
 %post
+if [ "$1" -le "1" ] ; then # First install
+semodule fcontext -a -t httpd_sys_content_t /usr/share/%{name}
+fcontext -a -t httpd_sys_content_t "/usr/share/%{name}/db(/.*)?"
+restorecon -R /usr/share/%{name}
+/sbin/service httpd restart > /dev/null 2>&1
+fi
+
+%preun
+if [ "$1" -lt "1" ] ; then # Final removal
+fi
 
 %postun
+if [ "$1" -ge "1" ] ; then # Upgrade
+fi
 
 %changelog
 * Sun Aug 14 2011 Marco Mornati <ilmorna@gmail.com> - 1.0

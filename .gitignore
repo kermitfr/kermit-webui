@@ -3,3 +3,6 @@
 src/sqlite.db
 .settings
 *.pyc
+changelog.txt
+rpm-build
+dist
