@@ -12,6 +12,10 @@ BuildArch: noarch
 
 %description
 Mcollective WebUI
+Quick start :
+cd /usr/share/kermit-webui
+python webui/manage.py syncdb --noinput
+/etc/init.d/httpd restart
 
 %prep
 %setup -n %{name}
