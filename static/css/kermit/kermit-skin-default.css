@@ -203,14 +203,14 @@ li.user-options-container.open a.user-options-handler {
     color: #eee !important;
 }
 li.user-options-container.open ul.user-options {
-    border-top: 1px solid #262626;
+    
     border-bottom-left-radius: 5px; -moz-border-radius-bottomleft: 5px; -webkit-border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px; -moz-border-radius-bottomright: 5px; -webkit-border-bottom-right-radius: 5px;
-    background: #333;
+    background: #555;
 }
 ul.user-options li {
-    border-top: 1px solid #404040;
-    border-bottom: 1px solid #292929;
+    /*border-top: 1px solid #404040;
+    border-bottom: 1px solid #292929;*/
 }
 ul.user-options li:last-child {
     border-bottom: 0;
@@ -1920,4 +1920,22 @@ fieldset.infohighlight {
 	border: 1px solid #dfdfdf; 
 	padding: 10px;
 	margin-top: 10px;
+}
+
+#login {
+	text-align:center; 
+	width: 300px; 
+	margin: auto;
+}
+
+#login table {
+	border: 0px;
+}
+
+#login table tr {
+	border: 0px;
+}
+
+#login table td {
+	border: 0px;
 }

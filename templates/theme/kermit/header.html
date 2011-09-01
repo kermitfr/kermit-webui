@@ -1,5 +1,5 @@
 	{% load i18n grp_tags %}
-
+	
 <div id="header">
     <div class="branding">&nbsp;</div>
     <!-- Title -->
@@ -8,13 +8,7 @@
     </div>
     {% if user.is_authenticated and user.is_staff %}
         <ul id="user-tools">
-        	{% block mainmenu %}
-        	<!-- Main Menu -->
-            <li><a href="/">Dashboard</a></li>
-            <li><a href="/admin/">Admin</a></li>
-            {% endblock %}
-            <!-- Username -->
-            <li class="user-options-container collapse closed">
+        	<li class="user-options-container collapse closed">
                 Welcome <a href="javascript://" class="user-options-handler collapse-handler">{% firstof user.first_name user.username %}</a>
                 <ul class="user-options">
                     <!-- Change Password -->
@@ -27,14 +21,17 @@
                     {% trans 'Change password' %}</a></li>
                     <!-- Logout -->
                     {% url admin:logout as logout_url %}
-                    {% if logout_url %}
-                        <li><a href="{{ logout_url }}">
-                    {% else %}
-                        <li><a href="{{ root_path }}logout/">
-                    {% endif %}
+                    <li><a href="/accounts/logout/">
                     {% trans 'Log out' %}</a></li>
                 </ul>
             </li>
+        	{% block mainmenu %}
+        	<!-- Main Menu -->
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/admin/">Admin</a></li>
+            {% endblock %}
+            <!-- Username -->
+            
             <!-- Userlinks -->
             {% block userlinks %}
                 <!-- Documentation -->

@@ -3,6 +3,7 @@ from webui.puppetclasses.models import PuppetClass
 from django.utils import simplejson as json
 import logging
 from webui.serverstatus.models import Server
+from django.contrib.auth.decorators import login_required
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +35,8 @@ class QueryMethods(object):
             data.append(serverdata)
              
         return json.dumps(data)
-        
+ 
+@login_required(login_url='/accounts/login/')       
 def query(request, operation, level, path=None):
     query_methods = QueryMethods()
     methodToCall = getattr(query_methods, operation)

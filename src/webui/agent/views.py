@@ -7,6 +7,7 @@ from webui.agent.form import create_action_form
 from django.template.context import RequestContext
 from webui.restserver.communication import callRestServer
 from webui.restserver.template import render_agent_template, get_action_inputs
+from django.contrib.auth.decorators import login_required
 
 
 logger = logging.getLogger(__name__)
@@ -39,13 +40,15 @@ class QueryMethods(object):
         else:
             logger.debug('No parameters required')
             return None
-        return None       
+        return None      
      
+@login_required(login_url='/accounts/login/')    
 def query(request, operation, agent=None, action=None, filters='no-filter', dialog_name=None, response_container=None):
     query_methods = QueryMethods()
     methodToCall = getattr(query_methods, operation)
     return HttpResponse(methodToCall(request, agent, action, filters, dialog_name, response_container))
 
+@login_required(login_url='/accounts/login/')
 def execute_action_form(request, agent, action, filters, dialog_name, response_container, xhr=None):
     if request.method == "POST":
         inputs = get_action_inputs(agent, action)

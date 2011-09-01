@@ -30,5 +30,7 @@ urlpatterns = patterns('',
     (r'^agent/', include('webui.agent.urls')),
     (r'^index/(.*)', include('webui.index.urls')),
     (r'^platform/', include('webui.platforms.urls')),
+    (r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    (r'^accounts/logout/$', 'webui.index.views.logout_view'),
     (r'', include('webui.index.urls')),
 )

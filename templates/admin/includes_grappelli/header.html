@@ -30,6 +30,7 @@
             </li>
             <!-- Userlinks -->
             {% block userlinks %}
+                <li><a href="/">{% trans 'Back to Kermit' %}</a></li>
                 <!-- JS tests -->
                 {% url test-index as testindexurl %}
                 {% if testindexurl %}
