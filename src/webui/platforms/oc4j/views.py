@@ -71,12 +71,16 @@ def applicationInventory(request, hostname, instance_name, resource_name):
             if app['name'] == resource_name:
                 selected_app = app
         #Retrieving datasource information
-        for pool in selected_app['poollist']:
-            for ds in instance['datasource']:
-                if ds['name'] == pool['name']:
-                    convert_keys_names(ds)  
-                    pool['datasource'] = ds
-                    break
+        if "pollist" in selected_app:
+            for pool in selected_app['poollist']:
+                for ds in instance['datasource']:
+                    if ds['name'] == pool['name']:
+                        convert_keys_names(ds)  
+                        pool['datasource'] = ds
+                        break
+        else:
+            logger.debug("No poollist key found for %s" % selected_app['name'])
+            
         convert_keys_names(selected_app)        
         return render_to_response('platforms/oc4j/application.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL,"hostname":hostname, "instance_id":instance['id'] ,"application": selected_app}, context_instance=RequestContext(request))
     else:

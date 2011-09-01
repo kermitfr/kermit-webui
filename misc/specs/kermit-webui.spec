@@ -1,7 +1,7 @@
 Summary: Mcollective WebUI
 Name: kermit-webui
 Version: 0.0.2
-Release: 1
+Release: 2
 License: GPL
 Group: Applications/System
 URL: https://github.com/thinkfr/kermit-webui
@@ -80,5 +80,16 @@ fi
 %postun
 
 %changelog
-* Sun Aug 14 2011 Marco Mornati <ilmorna@gmail.com> - 1.0
+* Thu Sep 1 2011 Marco Mornati <ilmorna@gmail.com> - 0.0.2-2
+- Fixed problem on OC4J with apps without poollist
+
+* Thu Sep 1 2011 Marco Mornati <ilmorna@gmail.com> - 0.0.2-1
+- Fixed problems with Weblogic platform
+- Fixed wrong HTML char
+- Fixed wrong tree name for webloginc platform
+- Added basic security     Created login/logout pages
+- Version updated
+- Fixed build problem changing version
+
+* Sun Aug 14 2011 Marco Mornati <ilmorna@gmail.com> - 0.0.1-1
 - Project startup
