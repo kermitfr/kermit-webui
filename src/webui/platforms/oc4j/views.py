@@ -71,12 +71,12 @@ def applicationInventory(request, hostname, instance_name, resource_name):
             if app['name'] == resource_name:
                 selected_app = app
         #Retrieving datasource information
-        if "pollist" in selected_app:
+        if "poollist" in selected_app:
             for pool in selected_app['poollist']:
-                for ds in instance['datasource']:
-                    if ds['name'] == pool['name']:
-                        convert_keys_names(ds)  
-                        pool['datasource'] = ds
+                for retrieved_ds in instance['datasource']:
+                    if retrieved_ds['name'] == pool['name']:
+                        convert_keys_names(retrieved_ds)  
+                        pool['datasource'] = retrieved_ds
                         break
         else:
             logger.debug("No poollist key found for %s" % selected_app['name'])
