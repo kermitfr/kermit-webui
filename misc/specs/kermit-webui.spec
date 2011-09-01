@@ -81,15 +81,67 @@ fi
 
 %changelog
 * Thu Sep 1 2011 Marco Mornati <ilmorna@gmail.com> - 0.0.2-2
-- Fixed problem on OC4J with apps without poollist
+	Fixed problem on OC4J with apps without poollist
+	Changed id for server: from hostname to fqdn
 
 * Thu Sep 1 2011 Marco Mornati <ilmorna@gmail.com> - 0.0.2-1
-- Fixed problems with Weblogic platform
-- Fixed wrong HTML char
-- Fixed wrong tree name for webloginc platform
-- Added basic security     Created login/logout pages
-- Version updated
-- Fixed build problem changing version
+	Fixed problems with Weblogic platform
+	Fixed wrong HTML char
+	Fixed wrong tree name for webloginc platform
+	Added basic security     Created login/logout pages
+	Version updated
+	Fixed build problem changing version
 
-* Sun Aug 14 2011 Marco Mornati <ilmorna@gmail.com> - 0.0.1-1
-- Project startup
+* Thu Aug 18 2011 Marco Mornati <ilmorna@gmail.com>
+    Added Server Details page
+
+* Wed Aug 17 2011 Marco Mornati <ilmorna@gmail.com>
+    Added Admin Operations
+    Imported some django admin templates to extends
+    Completed view part of PuppetClasses Widget
+    Completed Widgets on Database
+    Added missing admin area
+
+* Wed Aug 17 2011 Marco Mornati <ilmorna@gmail.com>
+    Added Cron App used to schedule tasks from others installed apps
+    Completed Server Status apps and models
+    Autoretrieved information from mcollective about server status, agents and puppet classes
+    Added tree view to navigate puppet classes
+    Added some necessary plugin to jquery
+
+* Tue Aug 16 2011 Marco Mornati <ilmorna@gmail.com>
+    Added python-simplejson dependency in spec file
+    Added Dynamic Paths in Settings.py file
+
+* Mon Aug 15 2011 Louis Coilliot <louis.coilliot@gmail.com>
+    kermit.conf to kermit-webui.conf
+    Refs to 'automatix' and 'kermit' changed to 'webui'
+
+* Sun Aug 14 2011 Louis Coilliot <louis.coilliot@gmail.com>
+    Minor changes
+
+* Sun Aug 14 2011 Marco Mornati <ilmorna@gmail.com>
+    Renamed project and project stuffs using OpenSource name and not the Customer Custom (automatix -> kermit)
+    Added firt version of spec file to rpm generation
+    Added Apache configuration
+
+* Sat Aug 13 2011 Marco Mornati <ilmorna@gmail.com>
+    Updated README file
+
+* Fri Aug 12 2011 Marco Mornati <ilmorna@gmail.com>
+    Added Django Widget Project (modified to get it working)
+    Added initial_data to initialize database
+    Created a first widget example (to complete fixing some problems)
+    Updated README file
+    Created puppetclass django app
+    Fixed problem within Dynamic Widgets
+    Removed unused files
+    Added Server Status Apps
+    Added Logging Stuffs to new classes (to be refactored all view classes)
+    Renamed Django_Widgets to Widgets
+    Creted Models for ServerClasses
+
+* Thu Aug 11 2011 Marco Mornati <ilmorna@gmail.com> - 0.0.1-1
+	Added Default Operation to database
+	Enabled admin area
+	Show default operations dynamically retrieving information from database
