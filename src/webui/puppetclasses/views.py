@@ -31,7 +31,7 @@ class QueryMethods(object):
         logger.info("Looking for servers in path: " + path)
         servers = Server.objects.filter(puppet_path=path, deleted=False)
         for server in servers:
-            serverdata = {"title":server.hostname, "url": "/server/details/"+server.hostname+"/", "key":server.hostname}
+            serverdata = {"title":server.fqdn, "url": "/server/details/"+server.fqdn+"/", "key":server.fqdn}
             data.append(serverdata)
              
         return json.dumps(data)
