@@ -39,7 +39,7 @@ var iNettuts = {
     },
 
     init : function () {
-        this.attachStylesheet('/static/css/inettus/inettuts.js.css');
+        /*this.attachStylesheet('/static/css/inettus/inettuts.js.css');*/
         this.addWidgetControls();
         this.makeSortable();
     },
