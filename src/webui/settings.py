@@ -172,6 +172,13 @@ LOGGING = {
             'class':'logging.StreamHandler',
             'formatter': 'simple'
         },
+        'kermit_log_file':{
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': '/tmp/kermit-webui.log',
+            'maxBytes': '16777216', # 16megabytes
+            'formatter': 'verbose'
+        },
     },
     'loggers': {
         'django.request': {
@@ -180,7 +187,7 @@ LOGGING = {
             'propagate': True,
         },
         'webui': {
-            'handlers': ['console', 'mail_admins'],
+            'handlers': ['kermit_log_file'],
             'level': 'DEBUG',
         }
     }

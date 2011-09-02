@@ -6,45 +6,45 @@
 }
 
 .alphacube_nw {
-	background: transparent url(/static/images/alphacube/left-top.gif) no-repeat 0 0;			
+	background: transparent url(../../images/alphacube/left-top.gif) no-repeat 0 0;			
   width:10px;
   height:25px;
 }
 
 .alphacube_n {
-  background: transparent url(/static/images/alphacube/top-middle.gif) repeat-x 0 0;			
+  background: transparent url(../../images/alphacube/top-middle.gif) repeat-x 0 0;			
   height:25px;
 }
 
 .alphacube_ne {
-  background: transparent url(/static/images/alphacube/right-top.gif) no-repeat 0 0;			
+  background: transparent url(../../images/alphacube/right-top.gif) no-repeat 0 0;			
   width:10px;	  
   height:25px;
 }
 
 .alphacube_w {
-  background: transparent url(/static/images/alphacube/frame-left.gif) repeat-y top left;			
+  background: transparent url(../../images/alphacube/frame-left.gif) repeat-y top left;			
   width:7px;
 }
 
 .alphacube_e {
-  background: transparent url(/static/images/alphacube/frame-right.gif) repeat-y top right;			
+  background: transparent url(../../images/alphacube/frame-right.gif) repeat-y top right;			
   width:7px;	  
 }
 
 .alphacube_sw {
-  background: transparent url(/static/images/alphacube/bottom-left-c.gif) no-repeat 0 0;			
+  background: transparent url(../../images/alphacube/bottom-left-c.gif) no-repeat 0 0;			
   width:7px;
   height:7px;
 }
 
 .alphacube_s {
-  background: transparent url(/static/images/alphacube/bottom-middle.gif) repeat-x 0 0;			
+  background: transparent url(../../images/alphacube/bottom-middle.gif) repeat-x 0 0;			
   height:7px;
 }
 
 .alphacube_se, .alphacube_sizer  {
-  background: transparent url(/static/images/alphacube/bottom-right-c.gif) no-repeat 0 0;			
+  background: transparent url(../../images/alphacube/bottom-right-c.gif) no-repeat 0 0;			
   width:7px;
   height:7px;
 }
@@ -56,7 +56,7 @@
 .alphacube_close {
 	width: 23px;
 	height: 23px;
-	background: transparent url(/static/images/alphacube/button-close-focus.gif) no-repeat 0 0;			
+	background: transparent url(../../images/alphacube/button-close-focus.gif) no-repeat 0 0;			
 	position:absolute;
 	top:0px;
 	right:11px;
@@ -67,7 +67,7 @@
 .alphacube_minimize {
 	width: 23px;
 	height: 23px;
-	background: transparent url(/static/images/alphacube/button-min-focus.gif) no-repeat 0 0;			
+	background: transparent url(../../images/alphacube/button-min-focus.gif) no-repeat 0 0;			
 	position:absolute;
 	top:0px;
 	right:55px;
@@ -78,7 +78,7 @@
 .alphacube_maximize {
 	width: 23px;
 	height: 23px;
-	background: transparent url(/static/images/alphacube/button-max-focus.gif) no-repeat 0 0;			
+	background: transparent url(../../images/alphacube/button-max-focus.gif) no-repeat 0 0;			
 	position:absolute;
 	top:0px;
 	right:33px;

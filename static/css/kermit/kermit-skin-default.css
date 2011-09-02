@@ -1868,11 +1868,11 @@ table.server-details {
 }
 
 table.server-details thead th.rounded-init {
-    background: url("/static/images/left.png") no-repeat scroll left -1px #B9C9FE;
+    background: url("../../images/left.png") no-repeat scroll left -1px #B9C9FE;
 }
 
 table.server-details thead th.rounded-end {
-    background: url("/static/images/right.png") no-repeat scroll right -1px #B9C9FE;
+    background: url("../../images/right.png") no-repeat scroll right -1px #B9C9FE;
 }
 
 table.server-details th {

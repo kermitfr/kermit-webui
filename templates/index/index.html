@@ -6,7 +6,7 @@
 
 {% block breadcrumbs %}
 <div id="breadcrumbs">
-	<a href="/">{% trans 'Home' %}</a>{% if title %} &rsaquo; {{ title }}{% endif %}
+	<a href="{{settings.BASE_URL}}">{% trans 'Home' %}</a>{% if title %} &rsaquo; {{ title }}{% endif %}
 </div>
 {% endblock %}
 
