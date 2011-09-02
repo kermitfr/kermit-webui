@@ -40,7 +40,7 @@ table.serverstatus tr.odd {
 			{% for server in servers %}
 			<tr class="{% cycle odd,even %}">
 				<td width="5%"><img src="{{settings.STATIC_URL}}images/icons/{% if server.online %}online.png{% else %}offline.png{% endif %}" style="border: 0px; height: 15px;margin: 3px;float:none;"/></td>
-				<td><a href="/server/details/{{server.hostname}}/">{{server.fqdn}}</a></td>
+				<td><a href="{% url serverdetails server.hostname %}">{{server.fqdn}}</a></td>
 				<td>{{server.os}}</td>
 				<td>{{server.architecture}}</td>
 			</tr>

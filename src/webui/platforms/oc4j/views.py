@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 logger = logging.getLogger(__name__)
 
-@login_required(login_url='/accounts/login/')
+@login_required()
 def instanceInventory(request, hostname, instance_name, resource_name):
     server_info = read_server_info(hostname)
     if server_info:
@@ -22,7 +22,7 @@ def instanceInventory(request, hostname, instance_name, resource_name):
         return render_to_response('platforms/oc4j/instance.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))
 
 
-@login_required(login_url='/accounts/login/')
+@login_required()
 def datasourceListInventory(request, hostname, instance_name, resource_name):
     server_info = read_server_info(hostname)
     if server_info:
@@ -37,7 +37,7 @@ def datasourceListInventory(request, hostname, instance_name, resource_name):
     else:
         return render_to_response('platforms/oc4j/datasources.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))
 
-@login_required(login_url='/accounts/login/')
+@login_required()
 def datasourceInventory(request, hostname, instance_name, resource_name):
     server_info = read_server_info(hostname)
     if server_info:
@@ -57,7 +57,7 @@ def datasourceInventory(request, hostname, instance_name, resource_name):
     else:
         return render_to_response('platforms/oc4j/datasource.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))
 
-@login_required(login_url='/accounts/login/')
+@login_required()
 def applicationInventory(request, hostname, instance_name, resource_name):
     server_info = read_server_info(hostname)
     if server_info:
@@ -85,5 +85,3 @@ def applicationInventory(request, hostname, instance_name, resource_name):
         return render_to_response('platforms/oc4j/application.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL,"hostname":hostname, "instance_id":instance['id'] ,"application": selected_app}, context_instance=RequestContext(request))
     else:
         return render_to_response('platforms/oc4j/application.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))
-
-

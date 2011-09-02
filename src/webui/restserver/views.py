@@ -15,7 +15,7 @@ from django.contrib.auth.decorators import login_required
 
 logger = logging.getLogger(__name__)
 
-@login_required(login_url='/accounts/login/')
+@login_required()
 def get(request, filters, agent, action, args=None):
     response, content = callRestServer(filters, agent, action, args)
     if response.status == 200:
@@ -23,7 +23,7 @@ def get(request, filters, agent, action, args=None):
         return HttpResponse(json_data, mimetype="application/json")
     return response
 
-@login_required(login_url='/accounts/login/')
+@login_required()
 def getWithTemplate(request, template, filters, agent, action, args=None):
     response, content = callRestServer(filters, agent, action, args)
     if response.status == 200:
@@ -36,7 +36,7 @@ def getWithTemplate(request, template, filters, agent, action, args=None):
             context_instance = RequestContext( request ) )
     return response
 
-@login_required(login_url='/accounts/login/')
+@login_required()
 def executeAction(request, action):
     logger.info("Executing action " + action)
     actions = Actions()

@@ -187,7 +187,8 @@ LOGGING = {
 }
 
 BASE_URL=""
-LOGIN_REDIRECT_URL = '/'
+LOGIN_URL=BASE_URL + "/accounts/login/"
+#LOGIN_REDIRECT_URL = '/'
 LOGOUT_LINK = ""
 
 RUBY_REST_BASE_URL="http://localhost:4567/mcollective/"

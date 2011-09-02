@@ -36,7 +36,7 @@ class QueryMethods(object):
              
         return json.dumps(data)
  
-@login_required(login_url='/accounts/login/')       
+@login_required()       
 def query(request, operation, level, path=None):
     query_methods = QueryMethods()
     methodToCall = getattr(query_methods, operation)

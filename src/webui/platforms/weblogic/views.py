@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 logger = logging.getLogger(__name__)
 
-@login_required(login_url='/accounts/login/')
+@login_required()
 def instanceInventory(request, hostname, resource_name):
     server_info = read_server_info(hostname)
     if server_info:
@@ -22,7 +22,7 @@ def instanceInventory(request, hostname, resource_name):
     else:
         return render_to_response('platforms/weblogic/instance.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))
 
-@login_required(login_url='/accounts/login/')
+@login_required()
 def datasourceInventory(request, hostname, resource_name):
     server_info = read_server_info(hostname)
     if server_info:
@@ -36,7 +36,7 @@ def datasourceInventory(request, hostname, resource_name):
     else:
         return render_to_response('platforms/weblogic/datasource.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))
 
-@login_required(login_url='/accounts/login/')
+@login_required()
 def consoleInventory(request, hostname, resource_name):
     server_info = read_server_info(hostname)
     if server_info:
@@ -46,7 +46,7 @@ def consoleInventory(request, hostname, resource_name):
     else:
         return render_to_response('platforms/weblogic/console.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))
 
-@login_required(login_url='/accounts/login/')
+@login_required()
 def nodeManagerInventory(request, hostname, resource_name):
     server_info = read_server_info(hostname)
     if server_info:
@@ -57,7 +57,7 @@ def nodeManagerInventory(request, hostname, resource_name):
     else:
         return render_to_response('platforms/weblogic/nodemanager.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))
 
-@login_required(login_url='/accounts/login/')
+@login_required()
 def applicationInventory(request, hostname, resource_name):
     server_info = read_server_info(hostname)
     if server_info:

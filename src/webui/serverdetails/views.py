@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 
 logger = logging.getLogger(__name__)
 
-@login_required(login_url='/accounts/login/')
+@login_required()
 def getDetailsTree(request, hostname):
     #Entering in any platform an collect tree info
     logger.debug('Collecting platform trees')
@@ -39,7 +39,7 @@ def getDetailsTree(request, hostname):
     data.append(content)
     return HttpResponse(json.dumps(data))
 
-@login_required(login_url='/accounts/login/')
+@login_required()
 def hostInventory(request, hostname):
     server_info = []    
     return render_to_response('server/details.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "serverdetails": server_info, "hostname": hostname}, context_instance=RequestContext(request))

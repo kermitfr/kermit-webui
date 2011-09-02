@@ -80,7 +80,7 @@
 				bindContextMenu(span);
 			},
 			initAjax : {
-				url : "/puppetclasses/tree/get_tree_nodes/-1/",
+				url : "{{settings.BASE_URL}}/puppetclasses/tree/get_tree_nodes/-1/",
 				data : {
 					mode : "funnyMode"
 				}
@@ -89,7 +89,7 @@
 			onLazyRead : function(node) {
 				path = node.getKeyPath().replace(/\//g, "_");
 				node.appendAjax({
-					url : "/puppetclasses/tree/get_tree_nodes/" + node.data.level + "/" + path + "/",
+					url : "{{settings.BASE_URL}}/puppetclasses/tree/get_tree_nodes/" + node.data.level + "/" + path + "/",
 					data : {
 						key : node.data.key,
 						mode : "funnyMode"

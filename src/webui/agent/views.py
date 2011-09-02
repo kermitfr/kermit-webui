@@ -42,13 +42,13 @@ class QueryMethods(object):
             return None
         return None      
      
-@login_required(login_url='/accounts/login/')    
+@login_required()    
 def query(request, operation, agent=None, action=None, filters='no-filter', dialog_name=None, response_container=None):
     query_methods = QueryMethods()
     methodToCall = getattr(query_methods, operation)
     return HttpResponse(methodToCall(request, agent, action, filters, dialog_name, response_container))
 
-@login_required(login_url='/accounts/login/')
+@login_required()
 def execute_action_form(request, agent, action, filters, dialog_name, response_container, xhr=None):
     if request.method == "POST":
         inputs = get_action_inputs(agent, action)
@@ -93,8 +93,8 @@ def execute_action_form(request, agent, action, filters, dialog_name, response_c
         # It's a normal submit - non ajax.
         else:
             if form.is_valid():
-                # Move on to an okay page:
-                return HttpResponseRedirect("/scents/afterform/")
+                # We don't accept non-ajax requests for the moment
+                return HttpResponseRedirect("/")
     else:
         # It's not post so make a new form
         logger.warn("Cannot access this page using GET")
