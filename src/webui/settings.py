@@ -111,6 +111,13 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend', # this is default
+    'guardian.backends.ObjectPermissionBackend',
+)
+
+ANONYMOUS_USER_ID = -1
+
 ROOT_URLCONF = 'webui.urls'
 
 TEMPLATE_DIRS = (
@@ -128,6 +135,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
+    'guardian',
+    'grappelli',
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
@@ -139,12 +148,14 @@ INSTALLED_APPS = (
     'webui.puppetclasses', 
     'webui.serverstatus',
     'webui.serverdetails',
-    'webui.grappelli',
 )
 
 FIXTURE_DIRS = (
    SITE_ROOT + '/../../fixtures/',
 )
+
+GRAPPELLI_ADMIN_HEADLINE = 'Kermit Admin Area'
+GRAPPELLI_ADMIN_TITLE = 'Kermit Admin Area'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -187,7 +198,7 @@ LOGGING = {
             'propagate': True,
         },
         'webui': {
-            'handlers': ['kermit_log_file'],
+            'handlers': ['console', 'kermit_log_file'],
             'level': 'DEBUG',
         }
     }

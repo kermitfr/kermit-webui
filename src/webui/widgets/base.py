@@ -18,6 +18,7 @@ class WidgetBase(type):
 class Widget(object):
     __metaclass__ = WidgetBase
     template = ""
+    permissions = []
     login_required = False
     db_reference = None
     

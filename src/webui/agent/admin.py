@@ -6,9 +6,10 @@ Created on Aug 11, 2011
 
 from django.contrib import admin
 from webui.agent.models import Agent, Action, ActionInput, ActionOutput
+from guardian.admin import GuardedModelAdmin
     
 
-class AgentAdmin(admin.ModelAdmin):
+class AgentAdmin(GuardedModelAdmin):
     fieldsets = [
         ("General",   {'fields': ['name']}),
         ("Details",   {'fields': ['enabled', 'icon']}),         
@@ -16,7 +17,7 @@ class AgentAdmin(admin.ModelAdmin):
     list_display = ('name', 'enabled')
     search_fields = ['name']
     
-class ActionAdmin(admin.ModelAdmin):
+class ActionAdmin(GuardedModelAdmin):
     fieldsets = [
         ("General",   {'fields': ['name', 'description']}),
         ("Details",   {'fields': ['agent']}),         
@@ -24,7 +25,7 @@ class ActionAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
     search_fields = ['name']
 
-class ActionInputAdmin(admin.ModelAdmin):
+class ActionInputAdmin(GuardedModelAdmin):
     fieldsets = [
         ("General",   {'fields': ['name', 'description']}),
         ("Details",   {'fields': ['type', 'prompt', 'optional', 'validation', 'max_length', 'action']}),         
@@ -32,7 +33,7 @@ class ActionInputAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
     search_fields = ['name']
 
-class ActionOutputAdmin(admin.ModelAdmin):
+class ActionOutputAdmin(GuardedModelAdmin):
     fieldsets = [
         ("General",   {'fields': ['name', 'description']}),
         ("Details",   {'fields': ['display_as', 'action']}),         

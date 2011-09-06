@@ -1,3 +1,4 @@
+#!/usr/bin/python26
 import os
 import sys
 path = '/usr/share/kermit-webui/'

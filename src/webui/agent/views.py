@@ -1,14 +1,14 @@
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.utils import simplejson as json
 import logging
-from webui.agent.models import Agent
+from webui.agent.models import Agent, Action
 from django.template.loader import render_to_string
 from webui.agent.form import create_action_form
 from django.template.context import RequestContext
 from webui.restserver.communication import callRestServer
 from webui.restserver.template import render_agent_template, get_action_inputs
 from django.contrib.auth.decorators import login_required
-
+from guardian.shortcuts import get_objects_for_user
 
 logger = logging.getLogger(__name__)
 
@@ -16,12 +16,17 @@ class QueryMethods(object):
     
     def get_action_tree(self, request, agent, action, filters, dialog_name, response_container):
         agents = Agent.objects.filter(enabled=True)
+        if not request.user.is_superuser:
+            agents = get_objects_for_user(request.user, 'agent.use_agent', Agent)
         data = []
         for agent in agents:
-            if len(agent.actions.values()) > 0:
+            actions = agent.actions
+            if not request.user.is_superuser:
+                actions = get_objects_for_user(request.user, 'agent.use_action', Action)
+            if len(actions.values()) > 0:
                 content = {"isFolder": "true", "title": agent.name, "key":agent.name}
                 children = []
-                for action in agent.actions.values():
+                for action in actions.values():
                     action_data = {"title": action['name'], "key":action['name'], "agent":agent.name}
                     children.append(action_data)
                 content['children'] = children

@@ -6,7 +6,7 @@ License: GPL
 Group: Applications/System
 URL: https://github.com/thinkfr/kermit-webui
 Source: %{name}-%{version}.tar.gz
-Requires: httpd, Django, python, mod_wsgi, python-httplib2
+Requires: httpd, Django, python(abi) = 2.6, python26-mod_wsgi, python26-httplib2, django-grappelli, django-guardian
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch: noarch
 
@@ -21,7 +21,7 @@ python webui/manage.py syncdb --noinput
 %setup -n %{name}
 
 %build
-python ./src/webui/manage.py syncdb --noinput
+python26 ./src/webui/manage.py syncdb --noinput
 
 %install
 %{__rm} -rf $RPM_BUILD_ROOT

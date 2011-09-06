@@ -37,18 +37,44 @@ class WidgetCache(object):
         """
         Retrieve a widget from the cache.
         """
-        self.get_all_widgets()
         return self.widgets[name]
     
-    def get_widgets_dashboard(self):
+    def get_widgets_dashboard(self, user):
         if not self.widgets_dashboard:
             logger.info("Loading all database widgets in memory")
             #By default just two column are supported
             for i in range(1, 3):
                 col_widgets = Widget.objects.filter(column=i, enabled=True).order_by('order')
                 self.widgets_dashboard[str(i)] = col_widgets.values()
-        return self.widgets_dashboard
+        #Check user_permissions and widget permissions
+        user_widgets = self.check_permissions(user)
+        if user_widgets:
+            return user_widgets
+        else:
+            return self.widgets_dashboard
     
+    def check_permissions(self, user):
+        user_widget = {}
+        for i in range(1, 3):
+            user_widget[str(i)] = []
+            for widget_db in self.widgets_dashboard[str(i)]:
+                widget = self.widgets[widget_db['name']]
+                if len(widget.permissions)>0:
+                    logger.debug("Widget %s has set permissions. User must have the right permission to use it." % widget_db['name'])
+                    logger.debug("Required permissions: %s" % widget.permissions)
+                    if user.has_perms(widget.permissions):
+                        user_widget[str(i)].append(widget_db)
+                    else:
+                        logger.debug('User does not have permission to see this widget_db')
+                else:
+                    logger.debug('Widget %s does not have permissions. Visibile to all users' % widget_db['name'])
+                    user_widget[str(i)].append(widget_db)
+                    
+        return user_widget
+                        
+                    
+                    
+                    
     def refresh_widgets(self):
         logger.info("Refreshing all database widgets in memory")
         #By default just two column are supported

@@ -17,6 +17,12 @@ class Agent(models.Model):
     def __unicode__(self):
         return self.name
     
+    class Meta:
+        permissions = (
+            ("call_mcollective", "Can call MCollective"),
+            ('use_agent', 'Can use agent'),
+        )
+    
 class Action(models.Model):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=1000, null=True, blank=True)
@@ -24,6 +30,11 @@ class Action(models.Model):
     
     def __unicode__(self):
         return self.name
+    
+    class Meta:
+        permissions = (
+            ('use_action', 'Can use action'),
+        )
     
 class ActionOutput(models.Model):
     name = models.CharField(max_length=255)

@@ -7,10 +7,14 @@ from django.contrib import admin
 admin.autodiscover()
 
 #Look for cron jobs
-import django_cron
-django_cron.autodiscover()
+if 'webui.django_cron' in settings.INSTALLED_APPS:
+    import django_cron
+    django_cron.autodiscover()
 
-
+#Discovering all widgets
+if 'webui.widgets' in settings.INSTALLED_APPS:
+    from widgets.loading import registry
+    registry.discover_widgets()
 
 urlpatterns = patterns('',
     # Examples:
@@ -23,7 +27,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     
-    (r'^grappelli/', include('webui.grappelli.urls')),
+    (r'^grappelli/', include('grappelli.urls')),
     (r'^server/', include('webui.serverdetails.urls')),
     (r'^restapi/', include('webui.restserver.urls')),
     (r'^puppetclasses/', include('webui.puppetclasses.urls')),
