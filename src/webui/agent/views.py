@@ -9,6 +9,7 @@ from webui.restserver.communication import callRestServer
 from webui.restserver.template import render_agent_template, get_action_inputs
 from django.contrib.auth.decorators import login_required
 from guardian.shortcuts import get_objects_for_user, get_perms
+from guardian.decorators import permission_required
 
 logger = logging.getLogger(__name__)
 
@@ -50,12 +51,14 @@ class QueryMethods(object):
         return None      
      
 @login_required()    
+@permission_required('agent.call_mcollective', return_403=True)
 def query(request, operation, agent=None, action=None, filters='no-filter', dialog_name=None, response_container=None):
     query_methods = QueryMethods()
     methodToCall = getattr(query_methods, operation)
     return HttpResponse(methodToCall(request, agent, action, filters, dialog_name, response_container))
 
 @login_required()
+@permission_required('agent.call_mcollective', return_403=True)
 def execute_action_form(request, agent, action, filters, dialog_name, response_container, xhr=None):
     if request.method == "POST":
         inputs = get_action_inputs(agent, action)

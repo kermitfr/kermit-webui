@@ -12,10 +12,12 @@ from webui.restserver.utils import Actions
 from webui.restserver.communication import callRestServer
 from webui.restserver.template import render_agent_template
 from django.contrib.auth.decorators import login_required
+from guardian.decorators import permission_required
 
 logger = logging.getLogger(__name__)
 
 @login_required()
+@permission_required('agent.call_mcollective', return_403=True)
 def get(request, filters, agent, action, args=None):
     response, content = callRestServer(filters, agent, action, args)
     if response.status == 200:
@@ -24,6 +26,7 @@ def get(request, filters, agent, action, args=None):
     return response
 
 @login_required()
+@permission_required('agent.call_mcollective', return_403=True)
 def getWithTemplate(request, template, filters, agent, action, args=None):
     response, content = callRestServer(filters, agent, action, args)
     if response.status == 200:
@@ -37,6 +40,7 @@ def getWithTemplate(request, template, filters, agent, action, args=None):
     return response
 
 @login_required()
+@permission_required('agent.call_mcollective', return_403=True)
 def executeAction(request, action):
     logger.info("Executing action " + action)
     actions = Actions()

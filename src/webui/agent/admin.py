@@ -22,7 +22,7 @@ class ActionAdmin(GuardedModelAdmin):
         ("General",   {'fields': ['name', 'description']}),
         ("Details",   {'fields': ['agent']}),         
     ]
-    list_display = ('name', 'description')
+    list_display = ('name', 'description', 'agent')
     search_fields = ['name']
 
 class ActionInputAdmin(GuardedModelAdmin):
