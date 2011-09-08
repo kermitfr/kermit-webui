@@ -8,7 +8,7 @@ from django.template.context import RequestContext
 from webui.restserver.communication import callRestServer
 from webui.restserver.template import render_agent_template, get_action_inputs
 from django.contrib.auth.decorators import login_required
-from guardian.shortcuts import get_objects_for_user
+from guardian.shortcuts import get_objects_for_user, get_perms
 
 logger = logging.getLogger(__name__)
 
@@ -17,17 +17,19 @@ class QueryMethods(object):
     def get_action_tree(self, request, agent, action, filters, dialog_name, response_container):
         agents = Agent.objects.filter(enabled=True)
         if not request.user.is_superuser:
-            agents = get_objects_for_user(request.user, 'agent.use_agent', Agent)
+            agents = get_objects_for_user(request.user, 'use_agent', Agent).filter(enabled=True)
         data = []
         for agent in agents:
-            actions = agent.actions
-            if not request.user.is_superuser:
-                actions = get_objects_for_user(request.user, 'agent.use_action', Action)
-            if len(actions.values()) > 0:
+            db_actions = agent.actions
+            actions = []
+            for action in db_actions.iterator():
+                if request.user.has_perm('use_action', action):
+                    actions.append(action)
+            if len(actions) > 0:
                 content = {"isFolder": "true", "title": agent.name, "key":agent.name}
                 children = []
-                for action in actions.values():
-                    action_data = {"title": action['name'], "key":action['name'], "agent":agent.name}
+                for action in actions:
+                    action_data = {"title": action.name, "key":action.name, "agent":agent.name}
                     children.append(action_data)
                 content['children'] = children
                 data.append(content)

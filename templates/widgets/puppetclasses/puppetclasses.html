@@ -171,25 +171,45 @@
 <!--  Context menu -->
 <div class="context">
 	<ul id="menu" class="jeegoocontext cm_default">
+		{% if agents %}
 		<li class="icon">
 			<span class="icon folder"></span>Agents
 			<ul>
-				{%for agent in agents %}
-					{% if agent.actions.values %}
-						<li class="icon">
-							<span class="icon folder"></span>{{agent.name}}
-							<ul>
-								{%for action in agent.actions.values %}
-								<li class="icon" type="agent" agent="{{agent.name}}" action="{{action.name}}">
-									<span class="icon file"></span>{{action.name}}
-								</li>
-								{% endfor %}
-							</ul>
-						</li>
-					{% endif %}
-				{% endfor %}
+				{% if user.is_superuser %}
+					{%for agent in agents %}
+						 {% if agent.actions.values %}
+							<li class="icon">
+								<span class="icon folder"></span>{{agent.name}}
+								<ul>
+									{%for action in agent.actions.values %}
+									<li class="icon" type="agent" agent="{{agent.name}}" action="{{action.name}}">
+										<span class="icon file"></span>{{action.name}}
+									</li>
+									{% endfor %}
+								</ul>
+							</li>
+						{%endif%}
+					{% endfor %}
+				{% else %}
+					{%for key, value in actions.items %}
+						 {% if value %}
+							<li class="icon">
+								<span class="icon folder"></span>{{key}}
+								<ul>
+									{%for action in value %}
+									<li class="icon" type="agent" agent="{{key}}" action="{{action.name}}">
+										<span class="icon file"></span>{{action.name}}
+									</li>
+									{% endfor %}
+								</ul>
+							</li>
+						{%endif%}
+					{% endfor %}
+				{% endif %}
 			</ul>
 		</li>
+		{% endif %}
+		{% if operations %}
 		<li class="icon">
 			<span class="icon folder"></span>Operations
 			<ul>
@@ -200,6 +220,7 @@
 				{% endfor %}
 			</ul>
 		</li>
+		{% endif %}
 	</ul>
 </div>
 <div id="context-execution-dialog"></div>
