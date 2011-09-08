@@ -17,5 +17,5 @@ class Operation(models.Model):
 
     class Meta:
         permissions = (
-            ('executo_operation', 'Can execute operation'),
+            ('execute_operation', 'Can execute operation'),
         )

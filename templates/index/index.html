@@ -6,7 +6,7 @@
 
 {% block breadcrumbs %}
 <div id="breadcrumbs">
-	<a href="{{settings.BASE_URL}}">{% trans 'Home' %}</a>{% if title %} &rsaquo; {{ title }}{% endif %}
+	<a href="{{settings.BASE_URL}}/">{% trans 'Home' %}</a>{% if title %} &rsaquo; {{ title }}{% endif %}
 </div>
 {% endblock %}
 
@@ -19,7 +19,7 @@
 	{% for column_id, content in widgets.items%}
 	<ul id="column{{column_id}}" class="column">
 		{% for current_widget in content%}
-		{% widget current_widget.name %}
+		{% widget current_widget.name user %}
 		{% endfor %}
 	</ul>
 	{% endfor %}

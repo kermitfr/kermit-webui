@@ -6,9 +6,10 @@ Created on Aug 11, 2011
 
 from webui.defaultop.models import Operation
 from django.contrib import admin
+from guardian.admin import GuardedModelAdmin
     
 
-class OperationAdmin(admin.ModelAdmin):
+class OperationAdmin(GuardedModelAdmin):
     fieldsets = [
         ("General",   {'fields': ['name']}),
         ("Details",   {'fields': ['description', 'icon', 'url', 'enabled', 'with_template']}),         

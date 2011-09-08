@@ -6,7 +6,7 @@
 
 {% block breadcrumbs %}
 <div id="breadcrumbs">
-	<a href="{{settings.BASE_URL}}">{% trans 'Home' %}</a>{% if title %} &rsaquo; {{ title }}{% endif %} <a href="/server/details/{{hostname}}/">{% trans 'Server Details' %} - {{hostname}}</a>
+	<a href="{{settings.BASE_URL}}/">{% trans 'Home' %}</a>{% if title %} &rsaquo; {{ title }}{% endif %} <a href="/server/details/{{hostname}}/">{% trans 'Server Details' %} - {{hostname}}</a>
 </div>
 {% endblock %}
 
@@ -14,11 +14,11 @@
 <br/><br/>
 <div id="columns">
 	<ul id="column1" class="column">
-		{% widget "ServerDetails" hostname %}
+		{% widget "ServerDetails" user hostname %}
 	</ul>
 	<ul id="column2" class="column">
-		{% widget "ServerSummary" hostname %}
-		{% widget "SelectedResourceDetails"%}	
+		{% widget "ServerSummary" user hostname %}
+		{% widget "SelectedResourceDetails" user %}	
 	</ul>
 </div>
 {% endblock %} 

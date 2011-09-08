@@ -6,9 +6,10 @@ Created on Aug 11, 2011
 
 from webui.serverstatus.models import Server
 from django.contrib import admin
+from guardian.admin import GuardedModelAdmin
     
 
-class ServerAdmin(admin.ModelAdmin):
+class ServerAdmin(GuardedModelAdmin):
     fieldsets = [
         ("General",   {'fields': ['hostname', 'fqdn']}),
         ("Details",   {'fields': ['os', 'architecture', 'deleted', 'icon', 'puppet_classes', 'agents', 'online', 'puppet_path']}),         

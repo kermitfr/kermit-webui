@@ -6,9 +6,10 @@ Created on Aug 11, 2011
 
 from webui.puppetclasses.models import PuppetClass
 from django.contrib import admin
+from guardian.admin import GuardedModelAdmin
     
 
-class PuppetClassAdmin(admin.ModelAdmin):
+class PuppetClassAdmin(GuardedModelAdmin):
     fieldsets = [
         ("General",   {'fields': ['name']}),
         ("Details",   {'fields': ['description', 'icon', 'enabled', 'parent']}),         

@@ -1155,5 +1155,209 @@
                         "email": "", 
                         "date_joined": "2011-09-06 06:32:47"
                 }
-        }
+        },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 1,
+    "fields": {
+      "name": "retail",
+      "description": "Retail Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 0,
+      "order": 0
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 2,
+    "fields": {
+      "name": "industry",
+      "description": "Industry Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 0,
+      "order": 1
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 3,
+    "fields": {
+      "name": "peoplenfigure",
+      "description": "People en Figure Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 0,
+      "order": 2
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 4,
+    "fields": {
+      "name": "storesdotcom",
+      "description": "Stores.Com Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 1,
+      "order": 3
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 5,
+    "fields": {
+      "name": "proddotcom",
+      "description": "Prod.com Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 1,
+      "order": 4
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 6,
+    "fields": {
+      "name": "hr",
+      "description": "HR Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 1,
+      "order": 4
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 7,
+    "fields": {
+      "name": "preprod",
+      "description": "PreProd Environment",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 2,
+      "order": 0
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 8,
+    "fields": {
+      "name": "prod",
+      "description": "Prod Environment",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 2,
+      "order": 1
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 9,
+    "fields": {
+      "name": "integration",
+      "description": "Integration Environment",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 2,
+      "order": 2
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 10,
+    "fields": {
+      "name": "development",
+      "description": "Development Environment",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 2,
+      "order": 3
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 11,
+    "fields": {
+      "name": "zen",
+      "description": "Zen Zone",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 3,
+      "order": 0
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 12,
+    "fields": {
+      "name": "zes",
+      "description": "Zen Zone",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 3,
+      "order": 1
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 13,
+    "fields": {
+      "name": "stcom",
+      "description": "StCom Appli",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 4,
+      "order": 0
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 14,
+    "fields": {
+      "name": "MixMatch",
+      "description": "MixMatch Appli",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 4,
+      "order": 1
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 15,
+    "fields": {
+      "name": "refprod",
+      "description": "RefProd Appli",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 4,
+      "order": 2
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 16,
+    "fields": {
+      "name": "myprogress",
+      "description": "MyProgress Appli",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 4,
+      "order": 3
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 17,
+    "fields": {
+      "name": "trace",
+      "description": "Trace Appli",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 4,
+      "order": 4
+    }
+  }
 ]
