@@ -1,5 +1,8 @@
 import os
 import django
+from os import path
+import saml2
+
 # calculated paths for django and the site
 # used as starting points for various other paths
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
@@ -205,12 +208,115 @@ LOGGING = {
 }
 
 BASE_URL=""
-LOGIN_URL=BASE_URL + "/accounts/login/"
+#LOGIN_URL=BASE_URL + "/accounts/login/"
 #LOGIN_REDIRECT_URL = '/'
-LOGOUT_LINK = ""
+#LOGOUT_LINK = ""
 
 RUBY_REST_BASE_URL="http://127.0.0.1:4567/mcollective/"
 
 CRON_POLLING_FREQUENCY=60
 
 AMQP_RECEIVER_FOLDER='/tmp'
+
+
+#SAML2 Configuration
+#TODO: Refactor creating custom module
+LOGIN_URL="/saml2/login/"
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_LINK = ""
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+BASEDIR = path.dirname(path.abspath(__file__))
+SAML_CONFIG = {
+    # full path to the xmlsec1 binary programm
+    'xmlsec_binary': '/usr/bin/xmlsec1',
+
+    # your entity id, usually your subdomain plus the url to the metadata view
+    'entityid': 'AutomatixD1',
+    
+    #Added to prevent time not synchro between webui-server and IDP server
+    'timeslack': '5000' ,
+
+    # directory with attribute mapping
+    'attribute_map_dir': path.join(BASEDIR, 'attribute-maps'),
+
+    # this block states what services we provide
+    'service': {
+        # we are just a lonely SP
+        'sp' : {
+            'name': 'Automatix Service Provider',
+            'endpoints': {
+                # url and binding to the assetion consumer service view
+                # do not change the binding or service name
+                'assertion_consumer_service': [
+                    ('http://oxitz1atx02.dktetrix.net/saml/SSO',
+                     saml2.BINDING_HTTP_POST),
+                    ],
+                # url and binding to the single logout service view
+                # do not change the binding or service name
+                'single_logout_service': [
+                    ('http://oxitz1atx02.dktetrix.net/saml/logout',
+                     saml2.BINDING_HTTP_REDIRECT),
+                    ],
+                },
+
+             # attributes that this project need to identify a user
+            'required_attributes': ['uid'],
+
+             # attributes that may be useful to have but not required
+            'optional_attributes': ['eduPersonAffiliation'],
+
+            # in this section the list of IdPs we talk to are defined
+            'idp': {
+                # we do not need a WAYF service since there is
+                # only an IdP defined here. This IdP should be
+                # present in our metadata
+
+                # the keys of this dictionary are entity ids
+                #'https://localhost/simplesaml/saml2/idp/metadata.php': {
+                'idpdecathlon.preprod.org': {
+                    'single_sign_on_service': {
+                        saml2.BINDING_HTTP_REDIRECT: 'https://preprod.idpdecathlon.oxylane.com:9031/idp/SSO.saml2',
+                        },
+                    'single_logout_service': {
+                        saml2.BINDING_HTTP_REDIRECT: 'https://preprod.idpdecathlon.oxylane.com:9031/idp/SLO.saml2',
+                        },
+                    },
+                },
+            },
+        },
+
+    # where the remote metadata is stored
+    'metadata': {
+        'local': [path.join(BASEDIR, 'metadata_example.xml')],
+        },
+
+    # set to 1 to output debugging information
+    'debug': 1,
+
+    # certificate
+    'key_file': path.join(BASEDIR, 'mykey.pem'),  # private part
+    'cert_file': path.join(BASEDIR, 'mycert.pem'),  # public part
+
+    # own metadata settings
+    'contact_person': [
+        {'given_name': 'Test',
+         'sur_name': 'Test',
+         'company': 'Oxylanes',
+         'email_address': 'test@oxylane.com',
+         'contact_type': 'technical'},
+        {'given_name': 'Test2',
+         'sur_name': 'Test2',
+         'company': 'Oxylane',
+         'email_address': 'test2@oxylane.com',
+         'contact_type': 'administrative'},
+        ],
+    # you can set multilanguage information here
+    'organization': {
+        'name': [('Oxylane', 'fr'), ('Oxylane', 'en')],
+        'display_name': [('Oxylane', 'fr'), ('Oxylane', 'en')],
+        'url': [('http://www.oxylane.com', 'fr'), ('http://www.oxylane.com/en', 'en')],
+        },
+    'valid_for': 24,  # how long is our metadata valid
+    }
+

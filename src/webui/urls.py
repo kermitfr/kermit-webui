@@ -34,8 +34,11 @@ urlpatterns = patterns('',
     (r'^agent/', include('webui.agent.urls')),
     (r'^index/(.*)', include('webui.index.urls')),
     (r'^platform/', include('webui.platforms.urls')),
-    (r'^saml/', include('webui.saml.urls')),
     (r'^accounts/login/$', 'django.contrib.auth.views.login'),
     (r'^accounts/logout/$', 'webui.index.views.logout_view'),
+    #TODO: Refactor SAML2 creating a custom module
+    #(r'^saml2/', include('djangosaml2.urls')),
+    #(r'^saml/', include('djangosaml2.urls')),
+    
     (r'', include('webui.index.urls')),
 )
