@@ -191,6 +191,13 @@ LOGGING = {
             'maxBytes': '16777216', # 16megabytes
             'formatter': 'verbose'
         },
+        'kermit_mcol_log':{
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': '/tmp/kermit-mcollective-calls.log',
+            'maxBytes': '16777216', # 16megabytes
+            'formatter': 'verbose'
+        },
     },
     'loggers': {
         'django.request': {
@@ -200,6 +207,10 @@ LOGGING = {
         },
         'webui': {
             'handlers': ['console', 'kermit_log_file'],
+            'level': 'DEBUG',
+        },
+        'webui.restserver.communication': {
+            'handlers': ['kermit_mcol_log'],
             'level': 'DEBUG',
         }
     }

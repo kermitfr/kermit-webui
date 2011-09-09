@@ -14,14 +14,14 @@ def verify_action_acl(user, action_name):
     action = Action.objects.get(name=action_name)
     return user.has_perm('use_action', action)
 
-def update_agents_info():
+def update_agents_info(user):
     agents_list = Agent.objects.filter(enabled=True)
     for agent in agents_list:
-        update_info(agent)
+        update_info(user, agent)
         
-def update_info(agent):
+def update_info(user, agent):
     logger.info('Calling Mcollective to get info for agent ' + agent.name)
-    response, content = callRestServer("limit_targets=1", "agentinfo", "desc", "agentname="+agent.name)
+    response, content = callRestServer(user, "limit_targets=1", "agentinfo", "desc", "agentname="+agent.name)
     if response['status'] == '200':
         json_content = json.loads(content)
         for msg in json_content:

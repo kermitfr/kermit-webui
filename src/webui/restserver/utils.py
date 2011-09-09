@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 class Actions(object):
 
-    def refresh_dashboard(self):
+    def refresh_dashboard(self, user):
         logger.info("Getting all Widgets from database")
         registry.reset_cache()
         widgets_list = registry.refresh_widgets()
@@ -26,29 +26,29 @@ class Actions(object):
             retrieved = registry.get_widget(widget['name'])
             retrieved.db_reference = widget
                 
-    def refresh_server_basic_info(self):
+    def refresh_server_basic_info(self, user):
         logger.info("Calling Refresh Basic Info")
         ops = Operations()
-        ops.server_basic_info()
+        ops.server_basic_info(user)
         
-    def refresh_server_inventory(self):
+    def refresh_server_inventory(self, user):
         logger.info("Calling Refresh Inventory")
         ops = Operations()
-        ops.server_inventory()
+        ops.server_inventory(user)
     
-    def update_agents(self):
+    def update_agents(self, user):
         logger.info("Calling Update Agents Info")
         try: 
-            update_agents_info()
+            update_agents_info(user)
         except Exception, err:
             logger.error('ERROR: ' + str(err))
         
 
 class Operations(object):
     
-    def server_basic_info(self):
+    def server_basic_info(self, user):
         try: 
-            response, content = callRestServer('no-filter', 'nodeinfo', 'basicinfo')
+            response, content = callRestServer(user, 'no-filter', 'nodeinfo', 'basicinfo')
             if response.status == 200:
                 jsonObj = json.loads(content)
                 update_time = datetime.now()
@@ -105,17 +105,17 @@ class Operations(object):
         #Create PuppetClass Path
         self.create_path(server, mcresponse['data']['classes'])
        
-    def server_inventory(self):
+    def server_inventory(self, user):
         #TODO: Refactor making it dynamic with Platforms
         logger.debug("Calling OC4J Inventory")
         try: 
-            response, content = callRestServer('no-filter', 'a7xinventory', 'oasinv')
+            response, content = callRestServer(user, 'no-filter', 'a7xinventory', 'oasinv')
         except Exception, err:
             logger.error('ERROR: ' + str(err))
             
         logger.debug("Calling WebLoginc Inventory")
         try: 
-            response, content = callRestServer('no-filter', 'a7xinventory', 'webloinv')
+            response, content = callRestServer(user, 'no-filter', 'a7xinventory', 'webloinv')
         except Exception, err:
             logger.error('ERROR: ' + str(err))
     

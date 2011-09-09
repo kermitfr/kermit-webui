@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 @permission_required('agent.call_mcollective', return_403=True)
 def get(request, filters, agent, action, args=None):
     if verify_agent_acl(request.user, agent) and verify_action_acl(request.user, action):
-        response, content = callRestServer(filters, agent, action, args)
+        response, content = callRestServer(request.user, filters, agent, action, args)
         if response.status == 200:
             json_data = render_agent_template(request, {}, content, {}, agent, action)
             return HttpResponse(json_data, mimetype="application/json")
@@ -37,7 +37,7 @@ def get(request, filters, agent, action, args=None):
 @permission_required('agent.call_mcollective', return_403=True)
 def getWithTemplate(request, template, filters, agent, action, args=None):
     if verify_agent_acl(request.user, agent) and verify_action_acl(request.user, action):
-        response, content = callRestServer(filters, agent, action, args)
+        response, content = callRestServer(request.user, filters, agent, action, args)
         if response.status == 200:
             jsonObj = json.loads(content)
             templatePath = 'ajax/' + template + '.html'
@@ -57,7 +57,7 @@ def executeAction(request, action):
     logger.info("Executing action " + action)
     actions = Actions()
     actionToExecute = getattr(actions, action)
-    actionToExecute()
+    actionToExecute(request.user)
     return HttpResponse('')
 
 @login_required()
@@ -66,7 +66,7 @@ def executeGeneralAction(request, action, filter, type):
     logger.info("Executing action " + action)
     actions = Actions()
     actionToExecute = getattr(actions, action)
-    actionToExecute(filter, type)
+    actionToExecute(request.user, filter, type)
     return HttpResponse('')
         
 

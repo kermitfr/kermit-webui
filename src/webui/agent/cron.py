@@ -21,7 +21,7 @@ class UpdateAgentsInfo(Job):
 
         def job(self):
             logger.info("Running Job UpdateAgentsInfo")
-            update_agents_info()
+            update_agents_info('UpdateAgentInfo-CronJob')
                 
                 
 cronScheduler.register(UpdateAgentsInfo)

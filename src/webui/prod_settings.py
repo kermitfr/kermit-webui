@@ -151,6 +151,7 @@ INSTALLED_APPS = (
     'webui.puppetclasses', 
     'webui.serverstatus',
     'webui.serverdetails',
+    'webui.appdeploy',
 )
 
 FIXTURE_DIRS = (
@@ -189,7 +190,14 @@ LOGGING = {
         'kermit_log_file':{
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': '/tmp/kermit-webui.log',
+            'filename': '/var/log/kermit/kermit-webui.log',
+            'maxBytes': '16777216', # 16megabytes
+            'formatter': 'verbose'
+        },
+        'kermit_mcol_log':{
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': '/var/log/kermit/kermit-mcollective-calls.log',
             'maxBytes': '16777216', # 16megabytes
             'formatter': 'verbose'
         },
@@ -202,6 +210,10 @@ LOGGING = {
         },
         'webui': {
             'handlers': ['console', 'kermit_log_file'],
+            'level': 'DEBUG',
+        },
+        'webui.restserver.communication': {
+            'handlers': ['kermit_mcol_log'],
             'level': 'DEBUG',
         }
     }

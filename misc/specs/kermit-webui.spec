@@ -1,7 +1,7 @@
 Summary: Mcollective WebUI
 Name: kermit-webui
-Version: 0.0.2
-Release: 2
+Version: 0.0.3
+Release: 1
 License: GPL
 Group: Applications/System
 URL: https://github.com/thinkfr/kermit-webui
@@ -26,12 +26,13 @@ python26 ./src/webui/manage.py syncdb --noinput
 %install
 %{__rm} -rf $RPM_BUILD_ROOT
 %{__mkdir} -p $RPM_BUILD_ROOT/etc/httpd/conf.d
-%{__mkdir} -p $RPM_BUILD_ROOT/etc/%{name}
+%{__mkdir} -p $RPM_BUILD_ROOT/etc/kermit/webui
 %{__mkdir} -p $RPM_BUILD_ROOT/usr/share/%{name}
 %{__mkdir} -p $RPM_BUILD_ROOT/usr/share/%{name}/db
 %{__mkdir} -p $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}
 %{__mkdir} -p $RPM_BUILD_ROOT/var/www/%{name}
 %{__mkdir} -p $RPM_BUILD_ROOT/var/www/%{name}/uploads
+%{__mkdir} -p $RPM_BUILD_ROOT/var/log/kermit
 
 %{__cp} -R ./src/* $RPM_BUILD_ROOT/usr/share/%{name}
 %{__cp} -Rf ./src/webui/prod_settings.py $RPM_BUILD_ROOT/usr/share/%{name}/webui/settings.py
@@ -40,8 +41,8 @@ python26 ./src/webui/manage.py syncdb --noinput
 
 %{__cp} -R ./templates $RPM_BUILD_ROOT/usr/share/%{name}
 %{__cp} -R ./static $RPM_BUILD_ROOT/var/www/%{name}
-%{__cp} -R ./fixtures $RPM_BUILD_ROOT/etc/%{name}
-%{__cp} -R ./misc/scripts $RPM_BUILD_ROOT/etc/%{name}
+%{__cp} -R ./fixtures $RPM_BUILD_ROOT/etc/kermit/webui
+%{__cp} -R ./misc/scripts $RPM_BUILD_ROOT/etc/kermit/webui
 %{__cp} -R ./README $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}
 %{__cp} ./misc/httpd.conf/kermit-webui.conf $RPM_BUILD_ROOT/etc/httpd/conf.d
 %{__cp} -R README $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}
@@ -64,6 +65,7 @@ python26 ./src/webui/manage.py syncdb --noinput
 %attr(0777,apache,apache) %dir /usr/share/%{name}/db
 %attr(0777,apache,apache) %dir /usr/share/%{name}/db/sqlite.db
 %attr(0750,apache,apache) %dir /var/www/%{name}/uploads
+%attr(0644,apache,apache) %dir /var/log/kermit
 
 %pre
 

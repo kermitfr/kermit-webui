@@ -4,7 +4,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def callRestServer(filters, agent, action, args=None):
+def callRestServer(user, filters, agent, action, args=None):
+    logger.info("%s is calling agent %s action %s on %s" % (user, agent, action, filters))
     http = httplib2.Http(timeout=20)
     url = settings.RUBY_REST_BASE_URL
     url += filters + "/"

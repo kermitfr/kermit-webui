@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)
 def get_app_list(request, filters, type):
-    return HttpResponse(get_apps_list(filters, type))
+    return HttpResponse(get_apps_list(request.user, filters, type))
     
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)
@@ -43,7 +43,7 @@ def redeploy_app(request, filters, dialog_name, xhr=None):
             if appname and app_type:
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to deploy %s application on %s filtered server" % (appname, filters))
-                response, content = callRestServer(filters, 'a7xdeploy', 'redeploy', 'appname='+appname)
+                response, content = callRestServer(request.user, filters, 'a7xdeploy', 'redeploy', 'appname='+appname)
                 #TODO: Improve reading content data
                 if response.status == 200:
                     rdict.update({"result":"Application Deployed"})
