@@ -148,6 +148,7 @@ INSTALLED_APPS = (
     'webui.puppetclasses', 
     'webui.serverstatus',
     'webui.serverdetails',
+    'webui.appdeploy',
 )
 
 FIXTURE_DIRS = (

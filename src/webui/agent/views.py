@@ -81,6 +81,8 @@ def execute_action_form(request, agent, action, filters, dialog_name, response_c
                     d.update({e[0]:unicode(e[1])}) # e[0] is the id, unicode(e[1]) is the error HTML.
                 # Bung all that into the dict
                 rdict.update({'errs': d })
+                # Make a json whatsit to send back.
+                json_data = json.dumps(rdict, ensure_ascii=False)
             else:
                 logger.debug("Parameters check: OK.")
                 logger.debug("Creating args")

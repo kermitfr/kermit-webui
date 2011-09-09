@@ -59,5 +59,14 @@ def executeAction(request, action):
     actionToExecute = getattr(actions, action)
     actionToExecute()
     return HttpResponse('')
+
+@login_required()
+@permission_required('agent.call_mcollective', return_403=True)
+def executeGeneralAction(request, action, filter, type):
+    logger.info("Executing action " + action)
+    actions = Actions()
+    actionToExecute = getattr(actions, action)
+    actionToExecute(filter, type)
+    return HttpResponse('')
         
 

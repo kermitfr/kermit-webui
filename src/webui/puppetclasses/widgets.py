@@ -8,6 +8,8 @@ from webui.puppetclasses.models import PuppetClass
 from webui.agent.models import Agent, Action
 from webui.defaultop.models import Operation
 from guardian.shortcuts import get_objects_for_user
+from webui import settings
+from webui.appdeploy import settings as appdeploysettings
 
 class DashBoardPuppetClasses(Widget):
     template = "widgets/puppetclasses/puppetclasses.html"
@@ -26,7 +28,12 @@ class DashBoardPuppetClasses(Widget):
         operations = Operation.objects.filter(enabled=True)
         if not self.user.is_superuser:
             operations = get_objects_for_user(self.user, 'execute_operation', Operation).filter(enabled=True)
-        widget_context = {"agents":agents, "operations":operations, "actions": actions}
+            
+        #TODO: Refactor to make it dynamic (sort of injection)
+        deployment = {}
+        if 'webui.appdeploy' in settings.INSTALLED_APPS:
+            deployment['operations'] = appdeploysettings.OPERATION_ENABLED
+        widget_context = {"agents":agents, "operations":operations, "actions": actions, "deployment":deployment}
         return dict(super_context.items() + widget_context.items())
     
     

@@ -12,6 +12,7 @@ from webui.widgets.loading import registry
 from webui.agent.models import Agent
 from webui.agent.utils import update_agents_info
 from webui.restserver.communication import callRestServer
+from django.http import HttpResponse
 
 logger = logging.getLogger(__name__)
 
@@ -41,6 +42,7 @@ class Actions(object):
             update_agents_info()
         except Exception, err:
             logger.error('ERROR: ' + str(err))
+        
 
 class Operations(object):
     

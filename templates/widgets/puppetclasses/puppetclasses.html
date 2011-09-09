@@ -42,6 +42,8 @@
 					//TODO: Make a complete refactor of this part
 					url = url.replace('no-filter', filtersList);
 					sendRequestToMcollective(url, 'response-container');			
+				} else if ($(this).attr('type') == "deploy") {
+					getDeployForm('deploy-dialog', $(this).attr('action'), filtersList)	
 				}
 
 				$(context).animate({
@@ -221,8 +223,21 @@
 			</ul>
 		</li>
 		{% endif %}
+		{% if deployment %}
+		<li class="icon">
+			<span class="icon folder"></span>Deployment
+			<ul>
+				{%for depop in deployment.operations %}
+				<li class="icon" type="deploy" action="{{depop}}">
+					<span class="icon file"></span>{{depop}}
+				</li>
+				{% endfor %}
+			</ul>
+		</li>
+		{% endif %}
 	</ul>
 </div>
 <div id="context-execution-dialog"></div>
+<div id="deploy-dialog"></div>
 <div id="classestree"></div>
 {% endblock %} 
