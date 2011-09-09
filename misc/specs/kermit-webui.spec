@@ -65,7 +65,7 @@ python26 ./src/webui/manage.py syncdb --noinput
 %attr(0777,apache,apache) %dir /usr/share/%{name}/db
 %attr(0777,apache,apache) %dir /usr/share/%{name}/db/sqlite.db
 %attr(0750,apache,apache) %dir /var/www/%{name}/uploads
-%attr(0644,apache,apache) %dir /var/log/kermit
+%attr(0755,apache,apache) %dir /var/log/kermit
 
 %pre
 
