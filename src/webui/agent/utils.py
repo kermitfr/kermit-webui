@@ -6,6 +6,14 @@ from django.utils import simplejson as json
 logger = logging.getLogger(__name__)
 
 
+def verify_agent_acl(user, agent_name):
+    agent = Agent.objects.get(name=agent_name)
+    return user.has_perm('use_agent', agent)
+
+def verify_action_acl(user, action_name):
+    action = Action.objects.get(name=action_name)
+    return user.has_perm('use_action', action)
+
 def update_agents_info():
     agents_list = Agent.objects.filter(enabled=True)
     for agent in agents_list:
