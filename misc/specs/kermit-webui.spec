@@ -1,7 +1,7 @@
 Summary: Mcollective WebUI
 Name: kermit-webui
 Version: 0.0.3
-Release: 1
+Release: 2
 License: GPL
 Group: Applications/System
 URL: https://github.com/thinkfr/kermit-webui
@@ -21,7 +21,11 @@ python webui/manage.py syncdb --noinput
 %setup -n %{name}
 
 %build
-python26 ./src/webui/manage.py syncdb --noinput
+%if 0%{?el5}
+	python26 ./src/webui/manage.py syncdb --noinput
+%else
+	python ./src/webui/manage.py syncdb --noinput
+%endif
 
 %install
 %{__rm} -rf $RPM_BUILD_ROOT
