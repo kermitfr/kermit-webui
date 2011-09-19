@@ -1,10 +1,20 @@
 import os
 import django
+import ConfigParser
+
 # calculated paths for django and the site
 # used as starting points for various other paths
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 #MEDIA_ROOT = os.path.join(SITE_ROOT, 'assets')
+
+MAINCONF = SITE_ROOT+'/kermit-webui.cfg'
+if not os.path.isfile(MAINCONF):
+    MAINCONF = '/etc/kermit/kermit-webui.cfg'
+
+CONF = ConfigParser.ConfigParser()
+CONF.read(MAINCONF)
+
 # Django settings for the webui.
 
 DEBUG = True
@@ -18,12 +28,12 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': SITE_ROOT + '/../sqlite.db',   # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': CONF.get('webui-database', 'driver'), # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': CONF.get('webui-database', 'name'),   # Or path to database file if using sqlite3.
+        'USER': CONF.get('webui-database', 'user'),    # Not used with sqlite3.
+        'PASSWORD': CONF.get('webui-database', 'password'),  # Not used with sqlite3.
+        'HOST': CONF.get('webui-database', 'host'),    # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': CONF.get('webui-database', 'port'),    # Set to empty string for default. Not used with sqlite3.
     }
 }
 
@@ -77,12 +87,16 @@ STATIC_URL = '/static/'
 ADMIN_MEDIA_PREFIX = STATIC_URL + "grappelli/"
 
 # Additional locations of static files
+#Configuring static file by-exception
+if not CONF.get("webui", "static_file_location"):
+    static_dir = SITE_ROOT + '/../../static'
+else:
+    static_dir = CONF.get("webui", "static_file_location")
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    SITE_ROOT + '/../../static',
-
+    static_dir,
 )
 
 # List of finder classes that know how to find static files in
@@ -120,11 +134,16 @@ ANONYMOUS_USER_ID = -1
 
 ROOT_URLCONF = 'webui.urls'
 
+#Configuring templates by-exception
+if not CONF.get("webui", "templates_location"):
+    templates_dir = SITE_ROOT + '/../../templates'
+else:
+    templates_dir = CONF.get("webui", "templates_location")
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative path
-    SITE_ROOT + '/../../templates'
+    templates_dir
 )
 
 INSTALLED_APPS = (
@@ -151,8 +170,13 @@ INSTALLED_APPS = (
     'webui.appdeploy',
 )
 
+#Configuring fixtures by-exception
+if not CONF.get("webui", "fixtures_location"):
+    fixtures_dir = SITE_ROOT + '/../../fixtures/'
+else:
+    fixtures_dir = CONF.get("webui", "fixtures_location")
 FIXTURE_DIRS = (
-   SITE_ROOT + '/../../fixtures/',
+   fixtures_dir,
 )
 
 GRAPPELLI_ADMIN_HEADLINE = 'Kermit Admin Area'
@@ -185,16 +209,16 @@ LOGGING = {
             'formatter': 'simple'
         },
         'kermit_log_file':{
-            'level': 'DEBUG',
+            'level': CONF.get('webui_logs', 'main.level'),
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': '/tmp/kermit-webui.log',
+            'filename': CONF.get('webui_logs', 'main.file'),
             'maxBytes': '16777216', # 16megabytes
             'formatter': 'verbose'
         },
         'kermit_mcol_log':{
-            'level': 'DEBUG',
+            'level': CONF.get('webui_logs', 'calls.level'),
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': '/tmp/kermit-mcollective-calls.log',
+            'filename': CONF.get('webui_logs', 'calls.file'),
             'maxBytes': '16777216', # 16megabytes
             'formatter': 'verbose'
         },
@@ -207,23 +231,23 @@ LOGGING = {
         },
         'webui': {
             'handlers': ['console', 'kermit_log_file'],
-            'level': 'DEBUG',
+            'level': CONF.get('webui_logs', 'main.level'),
         },
         'webui.restserver.communication': {
             'handlers': ['kermit_mcol_log'],
-            'level': 'DEBUG',
+            'level': CONF.get('webui_logs', 'calls.level'),
         }
     }
 }
 
-BASE_URL=""
+BASE_URL=CONF.get('webui', 'base_url')
 LOGIN_URL=BASE_URL + "/accounts/login/"
 #LOGIN_REDIRECT_URL = '/'
 LOGOUT_LINK = ""
 
-RUBY_REST_BASE_URL="http://localhost:4567/mcollective/"
+RUBY_REST_BASE_URL=CONF.get('webui', 'rest_server_url')
 
 CRON_POLLING_FREQUENCY=60
 
-AMQP_RECEIVER_FOLDER='/tmp'
+AMQP_RECEIVER_FOLDER=CONF.get('webui', 'amqp_receive_folder')
 

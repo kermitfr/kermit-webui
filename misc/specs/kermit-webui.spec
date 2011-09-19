@@ -1,7 +1,7 @@
 Summary: Mcollective WebUI
 Name: kermit-webui
 Version: 0.0.3
-Release: 2
+Release: 3
 License: GPL
 Group: Applications/System
 URL: https://github.com/thinkfr/kermit-webui
@@ -46,9 +46,10 @@ python webui/manage.py syncdb --noinput
 %{__mkdir} -p $RPM_BUILD_ROOT/var/log/kermit
 
 %{__cp} -R ./src/* $RPM_BUILD_ROOT/usr/share/%{name}
-%{__cp} -Rf ./src/webui/prod_settings.py $RPM_BUILD_ROOT/usr/share/%{name}/webui/settings.py
-%{__cp} -R ./src/sqlite.db $RPM_BUILD_ROOT/usr/share/%{name}/db
+%{__cp} -R /tmp/sqlite.db $RPM_BUILD_ROOT/usr/share/%{name}/db
+%{__cp} -R ./misc/config/kermit-webui.cfg.prod $RPM_BUILD_ROOT/etc/kermit/kermit-webui.cfg
 %{__rm} -Rf $RPM_BUILD_ROOT/usr/share/%{name}/sqlite.db
+%{__rm} -Rf $RPM_BUILD_ROOT/usr/share/%{name}/webui/kermit-webui.cfg
 
 %{__cp} -R ./templates $RPM_BUILD_ROOT/usr/share/%{name}
 %{__cp} -R ./static $RPM_BUILD_ROOT/var/www/%{name}
@@ -77,6 +78,7 @@ python webui/manage.py syncdb --noinput
 %attr(0777,apache,apache) %dir /usr/share/%{name}/db/sqlite.db
 %attr(0750,apache,apache) %dir /var/www/%{name}/uploads
 %attr(0755,apache,apache) %dir /var/log/kermit
+%attr(0755,apache,apache) %dir /etc/kermit/kermit-webui.cfg
 
 %pre
 
@@ -93,6 +95,10 @@ fi
 %postun
 
 %changelog
+* Thu Sep 19 2011 Marco Mornati <ilmorna@gmail.com> - 0.0.3-3
+	Fixed poblems deploying application on different path
+	Added external properties file
+	
 * Thu Sep 1 2011 Marco Mornati <ilmorna@gmail.com> - 0.0.2-2
 	Fixed problem on OC4J with apps without poollist
 	Changed id for server: from hostname to fqdn
