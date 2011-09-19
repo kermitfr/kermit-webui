@@ -3,6 +3,7 @@ from django.conf import settings
 SUB_APPS = (
         'oc4j',
         'weblogic',
+        'bar',
 )
 
 

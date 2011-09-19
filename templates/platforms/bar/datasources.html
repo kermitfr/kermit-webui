@@ -1,0 +1,35 @@
+{% load i18n %} 
+<img class="introicon" src="{{static_url}}images/icons/datasources.png"/>
+<div class="info">
+	<strong>{% trans 'Pools List' %}</strong>
+	<table class="server-details">
+		<thead>
+			<tr>
+				<th>{% trans 'Name' %}</th>
+				<th>{% trans 'Server' %}</th>
+				<th>{% trans 'Instance' %}</th>
+				<th>{% trans 'User' %}</th>
+				<th>{% trans 'Url' %}</th>
+				<th>{% trans 'Port' %}</th>
+				<th>{% trans 'Max-Active' %}</th>
+				<th>{% trans 'Min-Idle' %}</th>
+				<th>{% trans 'Max Opened PreparedStatements' %}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for datasource in datasources%}
+			<tr>
+				<td>{{datasource.poolname}}</td>
+				<td>{{datasource.bddserver}}</td>
+				<td>{{datasource.bddinstance}}</td>
+				<td>{{datasource.username}}</td>
+				<td style="width: 100px;">{{datasource.url}}</td>
+				<td>{{datasource.port}}</td>
+				<td>{{datasource.maxActive}}</td>
+				<td>{{datasource.minIdle}}</td>
+				<td>{{datasource.maxOpenPreparedStatements}}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>

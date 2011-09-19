@@ -1,0 +1,26 @@
+{% load i18n %} <img class="introicon" src="{{static_url}}images/icons/application.png"/>
+<div class="infohighlight">
+	<strong>{{bar.name}}</strong>
+	<br/>
+	<strong>{% trans 'Console Version' %}</strong>: {{bar.version}}
+	<br/>
+</div>
+<br/>
+<div class="info">
+	<table class="server-details">
+		<thead>
+			<tr>
+				<th>{% trans 'Name' %}</th>
+				<th>{% trans 'Url' %}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for pool in bar.datasources%}
+			<tr>
+				<td>{{pool.poolname}}</td>
+				<td>{{pool.url}}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
