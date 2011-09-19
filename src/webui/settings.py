@@ -1,6 +1,7 @@
 import os
 import django
 import ConfigParser
+import imp
 
 # calculated paths for django and the site
 # used as starting points for various other paths
@@ -241,9 +242,23 @@ LOGGING = {
 }
 
 BASE_URL=CONF.get('webui', 'base_url')
-LOGIN_URL=BASE_URL + "/accounts/login/"
+#LOGIN_URL=BASE_URL + "/accounts/login/"
 #LOGIN_REDIRECT_URL = '/'
-LOGOUT_LINK = ""
+#LOGOUT_LINK = ""
+
+auth_method=CONF.get('webui', 'authentication')
+
+if auth_method:
+    platform_name = 'webui.authentication.' + auth_method + ".settings"
+    conf_module = __import__(platform_name, globals(), locals(), "settings")
+    # Load the config settings properties into the local scope.
+    for setting in dir(conf_module):
+        if setting == setting.upper():
+            locals()[setting] = getattr(conf_module, setting)    
+            
+else:
+    from webui.authentication.default.settings import *
+    
 
 RUBY_REST_BASE_URL=CONF.get('webui', 'rest_server_url')
 

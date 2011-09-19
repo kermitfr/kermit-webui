@@ -1,7 +1,5 @@
 import os
 import django
-from os import path
-#import saml2
 
 # calculated paths for django and the site
 # used as starting points for various other paths
