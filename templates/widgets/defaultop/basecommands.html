@@ -11,7 +11,7 @@
 			{% for operation in operations %}
 			<tr>
 				<td height="22" align="left" class="treeCell" style="padding-top: 0px; padding-bottom: 0px; width: 246px; overflow: hidden;">
-				<div style="overflow:hidden;WIDTH:242px;cursor: pointer;" cellclipdiv="true" onclick="{%if operation.with_template %}callMcollectiveWithTemplateRsp{% else %}callMcollective{% endif %}('{{operation.url}}', 'response-container')">
+				<div style="overflow:hidden;WIDTH:242px;cursor: pointer;" cellclipdiv="true" onclick="{%if operation.with_template %}callMcollectiveWithTemplateRsp{% else %}callMcollective{% endif %}('{{base_url}}{{operation.url}}', 'response-container')">
 					<nobr>
 						<table cellspacing="0" cellpadding="0" style="margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;" class="treeCell">
 							<tbody>

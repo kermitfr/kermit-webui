@@ -35,15 +35,16 @@
 					filtersList += filterType + '=' + node.data.title
 				}
 				if($(this).attr('type') == "agent") {
-					getExecutionForm('context-execution-dialog', $(this).attr('agent'), $(this).attr('action'), filtersList, 'response-container')
+					getExecutionForm('{{settings.BASE_URL}}', 'context-execution-dialog', $(this).attr('agent'), $(this).attr('action'), filtersList, 'response-container')
 				} else if($(this).attr('type') == "operation") {
 					var url = $(this).attr('url');
 					//Supposing that all default operations are unfiltered
 					//TODO: Make a complete refactor of this part
 					url = url.replace('no-filter', filtersList);
+					url = "{{settings.BASE_URL}}/" + url;
 					sendRequestToMcollective(url, 'response-container');			
 				} else if ($(this).attr('type') == "deploy") {
-					getDeployForm('deploy-dialog', $(this).attr('action'), filtersList)	
+					getDeployForm('{{settings.BASE_URL}}', 'deploy-dialog', $(this).attr('action'), filtersList)	
 				}
 
 				$(context).animate({

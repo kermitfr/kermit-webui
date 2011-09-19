@@ -103,16 +103,16 @@
 		<h2>{% trans 'Custom Admin Actions' %}</h2>
 		<ul class="actionlist">
 			<li>
-				<a href="#" onclick="executeAction('/restapi/execute/refresh_dashboard/');">{% trans 'Refresh Widgets' %}</a>
+				<a href="#" onclick="executeAction('{% url action_executer "refresh_dashboard" %}');">{% trans 'Refresh Widgets' %}</a>
 			</li>
 			<li>
-				<a href="#" onclick="executeAction('/restapi/execute/refresh_server_basic_info/');">{% trans 'Refresh Server Basic Info' %}</a>
+				<a href="#" onclick="executeAction('{% url action_executer "refresh_server_basic_info" %}');">{% trans 'Refresh Server Basic Info' %}</a>
 			</li>
 			<li>
-				<a href="#" onclick="executeAction('/restapi/execute/refresh_server_inventory/');">{% trans 'Refresh Server Inventory' %}</a>
+				<a href="#" onclick="executeAction('{% url action_executer "refresh_server_inventory" %}');">{% trans 'Refresh Server Inventory' %}</a>
 			</li>
 			<li>
-				<a href="#" onclick="executeAction('/restapi/execute/update_agents/');">{% trans 'Update Agents Info' %}</a>
+				<a href="#" onclick="executeAction('{% url action_executer "update_agents" %}');">{% trans 'Update Agents Info' %}</a>
 			</li>
 		</ul>
 		</div>

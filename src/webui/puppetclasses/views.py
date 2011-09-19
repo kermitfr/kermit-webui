@@ -5,6 +5,7 @@ import logging
 from webui.serverstatus.models import Server
 from django.contrib.auth.decorators import login_required
 from guardian.shortcuts import get_objects_for_user
+from webui import settings
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +39,7 @@ class QueryMethods(object):
                 if not user.is_superuser:
                     servers = get_objects_for_user(user, 'use_server', Server).filter(puppet_path=path, deleted=False)
         for server in servers:
-            serverdata = {"title":server.fqdn, "url": "/server/details/"+server.fqdn+"/", "key":server.fqdn}
+            serverdata = {"title":server.fqdn, "url": settings.BASE_URL + "/server/details/"+server.fqdn+"/", "key":server.fqdn}
             data.append(serverdata)
              
         return json.dumps(data)

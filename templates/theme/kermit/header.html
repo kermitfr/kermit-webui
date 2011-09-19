@@ -21,15 +21,15 @@
                     {% trans 'Change password' %}</a></li>
                     <!-- Logout -->
                     {% url admin:logout as logout_url %}
-                    <li><a href="/accounts/logout/">
+                    <li><a href="{{base_url}}/accounts/logout/">
                     {% trans 'Log out' %}</a></li>
                 </ul>
             </li>
         	{% block mainmenu %}
         	<!-- Main Menu -->
-            <li><a href="/">Dashboard</a></li>
+            <li><a href="{{base_url}}/">Dashboard</a></li>
             {% if user.is_staff %}
-            	<li><a href="/admin/">Admin</a></li>
+            	<li><a href="{{base_url}}/admin/">Admin</a></li>
             {% endif %}
             {% endblock %}
             <!-- Username -->

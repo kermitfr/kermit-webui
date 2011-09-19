@@ -6,7 +6,7 @@
 
 {% block breadcrumbs %}
 <div id="breadcrumbs">
-	<a href="{{settings.BASE_URL}}/">{% trans 'Home' %}</a>{% if title %} &rsaquo; {{ title }}{% endif %} <a href="/server/details/{{hostname}}/">{% trans 'Server Details' %} - {{hostname}}</a>
+	<a href="{{base_url}}/">{% trans 'Home' %}</a>{% if title %} &rsaquo; {{ title }}{% endif %} <a href="{{base_url}}/server/details/{{hostname}}/">{% trans 'Server Details' %} - {{hostname}}</a>
 </div>
 {% endblock %}
 

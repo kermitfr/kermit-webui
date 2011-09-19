@@ -1,5 +1,5 @@
-function getExecutionForm(execution_dialog_name, agent, action, filters, response_container_name) {
-	url = '/agent/action/get_dialog_form/' + agent + '/' + action + '/' + filters + '/' + execution_dialog_name + '/' + response_container_name + '/';
+function getExecutionForm(base_url, execution_dialog_name, agent, action, filters, response_container_name) {
+	url = base_url + '/agent/action/get_dialog_form/' + agent + '/' + action + '/' + filters + '/' + execution_dialog_name + '/' + response_container_name + '/';
 	$.ajax({
 		// The link we are accessing.
 		url : url,
@@ -29,15 +29,15 @@ function getExecutionForm(execution_dialog_name, agent, action, filters, respons
 				});
 				$("#" + execution_dialog_name).show();
 			} else {
-				callMcollective('/restapi/mcollective/' + filters + '/' + agent + '/' + action + '/', response_container_name);
+				callMcollective(base_url + '/restapi/mcollective/' + filters + '/' + agent + '/' + action + '/', response_container_name);
 			}
 
 		}
 	});
 }
 
-function getDeployForm(deploy_form_name, operation, filters) {
-	url = '/appdeploy/get_deploy_form/' + deploy_form_name + '/' + operation + '/' + filters + '/';
+function getDeployForm(base_url, deploy_form_name, operation, filters) {
+	url = base_url + '/appdeploy/get_deploy_form/' + deploy_form_name + '/' + operation + '/' + filters + '/';
 	$.ajax({
 		// The link we are accessing.
 		url : url,

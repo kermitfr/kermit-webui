@@ -6,6 +6,7 @@ Created on Aug 12, 2011
 from webui.widgets.base import Widget
 from webui.defaultop.models import Operation
 from guardian.shortcuts import get_objects_for_user
+from webui import settings
 
 class DashBoardDefaultOps(Widget):
     template = "widgets/defaultop/basecommands.html"
@@ -15,7 +16,7 @@ class DashBoardDefaultOps(Widget):
         operations = Operation.objects.filter(enabled=True)
         if not self.user.is_superuser:
             operations = get_objects_for_user(self.user, 'execute_operation', Operation).filter(enabled=True)
-        widget_context = {"operations":operations}
+        widget_context = {"operations":operations, "base_url":settings.BASE_URL}
         return dict(super_context.items() + widget_context.items())
     
 class DashBoardOpResults(Widget):
