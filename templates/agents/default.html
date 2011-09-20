@@ -2,26 +2,54 @@
 
 <script>
 	$(document).ready(function() {
-        $(".collapsibleContainer").collapsiblePanel();
+        $('#responsedata').dataTable();
     });
 </script>
 
 <h3>{% trans 'Response from'%} {{agent}} - {{action}}</h3>
+<div>
+	<table id="responsedata" class="serverstatus">
+		<thead>
+			<th>{% trans 'Server'%}</th>
+			<th>{% trans 'Status'%}</th>
+			<th>{% trans 'Message'%}</th>
+			<th>{% trans 'Response'%}</th>
+		</thead>
+			
+		<tbody>
+				
 {% for resp in content %}
-	<div class="collapsibleContainer" title="{{resp.sender}}" closed="{% if forloop.first %}false{% else %}true{% endif %}">
-		{% if resp.statuscode == 0 %}
-			<span>{% trans 'Response status'%}: <img src="{{settings.STATIC_URL}}images/icons/ok.png" style="height: 16px;"/></span>
-		{% else %}
-			<span>{% trans 'Response status'%}: <img src="{{settings.STATIC_URL}}images/icons/ko.png" style="height: 16px;"/> {{resp.statusmsg}}</span>
-		{% endif %} 
-		<div class="infohighlight">
-		{% for content,data in resp.data.items %}
-			{% for key,value in outputs.items %}
-			 {% if key == content %}
-			 	<b>{{value}}</b>: {{data}} <br>
-			 {% endif %} 
-			{% endfor%}
-		{% endfor %}
-		</div>
-	</div>
+		<tr>
+			<td>
+				{{resp.sender}}
+			</td>
+			<td>
+				{% if resp.statuscode == 0 %}
+					<img src="{{settings.STATIC_URL}}images/icons/ok.png" style="height: 16px;"/>
+				{% else %}
+					<img src="{{settings.STATIC_URL}}images/icons/ko.png" style="height: 16px;"/>
+				{% endif %}
+			</td> 
+			<td>
+				{% if resp.statuscode == 0 %}
+				 &nbsp;
+				 {% else %}
+				 	{{resp.statusmsg}}
+				 {% endif %}
+			</td>
+			<td>
+				<div class="infohighlight">
+					{% for content,data in resp.data.items %}
+						{% for key,value in outputs.items %}
+						 {% if key == content %}
+						 	<b>{{value}}</b>: {{data}} <br>
+						 {% endif %} 
+						{% endfor%}
+					{% endfor %}	
+				</div>
+			</td>
+		</tr>
 {% endfor %}
+		</tbody>
+	</table>
+</div>
