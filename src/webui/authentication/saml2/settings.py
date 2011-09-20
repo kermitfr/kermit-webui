@@ -17,7 +17,7 @@ CONF.read(MAINCONF)
 
 BASE_URL=CONF.get('webui', 'base_url')
 
-LOGIN_URL=BASE_URL+"/saml2/login/"
+LOGIN_URL=BASE_URL+"/auth/saml2/login/"
 LOGIN_REDIRECT_URL = BASE_URL
 LOGOUT_LINK = ""
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
