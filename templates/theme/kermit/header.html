@@ -1,49 +1,59 @@
-	{% load i18n %}
-	
+{% load i18n %}
 <div id="header">
-    <div class="branding">&nbsp;</div>
-    <!-- Title -->
-    <div class="admin-title">
-    	<img src="{{STATIC_URL}}images/header/kermit_logo.png" height="40px" border="0px"/>
-    </div>
-    {% if user.is_authenticated %}
-        <ul id="user-tools">
-        	<li class="user-options-container collapse closed">
-                Welcome <a href="javascript://" class="user-options-handler collapse-handler">{% firstof user.first_name user.username %}</a>
-                <ul class="user-options">
-                    <!-- Change Password -->
-                    {% url admin:password_change as password_change_url %}
-                    {% if password_change_url %}
-                        <li><a href="{{ password_change_url }}">
-                    {% else %}
-                        <li><a href="{{ root_path }}password_change/">
-                    {% endif %}
-                    {% trans 'Change password' %}</a></li>
-                    <!-- Logout -->
-                    {% url admin:logout as logout_url %}
-                    <li><a href="{{base_url}}/accounts/logout/">
-                    {% trans 'Log out' %}</a></li>
-                </ul>
-            </li>
-        	{% block mainmenu %}
-        	<!-- Main Menu -->
-            <li><a href="{{base_url}}/">Dashboard</a></li>
-            {% if user.is_staff %}
-            	<li><a href="{{base_url}}/admin/">Admin</a></li>
-            {% endif %}
-            {% endblock %}
-            <!-- Username -->
-            
-            <!-- Userlinks -->
-            {% block userlinks %}
-                <!-- Documentation -->
-                <!--{% url django-admindocs-docroot as docsroot %}
-                {% if docsroot %}
-                    <li><a href="{{ docsroot }}">{% trans 'Documentation' %}</a></li>
-                {% endif %}-->
-            {% endblock %}
-        </ul>
-    {% endif %}
-    {% block nav-global %}
-    {% endblock %}
+	<div class="branding">
+		&nbsp;
+	</div>
+	<!-- Title -->
+	<div class="admin-title">
+		<img src="{{STATIC_URL}}images/header/kermit_logo.png" height="40px" border="0px"/>
+	</div>
+	{% if user.is_authenticated %}
+	<ul id="user-tools">
+		<li class="user-options-container collapse closed">
+			Welcome <a href="javascript://" class="user-options-handler collapse-handler">{% firstof user.first_name user.username %}</a>
+			<ul class="user-options">
+				<!-- Change Password -->
+				{% url admin:password_change as password_change_url %}
+				{% if password_change_url %}
+				<li>
+					<a href="{{ password_change_url }}"> {% else %}
+					<li>
+						<a href="{{ root_path }}password_change/"> {% endif %}
+						{% trans 'Change password' %}</a>
+					</li> <!-- Logout --> {% url admin:logout as logout_url %}
+					<li>
+						<a href="{{base_url}}/accounts/logout/"> {% trans 'Log out' %}</a>
+					</li>
+			</ul>
+		</li>
+		{% block mainmenu %} <!-- Main Menu -->
+		<li>
+			<a href="{{base_url}}/">Dashboard</a>
+		</li>
+		{% if user.is_staff %}
+		<li class="user-options-container collapse closed">
+			<a href="javascript://" class="user-options-handler collapse-handler">{% trans 'Export'%}</a>
+			<ul class="user-options">
+				<li>
+					<a href="{{base_url}}/export/servers/csv/">{% trans 'All Servers (CSV)' %}</a>
+					<a href="{{base_url}}/export/servers/xls/">{% trans 'All Servers (XLS)' %}</a>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<a href="{{base_url}}/admin/">{% trans 'Admin area' %}</a>
+		</li>
+		{% endif %}
+		{% endblock %} <!-- Username -->
+		<!-- Userlinks -->
+		{% block userlinks %} <!-- Documentation -->
+		<!--{% url django-admindocs-docroot as docsroot %}
+		{% if docsroot %}
+		<li><a href="{{ docsroot }}">{% trans 'Documentation' %}</a></li>
+		{% endif %}-->
+		{% endblock %}
+	</ul>
+	{% endif %}
+	{% block nav-global %}
+	{% endblock %}
 </div>
