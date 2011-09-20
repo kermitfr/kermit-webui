@@ -155,7 +155,9 @@
 				</p>
 			</div>
 			{% endblock %} <div class="closed-bar"></div>
-			
+			{% if service_status%}
+			<div class="kermitfooter">{{service_status}}</div>
+			{% endif %}
 		</div>
 		<div class="footer"></div>
 		<script type="text/javascript" src="{{STATIC_URL}}js/inettuts/inettuts-custom-kermit.js"></script>

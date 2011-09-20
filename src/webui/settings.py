@@ -170,6 +170,7 @@ INSTALLED_APPS = (
     'webui.serverdetails',
     'webui.appdeploy',
     'webui.exporter',
+#    'webui.servicestatus',
 )
 
 #Configuring fixtures by-exception

@@ -12,5 +12,5 @@ def export_servers_csv(request):
 def export_servers_xls(request):
     response = HttpResponse(mimetype="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=servers.xls'
-    utils.generate_xls_server(response)
+#    utils.generate_xls_server(response)
     return response
