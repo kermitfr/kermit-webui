@@ -1,7 +1,7 @@
 Summary: Mcollective WebUI
 Name: kermit-webui
 Version: 0.0.3
-Release: 4
+Release: 5
 License: GPL
 Group: Applications/System
 URL: https://github.com/thinkfr/kermit-webui
@@ -97,6 +97,11 @@ fi
 %postun
 
 %changelog
+* Thu Sep 20 2011 Marco Mornati <ilmorna@gmail.com> - 0.0.3-4
+	Added server export CSV
+	Added Authentication Module
+	Refactored tables with Jquery Datatable
+	
 * Thu Sep 19 2011 Marco Mornati <ilmorna@gmail.com> - 0.0.3-3
 	Fixed poblems deploying application on different path
 	Added external properties file
