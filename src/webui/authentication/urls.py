@@ -9,7 +9,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-
+#TODO: Refactor making it dynamic
 auth_method = settings.auth_method
 if auth_method and auth_method == 'saml2':
     urlpatterns = patterns('',

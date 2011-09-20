@@ -84,15 +84,15 @@ SAML_CONFIG = {
 
     # where the remote metadata is stored
     'metadata': {
-        'local': [path.join(BASEDIR, 'metadata_example.xml')],
+        'local': ['/etc/kermit/webui/metadata_example.xml'],
         },
 
     # set to 1 to output debugging information
     'debug': 1,
 
     # certificate
-    'key_file': path.join(BASEDIR, 'mykey.pem'),  # private part
-    'cert_file': path.join(BASEDIR, 'mycert.pem'),  # public part
+    'key_file': '/etc/kermit/webui/mykey.pem',  # private part
+    'cert_file': '/etc/kermit/webui/mycert.pem',  # public part
 
     # own metadata settings
     'contact_person': [

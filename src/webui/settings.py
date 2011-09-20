@@ -250,11 +250,14 @@ auth_method=CONF.get('webui', 'authentication')
 
 if auth_method:
     platform_name = 'webui.authentication.' + auth_method + ".settings"
-    conf_module = __import__(platform_name, globals(), locals(), "settings")
-    # Load the config settings properties into the local scope.
-    for setting in dir(conf_module):
-        if setting == setting.upper():
-            locals()[setting] = getattr(conf_module, setting)    
+    try :
+        conf_module = __import__(platform_name, globals(), locals(), "settings")
+        # Load the config settings properties into the local scope.
+        for setting in dir(conf_module):
+            if setting == setting.upper():
+                locals()[setting] = getattr(conf_module, setting)
+    except:
+        print "WARN: No auth module found. Initializing DB?"    
             
 else:
     from webui.authentication.default.settings import *

@@ -1,7 +1,7 @@
 Summary: Mcollective WebUI
 Name: kermit-webui
 Version: 0.0.3
-Release: 3
+Release: 4
 License: GPL
 Group: Applications/System
 URL: https://github.com/thinkfr/kermit-webui
@@ -51,6 +51,7 @@ python webui/manage.py syncdb --noinput
 %{__rm} -Rf $RPM_BUILD_ROOT/usr/share/%{name}/sqlite.db
 %{__rm} -Rf $RPM_BUILD_ROOT/usr/share/%{name}/webui/kermit-webui.cfg
 
+%{__cp} -R ./misc/saml2/* $RPM_BUILD_ROOT/etc/kermit/webui
 %{__cp} -R ./templates $RPM_BUILD_ROOT/usr/share/%{name}
 %{__cp} -R ./static $RPM_BUILD_ROOT/var/www/%{name}
 %{__cp} -R ./fixtures $RPM_BUILD_ROOT/etc/kermit/webui
@@ -64,6 +65,7 @@ python webui/manage.py syncdb --noinput
 
 %clean
 %{__rm} -rf $RPM_BUILD_ROOT
+%{__rm} -rf /tmp/sqlite.db
 
 %files
 %defattr(-,root,root,-) 
