@@ -20,7 +20,7 @@ def getDetailsTree(hostname):
             batch = {'title': 'Batch', 'isFolder':"true", "key":"batchlist", "icon":"batch_process.png", "type":"batch", "console":console["consolename"]}
             bars = []
             for bar in console['barlist']:
-                bar_dict = {'title':bar['name'], "key":bar['name'], "icon":"web_instance.png", "type":"bar", "detailsEnabled":"true", "url": reverse('bar_details', kwargs={'hostname':hostname, 'console_name':console['consolename'], 'resource_name':bar['name']})}
+                bar_dict = {'title':bar['name'], "key":bar['name'], "icon":"console.png", "type":"bar", "detailsEnabled":"true", "url": reverse('bar_details', kwargs={'hostname':hostname, 'console_name':console['consolename'], 'resource_name':bar['name']})}
                 bars.append(bar_dict)
             batch['children'] = bars    
             

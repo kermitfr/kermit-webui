@@ -4,6 +4,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+#TODO: Refactor using httplib address parser
 def callRestServer(user, filters, agent, action, args=None):
     logger.info("%s is calling agent %s action %s on %s" % (user, agent, action, filters))
     http = httplib2.Http(timeout=20)

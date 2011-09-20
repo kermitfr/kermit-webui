@@ -118,6 +118,12 @@ class Operations(object):
             response, content = callRestServer(user, 'no-filter', 'a7xinventory', 'webloinv')
         except Exception, err:
             logger.error('ERROR: ' + str(err))
+            
+        logger.debug("Calling BAR Inventory")
+        try: 
+            response, content = callRestServer(user, 'no-filter', 'a7xinventory', 'barinv')
+        except Exception, err:
+            logger.error('ERROR: ' + str(err))
     
     def add_puppet_classes(self, server, puppet_classes):
         for current in puppet_classes:
