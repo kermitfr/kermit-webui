@@ -10,7 +10,7 @@ function getExecutionForm(base_url, execution_dialog_name, agent, action, filter
 		error : function() {
 			//TODO: Show error message
 			//$('#loading').hide();
-			alert('error');
+			alert('Error communicating with server');
 		},
 		beforeSend : function() {
 			//$('#loading').show();
@@ -48,7 +48,7 @@ function getDeployForm(base_url, deploy_form_name, operation, filters) {
 		error : function() {
 			//TODO: Show error message
 			//$('#loading').hide();
-			alert('error');
+			alert('Error communicating with server');
 		},
 		beforeSend : function() {
 			//$('#loading').show();

@@ -1939,3 +1939,27 @@ fieldset.infohighlight {
 #login table td {
 	border: 0px;
 }
+
+.kermitfooter {
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: -moz-linear-gradient(center top , #444444, #333333) repeat scroll 0 0 transparent;
+    border-color: #BDBDBD -moz-use-text-color -moz-use-text-color;
+    border-radius: 0 0 0 0;
+    border-right: 0 none;
+    border-style: solid none none;
+    border-width: 1px 0 0;
+}
+.kermitfooter {
+    -moz-box-sizing: border-box;
+    bottom: 0;
+    margin: 0 -20px;
+    opacity: 1;
+    padding: 12px 20px;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
