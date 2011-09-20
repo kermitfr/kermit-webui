@@ -15,10 +15,12 @@
 <div id="columns">
 	<ul id="column1" class="column">
 		{% widget "ServerDetails" user hostname %}
+		&nbsp;<br/>&nbsp;<br/>
 	</ul>
 	<ul id="column2" class="column">
 		{% widget "ServerSummary" user hostname %}
 		{% widget "SelectedResourceDetails" user %}	
+		&nbsp;<br/>&nbsp;<br/>
 	</ul>
 </div>
 {% endblock %} 

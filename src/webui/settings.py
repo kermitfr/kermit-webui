@@ -170,7 +170,7 @@ INSTALLED_APPS = (
     'webui.serverdetails',
     'webui.appdeploy',
     'webui.exporter',
-#    'webui.servicestatus',
+    'webui.servicestatus',
 )
 
 #Configuring fixtures by-exception
@@ -266,6 +266,8 @@ else:
     
 
 RUBY_REST_BASE_URL=CONF.get('webui', 'rest_server_url')
+
+RUBY_REST_PING_URL=CONF.get('webui', 'rest_server_ping_url')
 
 CRON_POLLING_FREQUENCY=60
 

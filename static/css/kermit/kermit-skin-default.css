@@ -1941,6 +1941,7 @@ fieldset.infohighlight {
 }
 
 .kermitfooter {
+	color: #FFFFFF;
     -moz-border-bottom-colors: none;
     -moz-border-image: none;
     -moz-border-left-colors: none;
@@ -1956,9 +1957,8 @@ fieldset.infohighlight {
 .kermitfooter {
     -moz-box-sizing: border-box;
     bottom: 0;
-    margin: 0 -20px;
+    margin: 0 0px;
     opacity: 1;
-    padding: 12px 20px;
     position: fixed;
     width: 100%;
     z-index: 1000;

@@ -7,6 +7,7 @@ import imp
 from django.http import HttpResponse
 from django.utils import simplejson as json
 from django.contrib.auth.decorators import login_required
+from webui.servicestatus import utils
 
 logger = logging.getLogger(__name__)
 
@@ -40,5 +41,8 @@ def getDetailsTree(request, hostname):
 
 @login_required()
 def hostInventory(request, hostname):
-    server_info = []    
-    return render_to_response('server/details.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "serverdetails": server_info, "hostname": hostname}, context_instance=RequestContext(request))
+    server_info = []   
+    service_status = None
+    if 'webui.servicestatus' in settings.INSTALLED_APPS:
+        service_status = utils.test_services() 
+    return render_to_response('server/details.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "serverdetails": server_info, "hostname": hostname, "service_status":service_status, 'service_status_url':settings.RUBY_REST_PING_URL}, context_instance=RequestContext(request))

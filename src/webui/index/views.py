@@ -14,10 +14,10 @@ def index(request):
         return HttpResponseRedirect(reverse('login'))
     #items = Menu.objects.filter(enabled=True).order_by('order')
     service_status = None
-    if 'servicestatus' in settings.INSTALLED_APPS:
+    if 'webui.servicestatus' in settings.INSTALLED_APPS:
         service_status = utils.test_services()
     widgets = registry.get_widgets_dashboard(request.user)    
-    return render_to_response('index/index.html', {"base_url": settings.BASE_URL, "widgets": widgets, "service_status":service_status}, context_instance=RequestContext(request))
+    return render_to_response('index/index.html', {"base_url": settings.BASE_URL, "widgets": widgets, "service_status":service_status, "static_url":settings.STATIC_URL, 'service_status_url':settings.RUBY_REST_PING_URL}, context_instance=RequestContext(request))
 
 def logout_view(request):
     logout(request)
