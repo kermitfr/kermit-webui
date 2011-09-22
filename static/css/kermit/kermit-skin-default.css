@@ -1877,7 +1877,7 @@ table.server-details thead th.rounded-end {
 
 table.server-details th {
     background: none repeat scroll 0 0 #D9D9D9;
-    color: #003399;
+    color: #000000;
     font-size: 13px;
     font-weight: normal;
     padding: 8px;
@@ -1886,7 +1886,7 @@ table.server-details th {
 table.server-details td {
     background: none repeat scroll 0 0 #E8EDFF;
     border-top: 1px solid #FFFFFF;
-    color: #666699;
+    color: #000000;
     padding: 8px;
 }
 
@@ -1947,7 +1947,15 @@ fieldset.infohighlight {
     -moz-border-left-colors: none;
     -moz-border-right-colors: none;
     -moz-border-top-colors: none;
+    /*Opera*/
+    background: #444444;
+    /*FireFox*/
     background: -moz-linear-gradient(center top , #444444, #333333) repeat scroll 0 0 transparent;
+   /*Chrome*/
+    background: -webkit-gradient(linear, left top, left bottom, from(#444444), to(#333333));
+   /*IE*/
+    filter: progid:DXImageTransform.Microsoft.Grandient(StartColorStr='#444444', EndColorStr='#333333', GradientType=0);
+    border-color: #BDBDBD;
     border-color: #BDBDBD -moz-use-text-color -moz-use-text-color;
     border-radius: 0 0 0 0;
     border-right: 0 none;

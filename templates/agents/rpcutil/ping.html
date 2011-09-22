@@ -40,11 +40,7 @@
 			</td>
 			<td>
 				{% for content,data in resp.data.items %}
-					{% for key,value in outputs.items %}
-					 {% if key == content %}
-					 	<b>{{value}}</b>: {{data}} <br>
-					 {% endif %} 
-					{% endfor%}
+					<b>{% trans 'Response Time'%}</b>: {{data}} <br>
 				{% endfor %}	
 			</td>
 		</tr>
