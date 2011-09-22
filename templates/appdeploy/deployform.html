@@ -19,17 +19,50 @@
 		};
 		// bind form using ajaxForm
 		$('#tf').ajaxForm(options);
-		$("#id_types").change(function() {
+		$("#id_servertype").change(function() {
 			$.ajax({
 				// The link we are accessing.
-				url : '/appdeploy/applist/{{filters}}/' + this.value +'/',
+				url : '{{base_url}}/appdeploy/instancelist/{{filters}}/' + this.value +'/',
 				// The type of request.
 				type : "get",
 				// The type of data that is getting returned.
 				dataType : "json",
 				error : function() {
 					//TODO: Show error message
-					alert("error");
+					alert("Server communication error. Cannot get instances list for selected server");
+					$('#loading').hide();
+				},
+				beforeSend : function() {
+					$('#loading').show();
+				},
+				complete : function() {
+					$('#loading').hide();
+				},
+				success : function(data) {
+					$("#id_instancename").empty();
+					if (data.errors) {
+						alert(data.errors);
+					} else {
+						for(i in data.instances) {
+							content = "<option value='" + data.instances[i] + "'>" + data.instances[i] + "</option>";
+							$(content).appendTo("#id_instancename");
+						}
+					}
+				}
+			});
+		});
+		
+		$("#id_types").change(function() {
+			$.ajax({
+				// The link we are accessing.
+				url : '{{base_url}}/appdeploy/applist/{{filters}}/' + this.value +'/',
+				// The type of request.
+				type : "get",
+				// The type of data that is getting returned.
+				dataType : "json",
+				error : function() {
+					//TODO: Show error message
+					alert("Server communication error. Cannot download application List");
 					$('#loading').hide();
 				},
 				beforeSend : function() {

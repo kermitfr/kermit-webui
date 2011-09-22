@@ -41,7 +41,13 @@ def update_info(user, agent):
                         input_db = ActionInput.objects.filter(name=input_name, action=saved_action)
                         if len(input_db) == 0:
                             logger.debug('Creating Action Inputs')
-                            ActionInput.objects.create(action=saved_action, name=input_name, description=input_content['description'], type=input_content['type'], prompt=input_content['prompt'], optional=input_content['optional'], validation=input_content['validation'], max_length=input_content['maxlength'])
+                            validation = None
+                            maxlenght = None
+                            if 'validation' in input_content:
+                                validation=input_content['validation']
+                            if 'maxlength' in input_content:
+                                maxlenght=input_content['maxlength']
+                            ActionInput.objects.create(action=saved_action, name=input_name, description=input_content['description'], type=input_content['type'], prompt=input_content['prompt'], optional=input_content['optional'], validation=validation, max_length=maxlenght  )
                         else:
                             logger.debug('Input with name ' + input_name + " already present in DB. Updating...")
                             input_to_update = input_db[0]
@@ -49,8 +55,14 @@ def update_info(user, agent):
                             input_to_update.type=input_content['type']
                             input_to_update.prompt=input_content['prompt']
                             input_to_update.optional=input_content['optional']
-                            input_to_update.validation=input_content['validation']
-                            input_to_update.max_length=input_content['maxlength']
+                            if 'validation' in input_content:
+                                input_to_update.validation=input_content['validation']
+                            else:
+                                input_to_update.validation=None
+                            if 'maxlength' in input_content:
+                                input_to_update.max_length=input_content['maxlength']
+                            else:
+                                input_to_update.max_length=None
                             input_to_update.save()
                     
                     #Verifying Action Outputs. If already present in DB just update it

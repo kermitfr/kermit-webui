@@ -30,7 +30,7 @@ class ActionInputAdmin(GuardedModelAdmin):
         ("General",   {'fields': ['name', 'description']}),
         ("Details",   {'fields': ['type', 'prompt', 'optional', 'validation', 'max_length', 'action']}),         
     ]
-    list_display = ('name', 'description')
+    list_display = ('name', 'description', 'action')
     search_fields = ['name']
 
 class ActionOutputAdmin(GuardedModelAdmin):
@@ -38,7 +38,7 @@ class ActionOutputAdmin(GuardedModelAdmin):
         ("General",   {'fields': ['name', 'description']}),
         ("Details",   {'fields': ['display_as', 'action']}),         
     ]
-    list_display = ('name', 'description')
+    list_display = ('name', 'description', 'action')
     search_fields = ['name']
     
 admin.site.register(Agent, AgentAdmin)
