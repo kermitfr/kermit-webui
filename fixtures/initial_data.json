@@ -1684,5 +1684,41 @@
       "level": 4,
       "order": 6
     }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 45,
+    "fields": {
+      "name": "zasie",
+      "description": "Zone Asie",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 3,
+      "order": 4
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 46,
+    "fields": {
+      "name": "wlo",
+      "description": "Weblogic",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 4,
+      "order": 7
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 47,
+    "fields": {
+      "name": "ows",
+      "description": "Weblogic",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 4,
+      "order": 8
+    }
   }
 ]

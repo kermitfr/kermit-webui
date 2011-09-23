@@ -12,9 +12,9 @@ from guardian.admin import GuardedModelAdmin
 class PuppetClassAdmin(GuardedModelAdmin):
     fieldsets = [
         ("General",   {'fields': ['name']}),
-        ("Details",   {'fields': ['description', 'icon', 'enabled', 'parent']}),         
+        ("Details",   {'fields': ['description', 'icon', 'enabled', 'level', 'order']}),         
     ]
-    list_display = ('name', 'description')
+    list_display = ('name', 'description', 'level')
     search_fields = ['name']
     
 admin.site.register(PuppetClass, PuppetClassAdmin)
