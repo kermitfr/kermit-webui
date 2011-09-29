@@ -1,7 +1,7 @@
 Summary: Mcollective WebUI
 Name: kermit-webui
 Version: 0.0.3
-Release: 5
+Release: 6
 License: GPL
 Group: Applications/System
 URL: https://github.com/thinkfr/kermit-webui
@@ -76,11 +76,12 @@ python webui/manage.py syncdb --noinput
 %config /etc/httpd/conf.d/*
 #%config /usr/share/%{name}/settings.py
 %config /usr/share/%{name}/db/sqlite.db
+%config /etc/kermit/kermit-webui.cfg
 %attr(0777,apache,apache) %dir /usr/share/%{name}/db
 %attr(0777,apache,apache) %dir /usr/share/%{name}/db/sqlite.db
 %attr(0750,apache,apache) %dir /var/www/%{name}/uploads
 %attr(0755,apache,apache) %dir /var/log/kermit
-%attr(0755,apache,apache) %dir /etc/kermit/kermit-webui.cfg
+%attr(0644,apache,apache) %dir /etc/kermit/kermit-webui.cfg
 
 %pre
 

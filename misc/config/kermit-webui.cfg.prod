@@ -5,7 +5,7 @@ rest_server_ping_url=http://127.0.0.1:4567/
 amqp_receive_folder=/tmp
 static_file_location=/var/www/kermit-webui/
 templates_location=/usr/share/kermit-webui/templates/
-fixtures_location=/etc/kermit/fixtures/
+fixtures_location=/etc/kermit/webui/fixtures/
 authentication=default
 
 

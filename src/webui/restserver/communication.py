@@ -22,7 +22,7 @@ def callRestServer(user, filters, agent, action, args=None):
 
 def verifyRestServer():
     logger.debug("Testing RestServer presence")
-    http = httplib2.Http(timeout=20)
+    http = httplib2.Http(timeout=2)
     url = settings.RUBY_REST_PING_URL
     try:
         response, content = http.request(url, "GET")

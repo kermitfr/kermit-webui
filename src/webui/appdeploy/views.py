@@ -41,15 +41,18 @@ def redeploy_app(request, filters, dialog_name, xhr=None):
             clean = form.is_valid()
             rdict = {'bad':'false', 'filters':filters }
             try:
-                appname = request.POST['applist']
+                appfile = request.POST['applist']
                 app_type = request.POST['types']
+                instancename = request.POST['instancename']
+                servertype = request.POST['servertype']
+                appname = request.POST['appname']
             except:
                 appname=None
                 app_type=None
             if appname and app_type:
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to deploy %s application on %s filtered server" % (appname, filters))
-                response, content = callRestServer(request.user, filters, 'a7xdeploy', 'redeploy', 'appname='+appname)
+                response, content = callRestServer(request.user, filters, 'a7xdeploy', 'redeploy', 'appname=%s;instancename=%s;appfile=%s;servertype=%s' %(appname, instancename, appfile, servertype))
                 #TODO: Improve reading content data
                 if response.status == 200:
                     rdict.update({"result":"Application Deployed"})

@@ -12,8 +12,7 @@ APPS_SERVER = (('','-Select-'),
 
 class DeployForm(forms.Form):
     types = forms.ChoiceField(choices=settings.AVAILABLE_TYPES)
-    applist = forms.ChoiceField()
-    servertype = forms.ChoiceField(choices=APPS_SERVER)
-    instancename = forms.ChoiceField()
-    
-        
+    applist = forms.ChoiceField(label=u"Available application")
+    servertype = forms.ChoiceField(label=u"Server Type", choices=APPS_SERVER)
+    instancename = forms.ChoiceField(label=u"Instance Name")
+    appname = forms.CharField(label=u"Application Name")

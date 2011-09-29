@@ -73,6 +73,7 @@
 	$(document).ready(function() {
 		$("#context-execution-dialog").hide();
 		$("#classestree").dynatree({
+			persist: true,
 			title : "Puppet Classes",
 			fx : {
 				height : "toggle",
@@ -80,6 +81,11 @@
 			},
 			autoFocus : false, // Set focus to first child, when expanding or lazy-loading.
 			onCreate : function(node, span) {
+				//Used to reload node using cookie
+			    if( node && node.isLazy() ){
+			        node.reloadChildren(function(node, isOk){
+			        });
+			      }
 				bindContextMenu(span);
 			},
 			initAjax : {
@@ -98,7 +104,6 @@
 						mode : "funnyMode"
 					}
 				});
-				// .. but here we use a local file instead:
 			},
 			onQueryActivate : function(activate, node) {
 
