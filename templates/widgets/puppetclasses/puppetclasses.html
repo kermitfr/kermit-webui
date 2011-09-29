@@ -45,6 +45,8 @@
 					sendRequestToMcollective(url, 'response-container');			
 				} else if ($(this).attr('type') == "deploy") {
 					getDeployForm('{{settings.BASE_URL}}', 'deploy-dialog', $(this).attr('action'), filtersList)	
+				} else if ($(this).attr('type') == "sqldeploy") {
+					getSqlDeployForm('{{settings.BASE_URL}}', 'deploy-dialog', $(this).attr('action'), filtersList)	
 				}
 
 				$(context).animate({
@@ -236,6 +238,18 @@
 				{%for depop in deployment.operations %}
 				<li class="icon" type="deploy" action="{{depop}}">
 					<span class="icon file"></span>{{depop}}
+				</li>
+				{% endfor %}
+			</ul>
+		</li>
+		{% endif %}
+		{% if sqldeployment %}
+		<li class="icon">
+			<span class="icon folder"></span>Deploy SQL
+			<ul>
+				{%for depsqlop in sqldeployment.operations %}
+				<li class="icon" type="sqldeploy" action="{{depsqlop}}">
+					<span class="icon file"></span>{{depsqlop}}
 				</li>
 				{% endfor %}
 			</ul>

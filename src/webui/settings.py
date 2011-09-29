@@ -169,6 +169,7 @@ INSTALLED_APPS = (
     'webui.serverstatus',
     'webui.serverdetails',
     'webui.appdeploy',
+    'webui.sqldeploy',
     'webui.exporter',
     'webui.servicestatus',
 )

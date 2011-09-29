@@ -5,35 +5,30 @@ from django.contrib.auth.decorators import login_required
 from guardian.decorators import permission_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from utils import get_apps_list, retrieve_instances
-from webui.appdeploy.forms import DeployForm
+from webui.sqldeploy.forms import SqlDeployForm
 from django.utils import simplejson as json
 from webui import settings
+from webui.sqldeploy.utils import get_sql_list as sql_list
 
 logger = logging.getLogger(__name__)
 
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)
-def get_app_list(request, filters, type):
-    return HttpResponse(get_apps_list(request.user, filters, type))
-
-@login_required()
-@permission_required('agent.call_mcollective', return_403=True)
-def get_instance_list(request, filters, type):
-    return HttpResponse(retrieve_instances(filters, type))
+def get_sql_list(request, filters):
+    return HttpResponse(sql_list(request.user, filters))
     
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)
 def get_deploy_form(request, dialog_name, action, filters):
     logger.debug('Rendering form')         
-    return render_to_response('appdeploy/deployform.html', {'action':action, 'filters':filters, 'form':DeployForm([]), 'dialog_name': dialog_name, 'base_url':settings.BASE_URL}, context_instance=RequestContext(request))
+    return render_to_response('sqldeploy/deployform.html', {'action':action, 'filters':filters, 'form':SqlDeployForm([]), 'dialog_name': dialog_name, 'base_url':settings.BASE_URL}, context_instance=RequestContext(request))
 
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)
-def redeploy_app(request, filters, dialog_name, xhr=None):
+def redeploy_sql(request, filters, dialog_name, xhr=None):
     if request.method == "POST":
         logger.debug("Recreating form")
-        form = DeployForm(request.POST)
+        form = SqlDeployForm(request.POST)
 
         #Check if the <xhr> var had something passed to it.
         if xhr == "xhr":
@@ -41,23 +36,21 @@ def redeploy_app(request, filters, dialog_name, xhr=None):
             clean = form.is_valid()
             rdict = {'bad':'false', 'filters':filters }
             try:
-                appfile = request.POST['applist']
-                app_type = request.POST['types']
-                instancename = request.POST['instancename']
-                servertype = request.POST['servertype']
-                appname = request.POST['appname']
+                sql_script = request.POST['sqllist']
+                dbname = request.POST['dbname']
             except:
-                appname=None
-                app_type=None
-            if appname and app_type:
+                sql_script=None
+                dbname=None
+            if dbname and sql_script:
                 logger.debug("Parameters check: OK.")
-                logger.debug("Calling MCollective to deploy %s application on %s filtered server" % (appname, filters))
-                response, content = callRestServer(request.user, filters, 'a7xdeploy', 'redeployoas', 'appname=%s;instancename=%s;appfile=%s;servertype=%s' %(appname, instancename, appfile, servertype))
+                logger.debug("Calling MCollective to deploy %s sql on %s filtered server" % (sql_script, filters))
+                user_ip_address = request.META.get('REMOTE_ADDR') 
+                response, content = callRestServer(request.user, filters, 'a7xdeploy', 'redeploysql', 'sqlscript=%s;dbname=%s;user=%s;userip=%s' % (sql_script, dbname, request.user, user_ip_address))
                 #TODO: Improve reading content data
                 if response.status == 200:
-                    rdict.update({"result":"Application Deployed"})
+                    rdict.update({"result":"SQL Deployed"})
                 else:
-                    rdict.update({"result": "Error deploying application"})
+                    rdict.update({"result": "Error deploying SQL"})
                 
                 rdict.update({'dialog_name':dialog_name})
                 # And send it off.

@@ -71,6 +71,41 @@ function getDeployForm(base_url, deploy_form_name, operation, filters) {
 	});
 }
 
+function getSqlDeployForm(base_url, deploy_form_name, operation, filters) {
+	url = base_url + '/sqldeploy/get_deploy_form/' + deploy_form_name + '/' + operation + '/' + filters + '/';
+	$.ajax({
+		// The link we are accessing.
+		url : url,
+		// The type of request.
+		type : "get",
+		// The type of data that is getting returned.
+		dataType : "html",
+		error : function() {
+			//TODO: Show error message
+			//$('#loading').hide();
+			alert('Error communicating with server');
+		},
+		beforeSend : function() {
+			//$('#loading').show();
+		},
+		complete : function() {
+			//$('#loading').hide();
+		},
+		success : function(data) {
+			$("#" + deploy_form_name).html(data);
+			$("#" + deploy_form_name).dialog({
+				modal : true,
+				title : operation + ' execution...',
+				minHeight : 200,
+				minWidth : 500
+			});
+			$("#" + deploy_form_name).show();
+			
+
+		}
+	});
+}
+
 function sendRequestToMcollective(url, destination) {
 	$("#" + destination).empty();
 

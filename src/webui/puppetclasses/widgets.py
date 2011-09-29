@@ -9,6 +9,7 @@ from webui.agent.models import Agent, Action
 from webui.defaultop.models import Operation
 from guardian.shortcuts import get_objects_for_user
 from webui import settings
+from webui.sqldeploy import settings as sqldeploysettings
 from webui.appdeploy import settings as appdeploysettings
 
 class DashBoardPuppetClasses(Widget):
@@ -33,7 +34,11 @@ class DashBoardPuppetClasses(Widget):
         deployment = {}
         if 'webui.appdeploy' in settings.INSTALLED_APPS:
             deployment['operations'] = appdeploysettings.OPERATION_ENABLED
-        widget_context = {"agents":agents, "operations":operations, "actions": actions, "deployment":deployment}
+        
+        sqldeployment = {}
+        if 'webui.sqldeploy' in settings.INSTALLED_APPS:
+            sqldeployment['operations'] = sqldeploysettings.OPERATION_ENABLED
+        widget_context = {"agents":agents, "operations":operations, "actions": actions, "deployment":deployment, "sqldeployment":sqldeployment}
         return dict(super_context.items() + widget_context.items())
     
     
