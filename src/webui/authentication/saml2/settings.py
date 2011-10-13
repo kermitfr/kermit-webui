@@ -45,13 +45,13 @@ SAML_CONFIG = {
                 # url and binding to the assetion consumer service view
                 # do not change the binding or service name
                 'assertion_consumer_service': [
-                    ('http://oxitz1atx02.dktetrix.net/saml/SSO',
+                    ('http://npplam01.preprod.org/automatix/auth/saml2/SSO/',
                      saml2.BINDING_HTTP_POST),
                     ],
                 # url and binding to the single logout service view
                 # do not change the binding or service name
                 'single_logout_service': [
-                    ('http://oxitz1atx02.dktetrix.net/saml/logout',
+                    ('http://npplam01.preprod.org/automatix/saml2/logout/',
                      saml2.BINDING_HTTP_REDIRECT),
                     ],
                 },
