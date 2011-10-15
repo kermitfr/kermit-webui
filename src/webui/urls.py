@@ -40,6 +40,7 @@ urlpatterns = patterns('',
     (r'^accounts/logout/$', 'webui.index.views.logout_view'),
     (r'^export/', include('webui.exporter.urls')),
     (r'^auth/', include('webui.authentication.urls')),
+    (r'^upload/', include('webui.upload.urls')),
     
     (r'', include('webui.index.urls')),
 )

@@ -2,6 +2,7 @@ import os
 import django
 import ConfigParser
 import imp
+from django.conf import global_settings
 
 # calculated paths for django and the site
 # used as starting points for various other paths
@@ -172,6 +173,7 @@ INSTALLED_APPS = (
     'webui.sqldeploy',
     'webui.exporter',
     'webui.servicestatus',
+    'webui.upload',
 )
 
 #Configuring fixtures by-exception
@@ -273,4 +275,3 @@ RUBY_REST_PING_URL=CONF.get('webui', 'rest_server_ping_url')
 CRON_POLLING_FREQUENCY=60
 
 AMQP_RECEIVER_FOLDER=CONF.get('webui', 'amqp_receive_folder')
-

@@ -1,0 +1,29 @@
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery-ui-1.8.15.custom.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/kermit/kermit.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/fileuploader/fileuploader.js" ></script>
+<link href="{{STATIC_URL}}css/fileuploader/fileuploader.css" rel="stylesheet" type="text/css" />
+<script>
+	$(document).ready(function() {
+		var uploader = new qq.FileUploader({
+			element : document.getElementById('form_upload'),
+			action : '{% url upload %}',
+			debug : true,
+			onComplete : function(id, fileName, responseJSON) {
+				/* you probably want to handle the case when responseJSON.success is false,
+				 which happens when the Django view could not save the file */
+				if(responseJSON.success)
+					$('#form_upload').append('<p>PuppetClasses updated...</p>');
+			},
+		});
+	});
+
+</script>
+<div id="form_upload">
+	<noscript>
+		<form action="{% url upload %}" method="POST">
+			<input type="file" name="uploadfile" id="uploadfile" />
+			<input id="form_submit_button" class="tp-button" type="submit" value="Upload" />
+		</form>
+	</noscript>
+</div>

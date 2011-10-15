@@ -36,6 +36,39 @@ function getExecutionForm(base_url, execution_dialog_name, agent, action, filter
 	});
 }
 
+function getUploadForm(url, upload_dialog) {
+	$.ajax({
+		// The link we are accessing.
+		url : url,
+		// The type of request.
+		type : "get",
+		// The type of data that is getting returned.
+		dataType : "html",
+		error : function() {
+			//TODO: Show error message
+			//$('#loading').hide();
+			alert('Error communicating with server');
+		},
+		beforeSend : function() {
+			//$('#loading').show();
+		},
+		complete : function() {
+			//$('#loading').hide();
+		},
+		success : function(data) {
+			$("#" + upload_dialog).html(data);
+			$("#" + upload_dialog).dialog({
+				modal : true,
+				title : 'Upload Dialog',
+				minHeight : 200,
+				minWidth : 500
+			});
+			$("#" + upload_dialog).show();
+
+		}
+	});
+}
+
 function getDeployForm(base_url, deploy_form_name, operation, filters) {
 	url = base_url + '/appdeploy/get_deploy_form/' + deploy_form_name + '/' + operation + '/' + filters + '/';
 	$.ajax({
@@ -65,7 +98,6 @@ function getDeployForm(base_url, deploy_form_name, operation, filters) {
 				minWidth : 500
 			});
 			$("#" + deploy_form_name).show();
-			
 
 		}
 	});
@@ -100,7 +132,6 @@ function getSqlDeployForm(base_url, deploy_form_name, operation, filters) {
 				minWidth : 500
 			});
 			$("#" + deploy_form_name).show();
-			
 
 		}
 	});
@@ -144,6 +175,17 @@ function sendRequestToMcollective(url, destination) {
 			}
 		}
 	});
+}
+
+function randomString() {
+	var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+	var string_length = 8;
+	var randomstring = '';
+	for (var i=0; i<string_length; i++) {
+		var rnum = Math.floor(Math.random() * chars.length);
+		randomstring += chars.substring(rnum,rnum+1);
+	}
+	return randomstring;
 }
 
 function callMcollective(url, destination) {

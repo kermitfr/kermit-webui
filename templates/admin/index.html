@@ -25,6 +25,7 @@
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery-hotkeys/jquery.hotkeys.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/jstree/jquery.jstree.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery-cookie/jquery.cookie.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/kermit/kermit.js"></script>
 <script type="text/javascript">
 		jQuery.ajaxSetup({
 			beforeSend : function() {
@@ -78,6 +79,7 @@
 	}
 </script>
 <div class="container-grid">
+	<div id="uploadForm"></div>
     <div class="column span-12">
         {% if app_list %}
             {% for app in app_list %}
@@ -113,6 +115,9 @@
 			</li>
 			<li>
 				<a href="#" onclick="executeAction('{% url action_executer "update_agents" %}');">{% trans 'Update Agents Info' %}</a>
+			</li>
+			<li>
+				<a href="#" onclick="getUploadForm('{% url get_upload_form %}', 'uploadForm')">{% trans 'Update PuppetClasses' %}</a>
 			</li>
 		</ul>
 		</div>
