@@ -17,5 +17,5 @@ CONF.read(MAINCONF)
 BASE_URL=CONF.get('webui', 'base_url')
 
 LOGIN_URL=BASE_URL + "/accounts/login/"
-LOGIN_REDIRECT_URL = BASE_URL
+LOGIN_REDIRECT_URL = BASE_URL + "/"
 LOGOUT_LINK = ""
