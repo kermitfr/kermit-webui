@@ -1,19 +1,19 @@
 {% extends "widgets/base_widget.html" %}
-{% load i18n%}
+{% load i18n %}
 {% block widget-content %}
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		$('#serverstatustable').dataTable({
+		$('#systemstatustable').dataTable({
 			 "oLanguage": {
-	            "sSearch": "Server Search:"
+	            "sSearch": "System Search:"
         	}
 		});
 	} );
 </script>
 
 <style type="text/css">
-table.serverstatus {
+table.systemstatus {
 	border-width: 2px;
 	border-spacing: 2px;
 	border-style: outset;
@@ -23,43 +23,37 @@ table.serverstatus {
 	width: 100%;
 }
 
-table.serverstatus th {
+table.systemstatus th {
 	font-size: 12px;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-weight: bold;
 	color: #000;
 }
 
-table.serverstatus tr.even {
+table.systemstatus tr.even {
 	background: #CCCCCC;
 }
-table.serverstatus tr.odd {
+table.systemstatus tr.odd {
 	background: #F0F0F0
 }
 
 </style>
 <br/>
 <div id="actual-server-status">
-	<table id="serverstatustable" class="serverstatus">
+	<table id="systemstatustable" class="systemstatus">
 		<thead>
 			<th width="60px">{% trans 'Online'%}</th>
 			<th>{% trans 'Hostname'%}</th>
-			<th>{% trans 'Level 1'%}</th>
-			<th>{% trans 'Level 2'%}</th>
-			<th>{% trans 'Level 3'%}</th>
-			<th>{% trans 'Level 4'%}</th>
-			<th>{% trans 'Level 5'%}</th>
+			<th>{% trans 'Operating System'%}</th>
+			<th>{% trans 'Architecture'%}</th>
 		</thead>
 		<tbody>
 			{% for server in servers %}
 			<tr class="{% cycle odd,even %}">
 				<td width="5%"><img src="{{settings.STATIC_URL}}images/icons/{% if server.online %}online.png{% else %}offline.png{% endif %}" style="border: 0px; height: 15px;margin: 3px;float:none;"/></td>
 				<td><a href="{% url serverdetails server.hostname %}">{{server.fqdn}}</a></td>
-				<td>{{server.lvl1}}</td>
-				<td>{{server.lvl2}}</td>
-				<td>{{server.lvl3}}</td>
-				<td>{{server.lvl4}}</td>
-				<td>{{server.lvl5}}</td>
+				<td>{{server.os}}</td>
+				<td>{{server.architecture}}</td>
 			</tr>
 			{% endfor %}
 		</tbody>
