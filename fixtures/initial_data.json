@@ -363,7 +363,7 @@
                         "removable": true, 
                         "created_time": "2011-09-06 06:30:45", 
                         "updated_time": "2011-09-06 06:30:45", 
-                        "order": 1, 
+                        "order": 0, 
                         "icon": ""
                 }
         }, 
@@ -415,7 +415,7 @@
                 "fields": {
                         "refreshable": false, 
                         "description": "", 
-                        "title": "Server Status", 
+                        "title": "System Status", 
                         "color": "white", 
                         "editable": true, 
                         "enabled": true, 
@@ -426,7 +426,7 @@
                         "removable": true, 
                         "created_time": "2011-09-06 06:30:45", 
                         "updated_time": "2011-09-06 06:30:45", 
-                        "order": 0, 
+                        "order": 1, 
                         "icon": ""
                 }
         }, 

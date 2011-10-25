@@ -10,15 +10,15 @@ def getDetailsTree(hostname):
     content = {}
     #Configuring Instances
     if server_info:
-        content = {"isFolder": "true", "title": 'OC4J', "key":'OC4J', "icon":"oracle_logo.png"}
+        content = {"isFolder": True, "expand": True, "title": 'OC4J', "key":'OC4J', "icon":"oracle_logo.png"}
         logger.debug('Configuring Instances')
-        db_instances = {'title': 'Instances', 'isFolder':"true", "key":"instance", "icon":"app_server.png", "type":"instances"}
+        db_instances = {'title': 'Instances', 'isFolder':True, "expand":True, "key":"instance", "icon":"app_server.png", "type":"instances"}
         dbs = []
         for instance in server_info:
             db = {'title':instance['id'], "key":instance['id'], "icon":"web_instance.png", "type":"instance", "instance":instance['id'],"detailsEnabled":"true", 'url': reverse('oc4j_instance_details', kwargs={'hostname':hostname, 'instance_name':instance['id'], 'resource_name':instance['id']})}
             #Configuring Applications
             logger.debug('Configuring Applications')
-            applications = {'title': 'Applications', 'isFolder':"true", "key":"applications", "icon":"folder_applications.png", "type":"applications"}
+            applications = {'title': 'Applications', 'isFolder':True, "key":"applications", "icon":"folder_applications.png", "type":"applications"}
             apps = []
             for appli in instance['applilist']:
                 app = {'title':appli['name'], "key":appli['name'], "icon":"application.png", "type":"application", "instance":instance['id'], "detailsEnabled":"true", 'url': reverse('oc4j_application_details', kwargs={'hostname':hostname, 'instance_name':instance['id'], 'resource_name':appli['name']})}
@@ -27,7 +27,7 @@ def getDetailsTree(hostname):
             
             #Configuring Datasources
             logger.debug('Configuring Datasources')
-            datasources = {'title': 'Datasources', 'isFolder':"true", "key":"datasources", "icon":"folder_database.png", "type":"datasources", "instance":instance['id'], "detailsEnabled":"true", 'url': reverse('oc4j_datasources_details', kwargs={'hostname':hostname, 'instance_name':instance['id'], 'resource_name':instance['id']})}
+            datasources = {'title': 'Datasources', 'isFolder':True, "key":"datasources", "icon":"folder_database.png", "type":"datasources", "instance":instance['id'], "detailsEnabled":"true", 'url': reverse('oc4j_datasources_details', kwargs={'hostname':hostname, 'instance_name':instance['id'], 'resource_name':instance['id']})}
             dss = []
             for datasource in instance['datasource']:
                 datasource_url = datasource['name'].replace('/', '_')

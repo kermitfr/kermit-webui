@@ -10,14 +10,14 @@ def getDetailsTree(hostname):
     content = {}
     #Configuring Instances
     if server_info:
-        content = {"isFolder": "true", "title": 'Consoles', "key":'consoles', "icon":"console_bar.png"}
+        content = {"isFolder": True, "expand":True, "title": 'Consoles', "key":'consoles', "icon":"console_bar.png"}
         logger.debug('Configuring Bar')
         consoles = []
         for console in server_info:
             #Configure Console
-            console_dict = {"isFolder": "true", "title": console['consolename'], "key":console['consolename'], "icon":"console_bar.png"}
+            console_dict = {"isFolder": True, "title": console['consolename'], "key":console['consolename'], "icon":"console_bar.png"}
             #Configure Batch Archives
-            batch = {'title': 'Batch', 'isFolder':"true", "key":"batchlist", "icon":"batch_process.png", "type":"batch", "console":console["consolename"]}
+            batch = {'title': 'Batch', 'isFolder':True, "key":"batchlist", "icon":"batch_process.png", "type":"batch", "console":console["consolename"]}
             bars = []
             for bar in console['barlist']:
                 bar_dict = {'title':bar['name'], "key":bar['name'], "icon":"console.png", "type":"bar", "detailsEnabled":"true", "url": reverse('bar_details', kwargs={'hostname':hostname, 'console_name':console['consolename'], 'resource_name':bar['name']})}
@@ -25,7 +25,7 @@ def getDetailsTree(hostname):
             batch['children'] = bars    
             
             #Configure PoolList
-            pool_menu = {'title': 'Pools', 'isFolder':"true", "key":"poollist", "icon":"folder_database.png", "type":"pool", "console":console["consolename"], "detailsEnabled":"true", "url": reverse('bar_pools_details', kwargs={'hostname':hostname, 'console_name':console['consolename'], 'resource_name':console['consolename']})}
+            pool_menu = {'title': 'Pools', 'isFolder':True, "key":"poollist", "icon":"folder_database.png", "type":"pool", "console":console["consolename"], "detailsEnabled":"true", "url": reverse('bar_pools_details', kwargs={'hostname':hostname, 'console_name':console['consolename'], 'resource_name':console['consolename']})}
             pools = []
             for pool in console['poollist']:
                 pool_url = pool['poolname'].replace('/', '_')

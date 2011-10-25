@@ -16,7 +16,7 @@ def getDetailsTree(request, hostname):
     #Entering in any platform an collect tree info
     logger.debug('Collecting platform trees')
     data = []
-    content = {"isFolder": "true", "title": hostname, "key":hostname, "icon":"server.png"}
+    content = {"isFolder": "true", "expand": True, "title": hostname, "key":hostname, "icon":"server.png"}
     children = []
     for platform in platform_settings.INSTALLED_PLATFORMS:
         #TODO: Make this part dynamic

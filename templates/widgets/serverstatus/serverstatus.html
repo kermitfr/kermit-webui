@@ -4,7 +4,11 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		$('#serverstatustable').dataTable();
+		$('#serverstatustable').dataTable({
+			 "oLanguage": {
+	            "sSearch": "System Search:"
+        	}
+		});
 	} );
 </script>
 
