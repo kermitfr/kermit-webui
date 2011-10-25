@@ -1,23 +1,15 @@
 import os
 import django
-import ConfigParser
+
 import imp
 from django.conf import global_settings
+from utils import CONF
 
 # calculated paths for django and the site
 # used as starting points for various other paths
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 #MEDIA_ROOT = os.path.join(SITE_ROOT, 'assets')
-
-MAINCONF = SITE_ROOT+'/kermit-webui.cfg'
-if not os.path.isfile(MAINCONF):
-    MAINCONF = '/etc/kermit/kermit-webui.cfg'
-
-CONF = ConfigParser.ConfigParser()
-CONF.read(MAINCONF)
-
-# Django settings for the webui.
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG

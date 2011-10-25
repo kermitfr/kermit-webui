@@ -13,3 +13,17 @@ def extract_instances_name(hostname):
         for instance in server_info['instances']:
             instances.append(instance['name'])
     return instances
+
+def extract_appli_info(hostname, environment):
+    applications = []
+    server_info = read_server_info(hostname)
+    if server_info: 
+        for appli in server_info['applilist']:
+            print appli
+            app = {"type":"Weblogic",
+                   "name":appli["name"], 
+                   "version":"",
+                   "env":environment,
+                   "deploy":""}
+            applications.append(app)
+    return applications

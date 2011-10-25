@@ -13,3 +13,17 @@ def extract_instances_name(hostname):
         instances.append(instance['id'])
         
     return instances
+
+def extract_appli_info(hostname, environment):
+    applications = []
+    server_info = read_server_info(hostname)
+    if server_info: 
+        for instance in server_info:
+            for appli in instance['applilist']:
+                app = {"type":"OC4J",
+                       "name":appli["name"], 
+                       "version":appli["appliver"]["version"],
+                       "env":environment,
+                       "deploy":""}
+                applications.append(app)
+    return applications

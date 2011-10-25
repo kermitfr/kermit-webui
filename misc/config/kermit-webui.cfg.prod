@@ -7,7 +7,7 @@ static_file_location=/var/www/kermit-webui/
 templates_location=/usr/share/kermit-webui/templates/
 fixtures_location=/etc/kermit/webui/fixtures/
 authentication=default
-
+environment.level=2
 
 [webui-database]
 driver=django.db.backends.sqlite3
@@ -20,8 +20,16 @@ password=
 [webui_logs]
 main.file=/var/log/kermit/kermit-webui.log
 main.level=INFO
-
 calls.file=/var/log/kermit/kermit-mcollective-calls.log
 calls.level=DEBUG
+
+[saml2]
+xmlsec.binary=/usr/bin/xmlsec1
+entityId=AutomatixD1
+serviceprovider.name="Automatix Service Provider"
+serviceprovider.url.login=http://npplam01.preprod.org/automatix/auth/saml2/SSO/
+serviceprovider.url.logout=http://npplam01.preprod.org/automatix/saml2/logout/
+idp.url.login=https://preprod.idpdecathlon.oxylane.com:9031/idp/SSO.saml2
+idp.url.logout=https://preprod.idpdecathlon.oxylane.com:9031/idp/SLO.saml2
 
 

@@ -194,137 +194,7 @@
                         "domain": "example.com", 
                         "name": "example.com"
                 }
-        }, 
-        {
-                "pk": 10, 
-                "model": "admin.logentry", 
-                "fields": {
-                        "action_flag": 1, 
-                        "action_time": "2011-09-06 06:33:18", 
-                        "object_repr": "Ping", 
-                        "object_id": "1", 
-                        "change_message": "", 
-                        "user": 1, 
-                        "content_type": 14
-                }
-        }, 
-        {
-                "pk": 9, 
-                "model": "admin.logentry", 
-                "fields": {
-                        "action_flag": 2, 
-                        "action_time": "2011-09-06 06:32:54", 
-                        "object_repr": "test", 
-                        "object_id": "2", 
-                        "change_message": "No fields changed.", 
-                        "user": 1, 
-                        "content_type": 3
-                }
-        }, 
-        {
-                "pk": 8, 
-                "model": "admin.logentry", 
-                "fields": {
-                        "action_flag": 1, 
-                        "action_time": "2011-09-06 06:32:47", 
-                        "object_repr": "test", 
-                        "object_id": "2", 
-                        "change_message": "", 
-                        "user": 1, 
-                        "content_type": 3
-                }
-        }, 
-        {
-                "pk": 7, 
-                "model": "admin.logentry", 
-                "fields": {
-                        "action_flag": 2, 
-                        "action_time": "2011-09-06 06:32:28", 
-                        "object_repr": "DashBoardOpResults", 
-                        "object_id": "2", 
-                        "change_message": "Changed enabled, column and order.", 
-                        "user": 1, 
-                        "content_type": 13
-                }
-        }, 
-        {
-                "pk": 6, 
-                "model": "admin.logentry", 
-                "fields": {
-                        "action_flag": 2, 
-                        "action_time": "2011-09-06 06:32:15", 
-                        "object_repr": "AgentsTree", 
-                        "object_id": "3", 
-                        "change_message": "Changed enabled.", 
-                        "user": 1, 
-                        "content_type": 13
-                }
-        }, 
-        {
-                "pk": 5, 
-                "model": "admin.logentry", 
-                "fields": {
-                        "action_flag": 2, 
-                        "action_time": "2011-09-06 06:32:10", 
-                        "object_repr": "DashBoardPuppetClasses", 
-                        "object_id": "4", 
-                        "change_message": "Changed enabled.", 
-                        "user": 1, 
-                        "content_type": 13
-                }
-        }, 
-        {
-                "pk": 4, 
-                "model": "admin.logentry", 
-                "fields": {
-                        "action_flag": 2, 
-                        "action_time": "2011-09-06 06:32:04", 
-                        "object_repr": "DashBoardDefaultOps", 
-                        "object_id": "1", 
-                        "change_message": "Changed enabled.", 
-                        "user": 1, 
-                        "content_type": 13
-                }
-        }, 
-        {
-                "pk": 3, 
-                "model": "admin.logentry", 
-                "fields": {
-                        "action_flag": 2, 
-                        "action_time": "2011-09-06 06:31:57", 
-                        "object_repr": "DashBoardDefaultOps", 
-                        "object_id": "1", 
-                        "change_message": "Changed order.", 
-                        "user": 1, 
-                        "content_type": 13
-                }
-        }, 
-        {
-                "pk": 2, 
-                "model": "admin.logentry", 
-                "fields": {
-                        "action_flag": 2, 
-                        "action_time": "2011-09-06 06:31:49", 
-                        "object_repr": "DashBoardPuppetClasses", 
-                        "object_id": "4", 
-                        "change_message": "Changed order.", 
-                        "user": 1, 
-                        "content_type": 13
-                }
-        }, 
-        {
-                "pk": 1, 
-                "model": "admin.logentry", 
-                "fields": {
-                        "action_flag": 2, 
-                        "action_time": "2011-09-06 06:31:39", 
-                        "object_repr": "DashBoardServerStatus", 
-                        "object_id": "5", 
-                        "change_message": "Changed enabled and column.", 
-                        "user": 1, 
-                        "content_type": 13
-                }
-        }, 
+        },  
         {
                 "pk": 1, 
                 "model": "widgets.widget", 
@@ -493,6 +363,27 @@
                         "icon": null
                 }
         }, 
+        {
+                "pk": 9, 
+                "model": "widgets.widget", 
+                "fields": {
+                        "refreshable": false, 
+                        "description": "", 
+                        "title": "Appli Status", 
+                        "color": "white", 
+                        "editable": true, 
+                        "enabled": true, 
+                        "movable": true, 
+                        "refreshUrl": "", 
+                        "name": "ApplicationsStatus", 
+                        "column": 2, 
+                        "removable": true, 
+                        "created_time": "2011-10-25 06:30:45", 
+                        "updated_time": "2011-10-25 06:30:45", 
+                        "order": 2, 
+                        "icon": ""
+                }
+        },
         {
                 "pk": 1, 
                 "model": "defaultop.operation", 

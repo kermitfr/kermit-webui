@@ -6,14 +6,7 @@ Created on Sep 19, 2011
 import saml2
 from os import path
 import ConfigParser
-
-SITE_ROOT = path.dirname(path.realpath(__file__))
-MAINCONF = SITE_ROOT+'/../../kermit-webui.cfg'
-if not path.isfile(MAINCONF):
-    MAINCONF = '/etc/kermit/kermit-webui.cfg'
-
-CONF = ConfigParser.ConfigParser()
-CONF.read(MAINCONF)
+from webui.utils import CONF
 
 BASE_URL=CONF.get('webui', 'base_url')
 
