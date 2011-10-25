@@ -1,7 +1,7 @@
 Summary: Mcollective WebUI
 Name: kermit-webui
 Version: 0.0.3
-Release: 7
+Release: 8
 License: GPL
 Group: Applications/System
 URL: https://github.com/thinkfr/kermit-webui
@@ -98,6 +98,17 @@ fi
 %postun
 
 %changelog
+* Tue Oct 25 2011 Marco Mornati <ilmorna@gmail.com> - 0.0.3-8 
+	Fixed problem on redirect url after login
+  	Changed widget default position and name
+  	Autoexpanded Tree on Server details
+	Renamed Admin Link
+	Rename Search field for System Status Widget
+  	Fixed problem with content menu position when widget is at the bottom of the page
+  	Added Widget with appli information
+  	Created settings for saml2 in prod settings file (need to create properties in py file)
+  	Added Widget ServerStatus With Classes Information
+	Renamed ServerStatus to SystemStatus (Classes and files)
 * Thu Sep 20 2011 Marco Mornati <ilmorna@gmail.com> - 0.0.3-4
 	Added server export CSV
 	Added Authentication Module
