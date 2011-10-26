@@ -19,7 +19,6 @@ def extract_appli_info(hostname, environment):
     server_info = read_server_info(hostname)
     if server_info: 
         for appli in server_info['applilist']:
-            print appli
             app = {"type":"Weblogic",
                    "name":appli["name"], 
                    "version":"",

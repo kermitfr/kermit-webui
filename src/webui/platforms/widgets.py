@@ -31,7 +31,6 @@ class ApplicationsStatus(Widget):
                 if applications_list:
                     applications.extend(applications_list)
             except:
-                print "Unexpected error:", sys.exc_info()
                 logger.debug('No module applications found for %s' % platform_path)
         widget_context = {"applications":applications}
         return dict(super_context.items() + widget_context.items())
