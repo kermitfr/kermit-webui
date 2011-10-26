@@ -74,6 +74,35 @@
 
 	$(document).ready(function() {
 		$("#context-execution-dialog").hide();
+		$("#expandChildren").click(function() {
+			var node = $("#classestree").dynatree("getActiveNode");
+			node.expand(true);
+			node.visit(function(child){
+			    child.expand(true);
+			});		
+		}).mouseover(function() { 
+            $(this).attr("src", "{{settings.STATIC_URL}}/images/expand_over.png");
+        })
+        .mouseout(function() {
+            $(this).attr("src", "{{settings.STATIC_URL}}/images/expand.png");
+        });
+		$("#compressChildren").click(function() {
+			var node = $("#classestree").dynatree("getActiveNode");
+			node.visit(function(child){
+			    child.expand(false);
+			});		
+			node.expand(false);
+		}).mouseover(function() { 
+            $(this).attr("src", "{{settings.STATIC_URL}}/images/collapse_over.png");
+        })
+        .mouseout(function() {
+            $(this).attr("src", "{{settings.STATIC_URL}}/images/collapse.png");
+        });
+		$("#expandAll").click(function() {
+			$("#classestree").dynatree("getRoot").visit(function(node){
+			    node.expand(true);
+			});	
+		});
 		$("#classestree").dynatree({
 			persist: true,
 			title : "Puppet Classes",
@@ -85,9 +114,9 @@
 			onCreate : function(node, span) {
 				//Used to reload node using cookie
 			    if( node && node.isLazy() ){
-			        node.reloadChildren(function(node, isOk){
+			        node.reloadChildren(function(childnode, isOk){	
 			        });
-			      }
+			    }
 				bindContextMenu(span);
 			},
 			initAjax : {
@@ -259,5 +288,9 @@
 </div>
 <div id="context-execution-dialog"></div>
 <div id="deploy-dialog"></div>
-<div id="classestree"></div>
+<div id="treecontainer">
+	<img id="expandChildren" src="{{settings.STATIC_URL}}/images/expand.png" width="24" height="24"/>
+	<img id="compressChildren" src="{{settings.STATIC_URL}}/images/collapse.png" width="24" height="24"/>
+	<div id="classestree"></div>
+</div>
 {% endblock %} 

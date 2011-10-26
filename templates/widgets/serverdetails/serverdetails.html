@@ -30,6 +30,30 @@
 	}
 	
 	$(document).ready(function() {
+		$("#expandChildren").click(function() {
+			var node = $("#details-tree").dynatree("getActiveNode");
+			node.expand(true);
+			node.visit(function(child){
+			    child.expand(true);
+			});		
+		}).mouseover(function() { 
+            $(this).attr("src", "{{settings.STATIC_URL}}/images/expand_over.png");
+        })
+        .mouseout(function() {
+            $(this).attr("src", "{{settings.STATIC_URL}}/images/expand.png");
+        });
+		$("#compressChildren").click(function() {
+			var node = $("#details-tree").dynatree("getActiveNode");
+			node.visit(function(child){
+			    child.expand(false);
+			});		
+			node.expand(false);
+		}).mouseover(function() { 
+            $(this).attr("src", "{{settings.STATIC_URL}}/images/collapse_over.png");
+        })
+        .mouseout(function() {
+            $(this).attr("src", "{{settings.STATIC_URL}}/images/collapse.png");
+        });
 		$("#details-tree").dynatree({
 			title : "Server {{hostname}} Details",
 			imagePath:"{{settings.STATIC_URL}}images/servertree/",
@@ -118,7 +142,8 @@
 		});
 	});
 </script>
-<br/>
+<img id="expandChildren" src="{{settings.STATIC_URL}}/images/expand.png" width="24" height="24"/>
+<img id="compressChildren" src="{{settings.STATIC_URL}}/images/collapse.png" width="24" height="24"/>
 <div id="details-tree">
 	
 </div>
