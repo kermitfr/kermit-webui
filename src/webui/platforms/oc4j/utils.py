@@ -20,9 +20,13 @@ def extract_appli_info(hostname, environment):
     if server_info: 
         for instance in server_info:
             for appli in instance['applilist']:
+                version = ""
+                if "appliver" in appli and "version" in appli["appliver"]:
+                    version = appli["appliver"]["version"]
+                    
                 app = {"type":"OC4J",
                        "name":appli["name"], 
-                       "version":appli["appliver"]["version"],
+                       "version":version,
                        "env":environment,
                        "deploy":""}
                 applications.append(app)
