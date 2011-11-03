@@ -1,5 +1,27 @@
 {% load i18n %}
-
+<style type="text/css">
+table.serverstatus {
+border-width: 2px;
+border-spacing: 2px;
+border-style: outset;
+border-color: gray;
+border-collapse: collapse;
+background-color: white;
+width: 100%;
+}
+table.serverstatus th {
+font-size: 12px;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-weight: bold;
+color: #000;
+}
+table.serverstatus tr.even {
+background: #CCCCCC;
+}
+table.serverstatus tr.odd {
+background: #F0F0F0
+}
+</style>
 <script>
 	$(document).ready(function() {
         $('#responsedata').dataTable();
