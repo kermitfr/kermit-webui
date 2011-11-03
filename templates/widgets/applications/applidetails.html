@@ -1,0 +1,68 @@
+{% extends "widgets/base_widget.html" %}
+{% load i18n %}
+
+{% block widget-content %}
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#applistatustable').dataTable({
+			 "oLanguage": {
+	            "sSearch": "Appli Search:"
+        	}
+		});
+	} );
+</script>
+
+<style type="text/css">
+table.applistatus {
+	border-width: 2px;
+	border-spacing: 2px;
+	border-style: outset;
+	border-color: gray;
+	border-collapse: collapse;
+	background-color: white;
+	width: 100%;
+}
+
+table.applistatus th {
+	font-size: 12px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	color: #000;
+}
+
+table.applistatus tr.even {
+	background: #CCCCCC;
+}
+table.applistatus tr.odd {
+	background: #F0F0F0
+}
+
+</style>
+<br/>
+<div id="actual-appli-status">
+	<table id="applistatustable" class="applistatus">
+		<thead>
+			<th>{% trans 'Appli Name'%}</th>
+			<th>{% trans 'Version'%}</th>
+			<th>{% trans 'Environment'%}</th>
+			<th>{% trans 'Server'%}</th>
+			<th>{% trans 'Instance'%}</th>
+			<th>{% trans 'Type'%}</th>
+		</thead>
+		<tbody>
+			{% for appli in applications %}
+			<tr class="{% cycle odd,even %}">
+				<td>{{appli.name}}</td>
+				<td>{{appli.version}}</td>
+				<td>{{appli.env}}</td>
+				<td><a href="{% url serverdetails appli.server %}">{{appli.server}}</a></td>
+				<td>{{appli.instance}}</td>
+				<td>{{appli.type}}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+<br/>
+{% endblock %} 

@@ -23,6 +23,30 @@ def extract_appli_info(hostname, environment):
                    "name":appli["name"], 
                    "version":"",
                    "env":environment,
-                   "deploy":""}
+                   "deploy":1}
             applications.append(app)
     return applications
+
+def extract_appli_details(hostname, environment, appname):
+    applications = []
+    server_info = read_server_info(hostname)
+    if server_info: 
+        for appli in server_info['applilist']:
+            if appli["name"] != appname:
+                continue
+            
+            app = {"type":"Weblogic",
+                       "name":appli["name"], 
+                       "version":"",
+                       "env":environment,
+                       "server": hostname, 
+                       "instance": appli['target']}
+            applications.append(app)
+    return applications
+
+
+def check_contains(applications, appli):
+    for app in applications:
+        if app["type"] == appli["type"] and app["name"] == appli["name"] and app["version"] == appli["version"] and app["env"] == appli["env"]:
+            return app
+    return None

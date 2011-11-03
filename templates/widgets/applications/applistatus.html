@@ -53,7 +53,7 @@ table.applistatus tr.odd {
 			{% for appli in applications %}
 			<tr class="{% cycle odd,even %}">
 				<td>{{appli.type}}</td>
-				<td>{{appli.name}}</td>
+				<td><a href="{% url application_details appli.name %}">{{appli.name}}</a></td>
 				<td>{{appli.version}}</td>
 				<td>{{appli.env}}</td>
 				<td>{{appli.deploy}}</td>

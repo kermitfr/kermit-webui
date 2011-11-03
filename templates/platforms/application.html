@@ -1,0 +1,21 @@
+{% extends "theme/meta.html" %}
+{% load widgets %}
+{% load i18n %}
+
+{% block navbar %}{% endblock %}
+
+{% block breadcrumbs %}
+<div id="breadcrumbs">
+	<a href="{{base_url}}/">{% trans 'Home' %}</a>{% if title %} &rsaquo; {{ title }}{% endif %} <a href="{{base_url}}/platform/application/{{appname}}/">{% trans 'Application Details' %} - {{appname}}</a>
+</div>
+{% endblock %}
+
+{% block content %} 
+<br/>
+<div id="columns">
+	<ul id="column2" class="column">
+		{% widget "ApplicationDetails" user appname %}
+		&nbsp;<br/>&nbsp;<br/>
+	</ul>
+</div>
+{% endblock %} 
