@@ -10,7 +10,7 @@ def getDetailsTree(hostname):
     content = {}
     #Configuring Instances
     if server_info:
-        content = {"isFolder": True, "expand": True, "title": 'JBoss', "key":'JBoss', "icon":"jboss-logo.jpg", "detailsEnabled":"true", 'url': reverse('jboss_details', kwargs={'hostname':hostname, 'instance_name':hostname, 'resource_name':hostname})}
+        content = {"isFolder": True, "expand": True, "title": 'JBoss', "key":'JBoss', "icon":"jboss_logo.png", "detailsEnabled":"true", 'url': reverse('jboss_details', kwargs={'hostname':hostname, 'instance_name':hostname, 'resource_name':hostname})}
         logger.debug('Configuring Instances')
         db_instances = {'title': 'Instances', 'isFolder':True, "expand":True, "key":"instance", "icon":"app_server.png", "type":"instances"}
         dbs = []
