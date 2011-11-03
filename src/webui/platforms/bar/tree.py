@@ -15,7 +15,7 @@ def getDetailsTree(hostname):
         consoles = []
         for console in server_info:
             #Configure Console
-            console_dict = {"isFolder": True, "title": console['consolename'], "key":console['consolename'], "icon":"console_bar.png"}
+            console_dict = {"isFolder": True, "title": console['consolename'], "key":console['consolename'], "icon":"console_bar.png", "detailsEnabled": "true", 'url': reverse('bar_console_details', kwargs={'hostname':hostname, 'console_name':console['consolename'], 'resource_name':console['consolename']})}
             #Configure Batch Archives
             batch = {'title': 'Batch', 'isFolder':True, "key":"batchlist", "icon":"batch_process.png", "type":"batch", "console":console["consolename"]}
             bars = []

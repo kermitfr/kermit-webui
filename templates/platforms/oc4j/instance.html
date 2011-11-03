@@ -1,6 +1,11 @@
 {% load i18n %} 
 <img class="introicon" src="{{static_url}}images/icons/app-settings.png"/>
 <div class="info">
+	<strong>{% trans 'Java Version'%}</strong>
+	<div class="codestyle">
+		{{java_version}}
+	</div>
+	<br/>
 	<strong>{% trans 'OC4J Options'%}</strong>
 	<div class="codestyle">
 		{% for opt in oc4j_options%}

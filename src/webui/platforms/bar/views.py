@@ -75,3 +75,23 @@ def barInventory(request, hostname, console_name, resource_name):
         return render_to_response('platforms/bar/batch.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL,"hostname":hostname, "bar":selected_bar}, context_instance=RequestContext(request))
     else:
         return render_to_response('platforms/bar/batch.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))
+
+
+@login_required()
+def barConsoleInventory(request, hostname, console_name, resource_name):
+    server_info = read_server_info(hostname)
+    if server_info:
+        selected_console = None 
+        for console in server_info:
+            if console['consolename'] == console_name:
+                selected_console = console
+                break 
+        
+        if 'java_ver' in selected_console:
+            java_version = selected_console["java_ver"]
+        else:
+            java_version = ""
+              
+        return render_to_response('platforms/bar/console.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL,"hostname":hostname, "java_version":java_version}, context_instance=RequestContext(request))
+    else:
+        return render_to_response('platforms/bar/console.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))

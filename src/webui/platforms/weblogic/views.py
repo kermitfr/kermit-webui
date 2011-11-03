@@ -18,7 +18,11 @@ def instanceInventory(request, hostname, resource_name):
                 selected_instance = instance
                 break
         convert_keys_names(selected_instance)
-        return render_to_response('platforms/weblogic/instance.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL,"hostname":hostname, "instance": selected_instance}, context_instance=RequestContext(request))
+        if 'java_ver' in server_info:
+            java_version = server_info["java_ver"]
+        else: 
+            java_version = ""
+        return render_to_response('platforms/weblogic/instance.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL,"hostname":hostname, "instance": selected_instance, "java_version": java_version}, context_instance=RequestContext(request))
     else:
         return render_to_response('platforms/weblogic/instance.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))
 

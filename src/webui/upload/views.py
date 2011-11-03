@@ -58,7 +58,7 @@ def upload(request):
     return HttpResponse( json.dumps( ret_json ) )
 
 def execute_operation(operation, file_content):
-    if operation == 'importPuppetClasses':
+    if operation == 'importPuppetClass':
         try:
             json_classes = json.loads(file_content)
         except:

@@ -17,7 +17,11 @@ def instanceInventory(request, hostname, instance_name, resource_name):
             if server['id'] == instance_name:
                 instance = server
                 break 
-        return render_to_response('platforms/oc4j/instance.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "java_stop_options":instance['java-stop-options'], "java_start_options":instance['java-start-options'], "oc4j_options":instance['oc4j-options'], "hostname": hostname}, context_instance=RequestContext(request))
+        if 'java_ver' in instance:
+            java_version = instance["java_ver"]
+        else:
+            java_version = ""
+        return render_to_response('platforms/oc4j/instance.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "java_stop_options":instance['java-stop-options'], "java_start_options":instance['java-start-options'], "oc4j_options":instance['oc4j-options'], "java_version":java_version, "hostname": hostname}, context_instance=RequestContext(request))
     else:
         return render_to_response('platforms/oc4j/instance.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))
 
