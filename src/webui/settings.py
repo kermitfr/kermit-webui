@@ -167,7 +167,7 @@ INSTALLED_APPS = (
     'webui.servicestatus',
     'webui.upload',
     'webui.acls_manager',
-    'a7x_wsgroups',
+    #'a7x_wsgroups',
 )
 
 #Configuring fixtures by-exception
