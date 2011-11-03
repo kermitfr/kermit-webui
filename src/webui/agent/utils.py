@@ -2,6 +2,7 @@ from webui.agent.models import Agent, Action, ActionInput, ActionOutput
 from webui.restserver.communication import callRestServer
 import logging
 from django.utils import simplejson as json
+from webui.serverstatus.models import Server
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +22,13 @@ def update_agents_info(user):
         
 def update_info(user, agent):
     logger.info('Calling Mcollective to get info for agent ' + agent.name)
-    response, content = callRestServer(user, "limit_targets=1", "agentinfo", "desc", "agentname="+agent.name)
+    #Extract n servers containing the agent
+    servers_list = Server.objects.filter(agents=agent, deleted=False)
+    filters = None
+    for current in servers_list:
+        filters = "identity_filter=%s" % current.hostname
+        break;
+    response, content = callRestServer(user, filters, "agentinfo", "desc", "agentname="+agent.name)
     if response['status'] == '200':
         json_content = json.loads(content)
         for msg in json_content:

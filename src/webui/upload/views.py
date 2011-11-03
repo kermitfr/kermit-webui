@@ -5,6 +5,11 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from webui.puppetclasses.utils import update_classes
+from webui.acls_manager.utils import update_acls
+import sys
+import logging
+
+logger = logging.getLogger(__name__)
 
 def save_upload( uploaded, filename, raw_data ):
     ''' raw_data: if True, upfile is a HttpRequest object with raw post data
@@ -33,11 +38,11 @@ def upload(request):
             upload = request
             try:
                 filename = request.GET[ 'qqfile' ]
+                funcToCall = request.GET['funcToCall']
             except KeyError: 
                 return HttpResponseBadRequest( "AJAX request not valid" )
             file_content = upload.read()
-            json_classes = json.loads(file_content)
-            update_classes(json_classes)
+            rsp_message = execute_operation(funcToCall, file_content)
             success = "true"
         else:
             #Actually ignored this part.
@@ -49,9 +54,26 @@ def upload(request):
             filename = upload.name
          
         
-    ret_json = { 'success': success, }
+    ret_json = { 'success': success, 'message':rsp_message}
     return HttpResponse( json.dumps( ret_json ) )
 
+def execute_operation(operation, file_content):
+    if operation == 'importPuppetClasses':
+        try:
+            json_classes = json.loads(file_content)
+        except:
+            logger.error("Error parsing JSON file %s" % sys.exc_info()[2])
+        update_classes(json_classes)
+        return "PuppetClasses Updated"
+    elif operation == 'importAcls':
+        try:
+            json_acls = json.loads(file_content)
+        except:
+            logger.error("Error parsing JSON file %s" % sys.exc_info()[2])
+        update_acls(json_acls)
+        return "ACLs Permissions Updated"
+        
+
 @csrf_exempt
-def get_upload_form(request):
-    return render_to_response('upload/form.html', {}, RequestContext(request))
+def get_upload_form(request, funcToCall):
+    return render_to_response('upload/form.html', {'funcToCall':funcToCall}, RequestContext(request))

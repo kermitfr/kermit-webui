@@ -7,13 +7,14 @@
 	$(document).ready(function() {
 		var uploader = new qq.FileUploader({
 			element : document.getElementById('form_upload'),
+			params : {'funcToCall': '{{funcToCall}}' },
 			action : '{% url upload %}',
 			debug : true,
 			onComplete : function(id, fileName, responseJSON) {
 				/* you probably want to handle the case when responseJSON.success is false,
 				 which happens when the Django view could not save the file */
 				if(responseJSON.success)
-					$('#form_upload').append('<p>PuppetClasses updated...</p>');
+					$('#form_upload').append('<p>' + responseJSON.message+'...</p>');
 			},
 		});
 	});

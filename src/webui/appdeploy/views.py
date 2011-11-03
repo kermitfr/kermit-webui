@@ -53,11 +53,11 @@ def redeploy_app(request, filters, dialog_name, xhr=None):
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to deploy %s application on %s filtered server" % (appname, filters))
                 response, content = callRestServer(request.user, filters, 'a7xdeploy', 'redeployoas', 'appname=%s;instancename=%s;appfile=%s;servertype=%s' %(appname, instancename, appfile, servertype))
-                #TODO: Improve reading content data
                 if response.status == 200:
-                    rdict.update({"result":"Application Deployed"})
+                    json_content = json.loads(content)
+                    rdict.update({"result":json_content[0]["statusmsg"]})
                 else:
-                    rdict.update({"result": "Error deploying application"})
+                    rdict.update({"result": "Error communicating with server"})
                 
                 rdict.update({'dialog_name':dialog_name})
                 # And send it off.

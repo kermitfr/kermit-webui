@@ -117,7 +117,10 @@
 				<a href="#" onclick="executeAction('{% url action_executer "update_agents" %}');">{% trans 'Update Agents Info' %}</a>
 			</li>
 			<li>
-				<a href="#" onclick="getUploadForm('{% url get_upload_form %}', 'uploadForm')">{% trans 'Update PuppetClasses' %}</a>
+				<a href="#" onclick="getUploadForm('{% url get_upload_form 'importPuppetClass' %}', 'uploadForm')">{% trans 'Import PuppetClasses' %}</a>
+			</li>
+			<li>
+				<a href="#" onclick="getUploadForm('{% url get_upload_form 'importAcls' %}', 'uploadForm')">{% trans 'Import ACLs' %}</a>
 			</li>
 		</ul>
 		</div>
