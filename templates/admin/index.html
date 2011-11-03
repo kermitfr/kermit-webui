@@ -101,8 +101,8 @@
         {% endif %}
     </div>
 	<div class="column span-6">
-		<div class="module actions" id="custom-action-module">
-		<h2>{% trans 'Custom Admin Actions' %}</h2>
+		<div class="module actions" id="custom-refresh-action-module">
+		<h2>{% trans 'Refresh Actions' %}</h2>
 		<ul class="actionlist">
 			<li>
 				<a href="#" onclick="executeAction('{% url action_executer "refresh_dashboard" %}');">{% trans 'Refresh Widgets' %}</a>
@@ -116,6 +116,11 @@
 			<li>
 				<a href="#" onclick="executeAction('{% url action_executer "update_agents" %}');">{% trans 'Update Agents Info' %}</a>
 			</li>
+		</ul>
+		</div>
+		<div class="module actions" id="custom-import-action-module">
+		<h2>{% trans 'Import Actions' %}</h2>
+		<ul class="actionlist">
 			<li>
 				<a href="#" onclick="getUploadForm('{% url get_upload_form 'importPuppetClass' %}', 'uploadForm')">{% trans 'Import PuppetClasses' %}</a>
 			</li>
