@@ -4,6 +4,7 @@ SUB_APPS = (
         'oc4j',
         'weblogic',
         'bar',
+        'jboss',
 )
 
 

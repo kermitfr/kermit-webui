@@ -150,6 +150,8 @@ INSTALLED_APPS = (
     'webui.serverstatus',
     'webui.serverdetails',
     'webui.appdeploy',
+    'webui.acls_manager',
+    #'a7x_wsgroups',
 )
 
 FIXTURE_DIRS = (

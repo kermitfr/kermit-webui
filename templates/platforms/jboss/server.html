@@ -1,0 +1,9 @@
+{% load i18n %} 
+<img class="introicon" src="{{static_url}}images/icons/app-settings.png"/>
+<div class="info">
+	<strong>{% trans 'JBoss Home' %}</strong>: {{jboss_home}} <br/>
+	<strong>{% trans 'JBoss Version' %}</strong>: {{jboss_ver}} <br/>
+	<strong>{% trans 'Java Version' %}</strong>: {{java_ver}} <br/>
+	<strong>{% trans 'Java Bin' %}</strong>: {{java_bin}} <br/>
+	<strong>{% trans 'Default started instance' %}</strong>: {{server_name}} <br/>
+</div>
