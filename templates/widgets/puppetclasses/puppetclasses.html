@@ -32,7 +32,7 @@
 						}
 					}
 				} else {
-					filtersList += filterType + '=' + node.data.title
+					filtersList += filterType + '=' + node.data.filtername
 				}
 				if($(this).attr('type') == "agent") {
 					getExecutionForm('{{settings.BASE_URL}}', 'context-execution-dialog', $(this).attr('agent'), $(this).attr('action'), filtersList, 'response-container')
@@ -41,7 +41,12 @@
 					//Supposing that all default operations are unfiltered
 					//TODO: Make a complete refactor of this part
 					url = url.replace('no-filter', filtersList);
-					url = "{{settings.BASE_URL}}/" + url;
+					base_url = "{{settings.BASE_URL}}";
+					if (base_url.substr(-1) === "/" ) {
+						var strLen = base_url.length;
+						base_url = base_url.slice(0,strLen-1);
+					}
+					url = base_url + url;
 					sendRequestToMcollective(url, 'response-container');			
 				} else if ($(this).attr('type') == "deploy") {
 					getDeployForm('{{settings.BASE_URL}}', 'deploy-dialog', $(this).attr('action'), filtersList)	

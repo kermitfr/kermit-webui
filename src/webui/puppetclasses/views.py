@@ -18,7 +18,7 @@ class QueryMethods(object):
             #Retrieving all sub classes
             servers_list = Server.objects.filter(puppet_classes = puppetclass, deleted=False)
             if (servers_list):
-                content = {"isFolder": "true", "isLazy": "false", "title": puppetclass.name, "level":puppetclass.level, "key":puppetclass.name}
+                content = {"isFolder": "true", "isLazy": "false", "title": puppetclass.name, "level":puppetclass.level, "key":puppetclass.name, "filtername":puppetclass.name}
                 children = []
                 sub_classes = PuppetClass.objects.filter(enabled=True, level=level+1)
                 if sub_classes:
@@ -32,7 +32,7 @@ class QueryMethods(object):
                         if not user.is_superuser:
                             servers = get_objects_for_user(user, 'use_server', Server).filter(puppet_path=path, deleted=False)
                 for server in servers:
-                    serverdata = {"title":server.fqdn, "url": settings.BASE_URL + "/server/details/"+server.fqdn+"/", "key":server.fqdn}
+                    serverdata = {"title":server.fqdn, "url": settings.BASE_URL + "/server/details/"+server.fqdn+"/", "key":server.fqdn, "filtername":server.hostname}
                     children.append(serverdata)
                 
                 content['children'] = children
@@ -54,7 +54,7 @@ class QueryMethods(object):
                 if not user.is_superuser:
                     servers = get_objects_for_user(user, 'use_server', Server).filter(puppet_path=path, deleted=False)
         for server in servers:
-            serverdata = {"title":server.fqdn, "url": settings.BASE_URL + "/server/details/"+server.fqdn+"/", "key":server.fqdn}
+            serverdata = {"title":server.fqdn, "url": settings.BASE_URL + "/server/details/"+server.fqdn+"/", "key":server.fqdn, "filtername":server.hostname}
             data.append(serverdata)
              
         return json.dumps(data)
@@ -74,7 +74,7 @@ class QueryMethods(object):
                 if not user.is_superuser:
                     servers = get_objects_for_user(user, 'use_server', Server).filter(puppet_path__startswith=test_path)
             if len(servers)>0:
-                content = {"isFolder": "true", "isLazy": "false", "title": puppetclass.name, "level":puppetclass.level, "key":puppetclass.name}
+                content = {"isFolder": "true", "isLazy": "false", "title": puppetclass.name, "level":puppetclass.level, "key":puppetclass.name, "filtername":puppetclass.name}
                 data.append(content)
             else:
                 logger.info("Excluding class " + str(puppetclass) + " because there are no server inside")
@@ -87,7 +87,7 @@ class QueryMethods(object):
                 if not user.is_superuser:
                     servers = get_objects_for_user(user, 'use_server', Server).filter(puppet_path=path, deleted=False)
         for server in servers:
-            serverdata = {"title":server.fqdn, "url": settings.BASE_URL + "/server/details/"+server.fqdn+"/", "key":server.fqdn}
+            serverdata = {"title":server.fqdn, "url": settings.BASE_URL + "/server/details/"+server.fqdn+"/", "key":server.fqdn, "filtername":server.hostname}
             data.append(serverdata)
              
         return json.dumps(data)
