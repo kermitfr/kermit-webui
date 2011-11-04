@@ -13,6 +13,8 @@ from webui.agent.models import Agent
 from webui.agent.utils import update_agents_info
 from webui.restserver.communication import callRestServer
 from django.http import HttpResponse
+from webui.platforms.platforms import platforms
+from webui.platforms.abstracts import UpdatePlatform
 
 logger = logging.getLogger(__name__)
 
@@ -106,30 +108,12 @@ class Operations(object):
         self.create_path(server, mcresponse['data']['classes'])
        
     def server_inventory(self, user):
-        #TODO: Refactor making it dynamic with Platforms
-        logger.debug("Calling OC4J Inventory")
-        try: 
-            response, content = callRestServer(user, 'no-filter', 'a7xinventory', 'oasinv')
-        except Exception, err:
-            logger.error('ERROR: ' + str(err))
-            
-        logger.debug("Calling WebLoginc Inventory")
-        try: 
-            response, content = callRestServer(user, 'no-filter', 'a7xinventory', 'webloinv')
-        except Exception, err:
-            logger.error('ERROR: ' + str(err))
-            
-        logger.debug("Calling BAR Inventory")
-        try: 
-            response, content = callRestServer(user, 'no-filter', 'a7xinventory', 'barinv')
-        except Exception, err:
-            logger.error('ERROR: ' + str(err))
-            
-        logger.debug("Calling JBoss Inventory")
-        try: 
-            response, content = callRestServer(user, 'no-filter', 'inventory', 'jboss')
-        except Exception, err:
-            logger.error('ERROR: ' + str(err))
+        updates_defined = platforms.extract(UpdatePlatform)
+        if updates_defined:
+            for current_update in updates_defined:
+                current_update.inventoryUpdate(user)
+        else:
+            logger.warn("No update defined for installed platforms")
     
     def add_puppet_classes(self, server, puppet_classes):
         for current in puppet_classes:

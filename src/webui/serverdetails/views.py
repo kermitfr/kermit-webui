@@ -8,6 +8,8 @@ from django.http import HttpResponse
 from django.utils import simplejson as json
 from django.contrib.auth.decorators import login_required
 from webui.servicestatus import utils
+from webui.platforms.platforms import platforms
+from webui.platforms.abstracts import ServerTree
 
 logger = logging.getLogger(__name__)
 
@@ -18,23 +20,13 @@ def getDetailsTree(request, hostname):
     data = []
     content = {"isFolder": "true", "expand": True, "title": hostname, "key":hostname, "icon":"server.png"}
     children = []
-    for platform in platform_settings.INSTALLED_PLATFORMS:
-        #TODO: Make this part dynamic
-        platform_name = 'webui.platforms.' + platform
-        try:
-            platform_path = __import__(platform_name, {}, {}, [platform_name.split('.')[-1]]).__path__
-        except AttributeError:
-            continue
-        
-        try:
-            fp, pathname, description = imp.find_module('tree', platform_path)
-            mod = imp.load_module('tree', fp, pathname, description)
-            platform_data = mod.getDetailsTree(hostname)
+    tree_modules = platforms.extract(ServerTree)
+    if tree_modules:
+        for current in tree_modules:
+            platform_data = current.getDetailsTree(hostname)
             if platform_data:
                 children.append(platform_data)
-        except:
-            logger.debug('No module tree found for %s' % platform_path)
-    
+        
     content['children'] = children
     data.append(content)
     return HttpResponse(json.dumps(data))

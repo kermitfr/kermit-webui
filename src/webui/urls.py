@@ -4,6 +4,7 @@ from django.contrib import admin
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+from webui.platforms.abstracts import ServerTree
 admin.autodiscover()
 
 #Look for cron jobs
@@ -15,6 +16,9 @@ if 'webui.django_cron' in settings.INSTALLED_APPS:
 if 'webui.widgets' in settings.INSTALLED_APPS:
     from widgets.loading import registry
     registry.discover_widgets()
+    
+import platforms
+platforms.initialize()
 
 urlpatterns = patterns('',
     # Examples:
