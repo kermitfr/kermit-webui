@@ -7,7 +7,7 @@ MESSAGESPOT=po/messages.pot
 TOPDIR = $(shell pwd)
 DATE="date +%Y%m%d"
 PROGRAMNAME=kermit-webui
-RELEASE=0.0.4
+RELEASE=0.0.5
 TMPDIR=/tmp
 BUILDDIR=build
 
