@@ -11,7 +11,7 @@ import sys
 logger = logging.getLogger(__name__)
 
 BASE_PLATFORM_PATH = "webui.platforms."
-MODULES_TO_IMPORT = ["tree", "updates"]
+MODULES_TO_IMPORT = ["tree", "updates", "applications"]
 
 def initialize():
     logger.info("Initializing Platform environment")
