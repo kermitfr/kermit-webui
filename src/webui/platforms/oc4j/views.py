@@ -21,7 +21,17 @@ def instanceInventory(request, hostname, instance_name, resource_name):
             java_version = instance["java_ver"]
         else:
             java_version = ""
-        return render_to_response('platforms/oc4j/instance.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "java_stop_options":instance['java-stop-options'], "java_start_options":instance['java-start-options'], "oc4j_options":instance['oc4j-options'], "java_version":java_version, "hostname": hostname}, context_instance=RequestContext(request))
+            
+        java_stop_options = ""
+        java_start_options = ""
+        oc4j_option = ""
+        if 'java-stop-options' in instance:
+            java_stop_options = instance['java-stop-options']
+        if 'java-start-options' in instance:
+            java_start_options = instance['java-start-options']
+        if 'oc4j-options' in instance:
+            oc4j_option = instance['oc4j-options']
+        return render_to_response('platforms/oc4j/instance.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "java_stop_options":java_stop_options, "java_start_options":java_start_options, "oc4j_options":oc4j_option, "java_version":java_version, "hostname": hostname}, context_instance=RequestContext(request))
     else:
         return render_to_response('platforms/oc4j/instance.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))
 
