@@ -11,6 +11,7 @@ from webui.platforms.oc4j.utils import extract_appli_info, check_contains,\
 from webui.platforms.abstracts import Application
 from webui.platforms.oc4j import settings
 from webui.platforms.platforms import platforms
+from webui.serverdetails import utils
 
 
 logger = logging.getLogger(__name__)
@@ -18,10 +19,7 @@ logger = logging.getLogger(__name__)
 class OC4JApplication(Application):
 
     def getApplications(self, user):
-        servers = Server.objects.filter(deleted=False)
-        if user != 'fooUser':
-            if not user.is_superuser:
-                servers = get_objects_for_user(user, 'use_server', Server)
+        servers = utils.extract_user_servers(user)
         #Retrieving applilist for any server controlled by kermit
         applications = []
         for server in servers:
@@ -38,7 +36,7 @@ class OC4JApplication(Application):
         return applications
     
     def getAppliInfo(self, user, appname):
-        servers = Server.objects.filter(deleted=False)
+        servers = utils.extract_user_servers(user)
         if user != 'fooUser':
             if not user.is_superuser:
                 servers = get_objects_for_user(user, 'use_server', Server)

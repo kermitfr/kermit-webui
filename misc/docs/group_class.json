@@ -1,0 +1,16 @@
+[
+ {
+ 	"group_name": "MyGroups",
+ 	"classes":["class+"],
+ 	"servers":[],
+ 	"agents":[],
+ 	"actions":[]
+ },
+ {
+ 	"user_name": "test",
+ 	"classes":["class2"],
+ 	"servers":[],
+ 	"agents":[],
+ 	"actions":[]
+ }
+]

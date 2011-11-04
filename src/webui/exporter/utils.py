@@ -5,19 +5,19 @@ Created on Sep 20, 2011
 '''
 import csv
 #import xlwt
-from webui.serverstatus.models import Server
 import logging
+from webui.serverdetails import utils
 
 logger = logging.getLogger(__name__)
 
-def generate_csv_server(response):
+def generate_csv_server(user, response):
     """
     Generates an CSV with servers list
     """
     writer = csv.writer(response)
     writer.writerow(["UsedName","Name","BU","Projet","Status","Zone","Type"])
-    servers = Server.objects.all()
-    logger.info("Generating server CSV")
+    servers = utils.extract_user_servers(user)
+    logger.info("Generating servers CSV")
     logger.debug("Found %s servers" % len(servers))
     for server in servers:
         classes = []

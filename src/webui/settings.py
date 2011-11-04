@@ -268,3 +268,8 @@ RUBY_REST_PING_URL=CONF.get('webui', 'rest_server_ping_url')
 CRON_POLLING_FREQUENCY=60
 
 AMQP_RECEIVER_FOLDER=CONF.get('webui', 'amqp_receive_folder')
+
+#FILTERS_SERVER = CONF.getboolean("webui", "filters.server")
+#FILTERS_CLASS = CONF.getboolean("webui", "filters.class")
+FILTERS_SERVER = False
+FILTERS_CLASS = True

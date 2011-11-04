@@ -5,8 +5,7 @@ Created on Aug 12, 2011
 '''
 from webui.widgets.base import Widget
 import logging
-from webui.serverstatus.models import Server
-from guardian.shortcuts import get_objects_for_user
+from webui.serverdetails import utils
 
 logger = logging.getLogger(__name__)
 
@@ -15,10 +14,7 @@ class SystemStatus(Widget):
     
     def get_context(self):
         super_context = super(self.__class__,self).get_context()
-        servers = Server.objects.filter(deleted=False)
-        if self.user != 'fooUser':
-            if not self.user.is_superuser:
-                servers = get_objects_for_user(self.user, 'use_server', Server)
+        servers = utils.extract_user_servers(self.user)
         
         widget_context = {"servers":servers}
         return dict(super_context.items() + widget_context.items())
@@ -28,11 +24,7 @@ class ServerStatus(Widget):
     
     def get_context(self):
         super_context = super(self.__class__,self).get_context()
-        servers = Server.objects.filter(deleted=False)
-        if self.user != 'fooUser':
-            if not self.user.is_superuser:
-                servers = get_objects_for_user(self.user, 'use_server', Server)
-        
+        servers = utils.extract_user_servers(self.user)
         #Extracting puppet classes level
         serverslist=[]
         for server in servers:

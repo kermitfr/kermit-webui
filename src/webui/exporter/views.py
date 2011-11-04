@@ -6,7 +6,7 @@ def export_servers_csv(request):
     # Create the HttpResponse object with the appropriate CSV header.
     response = HttpResponse(mimetype='text/csv')
     response['Content-Disposition'] = 'attachment; filename=servers.csv'
-    utils.generate_csv_server(response)
+    utils.generate_csv_server(request.user, response)
     return response
 
 def export_servers_xls(request):

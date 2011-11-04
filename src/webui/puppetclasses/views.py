@@ -43,7 +43,10 @@ class QueryMethods(object):
     def get_all_tree(self, user, level, unused_path):
         logger.info("Generint all classes tree")
         path = ''
-        classes = PuppetClass.objects.filter(enabled=True, level=level)
+        if settings.FILTERS_CLASS:
+            classes = get_objects_for_user(user, 'access_puppet_class', PuppetClass).filter(enabled=True, level=level)
+        else:
+            classes = PuppetClass.objects.filter(enabled=True, level=level)
         data = self.generate_tree(user, classes, 0, path)
         
         #We cannot use / inside rest url, so / was substituted by _
@@ -51,7 +54,7 @@ class QueryMethods(object):
         logger.info("Looking for servers in path: " + path)
         servers = Server.objects.filter(puppet_path=path, deleted=False)
         if user != 'fooUser':
-                if not user.is_superuser:
+                if not user.is_superuser and settings.FILTERS_SERVER:
                     servers = get_objects_for_user(user, 'use_server', Server).filter(puppet_path=path, deleted=False)
         for server in servers:
             serverdata = {"title":server.fqdn, "url": settings.BASE_URL + "/server/details/"+server.fqdn+"/", "key":server.fqdn, "filtername":server.hostname}
@@ -61,7 +64,10 @@ class QueryMethods(object):
         
     def get_tree_nodes(self, user, level, path):
         logger.info("Calling get_tree_nodes for level: " + str(level))
-        classes = PuppetClass.objects.filter(enabled=True, level=level+1)
+        if settings.FILTERS_CLASS:
+            classes = get_objects_for_user(user, 'access_puppet_class', PuppetClass).filter(enabled=True, level=level+1)
+        else:
+            classes = PuppetClass.objects.filter(enabled=True, level=level+1)
         data = []
         if path:
             path = path.replace('_', '/')
@@ -71,7 +77,7 @@ class QueryMethods(object):
             test_path=path+'/'+puppetclass.name
             servers = Server.objects.filter(puppet_path__startswith=test_path)
             if user != 'fooUser':
-                if not user.is_superuser:
+                if not user.is_superuser and settings.FILTERS_SERVER:
                     servers = get_objects_for_user(user, 'use_server', Server).filter(puppet_path__startswith=test_path)
             if len(servers)>0:
                 content = {"isFolder": "true", "isLazy": "false", "title": puppetclass.name, "level":puppetclass.level, "key":puppetclass.name, "filtername":puppetclass.name}
@@ -84,7 +90,7 @@ class QueryMethods(object):
         logger.info("Looking for servers in path: " + path)
         servers = Server.objects.filter(puppet_path=path, deleted=False)
         if user != 'fooUser':
-                if not user.is_superuser:
+                if not user.is_superuser and settings.FILTERS_SERVER:
                     servers = get_objects_for_user(user, 'use_server', Server).filter(puppet_path=path, deleted=False)
         for server in servers:
             serverdata = {"title":server.fqdn, "url": settings.BASE_URL + "/server/details/"+server.fqdn+"/", "key":server.fqdn, "filtername":server.hostname}
