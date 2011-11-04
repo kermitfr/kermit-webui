@@ -1,0 +1,30 @@
+[
+  { 
+    "level" : 0, 
+    "name" : "activity",
+    "classes" : ["industry", "retail" ]
+  },
+  { 
+    "level" : 1,
+    "name" : "platform",
+    "classes" : [ "stores", "hr", "warehouse" ]
+  },
+  { 
+    "level" : 2,
+    "name" : "environment",
+    "classes" : [ "prod", "qa", "development" ]
+  },
+  { 
+    "level" : 3,
+    "name" : "zone",
+    "classes" : [ "emea", "ap" ]
+  },
+  { 
+    "level" : 4,
+    "name" : "application",
+    "classes" : [ "db", "as", "web" ]
+  }
+]
+
+
+
