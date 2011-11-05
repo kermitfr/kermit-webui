@@ -1,15 +1,13 @@
 import logging
 from django.shortcuts import render_to_response
-from webui import settings
-from webui.platforms import settings as platform_settings
+from webui import settings, core
 from django.template.context import RequestContext
-import imp
 from django.http import HttpResponse
 from django.utils import simplejson as json
 from django.contrib.auth.decorators import login_required
-from webui.servicestatus import utils
 from webui.platforms.platforms import platforms
 from webui.platforms.abstracts import ServerTree
+from webui.abstracts import CoreService
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +32,9 @@ def getDetailsTree(request, hostname):
 @login_required()
 def hostInventory(request, hostname):
     server_info = []   
-    service_status = None
-    if 'webui.servicestatus' in settings.INSTALLED_APPS:
-        service_status = utils.test_services() 
+    services = core.kermit_modules.extract(CoreService)
+    service_status = {}
+    if services:
+        for service in services:
+            service_status.update(service.get_status())
     return render_to_response('server/details.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "serverdetails": server_info, "hostname": hostname, "service_status":service_status, 'service_status_url':settings.RUBY_REST_PING_URL}, context_instance=RequestContext(request))

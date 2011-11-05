@@ -1,11 +1,12 @@
 from django.conf.urls.defaults import patterns, include, url
 from django.conf import settings
-from django.contrib import admin
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
-from webui.platforms.abstracts import ServerTree
 admin.autodiscover()
+
+from webui import initialize
+initialize()
 
 #Look for cron jobs
 if 'webui.django_cron' in settings.INSTALLED_APPS:
