@@ -7,7 +7,8 @@ MESSAGESPOT=po/messages.pot
 TOPDIR = $(shell pwd)
 DATE="date +%Y%m%d"
 PROGRAMNAME=kermit-webui
-RELEASE=0.0.5
+#RELEASE=$(grep "Version:" ./misc/specs/kermit-webui.spec | awk '{ print $2 }')
+RELEASE=0.0.6
 TMPDIR=/tmp
 BUILDDIR=build
 
@@ -23,6 +24,7 @@ bumprelease:
 #setversion: 
 
 build: clean
+	echo $(RELEASE)
 	echo $(TOPDIR)
 	echo "- Create Changelog file"
 	git shortlog > changelog.txt

@@ -19,5 +19,6 @@ class Alert(models.Model):
     run_frequency = models.PositiveIntegerField(default=86400)
     last_run = models.DateTimeField(default=datetime.now())
     event = models.ForeignKey(Event, blank=True, null=True, on_delete=models.SET_NULL)
+    mail_subjet = models.CharField(max_length=255)
     template = models.CharField(max_length=255)
     

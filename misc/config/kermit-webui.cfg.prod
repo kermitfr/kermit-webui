@@ -8,6 +8,11 @@ templates_location=/usr/share/kermit-webui/templates/
 fixtures_location=/etc/kermit/webui/fixtures/
 authentication=default
 environment.level=2
+filters.server=false
+filters.class=true
+filter.agent=false
+filter.action=false
+alerting.from_mail=no_reply@kermit.fr
 
 [webui-database]
 driver=django.db.backends.sqlite3

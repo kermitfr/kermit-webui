@@ -1,16 +1,16 @@
 Summary: Mcollective WebUI
 Name: kermit-webui
-Version: 0.0.5
-Release: 2
+Version: 0.0.6
+Release: 1
 License: GPL
 Group: Applications/System
 URL: https://github.com/thinkfr/kermit-webui
 Source: %{name}-%{version}.tar.gz
 Requires: httpd, Django, django-grappelli, django-guardian
-%if 1%{?el5}
-Requires: python(abi) = 2.6, python26-mod_wsgi, python26-httplib2
-%else
+%if 0%{?fedora}
 Requires: python(abi) >= 2.6, mod_wsgi, python-httplib2
+%else
+Requires: python(abi) = 2.6, python26-mod_wsgi, python26-httplib2
 %endif 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch: noarch
@@ -28,10 +28,10 @@ python webui/manage.py syncdb --noinput
 %setup -n %{name}
 
 %build
-%if 1%{?el5}
-	python26 ./src/webui/manage.py syncdb --noinput
-%else
+%if 0%{?fedora}
 	python ./src/webui/manage.py syncdb --noinput
+%else
+	python26 ./src/webui/manage.py syncdb --noinput
 %endif
 
 %install

@@ -14,6 +14,7 @@ from guardian.shortcuts import get_objects_for_user
 from webui.puppetclasses.models import PuppetClass
 from webui.platforms.platforms import platforms
 from webui.platforms.abstracts import Application
+from webui.utils import CONF
 
 
 logger = logging.getLogger(__name__)
@@ -26,37 +27,42 @@ class ServerListMailAlert(AlertJob):
     def execute(self):
         logger.info("Sending report server email")
         alert_db = Alert.objects.get(name='ServerListMailAlert')
-        
-        htmly = get_template('alerting/serveremail.html')
-        #Extract first level puppet class for user.
-        for user in alert_db.users.all():
-            servers_for_mail = []
-            first_level_classes = get_objects_for_user(user, 'access_puppet_class', PuppetClass).filter(enabled=True, level=0)
-            second_level_classes = get_objects_for_user(user, 'access_puppet_class', PuppetClass).filter(enabled=True, level=1)
-            for first_level_class in first_level_classes:
-                for second_level_class in second_level_classes:
-                    server_path='/'+first_level_class.name+'/'+second_level_class.name
-                    app_modules = platforms.extract(Application)
-                    applications = []
-                    if app_modules:
-                        for current_module in app_modules:
-                            applications_list = current_module.getApplicationsPath(user, server_path)
-                            if applications_list:
-                                applications.extend(applications_list)
-                    if len(applications)>0:
-                        servers_for_mail.append({'first_level_class': first_level_class.name,
-                                            'second_level_class': second_level_class.name,
-                                            "applications":applications})
-            if len(servers_for_mail)>0:
-                d = Context({ 'classed_servers': servers_for_mail })
-            
-                subject, from_email = 'Server Report', 'no-reply@kermit.fr'
-                html_content = htmly.render(d)
-                msg = EmailMultiAlternatives(subject, "Need HTML", from_email, [user.email])
-                msg.attach_alternative(html_content, "text/html")
-                msg.send()
-            else:
-                logger.info("Mail for user %s won't be send. No applications found!" % user.username)
+        if alert_db.enabled:
+            htmly = get_template('alerting/serveremail.html')
+            #Extract first level puppet class for user.
+            for user in alert_db.users.all():
+                servers_for_mail = []
+                first_level_classes = get_objects_for_user(user, 'access_puppet_class', PuppetClass).filter(enabled=True, level=0)
+                second_level_classes = get_objects_for_user(user, 'access_puppet_class', PuppetClass).filter(enabled=True, level=1)
+                for first_level_class in first_level_classes:
+                    for second_level_class in second_level_classes:
+                        server_path='/'+first_level_class.name+'/'+second_level_class.name
+                        app_modules = platforms.extract(Application)
+                        applications = []
+                        if app_modules:
+                            for current_module in app_modules:
+                                applications_list = current_module.getApplicationsPath(user, server_path)
+                                if applications_list:
+                                    applications.extend(applications_list)
+                        if len(applications)>0:
+                            servers_for_mail.append({'first_level_class': first_level_class.name,
+                                                'second_level_class': second_level_class.name,
+                                                "applications":applications})
+                if len(servers_for_mail)>0:
+                    d = Context({ 'classed_servers': servers_for_mail })
+                
+                    try:
+                        from_email = CONF.get('webui', 'alerting.from_mail')
+                    except:
+                        logger.warn("No from_mail configured in your webui config file. Using default")
+                        from_email='no-reply@kermit.fr'
+                    subject = alert_db.mail_subjet
+                    html_content = htmly.render(d)
+                    msg = EmailMultiAlternatives(subject, "Need HTML", from_email, [user.email])
+                    msg.attach_alternative(html_content, "text/html")
+                    msg.send()
+                else:
+                    logger.info("Mail for user %s won't be send. No applications found!" % user.username)
     
     
 alertScheduler.register(ServerListMailAlert)
