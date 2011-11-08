@@ -86,7 +86,16 @@
 <form action="{% url actionform agent action filters dialog_name response_container None %}" method="post" id="tf">
 	{% csrf_token %}
 	<fieldset>
-		{{ form.as_p }}
+		{% for field in form %}
+	        <div class="fieldWrapper">
+	            {{ field.errors }}
+	            {% if field.field.required %}
+	            <b>{{ field.label_tag }}</b>: {{ field }}
+	            {% else %}
+	            {{ field.label_tag }}: {{ field }}
+	            {% endif %}
+	        </div>
+	    {% endfor %}
 		<br/>
 		<input class="input" type="submit" value="Execute" id="bt"/>
 	</fieldset>

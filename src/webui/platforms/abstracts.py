@@ -6,6 +6,7 @@ Created on Nov 4, 2011
 from webui.utils import CONF
 import ConfigParser
 import logging
+from webui.exceptions import NotImplementedAbstract
 
 logger = logging.getLogger(__name__)
 
@@ -15,7 +16,7 @@ class ServerTree(object):
     the server details tree
     '''
     def getDetails(self, hostname):
-        raise NotImplementedError
+        raise NotImplementedAbstract
     
     
     
@@ -25,7 +26,7 @@ class UpdatePlatform(object):
     updates method
     '''
     def inventoryUpdate(self, user):
-        raise NotImplementedError
+        raise NotImplementedAbstract
     
 
 class Application(object):
@@ -34,10 +35,13 @@ class Application(object):
     Like, for example, the ApplicationServer has the application concept
     '''
     def getApplications(self, user):
-        raise NotImplementedError
+        raise NotImplementedAbstract
+    
+    def getApplicationsPath(self, user, server_path):
+        raise NotImplementedAbstract
     
     def getAppliInfo(self, user, appname):
-        raise NotImplementedError
+        raise NotImplementedAbstract
     
     def extract_environment_level(self, server):
         try:

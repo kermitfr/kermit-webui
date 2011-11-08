@@ -18,8 +18,8 @@ if 'webui.widgets' in settings.INSTALLED_APPS:
     from widgets.loading import registry
     registry.discover_widgets()
     
-import platforms
-platforms.initialize()
+#import platforms
+#platforms.initialize()
 
 urlpatterns = patterns('',
     # Examples:

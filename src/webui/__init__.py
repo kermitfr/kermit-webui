@@ -19,6 +19,14 @@ def initialize():
 
     for app in settings.INSTALLED_APPS:
         mod = import_module(app)
+        if hasattr(mod, 'initialize'):
+            try:
+                mod.initialize()
+            except:
+                logger.error("ERROR initializing module %s! %s" % (app, sys.exc_info))
+        else:
+            logger.debug("App %s does not have initialization method" % app)
+        
         for current_module in MODULES_TO_IMPORT:
             try:
                 before_import_registry = copy.copy(kermit_modules._registry)

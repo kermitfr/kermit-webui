@@ -1,0 +1,24 @@
+{% for c_server in classed_servers %}
+	<strong>{{c_server.first_level_class}}</strong> - <strong>{{c_server.second_level_class}}</strong>
+    <br/>
+    <table border="1px double black">
+    	{% for app in c_server.applications %}
+    	<tr>
+    		<td>{{app.type}}</td>
+    		<td>{{app.name}}</td>
+    		<td>
+    		{% for s in app.servers%}
+    			{{s.server}}&nbsp;
+    		{% endfor %}
+    		</td>
+    		<td>
+    		{% for s in app.servers%}
+    			{{s.instance}}&nbsp;
+    		{% endfor %}
+    		</td>
+    		<td>{{app.version}}</td>
+    		<td>{{app.deploy}}</td>
+    	</tr>
+    	{% endfor %}
+    </table>
+{% endfor %}

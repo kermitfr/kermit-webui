@@ -4,7 +4,6 @@ Created on Aug 12, 2011
 @author: mmornati
 '''
 from webui.widgets.base import Widget
-from webui.puppetclasses.models import PuppetClass
 from webui.agent.models import Agent, Action
 from webui.defaultop.models import Operation
 from guardian.shortcuts import get_objects_for_user

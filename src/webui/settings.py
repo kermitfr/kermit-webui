@@ -167,6 +167,7 @@ INSTALLED_APPS = (
     'webui.servicestatus',
     'webui.upload',
     'webui.acls_manager',
+    'webui.alerting',
 )
 
 #Configuring fixtures by-exception

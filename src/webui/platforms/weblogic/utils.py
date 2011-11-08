@@ -23,6 +23,7 @@ def extract_appli_info(hostname, environment):
                    "name":appli["name"], 
                    "version":"",
                    "env":environment,
+                   "servers":[{"server":hostname, "instance":appli['target']}],
                    "deploy":1}
             applications.append(app)
     return applications

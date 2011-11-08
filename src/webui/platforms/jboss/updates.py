@@ -17,7 +17,7 @@ class JbossUpdate(UpdatePlatform):
     def inventoryUpdate(self, user):
         logger.debug("Calling JBoss Inventory")
         try: 
-            response, content = callRestServer(user, 'no-filter', 'inventory', 'jboss')
+            response, content = callRestServer(user, 'no-filter', 'jboss', 'inventory')
         except Exception, err:
             logger.error('ERROR: ' + str(err))
 

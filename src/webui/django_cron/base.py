@@ -24,7 +24,6 @@ import cPickle
 from threading import Timer
 from datetime import datetime
 
-from django.dispatch import dispatcher
 from django.conf import settings
 
 from signals import cron_done
