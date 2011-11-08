@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 class ServerListMailAlert(AlertJob):
     
-    run_frequency = 300
+    run_frequency = 86400
         
     def execute(self):
         logger.info("Sending report server email")

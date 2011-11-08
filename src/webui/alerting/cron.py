@@ -19,7 +19,7 @@ class CheckAlerts(Job):
         """
         
         #run every n seconds
-        run_every = 300
+        run_every = 86400
 
         def job(self):
 
