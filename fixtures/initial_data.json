@@ -406,21 +406,6 @@
                 }
         }, 
         {
-                "pk": 1, 
-                "model": "defaultop.operation", 
-                "fields": {
-                        "with_template": false, 
-                        "name": "Ping", 
-                        "url": "/restapi/mcollective/no-filter/rpcutil/ping/", 
-                        "description": "Ping MCollective Clients", 
-                        "enabled": true, 
-                        "updated_time": "2011-09-06 06:31:21", 
-                        "created_time": "2011-09-06 06:31:21", 
-                        "order": 0, 
-                        "icon": "Platform_up_16.png"
-                }
-        }, 
-        {
                 "pk": 28, 
                 "model": "auth.permission", 
                 "fields": {

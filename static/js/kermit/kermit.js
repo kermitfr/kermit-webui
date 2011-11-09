@@ -195,3 +195,4 @@ function callMcollective(url, destination) {
 function callMcollectiveWithTemplateRsp(url, destination) {
 	sendRequestToMcollective(url, destination)
 }
+	

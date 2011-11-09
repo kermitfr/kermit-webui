@@ -12,9 +12,9 @@ from guardian.admin import GuardedModelAdmin
 class OperationAdmin(GuardedModelAdmin):
     fieldsets = [
         ("General",   {'fields': ['name']}),
-        ("Details",   {'fields': ['description', 'icon', 'url', 'enabled', 'with_template']}),         
+        ("Details",   {'fields': ['description', 'icon', 'agent', 'action', 'parameters', 'filters', 'enabled']}),         
     ]
-    list_display = ('name', 'url')
+    list_display = ('name', 'agent', 'action')
     search_fields = ['name']
     
 admin.site.register(Operation, OperationAdmin)

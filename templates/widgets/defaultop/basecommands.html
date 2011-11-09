@@ -1,6 +1,25 @@
 {% extends "widgets/base_widget.html" %}
 
 {% block widget-content %}
+<script type="text/javascript">
+
+	function executeOp(baseurl, agent, action, filters, parameters) {
+		if (filters == null || filters == '') {
+			filters = "no-filter";
+		}
+		if (baseurl.substr(-1) === "/" ) {
+			var strLen = baseurl.length;
+			baseurl = baseurl.slice(0,strLen-1);
+		}
+		url = baseurl + '/restapi/mcollective/' + filters + '/' + agent + '/' + action +'/';
+		if (parameters!=null && parameters!='') {
+			url = url + parameters;
+		} 
+		callMcollective(url, 'response-container');
+	}
+	
+</script>
+
 <div>
 	<table width="246" border="0" cellspacing="0" cellpadding="2" style="table-layout:fixed;overflow:hidden;wrap:false;padding-left:0px;padding-right:0px;" class="listTable" id="isc_11Atable">
 		<tbody></tbody>
@@ -11,7 +30,7 @@
 			{% for operation in operations %}
 			<tr>
 				<td height="22" align="left" class="treeCell" style="padding-top: 0px; padding-bottom: 0px; width: 246px; overflow: hidden;">
-				<div style="overflow:hidden;WIDTH:242px;cursor: pointer;" cellclipdiv="true" onclick="{%if operation.with_template %}callMcollectiveWithTemplateRsp{% else %}callMcollective{% endif %}('{{base_url}}{{operation.url}}', 'response-container')">
+				<div style="overflow:hidden;WIDTH:242px;cursor: pointer;" cellclipdiv="true" onclick="executeOp('{{base_url}}', '{{operation.agent}}', '{{operation.action}}', '{{operation.filters}}', '{{operation.parameters}}');">
 					<nobr>
 						<table cellspacing="0" cellpadding="0" style="margin:0px;border:0px;padding:0px;background-image:none;background-color:transparent;" class="treeCell">
 							<tbody>

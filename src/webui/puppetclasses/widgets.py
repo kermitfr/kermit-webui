@@ -39,8 +39,6 @@ class DashBoardPuppetClasses(Widget):
             if not menu_name in automatic_operations:
                 automatic_operations[menu_name] = []
             automatic_operations[menu_name].extend(c_op.get_operations())
-            print type(c_op.get_operations())
-            print type(c_op.get_operations()[0])
         
         sqldeployment = {}
         if 'webui.sqldeploy' in settings.INSTALLED_APPS:
