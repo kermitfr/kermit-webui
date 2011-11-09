@@ -18,6 +18,42 @@ def extract_instances_name(hostname):
         
     return instances
 
+def extract_appli_info(hostname, environment):
+    applications = []
+    server_info = read_server_info(hostname)
+    if server_info: 
+        for instance in server_info["instances"]:
+            for appli in instance['applilist']:
+                version = ""
+                    
+                app = {"type":"JBoss",
+                       "name":appli, 
+                       "version":version,
+                       "env":environment,
+                       "servers":[{"server":hostname, "instance":instance["name"]}],
+                       "deploy":1}
+                applications.append(app)
+    return applications
+
+def extract_appli_details(hostname, environment, appname):
+    applications = []
+    server_info = read_server_info(hostname)
+    if server_info: 
+        for instance in server_info["instances"]:
+            for appli in instance['applilist']:
+                if appli != appname:
+                    continue
+                version = ""
+               
+                app = {"type":"JBoss",
+                       "name":appli, 
+                       "version":version,
+                       "env":environment,
+                       "server": hostname, 
+                       "instance": instance["name"]}
+                applications.append(app)
+    return applications
+
 def get_apps_list(user, filters, file_type):
     logger.debug("Calling app_list with filters %s and type %s" % (filters, str(file_type)))
     try: 
@@ -41,3 +77,9 @@ def get_apps_list(user, filters, file_type):
                 return json.dumps({"errors":"Cannot retrieve apps list"})
     except Exception, err:  
         logger.error('ERROR: ' + str(err))
+        
+def check_contains(applications, appli):
+    for app in applications:
+        if app["type"] == appli["type"] and app["name"] == appli["name"] and app["version"] == appli["version"] and app["env"] == appli["env"]:
+            return app
+    return None
