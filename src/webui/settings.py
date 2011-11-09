@@ -161,7 +161,6 @@ INSTALLED_APPS = (
     'webui.puppetclasses', 
     'webui.serverstatus',
     'webui.serverdetails',
-    'webui.appdeploy',
     'webui.sqldeploy',
     'webui.exporter',
     'webui.servicestatus',

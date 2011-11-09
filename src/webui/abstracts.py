@@ -7,8 +7,10 @@ from webui.exceptions import NotImplementedAbstract
 
 
 class ContextOperation(object):
+
+    type = 'undefined'
     
-    def execute_operation(self):
+    def get_operations(self):
         raise NotImplementedAbstract
         
         

@@ -9,7 +9,8 @@ from webui.defaultop.models import Operation
 from guardian.shortcuts import get_objects_for_user
 from webui import settings
 from webui.sqldeploy import settings as sqldeploysettings
-from webui.appdeploy import settings as appdeploysettings
+from webui.core import kermit_modules
+from webui.abstracts import ContextOperation
 
 class DashBoardPuppetClasses(Widget):
     template = "widgets/puppetclasses/puppetclasses.html"
@@ -29,15 +30,22 @@ class DashBoardPuppetClasses(Widget):
         if not self.user.is_superuser:
             operations = get_objects_for_user(self.user, 'execute_operation', Operation).filter(enabled=True)
             
-        #TODO: Refactor to make it dynamic (sort of injection)
-        deployment = {}
-        if 'webui.appdeploy' in settings.INSTALLED_APPS:
-            deployment['operations'] = appdeploysettings.OPERATION_ENABLED
+        context_operations = kermit_modules.extract(ContextOperation)
+        automatic_operations = {}
+        for c_op in context_operations:
+            menu_name = "Undefined"
+            if c_op.get_type():
+                menu_name = c_op.get_type()
+            if not menu_name in automatic_operations:
+                automatic_operations[menu_name] = []
+            automatic_operations[menu_name].extend(c_op.get_operations())
+            print type(c_op.get_operations())
+            print type(c_op.get_operations()[0])
         
         sqldeployment = {}
         if 'webui.sqldeploy' in settings.INSTALLED_APPS:
             sqldeployment['operations'] = sqldeploysettings.OPERATION_ENABLED
-        widget_context = {"agents":agents, "operations":operations, "actions": actions, "deployment":deployment, "sqldeployment":sqldeployment}
+        widget_context = {"agents":agents, "operations":operations, "actions": actions, "sqldeployment":sqldeployment, 'automatic_operations':automatic_operations}
         return dict(super_context.items() + widget_context.items())
     
     

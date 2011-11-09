@@ -5,3 +5,9 @@ Created on Nov 4, 2011
 '''
 
 PLATFORM_NAME = "OC4J"
+
+AVAILABLE_TYPES = (
+    ('', '-- Select --'),
+    ('ear', 'EAR Application'),
+    ('war', 'WAR Application'),
+)

@@ -48,10 +48,15 @@
 					}
 					url = base_url + url;
 					sendRequestToMcollective(url, 'response-container');			
-				} else if ($(this).attr('type') == "deploy") {
-					getDeployForm('{{settings.BASE_URL}}', 'deploy-dialog', $(this).attr('action'), filtersList)	
 				} else if ($(this).attr('type') == "sqldeploy") {
 					getSqlDeployForm('{{settings.BASE_URL}}', 'deploy-dialog', $(this).attr('action'), filtersList)	
+				} else if ($(this).attr('type') == "automatic_op") {
+					var javascript_op = $(this).attr('javascript');
+					if (javascript_op) {
+						//Parsing javascript to replace known templates tag
+						javascript_op = javascript_op.replace('$$filterlist$$',filtersList);
+						eval(javascript_op);			
+					} 
 				}
 
 				$(context).animate({
@@ -253,6 +258,21 @@
 			</ul>
 		</li>
 		{% endif %}
+		{% if automatic_operations %}
+			{%for menu_name, menu_ops in automatic_operations.items %}
+			<li class="icon">
+				<span class="icon folder"></span>{{menu_name}}
+				<ul>
+					{%for current_op in menu_ops %}
+					<li class="icon" type="automatic_op" javascript="{{current_op.javascript}}">
+						<span class="icon file"></span>{{current_op.description}}
+					</li>
+					{% endfor %}
+				</ul>
+			</li>
+			{% endfor %}
+		{% endif %}
+		
 		{% if operations %}
 		<li class="icon">
 			<span class="icon folder"></span>Operations
@@ -260,18 +280,6 @@
 				{%for op in operations %}
 				<li class="icon" type="operation" url="{{op.url}}">
 					<span class="icon file"></span>{{op.name}}
-				</li>
-				{% endfor %}
-			</ul>
-		</li>
-		{% endif %}
-		{% if deployment %}
-		<li class="icon">
-			<span class="icon folder"></span>Deployment
-			<ul>
-				{%for depop in deployment.operations %}
-				<li class="icon" type="deploy" action="{{depop}}">
-					<span class="icon file"></span>{{depop}}
 				</li>
 				{% endfor %}
 			</ul>

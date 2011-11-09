@@ -69,8 +69,8 @@ function getUploadForm(url, upload_dialog) {
 	});
 }
 
-function getDeployForm(base_url, deploy_form_name, operation, filters) {
-	url = base_url + '/appdeploy/get_deploy_form/' + deploy_form_name + '/' + operation + '/' + filters + '/';
+function getDeployForm(base_url, platform_name, deploy_form_name, operation, filters) {
+	url = base_url + '/platform/' + platform_name + '/get_deploy_form/' + deploy_form_name + '/' + operation + '/' + filters + '/';
 	$.ajax({
 		// The link we are accessing.
 		url : url,

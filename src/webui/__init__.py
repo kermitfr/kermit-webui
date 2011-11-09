@@ -9,7 +9,7 @@ from webui.core import kermit_modules
 
 logger = logging.getLogger(__name__)
 
-MODULES_TO_IMPORT = ["services"]
+MODULES_TO_IMPORT = ["services", "operations"]
 
 def initialize():
     logger.info("Initializing Kermit WebUI environment")

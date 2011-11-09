@@ -4,8 +4,8 @@ from webui.serverstatus.models import Server
 import os
 import glob
 from django.utils import simplejson as json
-import settings as platform_settings
-import imp
+from webui.restserver.communication import callRestServer
+from webui.puppetclasses.models import PuppetClass
 
 logger = logging.getLogger(__name__)
 
@@ -52,3 +52,50 @@ def read_file_info(hostname, prefix, suffix):
             
             return json.loads(file_content)
     return None
+
+def get_apps_list(user, filters, file_type):
+    logger.debug("Calling app_list with filters %s and type %s" % (filters, str(file_type)))
+    try: 
+        response, content = callRestServer(user, filters, "a7xdeploy", "applist", "apptype="+str(file_type))
+        if response.status == 200:
+            jsonObj = json.loads(content)
+            if jsonObj:
+                #Looking for "intersections"
+                app_list = None
+                for server_response in jsonObj:
+                    if not app_list:
+                        app_list = server_response['data']['applist']
+                    else:
+                        app_list = set(app_list).intersection(server_response['data']['applist'])
+                return json.dumps({"errors":"", "applist":app_list})
+            else:
+                return json.dumps({"errors":"Cannot retrieve apps list"})
+    except Exception, err:  
+        logger.error('ERROR: ' + str(err))
+        
+def extract_servers(filters):
+    logger.debug("Extracting servers from filters to retrieve instances")
+    classes = []
+    server_selected = None
+    class_list = filters.split(';')
+    for puppet_class in class_list:
+        current_filter = puppet_class.split('=')
+        if current_filter[0] == 'class_filter':
+            classes.append(PuppetClass.objects.get(name=current_filter[1]))
+        else: 
+            try:
+                server_selected = Server.objects.get(fqdn=current_filter[1])
+            except:
+                logger.debug("Error retrieving server using FQDN. Trying with HostName")
+                server_selected = Server.objects.get(hostname=current_filter[1])
+    logger.debug("Classes found in your filter: %s" % str(classes))
+    logger.debug("Server selected with your filter: %s" % server_selected)
+    servers_list = []
+    if classes:
+        logger.debug("Retrieving server using classes")
+        servers_list = Server.objects.filter(puppet_classes__in = classes, deleted=False)
+    else:
+        servers_list.append(server_selected)
+        
+    return servers_list
+        
