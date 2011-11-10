@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)
 def get(request, filters, agent, action, args=None):
-    if verify_agent_acl(request.user, agent) and verify_action_acl(request.user, action):
+    if verify_agent_acl(request.user, agent) and verify_action_acl(request.user, agent, action):
         response, content = callRestServer(request.user, filters, agent, action, args)
         if response.status == 200:
             json_data = render_agent_template(request, {}, content, {}, agent, action)
@@ -36,7 +36,7 @@ def get(request, filters, agent, action, args=None):
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)
 def getWithTemplate(request, template, filters, agent, action, args=None):
-    if verify_agent_acl(request.user, agent) and verify_action_acl(request.user, action):
+    if verify_agent_acl(request.user, agent) and verify_action_acl(request.user, agent, action):
         response, content = callRestServer(request.user, filters, agent, action, args)
         if response.status == 200:
             jsonObj = json.loads(content)
