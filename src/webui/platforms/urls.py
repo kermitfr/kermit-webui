@@ -5,6 +5,7 @@ urlpatterns = patterns('',
     (r'^weblogic/', include('webui.platforms.weblogic.urls')),
     (r'^bar/', include('webui.platforms.bar.urls')),
     (r'^jboss/', include('webui.platforms.jboss.urls')),
+    (r'^postgresql/', include('webui.platforms.postgresql.urls')),
     
     url(r'^application/(?P<appname>[\w|\W]+)/$', 'webui.platforms.views.appdetails', name = "application_details"),
 )

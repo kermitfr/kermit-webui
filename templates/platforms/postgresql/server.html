@@ -1,0 +1,6 @@
+{% load i18n %} 
+<img class="introicon" src="{{static_url}}images/icons/postgresql.png"/>
+<div class="info">
+	<strong>{% trans 'PostgreSQL Data Directory' %}</strong>: {{pg_datadir}} <br/>
+	<strong>{% trans 'PostgreSQL Version' %}</strong>: {{pg_version}} <br/>
+</div>
