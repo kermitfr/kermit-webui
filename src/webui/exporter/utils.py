@@ -14,7 +14,7 @@ def generate_csv_server(user, response):
     """
     Generates an CSV with servers list
     """
-    writer = csv.writer(response)
+    writer = csv.writer(response, delimiter=';')
     writer.writerow(["UsedName","Name","BU","Projet","Status","Zone","Type"])
     servers = utils.extract_user_servers(user)
     logger.info("Generating servers CSV")

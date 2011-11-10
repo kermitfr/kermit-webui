@@ -5,6 +5,7 @@ SUB_APPS = (
         'weblogic',
         'bar',
         'jboss',
+        'postgresql',
 )
 
 

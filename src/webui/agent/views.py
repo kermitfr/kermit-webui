@@ -1,14 +1,14 @@
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.utils import simplejson as json
 import logging
-from webui.agent.models import Agent, Action
+from webui.agent.models import Agent
 from django.template.loader import render_to_string
 from webui.agent.form import create_action_form
 from django.template.context import RequestContext
 from webui.restserver.communication import callRestServer
 from webui.restserver.template import render_agent_template, get_action_inputs
 from django.contrib.auth.decorators import login_required
-from guardian.shortcuts import get_objects_for_user, get_perms
+from guardian.shortcuts import get_objects_for_user
 from guardian.decorators import permission_required
 
 logger = logging.getLogger(__name__)
