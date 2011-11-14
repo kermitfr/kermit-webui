@@ -17,7 +17,7 @@ class WebLogicUpdate(UpdatePlatform):
     def inventoryUpdate(self, user):
         logger.debug("Calling WebLoginc Inventory")
         try: 
-            response, content = callRestServer(user, 'no-filter', 'a7xinventory', 'webloinv')
+            response, content = callRestServer(user, 'no-filter', 'a7xows', 'inventory')
         except Exception, err:
             logger.error('ERROR: ' + str(err))
 

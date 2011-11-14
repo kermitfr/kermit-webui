@@ -12,4 +12,10 @@ urlpatterns = patterns('webui.platforms.weblogic.views',
   url(r'^details/(?P<hostname>[\w|\W]+)/(?P<resource_name>[\w|\W]+)/nodemanager/$', 'nodeManagerInventory', name = "weblogic_nodemanager_details"),
   url(r'^details/(?P<hostname>[\w|\W]+)/(?P<resource_name>[\w|\W]+)/console/$', 'consoleInventory', name = "weblogic_console_details"),
   url(r'^details/(?P<hostname>[\w|\W]+)/(?P<resource_name>[\w|\W]+)/application/$', 'applicationInventory', name = "weblogic_application_details"),
+  
+  url(r'^applist/(?P<filters>[\w|\W]+)/(?P<type>[\w|\W]+)/$', 'get_app_list', name = "weblogic_app_list"),
+  url(r'^instancelist/(?P<filters>[\w|\W]+)/$', 'get_instance_list', name = "weblogic_instance_list"),
+  url(r'^redeploy/(?P<filters>[\w|\W]+)/(?P<dialog_name>[\w|\W]+)/(?P<xhr>.*)', 'redeploy_app', name = "weblogic_redeploy_app"),
+  url(r'^get_deploy_form/(?P<dialog_name>[\w|\W]+)/(?P<action>[\w|\W]+)/(?P<filters>[\w|\W]+)/$', 'get_deploy_form', name = "weblogic_get_deploy_form"),
+ 
 )

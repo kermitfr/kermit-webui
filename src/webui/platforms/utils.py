@@ -4,11 +4,7 @@ from webui.serverstatus.models import Server
 import os
 import glob
 from django.utils import simplejson as json
-from webui.restserver.communication import callRestServer
 from webui.puppetclasses.models import PuppetClass
-import re
-import cgi
-import sys
 
 
 logger = logging.getLogger(__name__)
@@ -56,26 +52,6 @@ def read_file_info(hostname, prefix, suffix):
             
             return json.loads(file_content)
     return None
-
-def get_apps_list(user, filters, file_type):
-    logger.debug("Calling app_list with filters %s and type %s" % (filters, str(file_type)))
-    try: 
-        response, content = callRestServer(user, filters, "a7xdeploy", "applist", "apptype="+str(file_type))
-        if response.status == 200:
-            jsonObj = json.loads(content)
-            if jsonObj:
-                #Looking for "intersections"
-                app_list = None
-                for server_response in jsonObj:
-                    if not app_list:
-                        app_list = server_response['data']['applist']
-                    else:
-                        app_list = set(app_list).intersection(server_response['data']['applist'])
-                return json.dumps({"errors":"", "applist":app_list})
-            else:
-                return json.dumps({"errors":"Cannot retrieve apps list"})
-    except Exception, err:  
-        logger.error('ERROR: ' + str(err))
         
 def extract_servers(filters):
     logger.debug("Extracting servers from filters to retrieve instances")

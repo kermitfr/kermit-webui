@@ -17,7 +17,7 @@ class BarUpdate(UpdatePlatform):
     def inventoryUpdate(self, user):
         logger.debug("Calling BAR Inventory")
         try: 
-            response, content = callRestServer(user, 'no-filter', 'a7xinventory', 'barinv')
+            response, content = callRestServer(user, 'no-filter', 'a7xbar', 'inventory')
         except Exception, err:
             logger.error('ERROR: ' + str(err))
 

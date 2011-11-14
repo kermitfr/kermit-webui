@@ -1,0 +1,154 @@
+<script>
+	
+	$('html').ajaxSend(function(event, xhr, settings) {
+		if(!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+			// Only send the token to relative URLs i.e. locally.
+			xhr.setRequestHeader("X-CSRFToken", $("#csrfmiddlewaretoken").val());
+		}
+	});
+
+	$(document).ready(function() {
+		$('.errorlist').remove();
+		// prepare Options Object
+		var options = {
+			url : '{% url weblogic_redeploy_app filters "deploy-dialog" "xhr" %}', // Here we pass the xhr flag
+			dataType : 'json',
+			success : parseResponse,
+			error: parseError,
+			beforeSubmit : beforeForm
+		};
+		// bind form using ajaxForm
+		$('#tf').ajaxForm(options);
+		
+		$("#id_types").change(function() {
+			$.ajax({
+				// The link we are accessing.
+				url : '{{base_url}}/platform/weblogic/applist/{{filters}}/' + this.value +'/',
+				// The type of request.
+				type : "get",
+				// The type of data that is getting returned.
+				dataType : "json",
+				error : function() {
+					//TODO: Show error message
+					alert("Server communication error. Cannot download application List");
+					$('#loading').hide();
+				},
+				beforeSend : function() {
+					$('#loading').show();
+				},
+				complete : function() {
+					$('#loading').hide();
+				},
+				success : function(data) {
+					$("#id_applist").empty();
+					if (data.errors) {
+						alert(data.errors);
+					} else {
+						for(i in data.applist) {
+							content = "<option value='" + data.applist[i] + "'>" + data.applist[i] + "</option>";
+							$(content).appendTo("#id_applist");
+						}
+					}
+				}
+			});
+		});
+		
+		$.ajax({
+				// The link we are accessing.
+				url : '{{base_url}}/platform/weblogic/instancelist/{{filters}}/',
+				// The type of request.
+				type : "get",
+				// The type of data that is getting returned.
+				dataType : "json",
+				error : function() {
+					//TODO: Show error message
+					alert("Server communication error. Cannot get instances list for selected server");
+					$('#loading').hide();
+				},
+				beforeSend : function() {
+					$('#loading').show();
+				},
+				complete : function() {
+					$('#loading').hide();
+				},
+				success : function(data) {
+					$("#id_instancename").empty();
+					if (data.errors) {
+						alert(data.errors);
+					} else {
+						for(i in data.instances) {
+							content = "<option value='" + data.instances[i] + "'>" + data.instances[i] + "</option>";
+							$(content).appendTo("#id_instancename");
+						}
+					}
+				}
+			});
+	});
+	
+	function parseResponse(data) {
+		$('#loading').hide();
+		if(data) {
+			// Build a var. NOTE: Make sure your id name (this is a div) is NOT THE SAME
+			// as any var in javascript -- ie has a fit and barfs errors.
+			e_msg = "We received your form, thank you.";
+			// Did we set the 'bad' flag in Django?
+			// Use eval() to turn the stuff in the data object into actual vars.
+			if(eval(data.bad)) {
+				e_msg = "Please check your form.";
+				errors = eval(data.errs);
+				//Again with the eval :)
+				// This is very nice: Go thru the errors, build an id name and
+				// then access that tag and add the HTML from the Django error
+				$.each(errors, function(fieldname, errmsg) {
+					id = "#id_" + fieldname;
+					$(id).parent().before(errmsg);
+					//I want the error above the <p> holding the field
+				});
+				// re-enable the submit button, coz user has to fix stuff.
+//				$('#bt').attr("disabled", "");
+			} else {
+				alert(data.result);				
+				$("#" + data.dialog_name).dialog('close');
+			}
+		} else {
+			//DON'T PANIC :D
+			$('#emsg').text("Ajax error : no data received. ").fadeIn("slow");
+		}
+	}
+	
+	function parseError(data) {
+		$('#loading').hide();
+		if(data) {
+			alert(data.result);				
+			$("#" + data.dialog_name).dialog('close');
+		} else {
+			//DON'T PANIC :D
+			$('#emsg').text("Ajax error : no data received. ").fadeIn("slow");
+		}
+	}
+
+	function beforeForm() {
+		//$('#bt').attr("disabled", "disabled");
+		//Disable the submit button - can't click twice
+		$('.errorlist').remove();
+		//Get rid of any old error uls
+		$('#emsg').fadeOut('slow');
+		$('#loading').show();
+		//Get rid of the main error message
+		return true;
+		//Might not need this...
+	}
+</script>
+<p>
+	Parameters required to execute {{action}}
+</p>
+<div id="emsg">
+	&nbsp;
+</div>
+<form action="{% url weblogic_redeploy_app filters 'deploy-dialog' None%}" method="post" id="tf">
+	{% csrf_token %}
+		{{ form.as_p }}
+		<br/>
+		<input class="input" type="submit" value="Execute" id="bt"/>
+	</fieldset>
+</form>

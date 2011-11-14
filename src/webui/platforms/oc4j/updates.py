@@ -17,7 +17,7 @@ class OC4JUpdate(UpdatePlatform):
     def inventoryUpdate(self, user):
         logger.debug("Calling OC4J Inventory")
         try: 
-            response, content = callRestServer(user, 'no-filter', 'a7xinventory', 'oasinv')
+            response, content = callRestServer(user, 'no-filter', 'a7xoas', 'inventory')
         except Exception, err:
             logger.error('ERROR: ' + str(err))
 

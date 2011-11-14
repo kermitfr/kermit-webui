@@ -4,7 +4,11 @@ Created on Sep 22, 2011
 @author: mmornati
 '''
 from webui.platforms.weblogic.communication import read_server_info
+import logging
+from webui.restserver.communication import callRestServer
+from django.utils import simplejson as json
 
+logger = logging.getLogger(__name__)
 
 def extract_instances_name(hostname):
     instances = []
@@ -51,3 +55,23 @@ def check_contains(applications, appli):
         if app["type"] == appli["type"] and app["name"] == appli["name"] and app["version"] == appli["version"] and app["env"] == appli["env"]:
             return app
     return None
+
+def get_apps_list(user, filters, file_type):
+    logger.debug("Calling app_list with filters %s and type %s" % (filters, str(file_type)))
+    try: 
+        response, content = callRestServer(user, filters, "a7xows", "applist", "apptype="+str(file_type))
+        if response.status == 200:
+            jsonObj = json.loads(content)
+            if jsonObj:
+                #Looking for "intersections"
+                app_list = None
+                for server_response in jsonObj:
+                    if not app_list:
+                        app_list = server_response['data']['applist']
+                    else:
+                        app_list = set(app_list).intersection(server_response['data']['applist'])
+                return json.dumps({"errors":"", "applist":app_list})
+            else:
+                return json.dumps({"errors":"Cannot retrieve apps list"})
+    except Exception, err:  
+        logger.error('ERROR: ' + str(err))
