@@ -28,14 +28,14 @@ def check_list(list):
 
 def read_file_info(hostname, prefix, suffix):
     if hostname:
-        toSearch = settings.AMQP_RECEIVER_FOLDER + '/' + prefix + hostname + suffix
+        toSearch = settings.AMQP_RECEIVER_INVENTORY_FOLDER + '/' + prefix + hostname + suffix
         filesFound = glob.glob(toSearch)
         if (len(filesFound) == 0):
             server = Server.objects.filter(hostname=hostname)
             if server:
                 fqdn = server[0].fqdn
                 logger.info("No inventory files found. Trying with fqdn: " + fqdn)
-                toSearch = settings.AMQP_RECEIVER_FOLDER + '/' + prefix + fqdn + suffix
+                toSearch = settings.AMQP_RECEIVER_INVENTORY_FOLDER + '/' + prefix + fqdn + suffix
                 filesFound = glob.glob(toSearch)
             else:
                 logger.error("No server found in database with hostname " + hostname)
