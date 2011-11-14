@@ -137,6 +137,40 @@ function getSqlExecutionForm(base_url, platform_name, deploy_form_name, operatio
 	});
 }
 
+function getLogForm(base_url, platform_name, container, operation, filters) {
+	url = base_url + '/platform/' + platform_name + '/get_log_form/' + container + '/' + operation + '/' + filters + '/';
+	$.ajax({
+		// The link we are accessing.
+		url : url,
+		// The type of request.
+		type : "get",
+		// The type of data that is getting returned.
+		dataType : "html",
+		error : function() {
+			//TODO: Show error message
+			//$('#loading').hide();
+			alert('Error communicating with server');
+		},
+		beforeSend : function() {
+			//$('#loading').show();
+		},
+		complete : function() {
+			//$('#loading').hide();
+		},
+		success : function(data) {
+			$("#" + container).html(data);
+			$("#" + container).dialog({
+				modal : true,
+				title : operation + ' execution...',
+				minHeight : 200,
+				minWidth : 500
+			});
+			$("#" + container).show();
+
+		}
+	});
+}
+
 function sendRequestToMcollective(url, destination) {
 	$("#" + destination).empty();
 

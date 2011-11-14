@@ -1,62 +1,57 @@
 <script>
+	
 	$('html').ajaxSend(function(event, xhr, settings) {
 		if(!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
 			// Only send the token to relative URLs i.e. locally.
 			xhr.setRequestHeader("X-CSRFToken", $("#csrfmiddlewaretoken").val());
 		}
 	});
-	
-	function getSqlList() {
-		$.ajax({
-			// The link we are accessing.
-			url : '{{base_url}}/platform/postgresql/sql_list/{{filters}}/',
-			// The type of request.
-			type : "get",
-			// The type of data that is getting returned.
-			dataType : "json",
-			error : function() {
-				//TODO: Show error message
-				alert("Server communication error. Cannot download sql List");
-				$('#loading').hide();
-			},
-			beforeSend : function() {
-				$('#loading').show();
-			},
-			complete : function() {
-				$('#loading').hide();
-			},
-			success : function(data) {
-				$("#id_sqllist").empty();
-				if(data.errors) {
-					alert(data.errors);
-				} else {
-					for(i in data.sqllist) {
-						content = "<option value='" + data.sqllist[i] + "'>" + data.sqllist[i] + "</option>";
-						$(content).appendTo("#id_sqllist");
-					}
-				}
-			}
-		});
-	}
 
 	$(document).ready(function() {
 		$('.errorlist').remove();
-		$('#logcontainer').hide();
 		// prepare Options Object
 		var options = {
-			url : '{% url postgres_execute_sql filters "deploy-dialog" "xhr" %}', // Here we pass the xhr flag
+			url : '{% url jboss_get_log filters "deploy-dialog" "xhr" %}', // Here we pass the xhr flag
 			dataType : 'json',
 			success : parseResponse,
-			error : parseError,
+			error: parseError,
 			beforeSubmit : beforeForm
 		};
-		getSqlList();
 		// bind form using ajaxForm
 		$('#tf').ajaxForm(options);
-
 		
-		//My form id is 'tf'
+		$.ajax({
+				// The link we are accessing.
+				url : '{{base_url}}/platform/jboss/instancelist/{{filters}}/',
+				// The type of request.
+				type : "get",
+				// The type of data that is getting returned.
+				dataType : "json",
+				error : function(xhr, ajaxOptions, thrownError) {
+					//TODO: Show error message
+					alert("Server communication error. Cannot get instances list for selected server");
+					$('#loading').hide();
+				},
+				beforeSend : function() {
+					$('#loading').show();
+				},
+				complete : function() {
+					$('#loading').hide();
+				},
+				success : function(data) {
+					$("#id_instancename").empty();
+					if (data.errors) {
+						alert(data.errors);
+					} else {
+						for(i in data.instances) {
+							content = "<option value='" + data.instances[i] + "'>" + data.instances[i] + "</option>";
+							$(content).appendTo("#id_instancename");
+						}
+					}
+				}
+			});
 	});
+	
 	function parseResponse(data) {
 		$('#loading').hide();
 		if(data) {
@@ -77,24 +72,24 @@
 					//I want the error above the <p> holding the field
 				});
 				// re-enable the submit button, coz user has to fix stuff.
-				//				$('#bt').attr("disabled", "");
+//				$('#bt').attr("disabled", "");
 			} else {
-				if (data.errors) {
-					$('#emsg').test(data.errors);
-				} else {
-					getLogContent(data.logfile);
-					$("#logcontainer").dialog({
-						modal : true,
-						title : 'Query Log',
-						height : 400,
-						width : 800,
-						open: function(event, ui){
-							$('body').css('overflow','auto');
-							$('.ui-widget-overlay').css('width','100%'); 
-						} 
-					});
-					$("#" + data.dialog_name).dialog('close');
+				$("#logcontainer").empty();
+				for (server_resp in data.result) {
+					getLogContent(data.result[server_resp].server, data.result[server_resp].logfile);
 				}
+				
+				$("#logcontainer").dialog({
+					modal : true,
+					title : 'Server Log',
+					height : 400,
+					width : 800,
+					open: function(event, ui){
+						$('body').css('overflow','auto');
+						$('.ui-widget-overlay').css('width','100%'); 
+					} 
+				});			
+				$("#" + data.dialog_name).dialog('close');
 			}
 		} else {
 			//DON'T PANIC :D
@@ -102,10 +97,21 @@
 		}
 	}
 	
-	function getLogContent(logFile) {
+	function parseError(data) {
+		$('#loading').hide();
+		if(data) {
+			alert(data.result);				
+			$("#" + data.dialog_name).dialog('close');
+		} else {
+			//DON'T PANIC :D
+			$('#emsg').text("Ajax error : no data received. ").fadeIn("slow");
+		}
+	}
+	
+	function getLogContent(server, logFile) {
 		$.ajax({
 			// The link we are accessing.
-			url : '{{base_url}}/platform/postgresql/get_log_file/' + logFile + '/',
+			url : '{{base_url}}/platform/jboss/get_log_file/' + logFile + '/',
 			// The type of request.
 			type : "get",
 			// The type of data that is getting returned.
@@ -123,23 +129,13 @@
 			},
 			success : function(data) {
 				if(data) {
-					$("#logcontainer").html(data.logfilecontent);	
+					$("#logcontainer").append("<h1>" + server + "</h1>");	
+					$("#logcontainer").append(data.logfilecontent);	
 				} else {
 					$("#logcontainer").html("No log file found with the given name " + logFile);
 				}
 			}
 		});
-	}
-
-	function parseError(data) {
-		$('#loading').hide();
-		if(data) {
-			alert(data.result);
-			$("#" + data.dialog_name).dialog('close');
-		} else {
-			//DON'T PANIC :D
-			$('#emsg').text("Ajax error : no data received. ").fadeIn("slow");
-		}
 	}
 
 	function beforeForm() {
@@ -160,11 +156,11 @@
 <div id="emsg">
 	&nbsp;
 </div>
-<form action="{% url postgres_execute_sql filters 'deploy-dialog' None%}" method="post" id="tf">
+<form action="{% url jboss_get_log filters 'deploy-dialog' None%}" method="post" id="tf">
 	{% csrf_token %}
-	{{ form.as_p }}
-	<br/>
-	<input class="input" type="submit" value="Execute" id="bt"/>
+		{{ form.as_p }}
+		<br/>
+		<input class="input" type="submit" value="Execute" id="bt"/>
 	</fieldset>
 </form>
 <div id="logcontainer"></div>

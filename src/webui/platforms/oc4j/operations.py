@@ -13,14 +13,14 @@ class OC4JDeployContextMenu(ContextOperation):
         context_menu_ops = []
         context_menu_ops.append(
             {"name":"redeploy_OC4J",
-             "description":"Redeploy App on OC4J",
+             "description":"Redeploy Application",
              "javascript":"getDeployForm('%s', 'oc4j', 'deploy-dialog', 'deploy', '$$filterlist$$')" % settings.BASE_URL,
              "server_operation":"",
              })
         return context_menu_ops
     
     def get_type(self):
-        return 'Deploy App'
+        return 'OC4J'
     
     
 kermit_modules.register(OC4JDeployContextMenu)
