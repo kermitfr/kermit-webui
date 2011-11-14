@@ -6,6 +6,10 @@ import glob
 from django.utils import simplejson as json
 from webui.restserver.communication import callRestServer
 from webui.puppetclasses.models import PuppetClass
+import re
+import cgi
+import sys
+
 
 logger = logging.getLogger(__name__)
 
@@ -99,3 +103,32 @@ def extract_servers(filters):
         
     return servers_list
         
+        
+def read_file_log(file_name):
+    toSearch = settings.AMQP_RECEIVER_LOG_FOLDER + '/*' + file_name
+    time_out = 120
+    filesFound = []
+    counter = 0
+    while (len(filesFound) == 0 and counter < time_out):
+        filesFound = glob.glob(toSearch)
+        counter = counter + 1
+    if (len(filesFound) == 0):
+        return None
+    else:
+        if len(filesFound) > 1:
+            logger.warn("More than one log file with the given name %s found! Using just the first one" % file_name)
+            logger.warn(filesFound)           
+            filesFound.sort(key=lambda x: os.path.getmtime(x), reverse=True)
+        try:
+            file_content = open(filesFound[0], 'r').read()
+        except:
+            logger.error('Cannot access inventory file!!')
+        return plaintext2html(file_content)
+        
+def plaintext2html(text, tabstop=4):
+    new_string = text.replace("\\r\\n", "<br/>")
+    new_string = new_string.replace("\\n", "<br/>")
+    new_string = new_string.replace('\\r', '<br/>')
+    new_string = new_string.replace(' ', '&nbsp;')
+    new_string = new_string.replace('\\t', '&nbsp;&nbsp;&nbsp;&nbsp;')    
+    return new_string

@@ -7,8 +7,6 @@ from webui.widgets.base import Widget
 from webui.agent.models import Agent, Action
 from webui.defaultop.models import Operation
 from guardian.shortcuts import get_objects_for_user
-from webui import settings
-from webui.sqldeploy import settings as sqldeploysettings
 from webui.core import kermit_modules
 from webui.abstracts import ContextOperation
 
@@ -39,11 +37,7 @@ class DashBoardPuppetClasses(Widget):
             if not menu_name in automatic_operations:
                 automatic_operations[menu_name] = []
             automatic_operations[menu_name].extend(c_op.get_operations())
-        
-        sqldeployment = {}
-        if 'webui.sqldeploy' in settings.INSTALLED_APPS:
-            sqldeployment['operations'] = sqldeploysettings.OPERATION_ENABLED
-        widget_context = {"agents":agents, "operations":operations, "actions": actions, "sqldeployment":sqldeployment, 'automatic_operations':automatic_operations}
+        widget_context = {"agents":agents, "operations":operations, "actions": actions, 'automatic_operations':automatic_operations}
         return dict(super_context.items() + widget_context.items())
     
     

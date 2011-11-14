@@ -103,8 +103,8 @@ function getDeployForm(base_url, platform_name, deploy_form_name, operation, fil
 	});
 }
 
-function getSqlDeployForm(base_url, deploy_form_name, operation, filters) {
-	url = base_url + '/sqldeploy/get_deploy_form/' + deploy_form_name + '/' + operation + '/' + filters + '/';
+function getSqlExecutionForm(base_url, platform_name, deploy_form_name, operation, filters) {
+	url = base_url + '/platform/' + platform_name + '/get_execute_form/' + deploy_form_name + '/' + operation + '/' + filters + '/';
 	$.ajax({
 		// The link we are accessing.
 		url : url,

@@ -50,8 +50,6 @@
 						url = url + parameters;
 					}
 					sendRequestToMcollective(url, 'response-container');			
-				} else if ($(this).attr('type') == "sqldeploy") {
-					getSqlDeployForm('{{settings.BASE_URL}}', 'deploy-dialog', $(this).attr('action'), filtersList)	
 				} else if ($(this).attr('type') == "automatic_op") {
 					var javascript_op = $(this).attr('javascript');
 					if (javascript_op) {
@@ -282,18 +280,6 @@
 				{%for op in operations %}
 				<li class="icon" type="operation" agent="{{op.agent.name}}" action="{{op.action.name}}" parameters={{op.parameters}}>
 					<span class="icon file"></span>{{op.name}}
-				</li>
-				{% endfor %}
-			</ul>
-		</li>
-		{% endif %}
-		{% if sqldeployment %}
-		<li class="icon">
-			<span class="icon folder"></span>SQL
-			<ul>
-				{%for depsqlop in sqldeployment.operations %}
-				<li class="icon" type="sqldeploy" action="{{depsqlop}}">
-					<span class="icon file"></span>{{depsqlop}}
 				</li>
 				{% endfor %}
 			</ul>

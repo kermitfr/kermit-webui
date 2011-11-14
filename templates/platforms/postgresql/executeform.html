@@ -9,7 +9,7 @@
 	function getSqlList() {
 		$.ajax({
 			// The link we are accessing.
-			url : '{{base_url}}/sqldeploy/sqllist/{{filters}}/',
+			url : '{{base_url}}/platform/postgresql/sql_list/{{filters}}/',
 			// The type of request.
 			type : "get",
 			// The type of data that is getting returned.
@@ -41,9 +41,10 @@
 
 	$(document).ready(function() {
 		$('.errorlist').remove();
+		$('#logcontainer').hide();
 		// prepare Options Object
 		var options = {
-			url : '{% url redeploy_sql filters "deploy-dialog" "xhr" %}', // Here we pass the xhr flag
+			url : '{% url postgres_execute_sql filters "deploy-dialog" "xhr" %}', // Here we pass the xhr flag
 			dataType : 'json',
 			success : parseResponse,
 			error : parseError,
@@ -78,13 +79,52 @@
 				// re-enable the submit button, coz user has to fix stuff.
 				//				$('#bt').attr("disabled", "");
 			} else {
-				alert(data.result);
-				$("#" + data.dialog_name).dialog('close');
+				if (data.errors) {
+					$('#emsg').test(data.errors);
+				} else {
+					getLogContent(data.logfile);
+					$("#logcontainer").dialog({
+						modal : true,
+						title : 'Query Log',
+						minHeight : 300,
+						minWidth : 500
+					});
+					$("#" + data.dialog_name).dialog('close');
+				}
 			}
 		} else {
 			//DON'T PANIC :D
 			$('#emsg').text("Ajax error : no data received. ").fadeIn("slow");
 		}
+	}
+	
+	function getLogContent(logFile) {
+		$.ajax({
+			// The link we are accessing.
+			url : '{{base_url}}/platform/postgresql/get_log_file/' + logFile + '/',
+			// The type of request.
+			type : "get",
+			// The type of data that is getting returned.
+			dataType : "json",
+			error : function() {
+				//TODO: Show error message
+				alert("Server communication error. Cannot download sql List");
+				$('#loading').hide();
+			},
+			beforeSend : function() {
+				$('#loading').show();
+			},
+			complete : function() {
+				$('#loading').hide();
+			},
+			success : function(data) {
+				if(data) {
+					$("#logcontainer").html(data.logfilecontent);	
+				} else {
+					$("#logcontainer").html("No log file found with the given name " + logFile);
+				}
+			}
+		});
 	}
 
 	function parseError(data) {
@@ -116,10 +156,11 @@
 <div id="emsg">
 	&nbsp;
 </div>
-<form action="{% url redeploy_app filters 'deploy-dialog' None%}" method="post" id="tf">
+<form action="{% url postgres_execute_sql filters 'deploy-dialog' None%}" method="post" id="tf">
 	{% csrf_token %}
 	{{ form.as_p }}
 	<br/>
 	<input class="input" type="submit" value="Execute" id="bt"/>
 	</fieldset>
 </form>
+<div id="logcontainer"></div>
