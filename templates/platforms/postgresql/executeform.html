@@ -80,9 +80,16 @@
 				//				$('#bt').attr("disabled", "");
 			} else {
 				if (data.errors) {
-					$('#emsg').test(data.errors);
+					$('#emsg').text(data.errors);
 				} else {
-					getLogContent(data.logfile);
+					$("#logcontainer").empty();
+					for (server_resp in data.result) {
+						if (data.result[server_resp].logfile) {
+							getLogContent(data.result[server_resp].server, data.result[server_resp].logfile);
+						} else {
+							$("#logcontainer").append("<h1><b>" + data.result[server_resp].server + "</b></h1><br/>" + data.result[server_resp].statusmsg);	
+						}
+					}
 					$("#logcontainer").dialog({
 						modal : true,
 						title : 'Query Log',
@@ -102,7 +109,7 @@
 		}
 	}
 	
-	function getLogContent(logFile) {
+	function getLogContent(server, logFile) {
 		$.ajax({
 			// The link we are accessing.
 			url : '{{base_url}}/platform/postgresql/get_log_file/' + logFile + '/',
@@ -123,9 +130,9 @@
 			},
 			success : function(data) {
 				if(data) {
-					$("#logcontainer").html(data.logfilecontent);	
+					$("#logcontainer").append(data.logfilecontent);	
 				} else {
-					$("#logcontainer").html("No log file found with the given name " + logFile);
+					$("#logcontainer").append("No log file found with the given name " + logFile);
 				}
 			}
 		});

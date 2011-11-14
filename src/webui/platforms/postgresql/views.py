@@ -93,7 +93,13 @@ def execute_sql(request, filters, dialog_name, xhr=None):
                 #TODO: Improve reading content data
                 if response.status == 200:
                     json_content = json.loads(content)
-                    rdict.update({"result":"SQL Executed", "logfile":json_content[0]["data"]["logfile"]})
+                    s_resps = []
+                    for server_response in json_content:
+                        if "data" in server_response and "logfile" in server_response["data"]:
+                            s_resps.append({"server": server_response["sender"], "logfile":server_response["data"]["logfile"]})
+                        else:
+                            s_resps.append({"server": server_response["sender"], "statusmsg":server_response["statusmsg"]})
+                    rdict.update({"result":s_resps})
                 else:
                     rdict.update({"errors": "Error reported from server"})
                 
