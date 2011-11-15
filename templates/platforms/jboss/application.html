@@ -1,0 +1,8 @@
+{% load i18n %} 
+<img class="introicon" src="{{static_url}}images/icons/app-settings.png"/>
+<div class="info">
+	<strong>{% trans 'Application Name' %}</strong>: {{application.name}} <br/>
+	<strong>{% trans 'Application Size' %}</strong>: {{application.size}} <br/>
+	<strong>{% trans 'Application Update' %}</strong>: {{application.time}} <br/>
+	<strong>{% trans 'Is exploded' %}</strong>: {{application.exploded}} <br/>
+</div>

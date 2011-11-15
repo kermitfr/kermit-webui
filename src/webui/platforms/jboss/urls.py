@@ -7,6 +7,9 @@ from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns('webui.platforms.jboss.views',
   url(r'^details/(?P<hostname>[\w|\W]+)/(?P<instance_name>[\w|\W]+)/(?P<resource_name>[\w|\W]+)/server/$', 'jboss_details', name = "jboss_details"),
+  url(r'^details/(?P<hostname>[\w|\W]+)/(?P<instance_name>[\w|\W]+)/(?P<resource_name>[\w|\W]+)/appli/$', 'jboss_app_details', name = "jboss_application_details"),
+  url(r'^details/(?P<hostname>[\w|\W]+)/(?P<instance_name>[\w|\W]+)/(?P<resource_name>[\w|\W]+)/datasource/$', 'jboss_ds_details', name = "jboss_datasource_details"),
+  
   
   url(r'^applist/(?P<filters>[\w|\W]+)/(?P<type>[\w|\W]+)/$', 'get_app_list', name = "jboss_app_list"),
   url(r'^instancelist/(?P<filters>[\w|\W]+)/$', 'get_instance_list', name = "jboss_instance_list"),

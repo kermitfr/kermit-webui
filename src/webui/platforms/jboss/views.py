@@ -42,6 +42,38 @@ def jboss_details(request, hostname, instance_name, resource_name):
     else:
         return render_to_response('platforms/jboss/server.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))
 
+def jboss_app_details(request, hostname, instance_name, resource_name):
+    server_info = read_server_info(hostname)
+    if server_info:
+        application = None
+        for instance in server_info["instances"]:
+            if instance["name"] == instance_name:
+                for appli in instance['applilist']:
+                    if appli["name"] == resource_name:
+                        application = appli
+                        break
+                break
+        
+        return render_to_response('platforms/jboss/application.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "application":application, "hostname": hostname}, context_instance=RequestContext(request))
+    else:
+        return render_to_response('platforms/jboss/application.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))
+
+def jboss_ds_details(request, hostname, instance_name, resource_name):
+    server_info = read_server_info(hostname)
+    if server_info:
+        datasource = None
+        for instance in server_info["instances"]:
+            if instance["name"] == instance_name:
+                for datasource in instance['datasources']:
+                    if datasource["jndi_name"] == resource_name:
+                        datasource = datasource
+                        break
+                break
+        
+        return render_to_response('platforms/jboss/datasource.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "datasource":datasource, "hostname": hostname}, context_instance=RequestContext(request))
+    else:
+        return render_to_response('platforms/jboss/datasource.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))
+
 
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)

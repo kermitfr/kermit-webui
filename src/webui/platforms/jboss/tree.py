@@ -27,7 +27,7 @@ class JbossServerTree(ServerTree):
                 applications = {'title': 'Applications', 'isFolder':True, "key":"applications", "icon":"folder_applications.png", "type":"applications"}
                 apps = []
                 for appli in instance['applilist']:
-                    app = {'title':appli, "key":appli, "icon":"application.png", "type":"application", "instance":instance['name']}
+                    app = {'title':appli["name"], "key":appli["name"], "icon":"application.png", "type":"application", "instance":instance['name'], "detailsEnabled":"true", 'url': reverse('jboss_application_details', kwargs={'hostname':hostname, 'instance_name':instance['name'], 'resource_name':appli["name"]})}
                     apps.append(app)
                 applications['children'] = apps
                 
@@ -36,7 +36,7 @@ class JbossServerTree(ServerTree):
                 datasources = {'title': 'Datasources', 'isFolder':True, "key":"datasources", "icon":"folder_database.png", "type":"datasources", "instance":instance['name']}
                 dss = []
                 for datasource in instance['datasources']:
-                    datasource = {'title':datasource, "key":datasource, "icon":"datasource.png", "type":"datasource", "instance":instance['name']}
+                    datasource = {'title':datasource["jndi_name"], "key":datasource["jndi_name"], "icon":"datasource.png", "type":"datasource", "instance":instance['name'], "detailsEnabled":"true", 'url': reverse('jboss_datasource_details', kwargs={'hostname':hostname, 'instance_name':instance['name'], 'resource_name':datasource["jndi_name"]})}
                     dss.append(datasource)
                 datasources['children'] = dss
                 

@@ -1,0 +1,16 @@
+{% load i18n %} 
+<img class="introicon" src="{{static_url}}images/icons/app-settings.png"/>
+<div class="info">
+	<strong>{% trans 'Jndi Name' %}</strong>: {{datasource.jndi_name}} <br/>
+	<strong>{% trans 'Connection URL' %}</strong>: {{datasource.connection_url}} <br/>
+	<strong>{% trans 'Driver Class' %}</strong>: {{datasource.driver_class}} <br/>
+	<strong>{% trans 'Username' %}</strong>: {{datasource.username}} <br/>
+	<strong>{% trans 'Security Domain' %}</strong>: {{datasource.security_domain}} <br/>
+	<strong>{% trans 'Min Pool Size' %}</strong>: {{datasource.min_pool_size}} <br/>
+	<strong>{% trans 'Max Pool Size' %}</strong>: {{datasource.max_pool_size}} <br/>
+	<strong>{% trans 'Idle Timeout Minutes' %}</strong>: {{datasource.idle_timeout_minutes}} <br/>
+	<strong>{% trans 'Prepared Statement Cache Size' %}</strong>: {{datasource.prepared_statement_cache_size}} <br/>
+	<strong>{% trans 'New Connection SQL' %}</strong>: {{datasource.prepared_statement_cache_size}} <br/>
+	<strong>{% trans 'Check Valid Connection SQL' %}</strong>: {{datasource.new_connection_sql}} <br/>
+	<strong>{% trans 'Valid Connection Class' %}</strong>: {{datasource.check_valid_connection_sql}} <br/>
+</div>
