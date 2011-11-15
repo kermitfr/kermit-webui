@@ -55,6 +55,7 @@
             $(this).attr("src", "{{settings.STATIC_URL}}/images/collapse.png");
         });
 		$("#details-tree").dynatree({
+			persist: true,
 			title : "Server {{hostname}} Details",
 			imagePath:"{{settings.STATIC_URL}}images/servertree/",
 			fx : {

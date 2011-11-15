@@ -1971,3 +1971,36 @@ fieldset.infohighlight {
     width: 100%;
     z-index: 1000;
 }
+
+.fg-button { 
+   outline: 0; 
+   margin:0 4px 0 0; 
+   padding: .4em 1em; 
+   text-decoration:none !important; 
+   cursor:pointer; 
+   position: relative; 
+   text-align: center; 
+   zoom: 1;
+   font-size: 10px; 
+}
+   
+.fg-toolbar { 
+	padding: .5em; 
+	margin: 0px;
+	background: none repeat scroll 0 0 #E6E6E6;
+    border-bottom: 1px solid #CCCCCC;
+    border-top: 1px solid #CCCCCC;
+    color: #666666;
+    margin-top: 12px;
+    height: 20px;
+}
+
+.opbutton {
+	cursor:pointer;
+	padding-left: 2px;
+	width: 18px;
+}
+
+.opbutton:hover {
+	width: 20px;
+}

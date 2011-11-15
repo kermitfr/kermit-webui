@@ -11,7 +11,38 @@
 {% endblock %}
 
 {% block content %} 
+<script type="text/javascript">
+	$(document).ready(function() {
+	   $("#toolbar-response").hide();
+	   $('img[title]').qtip();
+	 });
+	function executeToolbarOperation(url) {
+		callMcollective(url, 'toolbar-response');
+		$("#toolbar-response").dialog({
+			modal : true,
+			title : 'Operation Result',
+			height : 200,
+			width : 400,
+			open: function(event, ui){
+				$('body').css('overflow','auto');
+				$('.ui-widget-overlay').css('width','100%'); 
+			} 
+		});		
+	}	
+	
+</script>
+
+{% if server_operations %}	
+<div class="fg-toolbar">
+	{%for current_op in server_operations %}
+		<img class="opbutton" onclick="executeToolbarOperation('{{current_op.url}}')" src="{{static_url}}/images/toolbar/{{current_op.img}}" title="{{current_op.name}}">
+	{%endfor%}
+</div>
+<div id="toolbar-response"></div>
+{% else %}
 <br/>
+{% endif %}
+
 <div id="columns">
 	<ul id="column1" class="column">
 		{% widget "ServerDetails" user hostname %}

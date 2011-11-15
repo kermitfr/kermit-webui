@@ -18,3 +18,8 @@ class CoreService(object):
     
     def get_status(self):
         raise NotImplementedAbstract
+    
+class ServerOperation(object):
+    
+    def execute(self):
+        raise NotImplementedAbstract

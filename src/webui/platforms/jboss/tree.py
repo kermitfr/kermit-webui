@@ -16,15 +16,15 @@ class JbossServerTree(ServerTree):
         content = {}
         #Configuring Instances
         if server_info:
-            content = {"isFolder": True, "expand": True, "title": 'JBoss', "key":'JBoss', "icon":"jboss_logo.png", "detailsEnabled":"true", 'url': reverse('jboss_details', kwargs={'hostname':hostname, 'instance_name':hostname, 'resource_name':hostname})}
+            content = {"isFolder": True, "title": 'JBoss', "key":'JBoss', "icon":"jboss_logo.png", "detailsEnabled":"true", 'url': reverse('jboss_details', kwargs={'hostname':hostname, 'instance_name':hostname, 'resource_name':hostname})}
             logger.debug('Configuring Instances')
-            db_instances = {'title': 'Instances', 'isFolder':True, "expand":True, "key":"instance", "icon":"app_server.png", "type":"instances"}
+            db_instances = {'title': 'Instances', 'isFolder':True, "key":"instance", "icon":"app_server.png", "type":"instances"}
             dbs = []
             for instance in server_info["instances"]:
                 db = {'title':instance['name'], "key":instance['name'], "icon":"web_instance.png", "type":"instance", "instance":instance['name']}
                 #Configuring Applications
                 logger.debug('Configuring Applications')
-                applications = {'title': 'Applications', 'isFolder':True, "key":"applications", "icon":"folder_applications.png", "type":"applications"}
+                applications = {'title': 'Applications', 'isFolder':True, "key":instance['name']+"applications", "icon":"folder_applications.png", "type":"applications"}
                 apps = []
                 for appli in instance['applilist']:
                     app = {'title':appli["name"], "key":appli["name"], "icon":"application.png", "type":"application", "instance":instance['name'], "detailsEnabled":"true", 'url': reverse('jboss_application_details', kwargs={'hostname':hostname, 'instance_name':instance['name'], 'resource_name':appli["name"]})}
@@ -33,7 +33,7 @@ class JbossServerTree(ServerTree):
                 
                 #Configuring Datasources
                 logger.debug('Configuring Datasources')
-                datasources = {'title': 'Datasources', 'isFolder':True, "key":"datasources", "icon":"folder_database.png", "type":"datasources", "instance":instance['name']}
+                datasources = {'title': 'Datasources', 'isFolder':True, "key":instance['name']+"datasources", "icon":"folder_database.png", "type":"datasources", "instance":instance['name']}
                 dss = []
                 for datasource in instance['datasources']:
                     datasource = {'title':datasource["jndi_name"], "key":datasource["jndi_name"], "icon":"datasource.png", "type":"datasource", "instance":instance['name'], "detailsEnabled":"true", 'url': reverse('jboss_datasource_details', kwargs={'hostname':hostname, 'instance_name':instance['name'], 'resource_name':datasource["jndi_name"]})}

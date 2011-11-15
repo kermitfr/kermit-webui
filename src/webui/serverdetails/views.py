@@ -7,7 +7,10 @@ from django.utils import simplejson as json
 from django.contrib.auth.decorators import login_required
 from webui.platforms.platforms import platforms
 from webui.platforms.abstracts import ServerTree
-from webui.abstracts import CoreService
+from webui.abstracts import CoreService, ServerOperation
+from django.core.urlresolvers import reverse
+from webui.restserver.communication import callRestServer
+from webui.serverstatus.models import Server
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +19,7 @@ def getDetailsTree(request, hostname):
     #Entering in any platform an collect tree info
     logger.debug('Collecting platform trees')
     data = []
-    content = {"isFolder": "true", "expand": True, "title": hostname, "key":hostname, "icon":"server.png"}
+    content = {"isFolder": "true", "expand": True, "title": hostname, "key":hostname, "icon":"server.png", "detailsEnabled":"true", 'url': reverse('server_inventory_details', kwargs={'hostname':hostname})}
     children = []
     tree_modules = platforms.extract(ServerTree)
     if tree_modules:
@@ -37,4 +40,25 @@ def hostInventory(request, hostname):
     if services:
         for service in services:
             service_status.update(service.get_status())
-    return render_to_response('server/details.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "serverdetails": server_info, "hostname": hostname, "service_status":service_status, 'service_status_url':settings.RUBY_REST_PING_URL}, context_instance=RequestContext(request))
+    my_server = Server.objects.get(hostname=hostname)
+    operations = []        
+    server_operations = core.kermit_modules.extract(ServerOperation)
+    if server_operations:
+        for op in server_operations:
+            data = {"img": op.get_image(),
+                    "name": op.get_name(),
+                    "url": op.get_url(hostname), 
+                    "enabled": op.get_enabled(my_server)}
+            operations.append(data)
+
+    return render_to_response('server/details.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "serverdetails": server_info, "hostname": hostname, "service_status":service_status, 'server_operations': operations, 'service_status_url':settings.RUBY_REST_PING_URL}, context_instance=RequestContext(request))
+
+@login_required()
+def hostCallInventory(request, hostname):
+    filters = "identity_filter=%s" % hostname
+    response, content = callRestServer(request.user, filters, "rpcutil", "inventory")
+    if response.status == 200:
+        jsonObj = json.loads(content)
+        return render_to_response('server/inventory.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname, 'service_status_url':settings.RUBY_REST_PING_URL, "c": jsonObj[0]}, context_instance=RequestContext(request))
+    else:
+        return render_to_response('server/inventory.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname, 'service_status_url':settings.RUBY_REST_PING_URL}, context_instance=RequestContext(request))

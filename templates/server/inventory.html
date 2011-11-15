@@ -1,12 +1,5 @@
-{% load i18n mkrange split %}
-<script>
-	$(document).ready(function() {
-        $(".collapsibleContainer").collapsiblePanel();
-    });
-</script>
-{% for c in content %}
-	<div class="collapsibleContainer" title="{{c.sender}}" closed="{% if forloop.first %}false{% else %}true{% endif %}">
-		<img class="introicon" src="{{settings.STATIC_URL}}images/icons/node-manager.png"/>
+{% load i18n %}
+<img class="introicon" src="{{static_url}}images/icons/node-manager.png"/>
 		<div class="infohighlight">
 			<fieldset class="infohighlight">
 			<legend><b>{% trans 'MCollective Details'%}</b></legend>
@@ -18,9 +11,9 @@
 			<fieldset class="infohighlight">
 			<legend><b>{% trans 'Server Details'%}</b></legend>
 				{% if c.data.facts.type == 'Notebook'%}
-					<img class="introicon" src="{{settings.STATIC_URL}}images/icons/notebook.png"/>
+					<img class="introicon" src="{{static_url}}images/icons/notebook.png"/>
 				{% else %}
-					<img class="introicon" src="{{settings.STATIC_URL}}images/icons/server.png"/>
+					<img class="introicon" src="{{static_url}}images/icons/server.png"/>
 				{% endif %}
 				<div class="info">
 					<strong>{% trans 'Processors count' %}</strong>: {{c.data.facts.processorcount}}<br/>
@@ -44,12 +37,12 @@
 					<strong>{% trans 'Serial Number' %}</strong>: {{c.data.facts.serialnumber}} <br/>
 					<strong>{% trans 'Hardware Model' %}</strong>: {{c.data.facts.hardwaremodel}} <br/>
 					<strong>{% trans 'Uptime' %}</strong>: {{c.data.facts.uptime}} <br/>
-					<strong>{% trans 'Virtual' %}</strong>: {{c.data.facts.is_virtual}} <br/> 
+					<strong>{% trans 'Virtual' %}</strong>: {{c.data.facts.is_virtual}} <br/>
 				</div>
 			</fieldset>
 			<fieldset class="infohighlight">
 			<legend><b>{% trans 'Memory Details'%}</b></legend>
-				<img class="introicon" src="{{settings.STATIC_URL}}images/icons/memory.png"/>
+				<img class="introicon" src="{{static_url}}images/icons/memory.png"/>
 				<div class="info">
 					<strong>{% trans 'Total Memory' %}</strong>: {{c.data.facts.memorysize}}<br/>
 					<strong>{% trans 'Free Memory' %}</strong>: {{c.data.facts.memoryfree}} <br/>
@@ -59,7 +52,7 @@
 			</fieldset>
 			<fieldset class="infohighlight">
 			<legend><b>{% trans 'Operating System Details'%}</b></legend>
-				<img class="introicon" src="{{settings.STATIC_URL}}images/icons/operating_system.png"/>
+				<img class="introicon" src="{{static_url}}images/icons/operating_system.png"/>
 				<div class="info">
 					<strong>{% trans 'OS' %}</strong>: {{c.data.facts.lsbdistdescription}}<br/>
 					<strong>{% trans 'Architecture' %}</strong>: {{c.data.facts.architecture}}<br/>
@@ -71,7 +64,7 @@
 			</fieldset>
 			<fieldset class="infohighlight">
 			<legend><b>{% trans 'Network'%}</b></legend>
-				<img class="introicon" src="{{settings.STATIC_URL}}images/icons/network.png"/>
+				<img class="introicon" src="{{static_url}}images/icons/network.png"/>
 				<div class="info">
 					<strong>{% trans 'Hostname' %}</strong>: {{c.data.facts.hostname}}<br/>
 					<strong>{% trans 'Domain' %}</strong>: {{c.data.facts.domain}}<br/>
@@ -79,7 +72,3 @@
 				</div>
 			</fieldset>
 		</div>
-	</div>
-{% endfor %}
-<br/>
-

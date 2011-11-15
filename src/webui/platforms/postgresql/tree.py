@@ -16,9 +16,9 @@ class PosgreSQLServerTree(ServerTree):
         content = {}
         #Configuring Instances
         if server_info:
-            content = {"isFolder": True, "expand": True, "title": 'PostgreSQL', "key":'PostgreSQL', "icon":"postgresql.png", "detailsEnabled":"true", 'url': reverse('postgres_details', kwargs={'hostname':hostname, 'database_name':hostname, 'resource_name':hostname})}
+            content = {"isFolder": True, "title": 'PostgreSQL', "key":'PostgreSQL', "icon":"postgresql.png", "detailsEnabled":"true", 'url': reverse('postgres_details', kwargs={'hostname':hostname, 'database_name':hostname, 'resource_name':hostname})}
             logger.debug('Configuring Databases')
-            db_instances = {'title': 'Databases', 'isFolder':True, "expand":True, "key":"databases", "icon":"folder_database.png", "type":"databases"}
+            db_instances = {'title': 'Databases', 'isFolder':True, "key":"databases", "icon":"folder_database.png", "type":"databases"}
             dbs = []
             for database in server_info["databases"]:
                 db = {'title':database['name'], "key":database['name'], "icon":"database.png", "type":"database", "instance":database['name'], "detailsEnabled":"true", 'url': reverse('postgres_db_details', kwargs={'hostname':hostname, 'database_name':database['name'], 'resource_name':database['name']})}
@@ -35,7 +35,7 @@ class PosgreSQLServerTree(ServerTree):
                 dbs.append(db)
             db_instances['children'] = dbs
             
-            users_tree = {'title': 'Users', 'isFolder':True, "expand":True, "key":"users", "icon":"users.png", "type":"users"}
+            users_tree = {'title': 'Users', 'isFolder':True, "key":"users", "icon":"users.png", "type":"users"}
             users = []
             for user in server_info["users"]:
                 user_tree = {'title':user['username'], "key":user['username'], "icon":"user.png", "type":"user"}
