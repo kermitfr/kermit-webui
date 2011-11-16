@@ -32,7 +32,7 @@ class QueryMethods(object):
                         if not user.is_superuser and settings.FILTERS_SERVER:
                             servers = get_objects_for_user(user, 'use_server', Server).filter(puppet_path=path, deleted=False)
                 for server in servers:
-                    serverdata = {"title":server.fqdn, "url": settings.BASE_URL + "/server/details/"+server.fqdn+"/", "key":server.fqdn, "filtername":server.hostname}
+                    serverdata = {"title":server.fqdn, "url": settings.BASE_URL + "/server/details/"+server.hostname+"/", "key":server.fqdn, "filtername":server.hostname}
                     children.append(serverdata)
                 
                 content['children'] = children
@@ -57,7 +57,7 @@ class QueryMethods(object):
                 if not user.is_superuser and settings.FILTERS_SERVER:
                     servers = get_objects_for_user(user, 'use_server', Server).filter(puppet_path=path, deleted=False)
         for server in servers:
-            serverdata = {"title":server.fqdn, "url": settings.BASE_URL + "/server/details/"+server.fqdn+"/", "key":server.fqdn, "filtername":server.hostname}
+            serverdata = {"title":server.fqdn, "url": settings.BASE_URL + "/server/details/"+server.hostname+"/", "key":server.fqdn, "filtername":server.hostname}
             data.append(serverdata)
              
         return json.dumps(data)
@@ -93,7 +93,7 @@ class QueryMethods(object):
                 if not user.is_superuser and settings.FILTERS_SERVER:
                     servers = get_objects_for_user(user, 'use_server', Server).filter(puppet_path=path, deleted=False)
         for server in servers:
-            serverdata = {"title":server.fqdn, "url": settings.BASE_URL + "/server/details/"+server.fqdn+"/", "key":server.fqdn, "filtername":server.hostname}
+            serverdata = {"title":server.fqdn, "url": settings.BASE_URL + "/server/details/"+server.hostname+"/", "key":server.fqdn, "filtername":server.hostname}
             data.append(serverdata)
              
         return json.dumps(data)

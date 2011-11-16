@@ -147,12 +147,11 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Uncomment the next line to enable the admin:
     'guardian',
     'grappelli',
     'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
+    "djcelery",
     'webui.platforms',
     'webui.django_cron',
     'webui.widgets',
@@ -166,6 +165,7 @@ INSTALLED_APPS = (
     'webui.upload',
     'webui.acls_manager',
     'webui.alerting',
+    
 )
 
 #Configuring fixtures by-exception
@@ -271,3 +271,12 @@ AMQP_RECEIVER_LOG_FOLDER=CONF.get('webui', 'amqp_receive_log_folder')
 
 FILTERS_SERVER = CONF.getboolean("webui", "filters.server")
 FILTERS_CLASS = CONF.getboolean("webui", "filters.class")
+
+import djcelery
+djcelery.setup_loader()
+
+BROKER_HOST = "localhost"
+BROKER_PORT = 5672
+BROKER_USER = "guest"
+BROKER_PASSWORD = "guest"
+BROKER_VHOST = "/"
