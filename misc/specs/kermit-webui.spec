@@ -1,21 +1,23 @@
 Summary: Mcollective WebUI
 Name: kermit-webui
 Version: 0.0.7
-Release: 7
+Release: 8
 License: GPL
 Group: Applications/System
 URL: https://github.com/thinkfr/kermit-webui
 Source: %{name}-%{version}.tar.gz
-Requires: httpd, Django, django-grappelli, django-guardian
+Requires: httpd, Django, django-grappelli, django-guardian, django-celery, django-kombu, uuid
 %if 0%{?fedora}
 Requires: python(abi) >= 2.6, mod_wsgi, python-httplib2
 %else
-Requires: python(abi) = 2.6, python26-mod_wsgi, python26-httplib2
+Requires: python(abi) = 2.6, python26-mod_wsgi, python26-httplib2, ordereddict
 %endif 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch: noarch
 BuildRequires: django-grappelli
 BuildRequires: django-guardian
+BuildRequires: django-celery
+BuildRequires: django-kombu
 
 %description
 Mcollective WebUI
@@ -44,6 +46,8 @@ python webui/manage.py syncdb --noinput
 %{__mkdir} -p $RPM_BUILD_ROOT/var/www/%{name}
 %{__mkdir} -p $RPM_BUILD_ROOT/var/www/%{name}/uploads
 %{__mkdir} -p $RPM_BUILD_ROOT/var/log/kermit
+%{__mkdir} -p $RPM_BUILD_ROOT/var/log/celery
+%{__mkdir} -p $RPM_BUILD_ROOT/var/run/celery
 
 %{__cp} -R ./src/* $RPM_BUILD_ROOT/usr/share/%{name}
 %{__cp} -R /tmp/sqlite.db $RPM_BUILD_ROOT/usr/share/%{name}/db
@@ -61,6 +65,9 @@ python webui/manage.py syncdb --noinput
 %{__cp} -R README $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}
 #%{__cp} -R ./misc/sql $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}
 #%{__ln_s} -f ../../usr/share/%{name}/settings.py $RPM_BUILD_ROOT/etc/%{name}/
+%{__cp} -R ./misc/init/init.d/* $RPM_BUILD_ROOT/etc/init.d
+%{__cp} -R ./misc/init/sysconfig/* $RPM_BUILD_ROOT/etc/sysconfig
+
 
 
 %clean
@@ -81,9 +88,14 @@ python webui/manage.py syncdb --noinput
 %attr(0777,apache,apache) %dir /usr/share/%{name}/db/sqlite.db
 %attr(0750,apache,apache) %dir /var/www/%{name}/uploads
 %attr(0755,apache,apache) %dir /var/log/kermit
+%attr(0755,celery,celery) %dir /var/log/celery
+%attr(0755,celery,celery) %dir /var/run/celery
 %attr(0644,apache,apache) %dir /etc/kermit/kermit-webui.cfg
+%attr(0755,root,root) %dir /etc/init.d/celeryd
 
 %pre
+# Add the "celery" user
+/usr/sbin/useradd -c "Celery" -s /sbin/nologin -r celery
 
 %post
 if [ "$1" -le "1" ] ; then # First install
