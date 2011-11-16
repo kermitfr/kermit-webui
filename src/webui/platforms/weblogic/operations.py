@@ -22,5 +22,21 @@ class WeblogicDeployContextMenu(ContextOperation):
     def get_type(self):
         return 'Weblogic'
     
+class WeblogicLogContextMenu(ContextOperation):
+    
+    def get_operations(self):
+        context_menu_ops = []
+        context_menu_ops.append(
+            {"name":"get_log_weblogic",
+             "description":"Get Intance Log",
+             "javascript":"getLogForm('%s', 'weblogic', 'deploy-dialog', 'get_log', '$$filterlist$$')" % settings.BASE_URL,
+             "server_operation":"",
+             })
+        return context_menu_ops
+    
+    def get_type(self):
+        return 'Weblogic'
+    
     
 kermit_modules.register(WeblogicDeployContextMenu)
+kermit_modules.register(WeblogicLogContextMenu)
