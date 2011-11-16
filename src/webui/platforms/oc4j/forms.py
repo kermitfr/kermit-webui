@@ -11,3 +11,7 @@ class DeployForm(forms.Form):
     applist = forms.ChoiceField(label=u"Available application")
     instancename = forms.ChoiceField(label=u"Instance Name")
     appname = forms.CharField(label=u"Application Name")
+    
+class LogForm(forms.Form):
+    instancename = forms.ChoiceField(label=u"Instance Name")
+    appname = forms.CharField(label=u"Application Name")

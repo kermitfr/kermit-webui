@@ -3,13 +3,14 @@ from webui import settings
 from django.template.context import RequestContext
 from django.shortcuts import render_to_response
 from communication import read_server_info
-from webui.platforms.utils import convert_keys_names, extract_servers
+from webui.platforms.utils import convert_keys_names, extract_servers,\
+    read_file_log
 from django.contrib.auth.decorators import login_required
 from guardian.decorators import permission_required
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from webui.platforms.oc4j.utils import extract_instances_name, get_apps_list
 from django.utils import simplejson as json
-from webui.platforms.oc4j.forms import DeployForm
+from webui.platforms.oc4j.forms import DeployForm, LogForm
 from webui.restserver.communication import callRestServer
 
 logger = logging.getLogger(__name__)
@@ -179,3 +180,70 @@ def redeploy_app(request, filters, dialog_name, xhr=None):
         # It's not post so make a new form
         logger.warn("Cannot access this page using GET")
         raise Http404
+    
+@login_required()
+@permission_required('agent.call_mcollective', return_403=True)
+def get_log_form(request, dialog_name, action, filters):
+    logger.debug('Rendering form')         
+    return render_to_response('platforms/oc4j/logform.html', {'action':action, 'filters':filters, 'form':LogForm([]), 'dialog_name': dialog_name, 'base_url':settings.BASE_URL}, context_instance=RequestContext(request))
+
+
+@login_required()
+@permission_required('agent.call_mcollective', return_403=True)
+def get_log(request, filters, dialog_name, xhr=None):
+    if request.method == "POST":
+        logger.debug("Recreating form")
+        form = LogForm(request.POST)
+
+        #Check if the <xhr> var had something passed to it.
+        if xhr == "xhr":
+            #TODO: Try to use dynamic form validation
+            clean = form.is_valid()
+            rdict = {'bad':'false', 'filters':filters }
+            try:
+                instancename = request.POST['instancename']
+                appname = request.POST['appname']
+            except:
+                instancename=None
+                appname=None
+            if instancename and appname:
+                logger.debug("Parameters check: OK.")
+                logger.debug("Calling MCollective to get log on %s filtered server" % (filters))
+                response, content = callRestServer(request.user, filters, 'oc4j', 'get_log', 'instancename=%s;appname=%s' % (instancename,appname))
+                if response.status == 200:
+                    json_content = json.loads(content)
+                    s_resps = []
+                    for server_response in json_content:
+                        s_resps.append({"server": server_response["sender"], "logfile":server_response["data"]["logfile"]})
+                    rdict.update({"result":s_resps})
+                else:
+                    rdict.update({"result": "Error communicating with server"})
+                
+                rdict.update({'dialog_name':dialog_name})
+                # And send it off.
+            else:
+                rdict.update({'bad':'true'})
+                d = {}
+                # This was painful, but I can't find a better way to extract the error messages:
+                for e in form.errors.iteritems():
+                    d.update({e[0]:unicode(e[1])}) # e[0] is the id, unicode(e[1]) is the error HTML.
+                # Bung all that into the dict
+                rdict.update({'errs': d })
+                # Make a json whatsit to send back.
+                
+            return HttpResponse(json.dumps(rdict, ensure_ascii=False), mimetype='application/javascript')
+        # It's a normal submit - non ajax.
+        else:
+            if form.is_valid():
+                # We don't accept non-ajax requests for the moment
+                return HttpResponseRedirect("/")
+    else:
+        # It's not post so make a new form
+        logger.warn("Cannot access this page using GET")
+        raise Http404
+    
+@login_required()
+def get_log_file(request, file_name):
+    logger.debug('Get Log file %s' % file_name)         
+    log_file_content = read_file_log(file_name)
+    return HttpResponse(json.dumps({"logfilecontent":log_file_content}, ensure_ascii=False), mimetype='application/javascript')
