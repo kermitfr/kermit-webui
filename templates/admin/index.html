@@ -28,8 +28,8 @@
 <script type="text/javascript" src="{{STATIC_URL}}js/kermit/kermit.js"></script>
 <script type="text/javascript">
 		jQuery.ajaxSetup({
-			beforeSend : function() {
-				$('#loading').show()
+			beforeSend : function() {			
+				//$('#loading').show()
 			},
 			complete : function() {
 				$('#loading').hide()
@@ -41,6 +41,10 @@
 			},
 			timeout: 120000
 		});	
+		
+		function executeWithProgress(url) {
+			executeAction(url);
+		}
 </script>
 <style>
 	#loading {
@@ -70,11 +74,35 @@
 		</p>
 	</div>
 </div>
+<div id="modalprogress">
+	<div id="progressbar"></div>
+	<div id="taskstate"></div>
+</div>
 <script type="text/javascript">
 	function executeAction(url) {
+		$('#modalprogress').dialog({
+			modal : true,
+			title : 'Operation Progress',
+			height : 100,
+			width : 300
+		});
+		$( "#progressbar" ).progressbar({ value: 0 });
 		//$("#" + destination).empty();
 		$.get(url, function(data) {
 			//$('#' + destination).html(data);
+			var checkStatus = function() {
+		    	$.getJSON('/agent/progress/' + data.UUID + '/', function(result) {
+		    		$( "#progressbar" ).progressbar({ value: result.value });
+		    		$( "#taskstate").html('<b>' + result.state + '</b>');
+			        if(result.state!='SUCCESS' && result.state!='FAILURE') {
+			            setTimeout(checkStatus, 2000);
+			        } else {
+			        	$('#modalprogress').dialog('close');
+			        }
+		        // do something else
+    		 	});
+			}
+			checkStatus();
 		});
 	}
 </script>

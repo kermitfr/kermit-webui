@@ -10,6 +10,7 @@ from webui.restserver.template import render_agent_template, get_action_inputs
 from django.contrib.auth.decorators import login_required
 from guardian.shortcuts import get_objects_for_user
 from guardian.decorators import permission_required
+from webui.agent.tasks import updateagents
 
 logger = logging.getLogger(__name__)
 
@@ -111,3 +112,15 @@ def execute_action_form(request, agent, action, filters, dialog_name, response_c
         # It's not post so make a new form
         logger.warn("Cannot access this page using GET")
         raise Http404
+    
+    
+def get_progress(request, task):
+    result = updateagents.AsyncResult(task)
+    dict = {'state': result.state}
+    if result.result:
+        value = float(1.0*result.result['current']/result.result['total'])*100
+        dict['value'] = value
+    else: 
+        dict['value'] = 0
+    json_data = json.dumps(dict)
+    return HttpResponse(json_data, mimetype="application/json")

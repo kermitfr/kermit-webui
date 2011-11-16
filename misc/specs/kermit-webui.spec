@@ -92,6 +92,8 @@ python webui/manage.py syncdb --noinput
 %attr(0755,celery,celery) %dir /var/run/celery
 %attr(0644,apache,apache) %dir /etc/kermit/kermit-webui.cfg
 %attr(0755,root,root) %dir /etc/init.d/celeryd
+%attr(0755,root,root) %dir /etc/init.d/celeryev
+%attr(0755,root,root) %dir /etc/init.d/celerybeat
 
 %pre
 # Add the "celery" user

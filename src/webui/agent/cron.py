@@ -3,9 +3,8 @@ Created on Aug 16, 2011
 
 @author: mmornati
 '''
-
+from celery.execute import send_task
 from webui.django_cron import cronScheduler, Job
-from webui.agent.utils import update_agents_info
 import logging
 
 logger = logging.getLogger(__name__)
@@ -21,8 +20,7 @@ class UpdateAgentsInfo(Job):
 
         def job(self):
             logger.info("Running Job UpdateAgentsInfo")
-            update_agents_info('UpdateAgentInfo-CronJob')
-                
+            result = send_task("webui.agent.tasks.updateagents", ['AgentInfoCron'])    
                 
 cronScheduler.register(UpdateAgentsInfo)
 

@@ -1,0 +1,11 @@
+# Where the Django project is.
+CELERYBEAT_CHDIR="/usr/share/kermit-webui/webui"
+
+# Name of the projects settings module.
+export DJANGO_SETTINGS_MODULE="settings"
+
+# Path to celerybeat
+CELERYBEAT="/usr/share/kermit-webui/webui/manage.py celerybeat"
+
+# Extra arguments to celerybeat
+CELERYBEAT_OPTS="--schedule=/var/run/celerybeat-schedule"

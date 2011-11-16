@@ -10,7 +10,7 @@ from webui.puppetclasses.models import PuppetClass
 import logging
 from webui.widgets.loading import registry
 from webui.agent.models import Agent
-from webui.agent.utils import update_agents_info
+from celery.execute import send_task
 from webui.restserver.communication import callRestServer
 from django.http import HttpResponse
 from webui.platforms.platforms import platforms
@@ -41,7 +41,8 @@ class Actions(object):
     def update_agents(self, user):
         logger.info("Calling Update Agents Info")
         try: 
-            update_agents_info(user)
+            result = send_task("webui.agent.tasks.updateagents", [user])    
+            return result
         except Exception, err:
             logger.error('ERROR: ' + str(err))
         

@@ -1,0 +1,16 @@
+# Where the Django project is.
+CELERYD_CHDIR="/usr/share/kermit-webui/webui"
+
+# Name of the projects settings module.
+export DJANGO_SETTINGS_MODULE="settings"
+
+# Path to celeryd
+CELERYEV="/usr/share/kermit-webui/webui/manage.py"
+
+# Extra arguments to manage.py
+CELERYEV_OPTS="celeryev"
+
+# Camera class to use (required)
+CELERYEV_CAM="djcelery.snapshot.Camera"
+
+

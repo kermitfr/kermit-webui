@@ -15,11 +15,6 @@ def verify_action_acl(user, agent_name, action_name):
     agent = Agent.objects.get(name=agent_name)
     action = Action.objects.get(name=action_name, agent=agent)
     return user.has_perm('use_action', action)
-
-def update_agents_info(user):
-    agents_list = Agent.objects.filter(enabled=True)
-    for agent in agents_list:
-        update_info(user, agent)
         
 def update_info(user, agent):
     logger.info('Calling Mcollective to get info for agent ' + agent.name)

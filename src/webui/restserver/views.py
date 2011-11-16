@@ -14,6 +14,7 @@ from webui.restserver.template import render_agent_template
 from django.contrib.auth.decorators import login_required
 from guardian.decorators import permission_required
 from webui.agent.utils import verify_agent_acl, verify_action_acl
+import sys
 
 logger = logging.getLogger(__name__)
 
@@ -57,9 +58,10 @@ def executeAction(request, action):
     logger.info("Executing action " + action)
     actions = Actions()
     actionToExecute = getattr(actions, action)
-    actionToExecute(request.user)
-    return HttpResponse('')
-
+    result = actionToExecute(request.user)
+    json_data = json.dumps({'UUID': result.task_id})
+    return HttpResponse(json_data, mimetype="application/json")
+    
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)
 def executeGeneralAction(request, action, filter, type):
