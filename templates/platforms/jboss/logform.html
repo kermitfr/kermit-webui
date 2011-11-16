@@ -128,7 +128,7 @@
 				$('#loading').hide();
 			},
 			success : function(data) {
-				if(data) {
+				if(data && data.logfilecontent) {
 					$("#logcontainer").append("<h1>" + server + "</h1>");	
 					$("#logcontainer").append(data.logfilecontent);	
 				} else {

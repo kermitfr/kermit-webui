@@ -5,7 +5,7 @@ import os
 import glob
 from django.utils import simplejson as json
 from webui.puppetclasses.models import PuppetClass
-
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -82,13 +82,15 @@ def extract_servers(filters):
         
 def read_file_log(file_name):
     toSearch = settings.AMQP_RECEIVER_LOG_FOLDER + '/*' + file_name
-    time_out = 1200
+    time_out = 600
     filesFound = []
     counter = 0
     while (len(filesFound) == 0 and counter < time_out):
+        time.sleep(0.1)
         filesFound = glob.glob(toSearch)
         counter = counter + 1
     if (len(filesFound) == 0):
+        logger.warn("No log file found!!")
         return None
     else:
         if len(filesFound) > 1:

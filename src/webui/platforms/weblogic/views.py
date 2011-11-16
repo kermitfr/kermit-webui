@@ -182,7 +182,7 @@ def get_log(request, filters, dialog_name, xhr=None):
             if instancename:
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to get log on %s filtered server" % (filters))
-                response, content = callRestServer(request.user, filters, 'weblogic', 'get_log', 'instancename=%s' % (instancename))
+                response, content = callRestServer(request.user, filters, 'a7xows', 'get_log', 'instancename=%s' % (instancename))
                 if response.status == 200:
                     json_content = json.loads(content)
                     s_resps = []

@@ -209,7 +209,7 @@ def get_log(request, filters, dialog_name, xhr=None):
             if instancename and appname:
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to get log on %s filtered server" % (filters))
-                response, content = callRestServer(request.user, filters, 'oc4j', 'get_log', 'instancename=%s;appname=%s' % (instancename,appname))
+                response, content = callRestServer(request.user, filters, 'a7xoas', 'get_log', 'instancename=%s;appname=%s' % (instancename,appname))
                 if response.status == 200:
                     json_content = json.loads(content)
                     s_resps = []
