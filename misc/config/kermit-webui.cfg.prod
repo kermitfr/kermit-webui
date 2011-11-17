@@ -17,7 +17,7 @@ alerting.from_mail=no_reply@kermit.fr
 
 [webui-database]
 driver=django.db.backends.sqlite3
-name=/usr/share/kermit-webui/db/sqlite.db
+name=/var/lib/kermit/webui/db/sqlite.db
 host=
 port=
 user=
