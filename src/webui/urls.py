@@ -45,6 +45,7 @@ urlpatterns = patterns('',
     (r'^auth/', include('webui.authentication.urls')),
     (r'^upload/', include('webui.upload.urls')),
     (r'^progress/', include('webui.progress.urls')),
+    (r'^alerts/', include('webui.alerting.urls')),
     
     #(r'^wsgroups/', include('a7x_wsgroups.urls')),
     

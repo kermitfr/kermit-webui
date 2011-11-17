@@ -144,6 +144,14 @@
 			</li>
 		</ul>
 		</div>
+		<div class="module actions" id="custom-import-action-module">
+		<h2>{% trans 'Other Actions' %}</h2>
+		<ul class="actionlist">
+			<li>
+				<a href="#" onclick="executeAction('Send Inventory Email', '{% url send_inventory_mail %}');">{% trans 'Send Inventory Email' %}</a>
+			</li>
+		</ul>
+		</div>
         <div class="module actions" id="recent-actions-module">
             <h2>{% trans 'Recent Actions' %}</h2>
             <div class="module">

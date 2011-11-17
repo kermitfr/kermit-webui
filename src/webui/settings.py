@@ -4,6 +4,7 @@ import django
 import imp
 from django.conf import global_settings
 from utils import CONF
+from celery.schedules import crontab
 
 # calculated paths for django and the site
 # used as starting points for various other paths
@@ -273,8 +274,29 @@ AMQP_RECEIVER_LOG_FOLDER=CONF.get('webui', 'amqp_receive_log_folder')
 FILTERS_SERVER = CONF.getboolean("webui", "filters.server")
 FILTERS_CLASS = CONF.getboolean("webui", "filters.class")
 
+EMAIL_HOST = CONF.get("webui", "email.host")
+EMAIL_PORT = CONF.get("webui", "email.port")
+EMAIL_HOST_USER = CONF.get("webui", "email.username")
+EMAIL_HOST_PASSWORD = CONF.get("webui", "email.password")
+EMAIL_USE_TLS = CONF.getboolean("webui", "email.usetls")
+
+
 import djcelery
 djcelery.setup_loader()
 
 BROKER_TRANSPORT = "django"
 CELERY_IMPORTS = ("webui", )
+
+CELERYBEAT_SCHEDULE = {
+    "runs-server-basic-info-update-every-hour": {
+        "task": "webui.serverstatus.tasks.server_basic_info",
+        "schedule": crontab(minute=0, hour="*/1"),
+        "args": ('CronJob',)
+    },
+    "runs-inventory-once-a-day": {
+        "task": "webui.serverstatus.tasks.server_inventory",
+        "schedule": crontab(hour=6, minute=30),
+        "args": ('CronJob',)
+    },                   
+                       
+}
