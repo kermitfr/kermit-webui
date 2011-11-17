@@ -223,7 +223,15 @@ function randomString() {
 }
 
 function callMcollective(url, destination) {
-	sendRequestToMcollective(url, destination)
+	sendRequestToMcollective(url, destination);
+}
+
+function callMcollectiveModal(url, destination) {
+	sendRequestToMcollective(url, destination);
+	$('#'+destination).dialog({
+            width: 600,
+            modal: true,
+    });
 }
 
 function callMcollectiveWithTemplateRsp(url, destination) {

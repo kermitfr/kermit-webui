@@ -6,6 +6,7 @@ SUB_APPS = (
         'bar',
         'jboss',
         'postgresql',
+        'virtualization',
 )
 
 

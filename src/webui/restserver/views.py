@@ -14,7 +14,6 @@ from webui.restserver.template import render_agent_template
 from django.contrib.auth.decorators import login_required
 from guardian.decorators import permission_required
 from webui.agent.utils import verify_agent_acl, verify_action_acl
-import sys
 
 logger = logging.getLogger(__name__)
 

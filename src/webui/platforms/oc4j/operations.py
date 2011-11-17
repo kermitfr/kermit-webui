@@ -6,7 +6,6 @@ Created on Nov 8, 2011
 from webui.abstracts import ContextOperation, ServerOperation
 from webui import settings
 from webui.core import kermit_modules
-from django.core.urlresolvers import reverse
 
 class OC4JDeployContextMenu(ContextOperation):
     
@@ -100,7 +99,6 @@ class StopOC4JInstance(ServerOperation):
 
 kermit_modules.register(OC4JDeployContextMenu)
 kermit_modules.register(OC4JGetAppLogContextMenu)
-
 
 kermit_modules.register(StartOC4JInstance)
 kermit_modules.register(StopOC4JInstance)

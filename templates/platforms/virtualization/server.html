@@ -1,0 +1,40 @@
+{% load i18n %} 
+<img class="introicon" src="{{static_url}}images/icons/virtualization.png"/>
+<div class="info">
+	<strong>{% trans 'Virtual Type' %}</strong>: {{virtual.type}} <br/>
+	<strong>{% trans 'Version' %}</strong>: {{virtual.version}} <br/>
+	<strong>{% trans 'URI' %}</strong>: {{virtual.uri}} <br/>
+	<strong>{% trans 'Memory' %}</strong>: {{virtual.memory}} <br/>
+	<strong>{% trans 'CPUs' %}</strong>: {{virtual.cpus}} <br/>
+	<strong>{% trans 'Cores' %}</strong>: {{virtual.cores}} <br/>
+	<strong>{% trans 'MHz' %}</strong>: {{virtual.mhz}} <br/>
+	<strong>{% trans 'Model' %}</strong>: {{virtual.model}} <br/>
+	<strong>{% trans 'Number Domains' %}</strong>: {{virtual.num_of_defined_domains}} <br/>
+	<strong>{% trans 'Active Domains' %}</strong>: {{virtual.num_of_domains}} <br/>
+	<br/>
+	<strong>{% trans 'Domains Info' %}</strong>
+	<table class="server-details">
+		<thead>
+			<tr>
+				<th>{% trans 'Status' %}</th>
+				<th>{% trans 'Name' %}</th>
+				<th>{% trans 'Operations' %}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for domain in domains%}
+			<tr>
+				<td width="5%"><img src="{{static_url}}images/icons/{% if domain.active %}online.png{% else %}offline.png{% endif %}" style="border: 0px; height: 15px;margin: 3px;float:none;"/></td>
+				<td>{{domain.name}}</td>
+				<td align="left">
+					{% if domain.active %}
+						<img src="{{static_url}}images/toolbar/stop.png" height="16px" onclick="callMcollectiveModal('{{domain.stop_url}}', 'execution-dialog')"/>
+					{% else %}
+						<img src="{{static_url}}images/toolbar/start.png" height="16px" onclick="callMcollectiveModal('{{domain.start_url}}', 'execution-dialog')"/>
+					{% endif %}
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>

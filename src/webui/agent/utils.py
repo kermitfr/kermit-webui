@@ -8,13 +8,19 @@ logger = logging.getLogger(__name__)
 
 
 def verify_agent_acl(user, agent_name):
-    agent = Agent.objects.get(name=agent_name)
-    return user.has_perm('use_agent', agent)
+    try:
+        agent = Agent.objects.get(name=agent_name)
+        return user.has_perm('use_agent', agent)
+    except:
+        return False
 
 def verify_action_acl(user, agent_name, action_name):
-    agent = Agent.objects.get(name=agent_name)
-    action = Action.objects.get(name=action_name, agent=agent)
-    return user.has_perm('use_action', action)
+    try:
+        agent = Agent.objects.get(name=agent_name)
+        action = Action.objects.get(name=action_name, agent=agent)
+        return user.has_perm('use_action', action)
+    except:
+        return False
         
 def update_info(user, agent):
     logger.info('Calling Mcollective to get info for agent ' + agent.name)
