@@ -21,4 +21,3 @@ def updateagents(user):
         update_info(user, agent)
         i = i + 1
         updateagents.update_state(state="PROGRESS", meta={"current": i, "total": total_agents})
-#    return None

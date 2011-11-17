@@ -6,7 +6,7 @@ Created on Aug 16, 2011
 
 from webui.django_cron import cronScheduler, Job
 import logging
-from webui.restserver.utils import Operations
+from celery.execute import send_task
 
 logger = logging.getLogger(__name__)
 
@@ -20,8 +20,10 @@ class UpdateServerStatus(Job):
 
         def job(self):
             logger.info("Running Job UpdateServerStatus")
-            ops = Operations()
-            ops.server_basic_info()
+            try: 
+                result = send_task("webui.serverstatus.tasks.server_basic_info", ['CronUser'])    
+            except Exception, err:
+                logger.error('ERROR: ' + str(err))
                 
                 
 cronScheduler.register(UpdateServerStatus)

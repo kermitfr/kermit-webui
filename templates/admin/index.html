@@ -26,26 +26,6 @@
 <script type="text/javascript" src="{{STATIC_URL}}js/jstree/jquery.jstree.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery-cookie/jquery.cookie.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/kermit/kermit.js"></script>
-<script type="text/javascript">
-		jQuery.ajaxSetup({
-			beforeSend : function() {			
-				//$('#loading').show()
-			},
-			complete : function() {
-				$('#loading').hide()
-			},
-			error : function() {
-				$('#loading').hide()
-			},
-			success : function() {
-			},
-			timeout: 120000
-		});	
-		
-		function executeWithProgress(url) {
-			executeAction(url);
-		}
-</script>
 <style>
 	#loading {
 		display: none;
@@ -68,32 +48,30 @@
 
 <!-- CONTENT -->
 {% block content %}
-<div id="loading">
-	<div id="loader">
-		<p><img src="{{STATIC_URL}}images/ajax-loader.gif" />
-		</p>
-	</div>
-</div>
+<style>
+	.ui-progressbar-value { background-image: url("{{STATIC_URL}}images/redmond/pbar-ani.gif"); }
+</style>
 <div id="modalprogress">
 	<div id="progressbar"></div>
 	<div id="taskstate"></div>
 </div>
 <script type="text/javascript">
-	function executeAction(url) {
+	function executeAction(title, url) {
 		$('#modalprogress').dialog({
 			modal : true,
-			title : 'Operation Progress',
+			title : title,
 			height : 100,
-			width : 300
+			width : 500
 		});
 		$( "#progressbar" ).progressbar({ value: 0 });
+		$( "#taskstate").html('<b>Waiting...	</b>');
 		//$("#" + destination).empty();
 		$.get(url, function(data) {
 			//$('#' + destination).html(data);
 			var checkStatus = function() {
-		    	$.getJSON('/agent/progress/' + data.UUID + '/', function(result) {
+		    	$.getJSON('{{BASE_URL}}/progress/get/' + data.taskname + '/' + data.UUID + '/', function(result) {
 		    		$( "#progressbar" ).progressbar({ value: result.value });
-		    		$( "#taskstate").html('<b>' + result.state + '</b>');
+					$( "#taskstate").html('<b>' + result.state + '</b>');	
 			        if(result.state!='SUCCESS' && result.state!='FAILURE') {
 			            setTimeout(checkStatus, 2000);
 			        } else {
@@ -102,7 +80,11 @@
 		        // do something else
     		 	});
 			}
-			checkStatus();
+			if (data.UUID) {
+				checkStatus();
+			} else {
+				$('#modalprogress').dialog('close');	
+			}
 		});
 	}
 </script>
@@ -133,16 +115,16 @@
 		<h2>{% trans 'Refresh Actions' %}</h2>
 		<ul class="actionlist">
 			<li>
-				<a href="#" onclick="executeAction('{% url action_executer "refresh_dashboard" %}');">{% trans 'Refresh Widgets' %}</a>
+				<a href="#" onclick="executeAction('Refresh Widgets', '{% url action_executer "refresh_dashboard" "ASYNC"%}');">{% trans 'Refresh Widgets' %}</a>
 			</li>
 			<li>
-				<a href="#" onclick="executeAction('{% url action_executer "refresh_server_basic_info" %}');">{% trans 'Refresh Server Basic Info' %}</a>
+				<a href="#" onclick="executeAction('Refresh Server Basic Info', '{% url action_executer "refresh_server_basic_info" "ASYNC"%}');">{% trans 'Refresh Server Basic Info' %}</a>
 			</li>
 			<li>
-				<a href="#" onclick="executeAction('{% url action_executer "refresh_server_inventory" %}');">{% trans 'Refresh Server Inventory' %}</a>
+				<a href="#" onclick="executeAction('Refresh Server Inventory', '{% url action_executer "refresh_server_inventory" "ASYNC" %}');">{% trans 'Refresh Server Inventory' %}</a>
 			</li>
 			<li>
-				<a href="#" onclick="executeAction('{% url action_executer "update_agents" %}');">{% trans 'Update Agents Info' %}</a>
+				<a href="#" onclick="executeAction('Update Agents Info', '{% url action_executer "update_agents" "ASYNC"%}');">{% trans 'Update Agents Info' %}</a>
 			</li>
 		</ul>
 		</div>

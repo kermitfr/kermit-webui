@@ -54,13 +54,16 @@ def getWithTemplate(request, template, filters, agent, action, args=None):
 
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)
-def executeAction(request, action):
+def executeAction(request, action, type='SYNC'):
     logger.info("Executing action " + action)
     actions = Actions()
     actionToExecute = getattr(actions, action)
-    result = actionToExecute(request.user)
-    json_data = json.dumps({'UUID': result.task_id})
-    return HttpResponse(json_data, mimetype="application/json")
+    if type == 'ASYNC':
+        result = actionToExecute(request.user)
+    else:
+        actionToExecute(request.user)
+        result = json.dumps({'result': ''})
+    return HttpResponse(result, mimetype="application/json")
     
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)
