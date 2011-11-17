@@ -297,6 +297,11 @@ CELERYBEAT_SCHEDULE = {
         "task": "webui.serverstatus.tasks.server_inventory",
         "schedule": crontab(hour=6, minute=30),
         "args": ('CronJob',)
-    },                   
+    }, 
+#    "runs-update-user-groups-once-a-day": {
+#        "task": "webui.serverstatus.tasks.server_inventory",
+#        "schedule": crontab(hour=6, minute=30),
+#        "args": ('CronJob',)
+#    },                   
                        
 }
