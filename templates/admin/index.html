@@ -69,8 +69,9 @@
 		$.get(url, function(data) {
 			//$('#' + destination).html(data);
 			var checkStatus = function() {
-		    	$.getJSON('{{BASE_URL}}/progress/get/' + data.taskname + '/' + data.UUID + '/', function(result) {
-		    		$( "#progressbar" ).progressbar({ value: result.value });
+				var generated_url = generate_url(data.taskname, data.UUID);
+		    	$.getJSON(generated_url, function(result) {
+		    		$( "#progressbar").progressbar({ value: result.value });
 					$( "#taskstate").html('<b>' + result.state + '</b>');	
 			        if(result.state!='SUCCESS' && result.state!='FAILURE') {
 			            setTimeout(checkStatus, 2000);
@@ -86,6 +87,10 @@
 				$('#modalprogress').dialog('close');	
 			}
 		});
+	}
+	
+	function generate_url(taskname, uuid){
+	    return "{% url get_progress taskname=12345 taskid=6789 %}".replace("12345", taskname).replace("6789", uuid);
 	}
 </script>
 <div class="container-grid">
