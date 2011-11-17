@@ -3,9 +3,10 @@ Created on Nov 8, 2011
 
 @author: mmornati
 '''
-from webui.abstracts import ContextOperation
+from webui.abstracts import ContextOperation, ServerOperation
 from webui import settings
 from webui.core import kermit_modules
+from django.core.urlresolvers import reverse
 
 class OC4JDeployContextMenu(ContextOperation):
     
@@ -37,6 +38,69 @@ class OC4JGetAppLogContextMenu(ContextOperation):
     def get_type(self):
         return 'OC4J'
     
+class StartOC4JInstance(ServerOperation):
+    
+    def get_visible(self, server):
+        agent = server.agents.filter(name='a7xoas')
+        return len(agent)==1
+    
+    def get_enabled(self, server):
+        return not server.online
+    
+    def get_name(self):
+        return 'Start OC4J Instance'
+    
+    def get_image(self):
+        return 'start.png'
+    
+    def request_parameters(self):
+        return True
+    
+    def get_agent(self):
+        return 'a7xoas'
+    
+    def get_action(self):
+        return 'startinstance'
+    
+    def get_filter(self, hostname):
+        return 'identity_filter=%s' % hostname
+    
+    def get_url(self, hostname):
+        return None
+    
+class StopOC4JInstance(ServerOperation):
+    
+    def get_visible(self, server):
+        agent = server.agents.filter(name='a7xoas')
+        return len(agent)==1
+    
+    def get_enabled(self, server):
+        return not server.online
+    
+    def get_name(self):
+        return 'Stop OC4J Instance'
+    
+    def get_image(self):
+        return 'stop.png'
+    
+    def request_parameters(self):
+        return True
+    
+    def get_agent(self):
+        return 'a7xoas'
+    
+    def get_action(self):
+        return 'stopinstance'
+    
+    def get_filter(self, hostname):
+        return 'identity_filter=%s' % hostname
+    
+    def get_url(self, hostname):
+        return None
 
 kermit_modules.register(OC4JDeployContextMenu)
 kermit_modules.register(OC4JGetAppLogContextMenu)
+
+
+kermit_modules.register(StartOC4JInstance)
+kermit_modules.register(StopOC4JInstance)

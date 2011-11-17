@@ -30,12 +30,20 @@
 		});		
 	}	
 	
+	function checkExecution(baseurl, hasparameters, agent, action, filter, url) {
+		if (hasparameters=='True') {
+			getExecutionForm(baseurl, "execution-dialog", agent, action, filter,  "actual-resource-details");
+		} else {
+			executeToolbarOperation(url);
+		}
+	}
+	
 </script>
-
+<div id="execution-dialog"></div>
 {% if server_operations %}	
 <div class="fg-toolbar">
 	{%for current_op in server_operations %}
-		<img class="opbutton" onclick="executeToolbarOperation('{{current_op.url}}')" src="{{static_url}}/images/toolbar/{{current_op.img}}" title="{{current_op.name}}">
+		<img class="opbutton" onclick="checkExecution('{{settings.BASE_URL}}', '{{current_op.hasparameters}}', '{{current_op.agent}}', '{{current_op.action}}', '{{current_op.filter}}');" src="{{static_url}}/images/toolbar/{{current_op.img}}" title="{{current_op.name}}">
 	{%endfor%}
 </div>
 <div id="toolbar-response"></div>

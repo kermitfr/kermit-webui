@@ -45,11 +45,18 @@ def hostInventory(request, hostname):
     server_operations = core.kermit_modules.extract(ServerOperation)
     if server_operations:
         for op in server_operations:
-            data = {"img": op.get_image(),
-                    "name": op.get_name(),
-                    "url": op.get_url(hostname), 
-                    "enabled": op.get_enabled(my_server)}
-            operations.append(data)
+            if op.get_visible(my_server):
+                data = {"img": op.get_image(),
+                        "name": op.get_name(),
+                        "url": op.get_url(hostname),
+                        "hasparameters": op.request_parameters(),
+                        "agent": op.get_agent(),
+                        "action": op.get_action(),
+                        "filter": op.get_filter(hostname),
+                        "enabled": op.get_enabled(my_server)}
+                operations.append(data)
+            else:
+                logger.debug("Operation %s is not visible for %s server" % (op.get_name(), hostname))
 
     return render_to_response('server/details.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "serverdetails": server_info, "hostname": hostname, "service_status":service_status, 'server_operations': operations, 'service_status_url':settings.RUBY_REST_PING_URL}, context_instance=RequestContext(request))
 

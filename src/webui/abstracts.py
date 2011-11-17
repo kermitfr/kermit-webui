@@ -21,5 +21,29 @@ class CoreService(object):
     
 class ServerOperation(object):
     
-    def execute(self):
+    def get_visible(self, server):
+        raise NotImplementedAbstract
+    
+    def get_enabled(self, server):
+        raise NotImplementedAbstract
+    
+    def get_name(self):
+        raise NotImplementedAbstract
+    
+    def get_image(self):
+        raise NotImplementedAbstract
+    
+    def request_parameters(self):
+        return False
+    
+    def get_agent(self):
+        return ''
+    
+    def get_action(self):
+        return ''
+    
+    def get_filter(self, hostname):
+        return ''
+    
+    def get_url(self, hostname, instancename):
         raise NotImplementedAbstract
