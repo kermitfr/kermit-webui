@@ -256,7 +256,7 @@ if auth_method:
             if setting == setting.upper():
                 locals()[setting] = getattr(conf_module, setting)
     except:
-        #print "WARN: No auth module found. Initializing DB?"    
+        print "DEBUG: No auth module found. Initializing DB?"    
             
 else:
     from webui.authentication.default.settings import *
