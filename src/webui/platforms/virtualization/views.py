@@ -9,7 +9,7 @@ from webui import settings
 from django.template.context import RequestContext
 import logging
 from webui.restserver.communication import callRestServer
-import simplejson as json
+from django.utils import simplejson as json
 from django.core.urlresolvers import reverse
 
 logger = logging.getLogger(__name__)
