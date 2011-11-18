@@ -1,8 +1,11 @@
-#!/bin/bash
-# =========================================================
-#  celerybeat - Starts the Celery periodic task scheduler.
-# =========================================================
+#! /bin/sh -e
 #
+# celerybeat - Starts the CeleryBeat worker daemon.
+#
+# chkconfig: 345 20 80
+# description: Starts and stops CeleryBeat Service
+#
+# /etc/rc.d/init.d/celerybeat
 # :Usage: /etc/init.d/celerybeat {start|stop|force-reload|restart|try-restart|status}
 # :Configuration file: /etc/default/celerybeat or /etc/default/celeryd
 #

@@ -1,13 +1,15 @@
-#!/bin/sh -e
-# ============================================
-#  celeryd - Starts the Celery worker daemon.
-# ============================================
+#! /bin/sh -e
 #
+# celeryd - Starts the Celery worker daemon.
+#
+# chkconfig: 345 20 80
+# description: Starts and stops Celery Service
+#
+# /etc/rc.d/init.d/celeryd
 # :Usage: /etc/init.d/celeryd {start|stop|force-reload|restart|try-restart|status}
 # :Configuration file: /etc/default/celeryd
 #
 # See http://docs.celeryq.org/en/latest/cookbook/daemonizing.html#init-script-celeryd
-
 
 ### BEGIN INIT INFO
 # Provides:          celeryd

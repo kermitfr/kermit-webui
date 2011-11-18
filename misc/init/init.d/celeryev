@@ -1,10 +1,12 @@
-#!/bin/bash -e
-# ============================================
-#  celeryd - Starts the Celery worker daemon.
-# ============================================
+#! /bin/sh -e
 #
-# :Usage: /etc/init.d/celeryd {start|stop|force-reload|restart|try-restart|status}
+# celeryev - Starts the CeleryEV Snapshot worker daemon.
 #
+# chkconfig: 345 20 80
+# description: Starts and stops CeleryEV Snapshot Service
+#
+# /etc/rc.d/init.d/celeryev
+# :Usage: /etc/init.d/celeryev {start|stop|force-reload|restart|try-restart|status}
 # :Configuration file: /etc/default/celeryev | /etc/default/celeryd
 #
 # To configure celeryd you probably need to tell it where to chdir.
