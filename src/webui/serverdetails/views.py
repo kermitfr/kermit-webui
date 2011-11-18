@@ -19,7 +19,7 @@ def getDetailsTree(request, hostname):
     #Entering in any platform an collect tree info
     logger.debug('Collecting platform trees')
     data = []
-    content = {"isFolder": "true", "expand": True, "title": hostname, "key":hostname, "icon":"server.png", "detailsEnabled":"true", 'url': reverse('server_inventory_details', kwargs={'hostname':hostname})}
+    content = {"isFolder": True, "expand": True, "title": hostname, "key":hostname, "icon":"server.png", "detailsEnabled":True, 'url': reverse('server_inventory_details', kwargs={'hostname':hostname})}
     children = []
     tree_modules = platforms.extract(ServerTree)
     if tree_modules:
