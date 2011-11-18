@@ -16,6 +16,12 @@ class ContextOperation(object):
         
 class CoreService(object):
     
+    def get_name(self):
+        raise NotImplementedAbstract
+    
+    def get_description(self):
+        raise NotImplementedAbstract
+    
     def get_status(self):
         raise NotImplementedAbstract
     
@@ -32,6 +38,12 @@ class ServerOperation(object):
     
     def get_image(self):
         raise NotImplementedAbstract
+    
+    def get_group_name(self):
+        return None
+    
+    def get_group_icon(self):
+        return None
     
     def request_parameters(self):
         return False

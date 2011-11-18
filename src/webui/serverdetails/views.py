@@ -36,16 +36,24 @@ def getDetailsTree(request, hostname):
 def hostInventory(request, hostname):
     server_info = []   
     services = core.kermit_modules.extract(CoreService)
-    service_status = {}
+    service_status = []
     if services:
         for service in services:
-            service_status.update(service.get_status())
+            data = {"name": service.get_name(),
+                    "description" : service.get_description(),
+                    "status": service.get_status()}
+            service_status.append(data)
     my_server = Server.objects.get(hostname=hostname)
-    operations = []        
+    operations = {}  
     server_operations = core.kermit_modules.extract(ServerOperation)
     if server_operations:
         for op in server_operations:
             if op.get_visible(my_server):
+                group_name = 'nogroup'
+                group_icon = None
+                if op.get_group_name():
+                    group_name = op.get_group_name()
+                    group_icon = op.get_group_icon()
                 data = {"img": op.get_image(),
                         "name": op.get_name(),
                         "url": op.get_url(hostname),
@@ -53,12 +61,17 @@ def hostInventory(request, hostname):
                         "agent": op.get_agent(),
                         "action": op.get_action(),
                         "filter": op.get_filter(hostname),
-                        "enabled": op.get_enabled(my_server)}
-                operations.append(data)
+                        "enabled": op.get_enabled(my_server),
+                        "groupname": group_name,
+                        "groupicon": group_icon}
+                
+                if not group_name in operations:
+                    operations[group_name] = []
+                operations[group_name].append(data)
             else:
                 logger.debug("Operation %s is not visible for %s server" % (op.get_name(), hostname))
 
-    return render_to_response('server/details.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "serverdetails": server_info, "hostname": hostname, "service_status":service_status, 'server_operations': operations, 'service_status_url':settings.RUBY_REST_PING_URL}, context_instance=RequestContext(request))
+    return render_to_response('server/details.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "serverdetails": server_info, "hostname": hostname, "service_status":service_status, 'server_operations': operations}, context_instance=RequestContext(request))
 
 @login_required()
 def hostCallInventory(request, hostname):

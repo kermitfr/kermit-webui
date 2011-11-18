@@ -15,12 +15,15 @@ def index(request):
         return HttpResponseRedirect(reverse('login'))
     #items = Menu.objects.filter(enabled=True).order_by('order')
     services = core.kermit_modules.extract(CoreService)
-    service_status = {}
+    service_status = []
     if services:
         for service in services:
-            service_status.update(service.get_status())
+            data = {"name": service.get_name(),
+                    "description" : service.get_description(),
+                    "status": service.get_status()}
+            service_status.append(data)
     widgets = registry.get_widgets_dashboard(request.user)    
-    return render_to_response('index/index.html', {"base_url": settings.BASE_URL, "widgets": widgets, "service_status":service_status, "static_url":settings.STATIC_URL, 'service_status_url':settings.RUBY_REST_PING_URL}, context_instance=RequestContext(request))
+    return render_to_response('index/index.html', {"base_url": settings.BASE_URL, "widgets": widgets, "service_status":service_status, "static_url":settings.STATIC_URL}, context_instance=RequestContext(request))
 
 def logout_view(request):
     logout(request)

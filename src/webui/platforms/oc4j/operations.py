@@ -67,6 +67,12 @@ class StartOC4JInstance(ServerOperation):
     def get_url(self, hostname):
         return None
     
+    def get_group_name(self):
+        return 'OC4J'
+    
+    def get_group_icon(self):
+        return None
+    
 class StopOC4JInstance(ServerOperation):
     
     def get_visible(self, server):
@@ -95,6 +101,12 @@ class StopOC4JInstance(ServerOperation):
         return 'identity_filter=%s' % hostname
     
     def get_url(self, hostname):
+        return None
+    
+    def get_group_name(self):
+        return 'OC4J'
+    
+    def get_group_icon(self):
         return None
 
 kermit_modules.register(OC4JDeployContextMenu)

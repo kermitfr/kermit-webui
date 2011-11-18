@@ -42,8 +42,11 @@
 <div id="execution-dialog"></div>
 {% if server_operations %}	
 <div class="fg-toolbar">
-	{%for current_op in server_operations %}
-		<img class="opbutton" onclick="checkExecution('{{settings.BASE_URL}}', '{{current_op.hasparameters}}', '{{current_op.agent}}', '{{current_op.action}}', '{{current_op.filter}}');" src="{{static_url}}/images/toolbar/{{current_op.img}}" title="{{current_op.name}}">
+	{%for group_name, operations in server_operations.items %}
+		{{group_name}}
+		{% for current_op in operations %}
+			<img class="opbutton" onclick="checkExecution('{{settings.BASE_URL}}', '{{current_op.hasparameters}}', '{{current_op.agent}}', '{{current_op.action}}', '{{current_op.filter}}');" src="{{static_url}}/images/toolbar/{{current_op.img}}" title="{{current_op.name}}">
+		{% endfor %}
 	{%endfor%}
 </div>
 <div id="toolbar-response"></div>

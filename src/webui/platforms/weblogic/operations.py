@@ -68,6 +68,12 @@ class StartWeblogicInstance(ServerOperation):
     def get_url(self, hostname):
         return None
     
+    def get_group_name(self):
+        return 'WebLogic'
+    
+    def get_group_icon(self):
+        return None
+    
 class StopWeblogicInstance(ServerOperation):
     
     def get_visible(self, server):
@@ -98,6 +104,11 @@ class StopWeblogicInstance(ServerOperation):
     def get_url(self, hostname):
         return None
 
+    def get_group_name(self):
+        return 'WebLogic'
+    
+    def get_group_icon(self):
+        return None
     
     
 kermit_modules.register(WeblogicDeployContextMenu)

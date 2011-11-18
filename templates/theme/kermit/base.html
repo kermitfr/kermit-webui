@@ -166,8 +166,10 @@
 			{% endblock %} <div class="closed-bar"></div>
 			{% if service_status%}
 			<div class="kermitfooter">
-				<img src="{{static_url}}images/icons/{% if service_status.restserver %}online.png{% else %}offline.png{% endif %}" style="border: 0px; height: 10px;margin: 0px;float:none;"/>
-				{% trans 'RestServer' %} ({{service_status_url}})
+				{% for service in service_status%}
+				<img src="{{static_url}}images/icons/{% if service.status %}online.png{% else %}offline.png{% endif %}" style="border: 0px; height: 10px;margin: 0px;float:none;"/>
+				{{service.name}} {% if service.description %}({{service.description}}){% endif %} &nbsp;&nbsp;&nbsp;
+				{%endfor%}
 			</div>
 			{% endif %}
 		</div>

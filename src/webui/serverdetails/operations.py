@@ -4,7 +4,6 @@ Created on Nov 15, 2011
 @author: mmornati
 '''
 from webui.abstracts import ServerOperation
-from webui.core import kermit_modules
 from django.core.urlresolvers import reverse
 
 class StartServer(ServerOperation):
