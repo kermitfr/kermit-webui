@@ -8,7 +8,7 @@ TOPDIR = $(shell pwd)
 DATE="date +%Y%m%d"
 PROGRAMNAME=kermit-webui
 #RELEASE=$(grep "Version:" ./misc/specs/kermit-webui.spec | awk '{ print $2 }')
-RELEASE=0.0.8
+RELEASE=0.0.9
 TMPDIR=/tmp
 BUILDDIR=build
 
