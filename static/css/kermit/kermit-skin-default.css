@@ -2004,3 +2004,22 @@ fieldset.infohighlight {
 .opbutton:hover {
 	width: 20px;
 }
+
+.toolbar-group {
+	border-right: 1px solid #666666;
+	float: left;
+	padding-right: 5px;
+	margin-right: 5px;
+}
+
+.toolbar-group-title {
+	font-size: 8px;
+	position: absolute;
+	margin-top: 15px;
+	margin-left: 2px;
+}
+
+.toolbar-image {
+	float: left;
+	z-index: 10;
+}
