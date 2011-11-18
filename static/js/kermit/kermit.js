@@ -237,4 +237,8 @@ function callMcollectiveModal(url, destination) {
 function callMcollectiveWithTemplateRsp(url, destination) {
 	sendRequestToMcollective(url, destination)
 }
-	
+
+function openVNC(vncproxy_url, redirect_url) {
+	callMcollective(vncproxy_url, 'none');
+	window.open(redirect_url, '_blank');
+}

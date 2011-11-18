@@ -285,7 +285,18 @@ import djcelery
 djcelery.setup_loader()
 
 BROKER_TRANSPORT = "django"
+#BROKER_HOST = "127.0.0.1"
+#BROKER_PORT = 5672
+#BROKER_USER = "celery"
+#BROKER_PASSWORD = "celerypwd"
+#BROKER_VHOST = "mmornati"
+#CELERY_RESULT_BACKEND = 'amqp'
+#CELERY_STORE_ERRORS_EVEN_IF_IGNORED = True
+#CELERYD_NODES="w1"
+
 CELERY_IMPORTS = ("webui", )
+
+
 
 CELERYBEAT_SCHEDULE = {
     "runs-server-basic-info-update-every-hour": {

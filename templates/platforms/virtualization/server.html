@@ -28,7 +28,10 @@
 				<td>{{domain.name}}</td>
 				<td align="left">
 					{% if domain.active %}
-						<img src="{{static_url}}images/toolbar/stop.png" height="16px" onclick="callMcollectiveModal('{{domain.stop_url}}', 'execution-dialog')"/>
+						{% if domain.novnc_url%}
+							<img src="{{static_url}}images/toolbar/vnc.png" height="16px" onclick="openVNC('{{domain.start_vnc_proxy_url}}', '{{domain.novnc_url}}')"/>
+						{% endif %}
+						<img src="{{static_url}}images/toolbar/stop.png" height="16px" onclick="callMcollectiveModal('{{domain.stop_url}}', 'execution-dialog')"/>&nbsp;
 					{% else %}
 						<img src="{{static_url}}images/toolbar/start.png" height="16px" onclick="callMcollectiveModal('{{domain.start_url}}', 'execution-dialog')"/>
 					{% endif %}
