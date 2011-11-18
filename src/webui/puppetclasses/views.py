@@ -18,7 +18,7 @@ class QueryMethods(object):
             #Retrieving all sub classes
             servers_list = Server.objects.filter(puppet_classes = puppetclass, deleted=False)
             if (servers_list):
-                content = {"isFolder": True, "isLazy": False, "title": puppetclass.name, "level":puppetclass.level, "key":puppetclass.name, "filtername":puppetclass.name}
+                content = {"isFolder": "true", "isLazy": "false", "title": puppetclass.name, "level":puppetclass.level, "key":puppetclass.name, "filtername":puppetclass.name}
                 children = []
                 sub_classes = PuppetClass.objects.filter(enabled=True, level=level+1)
                 if sub_classes:
@@ -80,7 +80,7 @@ class QueryMethods(object):
                 if not user.is_superuser and settings.FILTERS_SERVER:
                     servers = get_objects_for_user(user, 'use_server', Server).filter(puppet_path__startswith=test_path)
             if len(servers)>0:
-                content = {"isFolder": True, "isLazy": False, "title": puppetclass.name, "level":puppetclass.level, "key":puppetclass.name, "filtername":puppetclass.name}
+                content = {"isFolder": "true", "isLazy": "false", "title": puppetclass.name, "level":puppetclass.level, "key":puppetclass.name, "filtername":puppetclass.name}
                 data.append(content)
             else:
                 logger.info("Excluding class " + str(puppetclass) + " because there are no server inside")
