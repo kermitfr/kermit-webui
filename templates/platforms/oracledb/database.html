@@ -1,0 +1,27 @@
+{% load i18n %} 
+<img class="introicon" src="{{static_url}}images/icons/datasource.png"/>
+<div class="info">
+	<strong>{% trans 'Instance Name' %}</strong>: {{instance.instance_name}} <br/>
+	<strong>{% trans 'Instance Home' %}</strong>: {{instance.instance_home}} <br/>
+	<strong>{% trans 'Run at startup' %}</strong>: {{instance.run_at_startup}} <br/>
+	<br/>
+	<strong>{% trans 'Information' %}</strong>
+	<table class="server-details">
+		<thead>
+			<tr>
+				<th>{% trans 'Username' %}</th>
+				<th>{% trans 'Object Type' %}</th>
+				<th>{% trans 'Number' %}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for info in instance.data%}
+			<tr>
+				<td>{{info.user_name}}</td>
+				<td>{{info.obj_type}}</td>
+				<td>{{info.number}}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
