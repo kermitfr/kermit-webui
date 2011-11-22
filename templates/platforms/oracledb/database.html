@@ -1,4 +1,36 @@
 {% load i18n %} 
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#oracledb').dataTable();
+	} );
+</script>
+
+<style type="text/css">
+table.oracledb {
+	border-width: 2px;
+	border-spacing: 2px;
+	border-style: outset;
+	border-color: gray;
+	border-collapse: collapse;
+	background-color: white;
+	width: 100%;
+}
+
+table.oracledb th {
+	font-size: 12px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	color: #000;
+}
+
+table.oracledb tr.even {
+	background: #CCCCCC;
+}
+table.oracledb tr.odd {
+	background: #F0F0F0
+}
+</style>
+
 <img class="introicon" src="{{static_url}}images/icons/datasource.png"/>
 <div class="info">
 	<strong>{% trans 'Instance Name' %}</strong>: {{instance.instance_name}} <br/>
@@ -6,7 +38,7 @@
 	<strong>{% trans 'Run at startup' %}</strong>: {{instance.run_at_startup}} <br/>
 	<br/>
 	<strong>{% trans 'Information' %}</strong>
-	<table class="server-details">
+	<table id="oracledb" class="oracledb">
 		<thead>
 			<tr>
 				<th>{% trans 'Username' %}</th>
