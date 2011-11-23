@@ -27,7 +27,10 @@ def extract_appli_info(hostname, environment):
                 version = ""
                     
                 app = {"type":"JBoss",
-                       "name":appli, 
+                       "name":appli['name'],
+                       "exploded": appli['exploded'],
+                       "size": appli['size'],
+                       "time": appli['time'], 
                        "version":version,
                        "env":environment,
                        "servers":[{"server":hostname, "instance":instance["name"]}],
@@ -41,12 +44,15 @@ def extract_appli_details(hostname, environment, appname):
     if server_info: 
         for instance in server_info["instances"]:
             for appli in instance['applilist']:
-                if appli != appname:
+                if appli['name'] != appname:
                     continue
                 version = ""
                
                 app = {"type":"JBoss",
-                       "name":appli, 
+                       "name":appli['name'], 
+                       "exploded": appli['exploded'],
+                       "size": appli['size'],
+                       "time": appli['time'], 
                        "version":version,
                        "env":environment,
                        "server": hostname, 
