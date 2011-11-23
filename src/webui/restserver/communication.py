@@ -1,23 +1,19 @@
 import httplib2
 from django.conf import settings
 import logging
+from celery.execute import send_task
 
 logger = logging.getLogger(__name__)
 
 #TODO: Refactor using httplib address parser
-def callRestServer(user, filters, agent, action, args=None):
+def callRestServer(user, filters, agent, action, args=None, wait_response=True):
     logger.info("%s is calling agent %s action %s on %s" % (user, agent, action, filters))
-    http = httplib2.Http(timeout=20)
-    url = settings.RUBY_REST_BASE_URL
-    url += filters + "/"
-    url += agent + "/"
-    url += action + "/"
-    if args:
-        url += args
-        logger.debug('Calling RestServer on: ' + url)
-    response, content = http.request(url, "GET")
-    logger.debug('Response: ' + str(response))
-    logger.debug('Content: ' + str(content))
+    result = send_task("webui.restserver.tasks.httpcall", [filters, agent, action, args])
+    if wait_response:
+        response, content = result.get()
+    else:
+        logger.debug("Returning task id. Result should be checked polling task")
+        return result, ''
     return response, content
 
 def verifyRestServer():

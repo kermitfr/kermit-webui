@@ -155,6 +155,7 @@ INSTALLED_APPS = (
     "djcelery",
     "djkombu",
     'webui.platforms',
+    'webui.restserver',
     'webui.django_cron',
     'webui.widgets',
     'webui.defaultop',
