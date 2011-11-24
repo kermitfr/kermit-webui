@@ -103,6 +103,41 @@ function getDeployForm(base_url, platform_name, deploy_form_name, operation, fil
 	});
 }
 
+function getForm(base_url, platform_name, form_name, operation, filters) {
+	url = base_url + '/platform/' + platform_name + '/get_form/' + form_name + '/' + operation + '/' + filters + '/';
+	$.ajax({
+		// The link we are accessing.
+		url : url,
+		// The type of request.
+		type : "get",
+		// The type of data that is getting returned.
+		dataType : "html",
+		error : function() {
+			//TODO: Show error message
+			//$('#loading').hide();
+			alert('Error communicating with server');
+		},
+		beforeSend : function() {
+			//$('#loading').show();
+		},
+		complete : function() {
+			//$('#loading').hide();
+		},
+		success : function(data) {
+			$("#" + form_name).html(data);
+			$("#" + form_name).dialog({
+				modal : true,
+				title : operation + ' execution...',
+				minHeight : 200,
+				minWidth : 500
+			});
+			$("#" + form_name).show();
+
+		}
+	});
+}
+
+
 function getSqlExecutionForm(base_url, platform_name, deploy_form_name, operation, filters) {
 	url = base_url + '/platform/' + platform_name + '/get_execute_form/' + deploy_form_name + '/' + operation + '/' + filters + '/';
 	$.ajax({

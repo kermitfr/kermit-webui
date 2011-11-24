@@ -10,7 +10,8 @@ from guardian.decorators import permission_required
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from webui.platforms.oc4j.utils import extract_instances_name, get_apps_list
 from django.utils import simplejson as json
-from webui.platforms.oc4j.forms import DeployForm, LogForm
+from webui.platforms.oc4j.forms import DeployForm, LogForm, InstanceForm,\
+    PoolForm
 from webui.restserver.communication import callRestServer
 
 logger = logging.getLogger(__name__)
@@ -127,6 +128,15 @@ def get_instance_list(request, filters):
 def get_deploy_form(request, dialog_name, action, filters):
     logger.debug('Rendering form')         
     return render_to_response('platforms/oc4j/deployform.html', {'action':action, 'filters':filters, 'form':DeployForm([]), 'dialog_name': dialog_name, 'base_url':settings.BASE_URL}, context_instance=RequestContext(request))
+
+@login_required()
+@permission_required('agent.call_mcollective', return_403=True)
+def get_form(request, dialog_name, action, filters):
+    logger.debug("Rendering %s form" % action)   
+    if action == 'createinstance':   
+        return render_to_response('platforms/oc4j/instanceform.html', {'action':action, 'filters':filters, 'form':InstanceForm([]), 'dialog_name': dialog_name, 'base_url':settings.BASE_URL}, context_instance=RequestContext(request))
+    elif action == 'addpool':
+        return render_to_response('platforms/oc4j/poolform.html', {'action':action, 'filters':filters, 'form':PoolForm([]), 'dialog_name': dialog_name, 'base_url':settings.BASE_URL}, context_instance=RequestContext(request))
 
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)
@@ -247,3 +257,115 @@ def get_log_file(request, file_name):
     logger.debug('Get Log file %s' % file_name)         
     log_file_content = read_file_log(file_name)
     return HttpResponse(json.dumps({"logfilecontent":log_file_content}, ensure_ascii=False), mimetype='application/javascript')
+
+@login_required()
+@permission_required('agent.call_mcollective', return_403=True)
+def create_instance(request, filters, dialog_name, xhr=None):
+    if request.method == "POST":
+        logger.debug("Recreating form")
+        form = InstanceForm(request.POST)
+
+        #Check if the <xhr> var had something passed to it.
+        if xhr == "xhr":
+            #TODO: Try to use dynamic form validation
+            clean = form.is_valid()
+            rdict = {'bad':'false', 'filters':filters }
+            try:
+                instancename = request.POST['instancename']
+                groupname = request.POST['groupname']
+                isflow = request.POST['isflow']
+            except:
+                instancename=None
+                groupname=None
+            if instancename and groupname:
+                logger.debug("Parameters check: OK.")
+                logger.debug("Calling MCollective to create instance %s on %s filtered server" % (instancename, filters))
+                response, content = callRestServer(request.user, filters, 'a7xoas', 'createinstace', 'instancename=%s;groupname=%s;isflow=%s' %(instancename, groupname, isflow))
+                if response.status == 200:
+                    json_content = json.loads(content)
+                    rdict.update({"result":json_content[0]["statusmsg"]})
+                else:
+                    rdict.update({"result": "Error communicating with server"})
+                
+                rdict.update({'dialog_name':dialog_name})
+                # And send it off.
+            else:
+                rdict.update({'bad':'true'})
+                d = {}
+                # This was painful, but I can't find a better way to extract the error messages:
+                for e in form.errors.iteritems():
+                    d.update({e[0]:unicode(e[1])}) # e[0] is the id, unicode(e[1]) is the error HTML.
+                # Bung all that into the dict
+                rdict.update({'errs': d })
+                # Make a json whatsit to send back.
+                
+            return HttpResponse(json.dumps(rdict, ensure_ascii=False), mimetype='application/javascript')
+        # It's a normal submit - non ajax.
+        else:
+            if form.is_valid():
+                # We don't accept non-ajax requests for the moment
+                return HttpResponseRedirect("/")
+    else:
+        # It's not post so make a new form
+        logger.warn("Cannot access this page using GET")
+        raise Http404
+    
+@login_required()
+@permission_required('agent.call_mcollective', return_403=True)
+def add_pool(request, filters, dialog_name, xhr=None):
+    if request.method == "POST":
+        logger.debug("Recreating form")
+        form = PoolForm(request.POST)
+
+        #Check if the <xhr> var had something passed to it.
+        if xhr == "xhr":
+            #TODO: Try to use dynamic form validation
+            clean = form.is_valid()
+            rdict = {'bad':'false', 'filters':filters }
+            try:
+                instancename = request.POST['instancename']
+                poolname = request.POST['poolname']
+                username = request.POST['username']
+                password = request.POST['password']
+                database = request.POST['database']
+                dbinstance = request.POST['dbinstance']
+            except:
+                instancename=None
+                poolname=None
+                username=None
+                password=None
+                database=None
+                dbinstance=None
+                
+            if instancename and poolname and username and password and database and dbinstance:
+                logger.debug("Parameters check: OK.")
+                logger.debug("Calling MCollective to create instance %s on %s filtered server" % (instancename, filters))
+                response, content = callRestServer(request.user, filters, 'a7xoas', 'add_pool', 'oc4j=%s;poolname=%s;user=%s;password=%s;database=%s;instance=%s' %(instancename, poolname, username, password, database, dbinstance))
+                if response.status == 200:
+                    json_content = json.loads(content)
+                    rdict.update({"result":json_content[0]["statusmsg"]})
+                else:
+                    rdict.update({"result": "Error communicating with server"})
+                
+                rdict.update({'dialog_name':dialog_name})
+                # And send it off.
+            else:
+                rdict.update({'bad':'true'})
+                d = {}
+                # This was painful, but I can't find a better way to extract the error messages:
+                for e in form.errors.iteritems():
+                    d.update({e[0]:unicode(e[1])}) # e[0] is the id, unicode(e[1]) is the error HTML.
+                # Bung all that into the dict
+                rdict.update({'errs': d })
+                # Make a json whatsit to send back.
+                
+            return HttpResponse(json.dumps(rdict, ensure_ascii=False), mimetype='application/javascript')
+        # It's a normal submit - non ajax.
+        else:
+            if form.is_valid():
+                # We don't accept non-ajax requests for the moment
+                return HttpResponseRedirect("/")
+    else:
+        # It's not post so make a new form
+        logger.warn("Cannot access this page using GET")
+        raise Http404

@@ -7,13 +7,58 @@ from webui.abstracts import ContextOperation, ServerOperation
 from webui import settings
 from webui.core import kermit_modules
 
-class OC4JDeployContextMenu(ContextOperation):
+class OC4JReDeployContextMenu(ContextOperation):
     
     def get_operations(self):
         context_menu_ops = []
         context_menu_ops.append(
             {"name":"redeploy_OC4J",
              "description":"Redeploy Application",
+             "javascript":"getDeployForm('%s', 'oc4j', 'deploy-dialog', 'redeploy', '$$filterlist$$')" % settings.BASE_URL,
+             "server_operation":"",
+             })
+        return context_menu_ops
+    
+    def get_type(self):
+        return 'OC4J'
+    
+class OC4JCreateInstanceContextMenu(ContextOperation):
+    
+    def get_operations(self):
+        context_menu_ops = []
+        context_menu_ops.append(
+            {"name":"create_instace_oc4j",
+             "description":"Create Instance",
+             "javascript":"getForm('%s', 'oc4j', 'deploy-dialog', 'createinstance', '$$filterlist$$')" % settings.BASE_URL,
+             "server_operation":"",
+             })
+        return context_menu_ops
+    
+    def get_type(self):
+        return 'OC4J'
+    
+class OC4JAddPoolContextMenu(ContextOperation):
+    
+    def get_operations(self):
+        context_menu_ops = []
+        context_menu_ops.append(
+            {"name":"add_pool_oc4j",
+             "description":"Add Pool",
+             "javascript":"getForm('%s', 'oc4j', 'deploy-dialog', 'addpool', '$$filterlist$$')" % settings.BASE_URL,
+             "server_operation":"",
+             })
+        return context_menu_ops
+    
+    def get_type(self):
+        return 'OC4J'
+    
+class OC4JDeployContextMenu(ContextOperation):
+    
+    def get_operations(self):
+        context_menu_ops = []
+        context_menu_ops.append(
+            {"name":"deploy_OC4J",
+             "description":"Deploy Application",
              "javascript":"getDeployForm('%s', 'oc4j', 'deploy-dialog', 'deploy', '$$filterlist$$')" % settings.BASE_URL,
              "server_operation":"",
              })
@@ -110,7 +155,10 @@ class StopOC4JInstance(ServerOperation):
         return None
 
 kermit_modules.register(OC4JDeployContextMenu)
+kermit_modules.register(OC4JReDeployContextMenu)
+kermit_modules.register(OC4JCreateInstanceContextMenu)
 kermit_modules.register(OC4JGetAppLogContextMenu)
+kermit_modules.register(OC4JAddPoolContextMenu)
 
 kermit_modules.register(StartOC4JInstance)
 kermit_modules.register(StopOC4JInstance)
