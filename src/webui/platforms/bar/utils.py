@@ -4,6 +4,11 @@ Created on Sep 22, 2011
 @author: mmornati
 '''
 from webui.platforms.bar.communication import read_server_info
+import logging
+from webui.restserver.communication import callRestServer
+from django.utils import simplejson as json
+
+logger = logging.getLogger(__name__)
 
 
 def extract_instances_name(hostname):
@@ -25,7 +30,7 @@ def extract_appli_info(hostname, environment):
                     version = bar["version"]
                     
                 app = {"type":"BAR",
-                       "name":bar["name"], 
+                       "name":bar["name"],
                        "version":version,
                        "env":environment,
                        "servers":[{"server":hostname, "instance":console["consolename"]}],
@@ -46,10 +51,10 @@ def extract_appli_details(hostname, environment, barname):
                     version = bar["version"]
                     
                 app = {"type":"OC4J",
-                       "name":bar["name"], 
+                       "name":bar["name"],
                        "version":version,
                        "env":environment,
-                       "server": hostname, 
+                       "server": hostname,
                        "resources":bar["resources"],
                        "instance": console["consolename"]}
                 applications.append(app)
@@ -60,3 +65,23 @@ def check_contains(applications, appli):
         if app["type"] == appli["type"] and app["name"] == appli["name"] and app["version"] == appli["version"] and app["env"] == appli["env"]:
             return app
     return None
+
+def get_bar_list(user, filters):
+    logger.debug("Calling app_list with filters %s and type %s" % (filters))
+    try: 
+        response, content = callRestServer(user, filters, "a7xbar", "applist", "apptype=%s" % 'jar')
+        if response.status == 200:
+            jsonObj = json.loads(content)
+            if jsonObj:
+                #Looking for "intersections"
+                app_list = None
+                for server_response in jsonObj:
+                    if not app_list:
+                        app_list = server_response['data']['applist']
+                    else:
+                        app_list = set(app_list).intersection(server_response['data']['applist'])
+                return json.dumps({"errors":"", "applist":app_list})
+            else:
+                return json.dumps({"errors":"Cannot retrieve apps list"})
+    except Exception, err:  
+        logger.error('ERROR: ' + str(err))
