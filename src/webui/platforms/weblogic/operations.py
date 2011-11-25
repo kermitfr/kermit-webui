@@ -37,6 +37,21 @@ class WeblogicLogContextMenu(ContextOperation):
     def get_type(self):
         return 'Weblogic'
     
+class WeblogicCreateInstanceContextMenu(ContextOperation):
+    
+    def get_operations(self):
+        context_menu_ops = []
+        context_menu_ops.append(
+            {"name":"create_instace_weblo",
+             "description":"Create Instance",
+             "javascript":"getForm('%s', 'weblogic', 'deploy-dialog', 'createinstance', '$$filterlist$$')" % settings.BASE_URL,
+             "server_operation":"",
+             })
+        return context_menu_ops
+    
+    def get_type(self):
+        return 'Weblogic'
+    
     
 class StartWeblogicInstance(ServerOperation):
     

@@ -6,6 +6,8 @@ Created on Nov 14, 2011
 import logging
 from webui.restserver.communication import callRestServer
 from django.utils import simplejson as json
+from webui.platforms.oracledb.communication import read_server_info
+from webui.serverstatus.models import Server
 
 logger = logging.getLogger(__name__)
 
@@ -29,4 +31,43 @@ def sql_list(user, filters):
                 return json.dumps({"errors":"Cannot retrieve sqls list"})
     except Exception, err:  
         logger.error('ERROR: ' + str(err))
+        
+        
+def extract_instances_name(hostname):
+    instances = []
+    server_info = read_server_info(hostname)
+    if server_info:
+        for instance in server_info['instances']:
+            instances.append(instance['instance_name'])
+        
+    return instances
+
+def extract_schema(hostname, instancename):
+    schemas = []
+    server_info = read_server_info(hostname)
+    for instance in server_info['instances']:
+        if instancename == instance['instance_name']:
+            found_instance = instance
+            break
+    if found_instance:
+        for schema in found_instance['data']:
+            schemas.append(schema['user_name'])
+    else:
+        logger.info("Cannot find instance %s" % instancename)
+    return schemas
+
+
+def extract_compatible_servers(schema_name):
+    servers = Server.objects.filter(deleted=False)
+    compatible_servers = []
+    for server in servers:
+        server_info = read_server_info(server.hostname)
+        if server_info:
+            for instance in server_info['instances']:
+                for data in instance['data']:
+                    if data['user_name'] == schema_name:
+                        compatible_servers.append({"server": server.hostname, "instance": instance['instance_name']})
+                        break
+    return compatible_servers
+    
         

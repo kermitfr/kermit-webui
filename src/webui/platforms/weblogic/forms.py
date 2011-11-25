@@ -14,3 +14,6 @@ class DeployForm(forms.Form):
     
 class LogForm(forms.Form):
     instancename = forms.ChoiceField(label=u"Instance Name")
+    
+class InstanceForm(forms.Form):
+    instancename = forms.CharField(label=u"Instance Name")

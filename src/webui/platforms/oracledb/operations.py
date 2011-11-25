@@ -23,4 +23,21 @@ class OracleDBxecuteContextMenu(ContextOperation):
         return 'OracleDB'
     
     
+class OracleCloneDatabaseContextMenu(ContextOperation):
+    
+    def get_operations(self):
+        context_menu_ops = []
+        context_menu_ops.append(
+            {"name":"clone_database",
+             "description":"Clone Database",
+             "javascript":"getForm('%s', 'oracledb', 'deploy-dialog', 'clonedatabase', '$$filterlist$$')" % settings.BASE_URL,
+             "server_operation":"",
+             })
+        return context_menu_ops
+    
+    def get_type(self):
+        return 'OracleDB'
+    
+    
 kermit_modules.register(OracleDBxecuteContextMenu)
+kermit_modules.register(OracleCloneDatabaseContextMenu)

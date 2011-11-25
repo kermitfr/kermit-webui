@@ -22,4 +22,7 @@ urlpatterns = patterns('webui.platforms.weblogic.views',
   url(r'^log/(?P<filters>[\w|\W]+)/(?P<dialog_name>[\w|\W]+)/(?P<xhr>.*)', 'get_log', name = "weblogic_get_log"),
   url(r'^get_log_file/(?P<file_name>[\w|\W]+)/$', 'get_log_file', name = "weblogic_get_log_file"),
   
+  url(r'^get_form/(?P<dialog_name>[\w|\W]+)/(?P<action>[\w|\W]+)/(?P<filters>[\w|\W]+)/$', 'get_form', name = "weblogic_get_form"),
+  url(r'^create_instance/(?P<filters>[\w|\W]+)/(?P<dialog_name>[\w|\W]+)/(?P<xhr>.*)', 'create_instance', name = "weblogic_create_instance"),
+  
 )

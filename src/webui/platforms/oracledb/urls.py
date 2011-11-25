@@ -14,5 +14,12 @@ urlpatterns = patterns('webui.platforms.oracledb.views',
   url(r'^get_execute_form/(?P<dialog_name>[\w|\W]+)/(?P<action>[\w|\W]+)/(?P<filters>[\w|\W]+)/$', 'get_execute_form', name = "oracledb_get_sql_execute_form"),
   
   url(r'^get_log_file/(?P<file_name>[\w|\W]+)/$', 'get_log_file', name = "oracledb_get_log_file"),
+  url(r'^get_form/(?P<dialog_name>[\w|\W]+)/(?P<action>[\w|\W]+)/(?P<filters>[\w|\W]+)/$', 'get_form', name = "oracledb_get_form"),
+  
+  url(r'^targetlist/(?P<filters>[\w|\W]+)/(?P<schema>[\w|\W]+)/$', 'get_target_list', name = "oracledb_target_list"),
+  url(r'^instancelist/(?P<filters>[\w|\W]+)/$', 'get_instance_list', name = "oracledb_instance_list"),
+  url(r'^schemalist/(?P<filters>[\w|\W]+)/(?P<instancename>[\w|\W]+)/$', 'get_schema_list', name = "oracledb_schema_list"),
+  
+  url(r'^clonedb/(?P<filters>[\w|\W]+)/(?P<dialog_name>[\w|\W]+)/(?P<xhr>.*)', 'clone_db', name = "oracledb_clone"),
   
 )
