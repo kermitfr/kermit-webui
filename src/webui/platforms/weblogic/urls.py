@@ -15,7 +15,7 @@ urlpatterns = patterns('webui.platforms.weblogic.views',
   
   url(r'^applist/(?P<filters>[\w|\W]+)/(?P<type>[\w|\W]+)/$', 'get_app_list', name = "weblogic_app_list"),
   url(r'^instancelist/(?P<filters>[\w|\W]+)/$', 'get_instance_list', name = "weblogic_instance_list"),
-  url(r'^redeploy/(?P<filters>[\w|\W]+)/(?P<dialog_name>[\w|\W]+)/(?P<xhr>.*)', 'redeploy_app', name = "weblogic_redeploy_app"),
+  url(r'^deploy/(?P<filters>[\w|\W]+)/(?P<dialog_name>[\w|\W]+)/(?P<xhr>.*)', 'deploy_app', name = "weblogic_deploy_app"),
   url(r'^get_deploy_form/(?P<dialog_name>[\w|\W]+)/(?P<action>[\w|\W]+)/(?P<filters>[\w|\W]+)/$', 'get_deploy_form', name = "weblogic_get_deploy_form"),
  
   url(r'^get_log_form/(?P<dialog_name>[\w|\W]+)/(?P<action>[\w|\W]+)/(?P<filters>[\w|\W]+)/$', 'get_log_form', name = "weblogic_get_log_form"),

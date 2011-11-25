@@ -11,7 +11,7 @@
 		$('.errorlist').remove();
 		// prepare Options Object
 		var options = {
-			url : '{% url oc4j_redeploy_app filters "deploy-dialog" "xhr" %}', // Here we pass the xhr flag
+			url : '{% url oc4j_deploy_app filters "deploy-dialog" "xhr" %}', // Here we pass the xhr flag
 			dataType : 'json',
 			success : parseResponse,
 			error: parseError,
@@ -145,10 +145,11 @@
 <div id="emsg">
 	&nbsp;
 </div>
-<form action="{% url oc4j_redeploy_app filters 'deploy-dialog' None%}" method="post" id="tf">
+<form action="{% url oc4j_deploy_app filters 'deploy-dialog' None%}" method="post" id="tf">
 	{% csrf_token %}
 		{{ form.as_p }}
 		<br/>
+		<input type="hidden" name="action" id="id_action" value="{{action}}"/>
 		<input class="input" type="submit" value="Execute" id="bt"/>
 	</fieldset>
 </form>

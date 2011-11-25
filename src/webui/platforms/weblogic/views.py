@@ -105,7 +105,7 @@ def get_deploy_form(request, dialog_name, action, filters):
 
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)
-def redeploy_app(request, filters, dialog_name, xhr=None):
+def deploy_app(request, filters, dialog_name, xhr=None):
     if request.method == "POST":
         logger.debug("Recreating form")
         form = DeployForm(request.POST)
@@ -120,13 +120,14 @@ def redeploy_app(request, filters, dialog_name, xhr=None):
                 app_type = request.POST['types']
                 instancename = request.POST['instancename']
                 appname = request.POST['appname']
+                action = request.POST['action']
             except:
                 appname=None
                 app_type=None
-            if appname and app_type:
+            if appname and app_type and action:
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to deploy %s application on %s filtered server" % (appfile, filters))
-                response, content = callRestServer(request.user, filters, 'a7xows', 'redeploy', 'appname=%s;instancename=%s;appfile=%s' %(appname, instancename, appfile))
+                response, content = callRestServer(request.user, filters, 'a7xows', action, 'appname=%s;instancename=%s;appfile=%s' %(appname, instancename, appfile))
                 if response.status == 200:
                     json_content = json.loads(content)
                     rdict.update({"result":json_content[0]["statusmsg"]})

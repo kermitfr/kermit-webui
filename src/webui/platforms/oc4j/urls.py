@@ -14,7 +14,7 @@ urlpatterns = patterns('webui.platforms.oc4j.views',
   
   url(r'^applist/(?P<filters>[\w|\W]+)/(?P<type>[\w|\W]+)/$', 'get_app_list', name = "oc4j_app_list"),
   url(r'^instancelist/(?P<filters>[\w|\W]+)/$', 'get_instance_list', name = "oc4j_instance_list"),
-  url(r'^redeploy/(?P<filters>[\w|\W]+)/(?P<dialog_name>[\w|\W]+)/(?P<xhr>.*)', 'redeploy_app', name = "oc4j_redeploy_app"),
+  url(r'^deploy/(?P<filters>[\w|\W]+)/(?P<dialog_name>[\w|\W]+)/(?P<xhr>.*)', 'deploy_app', name = "oc4j_deploy_app"),
   url(r'^get_deploy_form/(?P<dialog_name>[\w|\W]+)/(?P<action>[\w|\W]+)/(?P<filters>[\w|\W]+)/$', 'get_deploy_form', name = "oc4j_get_deploy_form"),
   
   url(r'^get_form/(?P<dialog_name>[\w|\W]+)/(?P<action>[\w|\W]+)/(?P<filters>[\w|\W]+)/$', 'get_form', name = "oc4j_get_form"),
