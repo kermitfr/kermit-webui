@@ -59,7 +59,7 @@ class Actions(object):
       
     def update_user_groups(self, user):
         logger.info("Calling Refresh User Group")
-        if 'a7x_wsgroup' in settings.INSTALLED_APPS:
+        if 'a7x_wsgroups' in settings.INSTALLED_APPS:
             try: 
                 result = send_task("a7x_wsgroups.tasks.update_groups", [])    
                 json_data = json.dumps({'UUID': result.task_id, 'taskname':"a7x_wsgroups.tasks.update_groups"})

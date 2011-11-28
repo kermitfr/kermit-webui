@@ -170,6 +170,7 @@ INSTALLED_APPS = (
     'webui.acls_manager',
     'webui.alerting',
     'webui.chain',
+    #'a7x_wsgroups',
 )
 
 #Configuring fixtures by-exception
