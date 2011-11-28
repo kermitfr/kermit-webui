@@ -84,6 +84,9 @@
 			if (data.UUID) {
 				checkStatus();
 			} else {
+				if (data.error) {
+					alert(data.error);
+				}
 				$('#modalprogress').dialog('close');	
 			}
 		});
@@ -130,6 +133,9 @@
 			</li>
 			<li>
 				<a href="#" onclick="executeAction('Update Agents Info', '{% url action_executer "update_agents" "ASYNC"%}');">{% trans 'Update Agents Info' %}</a>
+			</li>
+			<li>
+				<a href="#" onclick="executeAction('Update User Groups', '{% url action_executer "update_user_groups" "ASYNC"%}');">{% trans 'Update User Groups' %}</a>
 			</li>
 		</ul>
 		</div>

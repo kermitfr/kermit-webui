@@ -9,6 +9,7 @@ from celery.execute import send_task
 from webui.platforms.platforms import platforms
 from webui.platforms.abstracts import UpdatePlatform
 from webui.widgets.loading import registry
+from webui import settings
 
 logger = logging.getLogger(__name__)
 
@@ -55,5 +56,18 @@ class Actions(object):
             return json_data
         except Exception, err:
             logger.error('ERROR: ' + str(err))
-       
+      
+    def update_user_groups(self, user):
+        logger.info("Calling Refresh User Group")
+        if 'a7x_wsgroup' in settings.INSTALLED_APPS:
+            try: 
+                result = send_task("a7x_wsgroups.tasks.update_groups", [])    
+                json_data = json.dumps({'UUID': result.task_id, 'taskname':"a7x_wsgroups.tasks.update_groups"})
+                return json_data
+            except Exception, err:
+                logger.error('ERROR: ' + str(err))
+        else:
+            logger.warn('Application Groups not installed')
+            return json.dumps({'error':"Application Groups not installed"})
+             
     
