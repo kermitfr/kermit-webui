@@ -6,7 +6,7 @@
 
 {% block breadcrumbs %}
 <div id="breadcrumbs">
-	<a href="{{base_url}}/">{% trans 'Home' %}</a>{% if title %} &rsaquo; {{ title }}{% endif %} <a href="{{base_url}}/server/details/{{hostname}}/">{% trans 'Server Details' %} - {{hostname}}</a>
+	<a href="{{base_url}}/">{% trans 'Home' %}</a>{% if title %} &rsaquo; {{ title }}{% endif %} <a href="{{base_url}}/chain/show/">{% trans 'Scheduler' %}</a>
 </div>
 {% endblock %}
 {% block content %}
@@ -244,8 +244,15 @@
 					// re-enable the submit button, coz user has to fix stuff.
 		//				$('#bt').attr("disabled", "");
 				} else {
-					alert(data.result);				
-					$("#" + data.dialog_name).dialog('close');
+					i = 1;
+					result = "";
+					while (i <= 5) { 
+						if (eval('data.result'+i)!=undefined) {
+							result = result + '\n' + eval('data.result'+i);
+						}
+						i++;
+					}
+					alert(result);				
 				}
 			} else {
 				//DON'T PANIC :D
@@ -292,7 +299,7 @@
 <div id="template" style="visibility: hidden;">
 	<br/>
 	<fieldset style="border: 1px solid black; padding: 10px;">
-		<legend>Configure operation:</legend>
+		<legend>Configure operation</legend>
 		<table>
 			<tr>
 				<td>

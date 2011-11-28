@@ -70,9 +70,9 @@ def execute_chain(request, xhr=None):
                         response, content = callRestServer(request.user, filters, 'a7xoas', 'deploy', 'appname=%s;instancename=%s;appfile=%s' %(appname, instancename, appfile))
                         if response.status == 200:
                             json_content = json.loads(content)
-                            rdict.update({"result":json_content[0]["statusmsg"]})
+                            rdict.update({"result%s"%i:json_content[0]["statusmsg"]})
                         else:
-                            rdict.update({"result": "Error communicating with server"})
+                            rdict.update({"result%s"%i: "Error communicating with server"})
                 elif request.POST["operation%s"%i] == 'deploy_bar':
                     try:
                         barapp = request.POST['barApp%s'%i]
@@ -86,9 +86,9 @@ def execute_chain(request, xhr=None):
                         response, content = callRestServer(request.user, filters, 'a7xbar', 'deploy', 'filename=%s;bcname=%s' %(barapp, consolename))
                         if response.status == 200:
                             json_content = json.loads(content)
-                            rdict.update({"result":json_content[0]["statusmsg"]})
+                            rdict.update({"result%s"%i:json_content[0]["statusmsg"]})
                         else:
-                            rdict.update({"result": "Error communicating with server"})
+                            rdict.update({"result%s"%i: "Error communicating with server"})
                 elif request.POST["operation%s"%i] == 'restart_instance':
                     try:
                         instancename = request.POST['instancename%s'%i]
@@ -101,11 +101,12 @@ def execute_chain(request, xhr=None):
                         response, content = callRestServer(request.user, filters, 'a7xaos', 'startinstance', 'instancename=%s' %(instancename))
                         if response.status == 200:
                             json_content = json.loads(content)
-                            rdict.update({"result":json_content[0]["statusmsg"]})
+                            rdict.update({"result%s"%i:json_content[0]["statusmsg"]})
                         else:
-                            rdict.update({"result": "Error communicating with server"})
+                            rdict.update({"result%s"%i: "Error communicating with server"})
                         
                 i = i + 1
+        return HttpResponse(json.dumps(rdict, ensure_ascii=False), mimetype='application/javascript')
     else:
         # It's not post so make a new form
         logger.warn("Cannot access this page using GET")
