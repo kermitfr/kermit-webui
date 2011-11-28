@@ -43,8 +43,8 @@
 					if (data.errors) {
 						alert(data.errors);
 					} else {
-						for(i in data.instances) {
-							content = "<option value='" + data.instances[i] + "'>" + data.instances[i] + "</option>";
+						for(i in data.applist) {
+							content = "<option value='" + data.applist[i] + "'>" + data.applist[i] + "</option>";
 							$(content).appendTo("#id_barname");
 						}
 					}

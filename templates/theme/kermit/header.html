@@ -31,6 +31,9 @@
 			<a href="{{base_url}}/">Dashboard</a>
 		</li>
 		{% if user.is_staff %}
+		<li>
+			<a href="{{base_url}}/chain/show/">Scheduler</a>
+		</li>
 		<li class="user-options-container collapse closed">
 			<a href="javascript://" class="user-options-handler collapse-handler">{% trans 'Export'%}</a>
 			<ul class="user-options">

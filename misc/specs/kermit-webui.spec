@@ -67,17 +67,18 @@ python webui/manage.py syncdb --noinput
 %{__cp} -R README $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}
 #%{__cp} -R ./misc/sql $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}
 #%{__ln_s} -f ../../usr/share/%{name}/settings.py $RPM_BUILD_ROOT/etc/%{name}/
-install -o root -g root -m 755 ./misc/init/init.d/celeryd $RPM_BUILD_ROOT/etc/rc.d/init.d/celeryd
-install -o root -g root -m 755 ./misc/init/init.d/celeryev $RPM_BUILD_ROOT/etc/rc.d/init.d/celeryev
-install -o root -g root -m 755 ./misc/init/init.d/celerybeat $RPM_BUILD_ROOT/etc/rc.d/init.d/celerybeat
+install -m 755 ./misc/init/init.d/celeryd $RPM_BUILD_ROOT/etc/rc.d/init.d/celeryd
+install -m 755 ./misc/init/init.d/celeryev $RPM_BUILD_ROOT/etc/rc.d/init.d/celeryev
+install -m 755 ./misc/init/init.d/celerybeat $RPM_BUILD_ROOT/etc/rc.d/init.d/celerybeat
 %{__cp} ./misc/init/sysconfig/celeryd $RPM_BUILD_ROOT/etc/sysconfig/celeryd
 %{__cp} ./misc/init/sysconfig/celeryev $RPM_BUILD_ROOT/etc/sysconfig/celeryev
 %{__cp} ./misc/init/sysconfig/celerybeat $RPM_BUILD_ROOT/etc/sysconfig/celerybeat
 %if 0%{?fedora}
 #do nothing
+echo "Fedora: Do nothing..."
 %else
 %{__cp} ./misc/fixes/manage.py $RPM_BUILD_ROOT/usr/share/%{name}/webui/manage.py
-
+%endif
 
 
 %clean
@@ -101,7 +102,9 @@ install -o root -g root -m 755 ./misc/init/init.d/celerybeat $RPM_BUILD_ROOT/etc
 %attr(0755,apache,apache) %dir /var/log/celery
 %attr(0755,apache,apache) %dir /var/run/celery
 %attr(0644,apache,apache) %dir /etc/kermit/kermit-webui.cfg
-
+%attr(0755, root, root) /etc/rc.d/init.d/celeryd
+%attr(0755, root, root) /etc/rc.d/init.d/celeryev
+%attr(0755, root, root) /etc/rc.d/init.d/celerybeat
 %pre
 
 %post

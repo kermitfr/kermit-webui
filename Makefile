@@ -28,20 +28,8 @@ build: clean
 	echo $(TOPDIR)
 	echo "- Create Changelog file"
 	git shortlog > changelog.txt
-	echo "- Create new $(TMPDIR)/$(BUILDDIR)"
-	mkdir -p $(TMPDIR)/$(BUILDDIR)
-	mkdir -p $(TMPDIR)/$(BUILDDIR)/$(PROGRAMNAME)
-	echo "- Copy existing Kermit sources"
-	rsync -raC --exclude .git . $(TMPDIR)/$(BUILDDIR)/$(PROGRAMNAME)
-	echo "- Remove useless files"
-	rm -Rf $(TMPDIR)/$(BUILDDIR)/$(PROGRAMNAME)/src/sqlite.db
-#	echo "- Rename $(PROGRAMNAME) in $(PROGRAMNAME)-$(RELEASE)"
-#	mv $(TMPDIR)/$(BUILDDIR)/$(PROGRAMNAME) $(TMPDIR)/$(BUILDDIR)/$(PROGRAMNAME)-$(RELEASE)
-	echo "- Compressing $(PROGRAMNAME) directory"
-	tar -czf $(PROGRAMNAME)-$(RELEASE).tar.gz -C $(TMPDIR)/$(BUILDDIR) $(PROGRAMNAME)/
-	echo "- Moving source package in dist dir"
 	mkdir -p ./dist
-	mv $(PROGRAMNAME)-$(RELEASE).tar.gz ./dist
+	git archive --format=tar --prefix=$(PROGRAMNAME)/ master | gzip > ./dist/$(PROGRAMNAME)-$(RELEASE).tar.gz
 
 clean:
 	-rm -rf dist/ 

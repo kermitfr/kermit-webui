@@ -1,0 +1,346 @@
+{% extends "theme/meta.html" %}
+{% load widgets %}
+{% load i18n%}
+
+{% block navbar %}{% endblock %}
+
+{% block breadcrumbs %}
+<div id="breadcrumbs">
+	<a href="{{base_url}}/">{% trans 'Home' %}</a>{% if title %} &rsaquo; {{ title }}{% endif %} <a href="{{base_url}}/server/details/{{hostname}}/">{% trans 'Server Details' %} - {{hostname}}</a>
+</div>
+{% endblock %}
+{% block content %}
+<script type="text/javascript">
+	$('html').ajaxSend(function(event, xhr, settings) {
+		if(!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+			// Only send the token to relative URLs i.e. locally.
+			xhr.setRequestHeader("X-CSRFToken", $("#csrfmiddlewaretoken").val());
+		}
+	});
+        $(document).ready(function() {
+			var options = {
+				url : '{% url chain_execute "xhr" %}', // Here we pass the xhr flag
+				dataType : 'json',
+				success : parseResponse,
+				error: parseError,
+				beforeSubmit : beforeForm
+			};
+			// bind form using ajaxForm
+			$('#chainForm').ajaxForm(options);
+	
+            $('#btnAdd').click(function() {
+                var num = $('.clonedOperation').length;
+                var newNum  = new Number(num + 1);
+ 
+                var newElem = $('#template').clone().attr('id', 'template' + newNum).attr("class", "clonedOperation").css({visibility: "visible"});
+ 
+                newElem.find('#operation').attr('id', 'operation' + newNum).attr('name', 'operation' + newNum);
+				newElem.find('#server').attr('id', 'server' + newNum).attr('name', 'server' + newNum);
+				newElem.find('#addServer').attr('id', 'addServer' + newNum);
+				newElem.find('#listServer').attr('id', 'listServer' + newNum).attr('name', 'listServer' + newNum);
+				newElem.find('#hiddenServerList').attr('id', 'hiddenServerList' + newNum).attr('name', 'hiddenServerList' + newNum);
+				newElem.find('#listServerContainer').attr('id', 'listServerContainer' + newNum).attr('name', 'listServerContainer' + newNum);
+				//Execute Script
+				newElem.find('#executeScript').attr('id', 'executeScript' + newNum);
+				newElem.find('#sqlScript').attr('id', 'sqlScript' + newNum).attr('name', 'sqlScript' + newNum);
+				newElem.find('#dbinstancename').attr('id', 'dbinstancename' + newNum).attr('name', 'dbinstancename' + newNum);
+				newElem.find('#refreshSql').attr('id', 'refreshSql' + newNum);
+				//DeployEar
+				newElem.find('#deployEar').attr('id', 'deployEar' + newNum);
+				newElem.find('#earApp').attr('id', 'earApp' + newNum).attr('name', 'earApp' + newNum);
+				newElem.find('#instancename').attr('id', 'instancename' + newNum).attr('name', 'instancename' + newNum);
+				newElem.find('#appname').attr('id', 'appname' + newNum).attr('name', 'appname' + newNum);
+				newElem.find('#refreshEar').attr('id', 'refreshEar' + newNum);
+				//DeployBar
+				newElem.find('#deployBar').attr('id', 'deployBar' + newNum);
+				newElem.find('#barApp').attr('id', 'barApp' + newNum).attr('name', 'barApp' + newNum);
+				newElem.find('#consoleName').attr('id', 'consoleName' + newNum).attr('name', 'consoleName' + newNum);
+				newElem.find('#refreshBar').attr('id', 'refreshBar' + newNum);
+				//Restart Instance
+				newElem.find('#restartInstance').attr('id', 'restartInstance' + newNum);
+				newElem.find('#instancename').attr('id', 'instancename' + newNum).attr('name', 'instancename' + newNum);
+				if (num == 0) {
+					$("#buttons").after(newElem);	
+				} else {
+                	$('#template' + num).after(newElem);
+                }
+				$('#btnDel').removeAttr('disabled');
+ 
+                if (newNum == 5) {
+                    $('#btnAdd').attr('disabled','disabled');
+				}
+				
+				$('#operation'+newNum).change(function() {
+					$('#server'+newNum).empty();
+					$('#server'+newNum).css({visibility: "visible"});
+					$('#listServer'+newNum).css({visibility: "visible"});
+					$('#listServerContainer'+newNum).css({visibility: "visible"});
+					$('#addServer'+newNum).css({visibility: "visible"});
+					$('#server'+newNum).flexbox('{% url chain_server_list %}');
+					if (this.value == 'script_ex') {
+						$('#executeScript'+newNum).css({visibility: "visible"});	
+						$('#deployBar'+newNum).remove();
+						$('#deployEar'+newNum).remove();
+						$('#restartInstance'+newNum).remove();	
+						$('#refreshSql'+newNum).click(function() {
+							$.ajax({
+								// The link we are accessing.
+								url : '{{base_url}}/chain/sql_list/' + $("#hiddenServerList"+newNum).val() + '/',
+								// The type of request.
+								type : "get",
+								// The type of data that is getting returned.
+								dataType : "json",
+								error : function() {
+									//TODO: Show error message
+									alert("Server communication error. Cannot download sql List");
+									$('#loading').hide();
+								},
+								beforeSend : function() {
+									$('#loading').show();
+								},
+								complete : function() {
+									$('#loading').hide();
+								},
+								success : function(data) {
+									$("#sqlScript"+newNum).empty();
+									if(data.errors) {
+										alert(data.errors);
+									} else {
+										for(i in data.sqllist) {
+											content = "<option value='" + data.sqllist[i] + "'>" + data.sqllist[i] + "</option>";
+											$(content).appendTo("#sqlScript"+newNum);
+										}
+									}
+								}
+							});	
+						});
+					} else if (this.value == 'deploy_bar') {
+						$('#executeScript'+newNum).remove();	
+						$('#deployBar'+newNum).css({visibility: "visible"});
+						$('#deployEar'+newNum).remove();
+						$('#restartInstance'+newNum).remove();
+						$('#refreshBar'+newNum).click(function() {
+							$.ajax({
+								// The link we are accessing.
+								url : '{{base_url}}/chain/bar_list/' + $("#hiddenServerList"+newNum).val() + '/',
+								// The type of request.
+								type : "get",
+								// The type of data that is getting returned.
+								dataType : "json",
+								error : function() {
+									//TODO: Show error message
+									alert("Server communication error. Cannot get instances list for selected server");
+									$('#loading').hide();
+								},
+								beforeSend : function() {
+									$('#loading').show();
+								},
+								complete : function() {
+									$('#loading').hide();
+								},
+								success : function(data) {
+									$("#barApp"+newNum).empty();
+									if (data.errors) {
+										alert(data.errors);
+									} else {
+										for(i in data.applist) {
+											content = "<option value='" + data.applist[i] + "'>" + data.applist[i] + "</option>";
+											$(content).appendTo("#barApp"+newNum);
+										}
+									}
+								}
+							});
+						});	
+					} else if (this.value == 'deploy_ear') {
+						$('#executeScript'+newNum).remove();	
+						$('#deployBar'+newNum).remove();
+						$('#deployEar'+newNum).css({visibility: "visible"});
+						$('#restartInstance'+newNum).remove();
+						$('#refreshEar'+newNum).click(function() {
+							$.ajax({
+								// The link we are accessing.
+								url : '{{base_url}}/chain/ear_list/' + $("#hiddenServerList"+newNum).val() + '/',
+								// The type of request.
+								type : "get",
+								// The type of data that is getting returned.
+								dataType : "json",
+								error : function() {
+									//TODO: Show error message
+									alert("Server communication error. Cannot download sql List");
+									$('#loading').hide();
+								},
+								beforeSend : function() {
+									$('#loading').show();
+								},
+								complete : function() {
+									$('#loading').hide();
+								},
+								success : function(data) {
+									$("#earApp"+newNum).empty();
+									if (data.errors) {
+										alert(data.errors);
+									} else {
+										for(i in data.applist) {
+											content = "<option value='" + data.applist[i] + "'>" + data.applist[i] + "</option>";
+											$(content).appendTo("#earApp"+newNum);
+										}
+									}
+								}
+							});	
+						});	
+					} else if (this.value == 'restart_instance') {
+						$('#executeScript'+newNum).remove();	
+						$('#deployBar'+newNum).remove();
+						$('#deployEar'+newNum).remove();
+						$('#restartInstance'+newNum).css({visibility: "visible"});	
+					}
+				});
+				
+				$('#addServer'+newNum).click(function() {
+					if ($('#server'+newNum).text()!='' && $('#server'+newNum).text()!=undefined) {
+						$('#listServer'+newNum).append($('#server'+newNum).text()+"<br/>");	
+						if ($("#hiddenServerList"+newNum).val()!='') {
+							$("#hiddenServerList"+newNum).val($("#hiddenServerList"+newNum).val() + ';');
+						}
+						$("#hiddenServerList"+newNum).val($("#hiddenServerList"+newNum).val() + $('#server'+newNum).text());
+					} else {
+						alert("You must select server to add...");
+					}
+				});
+			
+            });
+ 
+            $('#btnDel').click(function() {
+                var num = $('.clonedInput').length;
+                $('#input' + num).remove();
+                //$('#btnAdd').attr('disabled','');
+ 
+                if (num-1 == 1)
+                    $('#btnDel').attr('disabled','disabled');
+            });
+ 
+            $('#btnDel').attr('disabled','disabled');
+        });
+
+		function parseResponse(data) {
+			$('#loading').hide();
+			if(data) {
+				// Build a var. NOTE: Make sure your id name (this is a div) is NOT THE SAME
+				// as any var in javascript -- ie has a fit and barfs errors.
+				e_msg = "We received your form, thank you.";
+				// Did we set the 'bad' flag in Django?
+				// Use eval() to turn the stuff in the data object into actual vars.
+				if(eval(data.bad)) {
+					e_msg = "Please check your form.";
+					errors = eval(data.errs);
+					//Again with the eval :)
+					// This is very nice: Go thru the errors, build an id name and
+					// then access that tag and add the HTML from the Django error
+					$.each(errors, function(fieldname, errmsg) {
+						id = "#id_" + fieldname;
+						$(id).parent().before(errmsg);
+						//I want the error above the <p> holding the field
+					});
+					// re-enable the submit button, coz user has to fix stuff.
+		//				$('#bt').attr("disabled", "");
+				} else {
+					alert(data.result);				
+					$("#" + data.dialog_name).dialog('close');
+				}
+			} else {
+				//DON'T PANIC :D
+				$('#emsg').text("Ajax error : no data received. ").fadeIn("slow");
+			}
+		}
+		
+		function parseError(data) {
+			$('#loading').hide();
+			if(data) {
+				alert(data.result);				
+				$("#" + data.dialog_name).dialog('close');
+			} else {
+				//DON'T PANIC :D
+				$('#emsg').text("Ajax error : no data received. ").fadeIn("slow");
+			}
+		}
+	
+		function beforeForm() {
+			//$('#bt').attr("disabled", "disabled");
+			//Disable the submit button - can't click twice
+			$('.errorlist').remove();
+			//Get rid of any old error uls
+			$('#emsg').fadeOut('slow');
+			$('#loading').show();
+			//Get rid of the main error message
+			return true;
+			//Might not need this...
+		}
+</script>
+<br/>
+<div id="emsg">
+	&nbsp;
+</div>
+<form id="chainForm" action="{% url chain_execute None%}" method="post" >
+	<div id="buttons">
+		<input type="button" id="btnAdd" value="Add Operation" />
+    	<input type="button" id="btnDel" value="Remove Operation" />
+    	<input type="submit" id="submitForm" value="Execute Chain" />    
+	</div>
+	
+</form>
+
+<div id="template" style="visibility: hidden;">
+	<br/>
+	<fieldset style="border: 1px solid black; padding: 10px;">
+		<legend>Configure operation:</legend>
+		<table>
+			<tr>
+				<td>
+					<select id="operation">
+						<option value="">Select...</option>
+						{% for op in operations %}
+							<option value="{{op.id}}">{{op.name}}</option>
+						{% endfor %}
+					</select>
+				</td>
+				<td>
+					<div id="server" style="visibility: hidden;"></div>
+				</td>
+				<td>
+					<input type="button" id="addServer" value="Add Server" style="visibility: hidden;"/>
+				</td>
+				<td>
+					<div id="listServerContainer" style="visibility: hidden;">{% trans 'Servers selected' %}:
+						<input type="hidden" id="hiddenServerList"/>
+						<div id="listServer" style="visibility: hidden; border: 1px solid black; width: 200px; max-height: 100px; min-height: 100px; overflow: auto;"></div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					<div id="deployEar" style="visibility: hidden;">
+						{% trans 'Application'%}: <select id="earApp"></select>
+						<input type="button" id="refreshEar" value="Refresh App list"/><br/>
+						{% trans 'Instance Name'%}: <input type="text" id="instancename"/><br/>
+						{% trans 'Application Name'%}: <input type="text" id="appname"/>
+					</div>
+					<div id="executeScript" style="visibility: hidden;">
+						{% trans 'SQL Script'%}: <select id="sqlScript"></select>	
+						<input type="button" id="refreshSql" value="Refresh SQL list"/><br/>
+						{% trans 'DB Instance Name'%}: <input type="text" id="dbinstancename"/>
+					</div>
+					<div id="deployBar" style="visibility: hidden;">
+						{% trans 'BAR Name'%}: <select id="barApp"></select>
+						<input type="button" id="refreshBar" value="Refresh Bar list"/><br/>
+						{% trans 'Console Name'%}: <input type="text" id="consoleName"></input>
+					</div>
+					<div id="restartInstance" style="visibility: hidden;">
+						{% trans 'Instance Name'%}: <input type="text" id="instancename"></input>
+					</div>	
+				</td>
+			</tr>
+		</table>
+	</fieldset>
+</div>
+
+{% endblock %}

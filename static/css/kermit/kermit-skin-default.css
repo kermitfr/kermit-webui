@@ -1384,11 +1384,11 @@ input[type=submit], input[type=reset], input[type=button], button {
     border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px;
 }
 .submit-row a.submit-link, 
-.submit-row input[type=submit] {
+.submit-row input[type=submit], input[type=reset], input[type=button], button {
     border: 1px solid #267c99;
 }
 
-input[type=submit], 
+input[type=submit], input[type=reset], input[type=button], button, 
 #bookmark-add-cancel, 
 .submit-row a.delete-link:link, .submit-row a.delete-link:visited, 
 .submit-row a.cancel-link:link, .submit-row a.cancel-link:visited, 
@@ -1415,7 +1415,7 @@ input[type=submit],
     background: -o-linear-gradient(top, #666, #444);
 }
 
-input[type=submit], 
+input[type=submit], input[type=reset], input[type=button], button, 
 .submit-row a.submit-link:link, .submit-row a.submit-link:visited {
     color: #fff;
     background: #309bbf;
@@ -1423,7 +1423,7 @@ input[type=submit],
     background: -webkit-gradient(linear, left top, left bottom, from(#39bae5), to(#309bbf));
     background: -o-linear-gradient(top, #39bae5, #309bbf);
 }
-input[type=submit]:hover, 
+input[type=submit]:hover, input[type=reset]:hover, input[type=button]:hover, button:hover, 
 #bookmark-add-cancel:hover, 
 .submit-row a.submit-link:hover, .submit-row a.submit-link:active, 
 .submit-row a.delete-link:hover, .submit-row a.delete-link:active, 
@@ -1436,7 +1436,7 @@ input[type=submit]:hover,
     background: -webkit-gradient(linear, left top, left bottom, from(#e3e3e3), to(#d6d6d6));
     background: -o-linear-gradient(top, #e3e3e3, #d6d6d6);
 }
-.footer input[type=submit]:hover, 
+.footer input[type=submit]:hover, input[type=reset]:hover, input[type=button]:hover, button:hover,
 .footer #bookmark-add-cancel:hover, 
 .footer .submit-row a.delete-link:hover, .footer .submit-row a.delete-link:active, 
 .footer .submit-row a.cancel-link:hover, .footer .submit-row a.cancel-link:active {

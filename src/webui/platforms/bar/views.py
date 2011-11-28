@@ -9,7 +9,7 @@ import logging
 from guardian.decorators import permission_required
 from webui.platforms.bar.forms import DeployForm
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from webui.platforms.bar.utils import get_bar_list
+from webui.platforms.bar.utils import get_available_bars
 from webui.restserver.communication import callRestServer
 from django.utils import simplejson as json
 
@@ -112,7 +112,7 @@ def get_deploy_form(request, dialog_name, action, filters):
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)
 def get_bar_list(request, filters):
-    return HttpResponse(get_bar_list(request.user, filters))
+    return HttpResponse(get_available_bars(request.user, filters))
 
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)

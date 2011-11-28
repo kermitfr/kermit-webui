@@ -66,8 +66,8 @@ def check_contains(applications, appli):
             return app
     return None
 
-def get_bar_list(user, filters):
-    logger.debug("Calling app_list with filters %s and type %s" % (filters))
+def get_available_bars(user, filters):
+    logger.debug("Calling bar_list with filters %s" % (filters))
     try: 
         response, content = callRestServer(user, filters, "a7xbar", "applist", "apptype=%s" % 'jar')
         if response.status == 200:
