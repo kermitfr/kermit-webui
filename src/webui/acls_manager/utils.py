@@ -39,18 +39,32 @@ def update_acls(json_acls):
 def add_acl(acl, group=None, user=None):
     logger.debug("Verifying Class ACLs")
     for current_class in acl["classes"]:
-        heritable, db_class = check_heritable(current_class)
-        if db_class:
-            try:
-                if group:
-                    GroupObjectPermission.objects.assign('access_puppet_class', group, db_class)
-                if user:
-                    UserObjectPermission.objects.assign('access_puppet_class', user, db_class)
-            except:
-                logger.error("Cannot assign permission: %s" % sys.exc_info())
-            if heritable:
-                logger.debug("Heritable ACL found. Adding ACLs on all sub level classes")
-                add_sub_classes_acls(db_class, group, user)
+        if current_class != "+":
+            heritable, db_class = check_heritable(current_class)
+            if db_class:
+                try:
+                    if group:
+                        GroupObjectPermission.objects.assign('access_puppet_class', group, db_class)
+                    if user:
+                        UserObjectPermission.objects.assign('access_puppet_class', user, db_class)
+                except:
+                    logger.error("Cannot assign permission: %s" % sys.exc_info())
+                if heritable:
+                    logger.debug("Heritable ACL found. Adding ACLs on all sub level classes")
+                    add_sub_classes_acls(db_class, group, user)
+        else:
+            logger.debug("Assign permission to all classes")
+            first_level_classes = PuppetClass.objects.filter(level=0)
+            for first_l_class in first_level_classes:
+                try:
+                    if group:
+                        GroupObjectPermission.objects.assign('access_puppet_class', group, first_l_class)
+                    if user:
+                        UserObjectPermission.objects.assign('access_puppet_class', user, first_l_class)
+                except:
+                    logger.error("Cannot assign permission: %s" % sys.exc_info())
+                add_sub_classes_acls(first_l_class, group, user)
+                
             
             
     logger.debug("Verifying Server ACLs")

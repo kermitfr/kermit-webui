@@ -197,12 +197,12 @@
 				});
 				
 				$('#addServer'+newNum).click(function() {
-					if ($('#server'+newNum).text()!='' && $('#server'+newNum).text()!=undefined) {
-						$('#listServer'+newNum).append($('#server'+newNum).text()+"<br/>");	
+					if ($('#server'+newNum+'_hidden').val()!='' && $('#server'+newNum+'_hidden').val()!=undefined) {
+						$('#listServer'+newNum).append($('#server'+newNum+'_hidden').val()+"<br/>");	
 						if ($("#hiddenServerList"+newNum).val()!='') {
 							$("#hiddenServerList"+newNum).val($("#hiddenServerList"+newNum).val() + ';');
 						}
-						$("#hiddenServerList"+newNum).val($("#hiddenServerList"+newNum).val() + $('#server'+newNum).text());
+						$("#hiddenServerList"+newNum).val($("#hiddenServerList"+newNum).val() + $('#server'+newNum+'_hidden').val());
 					} else {
 						alert("You must select server to add...");
 					}
