@@ -50,7 +50,7 @@ def execute_chain(request, xhr=None):
         if xhr == "xhr":
             i = 1
             while "operation%s" % i in request.POST:
-                servers = request.POST["hiddenServerList%s"%i]
+                servers = request.POST["listServer%s"%i]
                 filters = construct_filters(servers)
                 rdict = {'bad':'false', 'filters':filters }
                 if request.POST["operation%s"%i] == 'script_ex':

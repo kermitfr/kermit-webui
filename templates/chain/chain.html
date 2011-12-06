@@ -37,6 +37,7 @@
                 newElem.find('#operation').attr('id', 'operation' + newNum).attr('name', 'operation' + newNum);
 				newElem.find('#server').attr('id', 'server' + newNum).attr('name', 'server' + newNum);
 				newElem.find('#addServer').attr('id', 'addServer' + newNum);
+				newElem.find('#removeServer').attr('id', 'removeServer' + newNum);
 				newElem.find('#listServer').attr('id', 'listServer' + newNum).attr('name', 'listServer' + newNum);
 				newElem.find('#hiddenServerList').attr('id', 'hiddenServerList' + newNum).attr('name', 'hiddenServerList' + newNum);
 				newElem.find('#listServerContainer').attr('id', 'listServerContainer' + newNum).attr('name', 'listServerContainer' + newNum);
@@ -76,6 +77,7 @@
 					$('#listServer'+newNum).css({visibility: "visible"});
 					$('#listServerContainer'+newNum).css({visibility: "visible"});
 					$('#addServer'+newNum).css({visibility: "visible"});
+					$('#removeServer'+newNum).css({visibility: "visible"});
 					$('#server'+newNum).flexbox('{% url chain_server_list %}');
 					if (this.value == 'script_ex') {
 						$('#executeScript'+newNum).css({visibility: "visible"});	
@@ -198,14 +200,16 @@
 				
 				$('#addServer'+newNum).click(function() {
 					if ($('#server'+newNum+'_hidden').val()!='' && $('#server'+newNum+'_hidden').val()!=undefined) {
-						$('#listServer'+newNum).append($('#server'+newNum+'_hidden').val()+"<br/>");	
-						if ($("#hiddenServerList"+newNum).val()!='') {
-							$("#hiddenServerList"+newNum).val($("#hiddenServerList"+newNum).val() + ';');
-						}
-						$("#hiddenServerList"+newNum).val($("#hiddenServerList"+newNum).val() + $('#server'+newNum+'_hidden').val());
+						$('#listServer'+newNum).append('<option value="'+$('#server'+newNum+'_hidden').val()+'">'+$('#server'+newNum+'_hidden').val()+'</option>');	
 					} else {
 						alert("You must select server to add...");
 					}
+				});
+				
+				$('#removeServer'+newNum).click(function() {
+					$("#listServer"+newNum+" :selected").each(function(i, selected){ 
+					  $(selected).remove(); 
+					});
 				});
 			
             });
@@ -261,6 +265,16 @@
 		}
 		
 		function parseError(data) {
+			i = 1;
+			while (i <= 5) {
+				id = "#listServer"+i;
+				if ($(id)!=undefined) {
+					$(id).each(function(){
+						$(id + " option").removeAttr("selected");
+					});
+				}
+				i++;
+			}
 			$('#loading').hide();
 			if(data) {
 				alert(data.result);				
@@ -272,6 +286,16 @@
 		}
 	
 		function beforeForm() {
+			i = 1;
+			while (i <= 5) {
+				id = "#listServer"+i; 
+				if ($(id)!=undefined) {
+					$(id).each(function(){
+						$(id + " option").attr("selected","selected");
+					});
+				}
+				i++;
+			}
 			//$('#bt').attr("disabled", "disabled");
 			//Disable the submit button - can't click twice
 			$('.errorlist').remove();
@@ -314,12 +338,14 @@
 					<div id="server" style="visibility: hidden;"></div>
 				</td>
 				<td>
-					<input type="button" id="addServer" value="Add Server" style="visibility: hidden;"/>
+					<input type="button" id="addServer" value="Add Server" style="visibility: hidden;"/><br/>
+					<input type="button" id="removeServer" value="Remove Server" style="visibility: hidden;"/>
 				</td>
 				<td>
-					<div id="listServerContainer" style="visibility: hidden;">{% trans 'Servers selected' %}:
+					<div id="listServerContainer" style="visibility: hidden;">{% trans 'Servers selected' %}:<br/>
 						<input type="hidden" id="hiddenServerList"/>
-						<div id="listServer" style="visibility: hidden; border: 1px solid black; width: 200px; max-height: 100px; min-height: 100px; overflow: auto;"></div>
+						<!--<div id="listServer" style="visibility: hidden; border: 1px solid black; width: 200px; max-height: 100px; min-height: 100px; overflow: auto;"></div> -->
+						<select id="listServer" NAME="listServer" multiple size="5" style="visibility: hidden;width:250px;"></select>
 					</div>
 				</td>
 			</tr>
