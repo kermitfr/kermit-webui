@@ -20,6 +20,7 @@ email.username=
 email.password=
 email.usetls=False
 admin.area.title=Kermit Admin Area
+levels.number=5
 
 [webui-database]
 driver=django.db.backends.sqlite3

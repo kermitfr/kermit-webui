@@ -111,6 +111,7 @@ def add_agents(server, agents_list):
 
 def create_path(server, puppet_classes):
     path = ''
+    #TODO: refactor the levels with value got from settings.py
     for i in range (0, 5):
         level_classes = PuppetClass.objects.filter(level=i).values_list('name', flat=True)
         intersection = set(puppet_classes).intersection(set(level_classes))

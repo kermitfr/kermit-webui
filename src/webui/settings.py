@@ -283,6 +283,8 @@ EMAIL_HOST_USER = CONF.get("webui", "email.username")
 EMAIL_HOST_PASSWORD = CONF.get("webui", "email.password")
 EMAIL_USE_TLS = CONF.getboolean("webui", "email.usetls")
 
+LEVELS_NUMBER = CONF.getint("webui", "levels.number")
+
 
 import djcelery
 djcelery.setup_loader()

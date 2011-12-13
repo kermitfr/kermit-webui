@@ -13,8 +13,14 @@ def extract_user_servers(user):
         if settings.FILTERS_SERVER:
             servers = get_objects_for_user(user, "use_server", Server).filter(deleted=False)
         elif settings.FILTERS_CLASS:
-            puppet_classes = get_objects_for_user(user, "access_puppet_class", PuppetClass).filter(enabled=True)
-            servers = Server.objects.filter(puppet_classes__in=puppet_classes, deleted=False).distinct()
+            servers_list = None
+            for i in range (0, settings.LEVELS_NUMBER):
+                level_classes = get_objects_for_user(user, "access_puppet_class", PuppetClass).filter(enabled=True, level=i)
+                servers = Server.objects.filter(puppet_classes__in=level_classes, deleted=False).distinct()
+                if servers_list:
+                    servers_list = set(servers_list).intersection(set(servers))
+                else:
+                    servers_list = servers
         else:
             servers = Server.objects.all()
             
