@@ -56,6 +56,12 @@ def update_info(user, agent):
                                 validation=input_content['validation']
                             if 'maxlength' in input_content:
                                 maxlenght=input_content['maxlength']
+                                
+                            #TODO: Maybe it's better to create a custom field to use it.
+                            #For type='list' we put the accepted values in the validation field (not too wrong)
+                            if input_content['type']=='list':
+                                validation=input_content['list']
+                                
                             ActionInput.objects.create(action=saved_action, name=input_name, description=input_content['description'], type=input_content['type'], prompt=input_content['prompt'], optional=input_content['optional'], validation=validation, max_length=maxlenght  )
                         else:
                             logger.debug('Input with name ' + input_name + " already present in DB. Updating...")
@@ -72,6 +78,13 @@ def update_info(user, agent):
                                 input_to_update.max_length=input_content['maxlength']
                             else:
                                 input_to_update.max_length=None
+                                
+                            #TODO: Maybe it's better to create a custom field to use it.
+                            #For type='list' we put the accepted values in the validation field (not too wrong)
+                            logger.info(input_content['type'])
+                            if input_content['type']=="list":
+                                input_to_update.validation=input_content['list']
+                            
                             input_to_update.save()
                     
                     #Verifying Action Outputs. If already present in DB just update it

@@ -12,6 +12,15 @@ def create_action_form(inputs):
             validator = input['validation']
         else:
             validator = ""
-        fields[input['name']] = forms.RegexField(label=input['prompt'], required=required, regex=validator)
+            
+        if input['type']=='list':
+            combo_values = input['validation'][1:-1].split(',')
+            choices=[]
+            for val in combo_values:
+                val = val.strip()[1:-1]
+                choices.append( (val, val) )
+            fields[input['name']] = forms.ChoiceField(label=input['prompt'], required=required, choices=choices)
+        else:
+            fields[input['name']] = forms.RegexField(label=input['prompt'], required=required, regex=validator)
     
     return type('ActionExecutionForm', (forms.BaseForm, ), {'base_fields': fields})  
