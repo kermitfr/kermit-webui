@@ -72,7 +72,8 @@ class StartWeblogicInstance(ServerOperation):
     
     def get_visible(self, server):
         agent = server.agents.filter(name='a7xows')
-        return len(agent)==1
+        classes = server.puppet_classes.filter(name='ows')
+        return len(agent)==1 and len(classes)==1
     
     def get_enabled(self, server):
         return not server.online
@@ -108,7 +109,8 @@ class StopWeblogicInstance(ServerOperation):
     
     def get_visible(self, server):
         agent = server.agents.filter(name='a7xows')
-        return len(agent)==1
+        classes = server.puppet_classes.filter(name='ows')
+        return len(agent)==1 and len(classes)==1
     
     def get_enabled(self, server):
         return not server.online

@@ -86,7 +86,8 @@ class StartOC4JInstance(ServerOperation):
     
     def get_visible(self, server):
         agent = server.agents.filter(name='a7xoas')
-        return len(agent)==1
+        classes = server.puppet_classes.filter(name='oas')
+        return len(agent)==1 and len(classes)==1
     
     def get_enabled(self, server):
         return not server.online
@@ -122,7 +123,8 @@ class StopOC4JInstance(ServerOperation):
     
     def get_visible(self, server):
         agent = server.agents.filter(name='a7xoas')
-        return len(agent)==1
+        classes = server.puppet_classes.filter(name='oas')
+        return len(agent)==1 and len(classes)==1
     
     def get_enabled(self, server):
         return not server.online
