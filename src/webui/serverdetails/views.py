@@ -71,7 +71,8 @@ def hostInventory(request, hostname):
             else:
                 logger.debug("Operation %s is not visible for %s server" % (op.get_name(), hostname))
 
-    return render_to_response('server/details.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "serverdetails": server_info, "hostname": hostname, "service_status":service_status, 'server_operations': operations}, context_instance=RequestContext(request))
+    #TODO: Make a refactor to remove base_url and statis_url from context
+    return render_to_response('server/details.html', {"settings": settings, "base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "serverdetails": server_info, "hostname": hostname, "service_status":service_status, 'server_operations': operations}, context_instance=RequestContext(request))
 
 @login_required()
 def hostCallInventory(request, hostname):

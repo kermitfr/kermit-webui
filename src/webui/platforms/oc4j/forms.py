@@ -22,8 +22,8 @@ class InstanceForm(forms.Form):
     isflow = forms.CharField(label=u"Is Flow?")
     
 class PoolForm(forms.Form):
-    instancename = forms.CharField(label=u"Instance Name")
     poolname = forms.CharField(label=u"Pool name")
+    instancename = forms.CharField(label=u"Instance Name")
     username = forms.CharField(label=u"Database Username")
     password = forms.CharField(widget=forms.PasswordInput, label=u"Database Password")
     database = forms.CharField(label=u"Database connection")
