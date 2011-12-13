@@ -24,8 +24,8 @@ class DashBoardPuppetClasses(Widget):
                 if not self.user.is_superuser:
                     current_actions = get_objects_for_user(self.user, 'use_action', Action).filter(agent=agent)
                     actions[agent.name] = current_actions
-        if not actions:
-            agents = {}
+            if not actions:
+                agents = {}
         operations = Operation.objects.filter(enabled=True)
         if not self.user.is_superuser:
             operations = get_objects_for_user(self.user, 'execute_operation', Operation).filter(enabled=True)
