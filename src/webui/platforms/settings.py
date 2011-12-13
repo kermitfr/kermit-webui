@@ -1,12 +1,12 @@
 from django.conf import settings
 
 SUB_APPS = (
-        'oc4j',
-        'weblogic',
-        'bar',
-        'jboss',
-        'postgresql',
-        'oracledb',
+#        'oc4j',
+#        'weblogic',
+#        'bar',
+#        'jboss',
+#        'postgresql',
+#        'oracledb',
         'virtualization',
 )
 

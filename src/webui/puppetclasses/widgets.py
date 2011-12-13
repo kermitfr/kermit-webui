@@ -24,19 +24,22 @@ class DashBoardPuppetClasses(Widget):
                 if not self.user.is_superuser:
                     current_actions = get_objects_for_user(self.user, 'use_action', Action).filter(agent=agent)
                     actions[agent.name] = current_actions
+        if not actions:
+            agents = {}
         operations = Operation.objects.filter(enabled=True)
         if not self.user.is_superuser:
             operations = get_objects_for_user(self.user, 'execute_operation', Operation).filter(enabled=True)
             
         context_operations = kermit_modules.extract(ContextOperation)
         automatic_operations = {}
-        for c_op in context_operations:
-            menu_name = "Undefined"
-            if c_op.get_type():
-                menu_name = c_op.get_type()
-            if not menu_name in automatic_operations:
-                automatic_operations[menu_name] = []
-            automatic_operations[menu_name].extend(c_op.get_operations())
+        if context_operations:
+            for c_op in context_operations:
+                menu_name = "Undefined"
+                if c_op.get_type():
+                    menu_name = c_op.get_type()
+                if not menu_name in automatic_operations:
+                    automatic_operations[menu_name] = []
+                automatic_operations[menu_name].extend(c_op.get_operations())
         widget_context = {"agents":agents, "operations":operations, "actions": actions, 'automatic_operations':automatic_operations}
         return dict(super_context.items() + widget_context.items())
     
