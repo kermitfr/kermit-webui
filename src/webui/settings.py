@@ -182,8 +182,8 @@ FIXTURE_DIRS = (
    fixtures_dir,
 )
 
-GRAPPELLI_ADMIN_HEADLINE = 'Kermit Admin Area'
-GRAPPELLI_ADMIN_TITLE = 'Kermit Admin Area'
+GRAPPELLI_ADMIN_HEADLINE = CONF.get("webui", "admin.area.title")
+GRAPPELLI_ADMIN_TITLE = CONF.get("webui", "admin.area.title")
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
