@@ -26,10 +26,6 @@ def get_progress(request, taskname, taskid):
     if result.result:
         if isinstance(result.result, tuple):
             response,content,agent,action=result.result
-            print response
-            print content
-            print agent
-            print action
             if response.status == 200:
                 json_data = render_agent_template(request, {}, content, {}, agent, action)
                 return HttpResponse(json_data, mimetype="application/json")

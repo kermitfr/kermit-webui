@@ -20,7 +20,7 @@ def extract_user_servers(user):
                 if servers:
                     servers = set(servers).intersection(set(servers_list))
                 else:
-                    servers = servers
+                    servers = servers_list
         else:
             servers = Server.objects.all()
             
@@ -41,5 +41,4 @@ def extract_user_servers_in_path(user, server_path, start_with=True):
         else:
             servers = Server.objects.filter(puppet_path=server_path, deleted=False)
 
-            
     return servers
