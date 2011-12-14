@@ -96,10 +96,10 @@ def execute_sql(request, filters, dialog_name, xhr=None):
                         if "data" in server_response and "logfile" in server_response["data"]:
                             s_resps.append({"server": server_response["sender"], "logfile":server_response["data"]["logfile"]})
                         else:
-                            s_resps.append({"server": server_response["sender"], "statusmsg":server_response["statusmsg"]})
+                            s_resps.append({"server": server_response["sender"], "message":server_response["statusmsg"]})
                     rdict.update({"result":s_resps})
                 else:
-                    rdict.update({"errors": "Error reported from server"})
+                    rdict.update({"result": "KO", "message": "Error communicating with server"})
                 
                 rdict.update({'dialog_name':dialog_name})
                 # And send it off.
@@ -186,9 +186,15 @@ def clone_db(request, filters, dialog_name, xhr=None):
                 response, content = callRestServer(request.user, filters, 'oracledb', 'export_database', 'instancename=%s;schema=%s' %(instance, schema), True)
                 if response.status == 200:
                     json_content = json.loads(content)
-                    rdict.update({"result":json_content[0]["statusmsg"]})
+                    s_resps = []
+                    for server_response in json_content:
+                        if server_response['statuscode']==0:
+                            s_resps.append({"server": server_response["sender"], "response":server_response["statusmsg"]})
+                        else:
+                            s_resps.append({"server": server_response["sender"], "message":server_response["statusmsg"]})
+                    rdict.update({"result":s_resps})
                 else:
-                    rdict.update({"result": "Error communicating with server"})
+                    rdict.update({"result": "KO", "message": "Error communicating with server"})
                 
                 rdict.update({'dialog_name':dialog_name})
                 # And send it off.

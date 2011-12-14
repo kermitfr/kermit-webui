@@ -2023,3 +2023,15 @@ fieldset.infohighlight {
 	float: left;
 	z-index: 10;
 }
+
+div.errorbox {
+	border: 1px dotted red; 
+	color: red; 
+	padding: 3px;
+}
+
+div.messagebox {
+	border: 1px dotted green; 
+	color: green; 
+	padding: 3px;
+}

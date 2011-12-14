@@ -119,9 +119,15 @@ def redeploy_app(request, filters, dialog_name, xhr=None):
                 response, content = callRestServer(request.user, filters, 'jboss', 'deploy', 'appfile=%s;instancename=%s' % (appfile,instancename), True)
                 if response.status == 200:
                     json_content = json.loads(content)
-                    rdict.update({"result":json_content[0]["statusmsg"]})
+                    s_resps = []
+                    for server_response in json_content:
+                        if server_response['statuscode']==0:
+                            s_resps.append({"server": server_response["sender"], "response":server_response["data"]["status"]})
+                        else:
+                            s_resps.append({"server": server_response["sender"], "message":server_response["statusmsg"]})
+                    rdict.update({"result":s_resps})
                 else:
-                    rdict.update({"result": "Error communicating with server"})
+                    rdict.update({"result": "KO", "message": "Error communicating with server"})
                 
                 rdict.update({'dialog_name':dialog_name})
                 # And send it off.
@@ -178,10 +184,13 @@ def get_log(request, filters, dialog_name, xhr=None):
                     json_content = json.loads(content)
                     s_resps = []
                     for server_response in json_content:
-                        s_resps.append({"server": server_response["sender"], "logfile":server_response["data"]["logfile"]})
+                        if server_response['statuscode']==0:
+                            s_resps.append({"server": server_response["sender"], "logfile":server_response["data"]["logfile"]})
+                        else:
+                            s_resps.append({"server": server_response["sender"], "message":server_response["statusmsg"]})
                     rdict.update({"result":s_resps})
                 else:
-                    rdict.update({"result": "Error communicating with server"})
+                    rdict.update({"result": "KO", "message": "Error communicating with server"})
                 
                 rdict.update({'dialog_name':dialog_name})
                 # And send it off.

@@ -23,7 +23,7 @@ function getExecutionForm(base_url, execution_dialog_name, agent, action, filter
 				$("#" + execution_dialog_name).html(data);
 				$("#" + execution_dialog_name).dialog({
 					modal : true,
-					title : agent + '-' + action + ' execution...',
+					title : 'Agent/Action execution form',
 					minHeight : 200,
 					minWidth : 500
 				});
@@ -93,7 +93,7 @@ function getDeployForm(base_url, platform_name, deploy_form_name, operation, fil
 			$("#" + deploy_form_name).html(data);
 			$("#" + deploy_form_name).dialog({
 				modal : true,
-				title : operation + ' execution...',
+				title : 'Operation execution form',
 				minHeight : 200,
 				minWidth : 500
 			});
@@ -127,7 +127,7 @@ function getForm(base_url, platform_name, form_name, operation, filters) {
 			$("#" + form_name).html(data);
 			$("#" + form_name).dialog({
 				modal : true,
-				title : operation + ' execution...',
+				title : 'Operation execution form',
 				minHeight : 200,
 				minWidth : 500
 			});
@@ -162,7 +162,7 @@ function getSqlExecutionForm(base_url, platform_name, deploy_form_name, operatio
 			$("#" + deploy_form_name).html(data);
 			$("#" + deploy_form_name).dialog({
 				modal : true,
-				title : operation + ' execution...',
+				title : 'Operation execution form',
 				minHeight : 200,
 				minWidth : 500
 			});
@@ -196,7 +196,7 @@ function getLogForm(base_url, platform_name, container, operation, filters) {
 			$("#" + container).html(data);
 			$("#" + container).dialog({
 				modal : true,
-				title : operation + ' execution...',
+				title : 'Operation execution form',
 				minHeight : 200,
 				minWidth : 500
 			});
