@@ -309,15 +309,15 @@ function randomString() {
 }
 
 function callMcollective(url, destination) {
+	$('#'+destination).dialog({
+            width: 600,
+            modal: true,
+    });
 	sendRequestToMcollective(url, destination);
 }
 
 function callMcollectiveModal(url, destination) {
 	sendRequestToMcollective(url, destination);
-	$('#'+destination).dialog({
-            width: 600,
-            modal: true,
-    });
 }
 
 function callMcollectiveWithTemplateRsp(url, destination) {
