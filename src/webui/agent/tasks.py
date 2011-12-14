@@ -18,6 +18,6 @@ def updateagents(user):
     logger.info("Agents Number: %s" % total_agents)
     i = 0
     for agent in agents_list:
-        update_info(user, agent)
+        update_info(user, agent, False)
         i = i + 1
         updateagents.update_state(state="PROGRESS", meta={"current": i, "total": total_agents})

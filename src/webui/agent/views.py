@@ -96,7 +96,8 @@ def execute_action_form(request, agent, action, filters, dialog_name, response_c
                         arguments = arguments + input['name'] + '=' + form.cleaned_data[input['name']] 
                 
                 logger.debug("Arguments for MCollective call %s" % arguments)
-                response, content = callRestServer(request.user, filters, agent, action, arguments)
+                #TODO: Refactor to use async here too
+                response, content = callRestServer(request.user, filters, agent, action, arguments, True)
                 if response.status == 200:
                     json_data = render_agent_template(request, rdict, content, form.cleaned_data, agent, action)
              

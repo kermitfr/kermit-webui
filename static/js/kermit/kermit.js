@@ -206,7 +206,7 @@ function getLogForm(base_url, platform_name, container, operation, filters) {
 	});
 }
 
-function sendRequestToMcollective(url, destination) {
+function sendRequestToMcollectiveSync(url, destination) {
 	$("#" + destination).empty();
 
 	$.ajax({
@@ -244,6 +244,57 @@ function sendRequestToMcollective(url, destination) {
 			}
 		}
 	});
+}
+
+function sendRequestToMcollective(url, destination) {
+	$("#" + destination).empty();
+
+	$('#modalprogress').dialog({
+			modal : true,
+			title : 'Progress...',
+			height : 100,
+			width : 500
+		});
+		$( "#progressbar" ).progressbar({ value: 0 });
+		$( "#taskstate").html('<b>Waiting...	</b>');
+		//$("#" + destination).empty();
+		$.get(url, function(data) {
+			//$('#' + destination).html(data);
+			var checkStatus = function() {
+		    	$.getJSON(data.update_url, function(result) {
+		    		$( "#progressbar").progressbar({ value: result.value });
+					$( "#taskstate").html('<b>' + result.state + '</b>');	
+			        if(result.state!='SUCCESS' && result.state!='FAILURE' && result.state!=undefined) {
+			            setTimeout(checkStatus, 2000);
+			        } else {
+			        	if(result.type == 'json') {
+							for(i in result.response) {
+								resp = result.response[i];
+								content = '<strong>' + resp.sender + '</strong>';
+								content += '<ul>';
+								content += '<li> Status Code: ' + resp.statuscode + '</li>';
+								content += '<li> Status Message: ' + resp.statusmsg + '</li>';
+								content += '<li> Data: ' + JSON.stringify(resp.data) + '</li>';
+								content += '</ul>';
+								$(content).appendTo("#response-container");
+							}
+						} else if(result.type == 'html') {
+							$("#" + destination).html(result.response);
+						}
+			        	$('#modalprogress').dialog('close');
+			        }
+		        // do something else
+    		 	});
+			}
+			if (data.UUID) {
+				checkStatus();
+			} else {
+				if (data.error) {
+					alert(data.error);
+				}
+				$('#modalprogress').dialog('close');	
+			}
+		});
 }
 
 function randomString() {

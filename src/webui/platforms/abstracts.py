@@ -25,7 +25,7 @@ class UpdatePlatform(object):
     Abstract Class to define platforms with one (or more)
     updates method
     '''
-    def inventoryUpdate(self, user):
+    def inventoryUpdate(self, user, use_another_task):
         raise NotImplementedAbstract
     
 

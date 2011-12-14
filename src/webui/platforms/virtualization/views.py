@@ -20,15 +20,15 @@ logger = logging.getLogger(__name__)
 def get_server_details(request, hostname, instance_name, resource_name):
     filter = "identity_filter=%s"%hostname
     server = Server.objects.get(hostname=hostname)
-    response, content = callRestServer(request.user, filter, "libvirt", "hvinfo")
+    response, content = callRestServer(request.user, filter, "libvirt", "hvinfo", None, True)
     if response.status == 200:
         virtual = json.loads(content)[0]
         domains = []
         for dom in virtual['data']['inactive_domains']:
             info = {'name': dom,
                     'active': False,
-                    'start_url': reverse('call_mcollective_with_arguments', kwargs={'filters':filter, 'agent':"libvirt", 'action':"start", 'args':"domain=%s"%dom}),
-                    'stop_url': reverse('call_mcollective_with_arguments', kwargs={'filters':filter, 'agent':"libvirt", 'action':"shutdown", 'args':"domain=%s"%dom})
+                    'start_url': reverse('call_mcollective_with_arguments', kwargs={'filters':filter, 'agent':"libvirt", 'action':"start", 'args':"domain=%s"%dom, 'wait_for_response':True}),
+                    'stop_url': reverse('call_mcollective_with_arguments', kwargs={'filters':filter, 'agent':"libvirt", 'action':"shutdown", 'args':"domain=%s"%dom, 'wait_for_response':True})
                     }
             domains.append(info)
         for dom in virtual['data']['active_domains']:
@@ -38,8 +38,8 @@ def get_server_details(request, hostname, instance_name, resource_name):
                 novnc_url = '%s/novnc/vnc_auto.html?host=%s&port=6080' % (settings.STATIC_URL, hostname)
             info = {'name': dom,
                     'active': True,
-                    'start_url': reverse('call_mcollective_with_arguments', kwargs={'filters':filter, 'agent':"libvirt", 'action':"start", 'args':"domain=%s"%dom}),
-                    'stop_url': reverse('call_mcollective_with_arguments', kwargs={'filters':filter, 'agent':"libvirt", 'action':"shutdown", 'args':"domain=%s"%dom}),
+                    'start_url': reverse('call_mcollective_with_arguments', kwargs={'filters':filter, 'agent':"libvirt", 'action':"start", 'args':"domain=%s"%dom, 'wait_for_response':True}),
+                    'stop_url': reverse('call_mcollective_with_arguments', kwargs={'filters':filter, 'agent':"libvirt", 'action':"shutdown", 'args':"domain=%s"%dom, 'wait_for_response':True}),
                     'start_vnc_proxy_url': reverse('start_vnc_proxy', kwargs={'hostname':hostname, 'domain': dom}),
                     'novnc_url': novnc_url
                     }
@@ -50,7 +50,7 @@ def get_server_details(request, hostname, instance_name, resource_name):
     
     
 def start_vnc_proxy(request, hostname, domain):
-    response, content = callRestServer(request.user, "identity_filter=%s"%hostname, "libvirtvnc", "start_proxy", "domain=%s"%domain)
+    response, content = callRestServer(request.user, "identity_filter=%s"%hostname, "libvirtvnc", "start_proxy", "domain=%s"%domain, True)
     if response.status == 200:
         json_data = json.loads(content)
         return HttpResponse(json_data, mimetype='application/javascript')

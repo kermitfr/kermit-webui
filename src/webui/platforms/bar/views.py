@@ -135,7 +135,7 @@ def deploy_bar(request, filters, dialog_name, xhr=None):
             if bcname and barname:
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to deploy %s application on %s filtered server" % (barname, filters))
-                response, content = callRestServer(request.user, filters, 'a7xbar', 'deploy', 'bcname=%s;filename=%s' %(bcname, barname))
+                response, content = callRestServer(request.user, filters, 'a7xbar', 'deploy', 'bcname=%s;filename=%s' %(bcname, barname), True)
                 if response.status == 200:
                     json_content = json.loads(content)
                     rdict.update({"result":json_content[0]["statusmsg"]})

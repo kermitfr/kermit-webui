@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 @task
 def server_basic_info(user):
     try: 
-        response, content = callRestServer(user, 'no-filter', 'nodeinfo', 'basicinfo')
+        response, content = callRestServer(user, 'no-filter', 'nodeinfo', 'basicinfo', None, True, False)
         if response.status == 200:
             jsonObj = json.loads(content)
             update_time = datetime.now()
@@ -59,7 +59,7 @@ def server_inventory(user, updates_defined):
         total_updates = len(updates_defined)
         i = 0
         for current_update in updates_defined:
-            current_update.inventoryUpdate(user)
+            current_update.inventoryUpdate(user, False)
             i = i + 1
             server_inventory.update_state(state="PROGRESS", meta={"current": i, "total": total_updates})
     else:

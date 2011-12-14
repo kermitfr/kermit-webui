@@ -77,7 +77,7 @@ def hostInventory(request, hostname):
 @login_required()
 def hostCallInventory(request, hostname):
     filters = "identity_filter=%s" % hostname
-    response, content = callRestServer(request.user, filters, "rpcutil", "inventory")
+    response, content = callRestServer(request.user, filters, "rpcutil", "inventory", None, True)
     if response.status == 200:
         jsonObj = json.loads(content)
         return render_to_response('server/inventory.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname, 'service_status_url':settings.RUBY_REST_PING_URL, "c": jsonObj[0]}, context_instance=RequestContext(request))

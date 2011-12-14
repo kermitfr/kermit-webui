@@ -14,6 +14,7 @@ from webui.restserver.template import render_agent_template
 from django.contrib.auth.decorators import login_required
 from guardian.decorators import permission_required
 from webui.agent.utils import verify_agent_acl, verify_action_acl
+from django.core.urlresolvers import reverse
 
 logger = logging.getLogger(__name__)
 
@@ -23,13 +24,18 @@ logger = logging.getLogger(__name__)
 
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)
-def get(request, filters, agent, action, args=None):
+def get(request, filters, agent, action, args=None, wait_for_response=False):
     if verify_agent_acl(request.user, agent) and verify_action_acl(request.user, agent, action):
-        response, content = callRestServer(request.user, filters, agent, action, args)
-        if response.status == 200:
-            json_data = render_agent_template(request, {}, content, {}, agent, action)
+        response, content = callRestServer(request.user, filters, agent, action, args, wait_for_response)
+        if wait_for_response:
+            if response.status == 200:
+                json_data = render_agent_template(request, {}, content, {}, agent, action)
+                return HttpResponse(json_data, mimetype="application/json")
+        else:
+            logger.debug("Returning request UUID")
+            update_url = reverse('get_progress', kwargs={'taskname':content, 'taskid':response.task_id})
+            json_data = json.dumps({"UUID": response.task_id, "taskname": content, 'update_url': update_url})
             return HttpResponse(json_data, mimetype="application/json")
-        return response
     else:
         return HttpResponseForbidden()
 
@@ -37,7 +43,7 @@ def get(request, filters, agent, action, args=None):
 @permission_required('agent.call_mcollective', return_403=True)
 def getWithTemplate(request, template, filters, agent, action, args=None):
     if verify_agent_acl(request.user, agent) and verify_action_acl(request.user, agent, action):
-        response, content = callRestServer(request.user, filters, agent, action, args)
+        response, content = callRestServer(request.user, filters, agent, action, args, True)
         if response.status == 200:
             jsonObj = json.loads(content)
             templatePath = 'ajax/' + template + '.html'

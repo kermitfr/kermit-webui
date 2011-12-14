@@ -302,7 +302,7 @@ BROKER_TRANSPORT = "django"
 CELERY_IMPORTS = ("webui", )
 
 
-
+CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
 CELERYBEAT_SCHEDULE = {
     "runs-server-basic-info-update-every-hour": {
         "task": "webui.serverstatus.tasks.server_basic_info",

@@ -20,7 +20,7 @@ def render_agent_template(request, resp_dict, content, form_data, agent, action)
         template_name = 'agents/'+agent+'/'+action+'.html'
         get_template(template_name)
         rendered_template = render_to_string(template_name, {'settings':settings, 'content': jsonObj, 'agent': agent, 'action': action, 'arguments':form_data, 'page_context': RequestContext( request )})
-        resp_dict.update({'response': rendered_template, 'type':'html'})
+        resp_dict.update({'response': rendered_template, 'type':'html', 'state':'SUCCESS'})
     except TemplateDoesNotExist, e:
         try:
             logger.debug('No template found for ' + agent + ' - ' + action + '! Using default agent template')
@@ -30,13 +30,13 @@ def render_agent_template(request, resp_dict, content, form_data, agent, action)
             outputs = get_action_outputs(agent, action)
             if outputs:
                 rendered_template = render_to_string(template_name, {'settings':settings, 'content': jsonObj, 'outputs':outputs,'agent': agent, 'action': action, 'arguments':form_data, 'page_context': RequestContext( request )})
-                resp_dict.update({'response': rendered_template, 'type':'html'})
+                resp_dict.update({'response': rendered_template, 'type':'html', 'state':'SUCCESS'})
             else:
                 logger.debug('No DDL outputs found for ' + agent + ' ' + action + '. Send default JSON')
-                resp_dict.update({'response': jsonObj, 'type':'json'})
+                resp_dict.update({'response': jsonObj, 'type':'json', 'state':'SUCCESS'})
         except:
             logger.debug('No template found for ' + agent + ' - ' + action + '! Using default JSON viewer')
-            resp_dict.update({'response': jsonObj, 'type':'json'})
+            resp_dict.update({'response': jsonObj, 'type':'json', 'state':'SUCCESS'})
                 
             # Make a json whatsit to send back.
     json_data = json.dumps(resp_dict, ensure_ascii=False)

@@ -116,7 +116,7 @@ def redeploy_app(request, filters, dialog_name, xhr=None):
             if app_type and instancename and appfile:
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to deploy %s application on %s filtered server" % (appfile, filters))
-                response, content = callRestServer(request.user, filters, 'jboss', 'deploy', 'appfile=%s;instancename=%s' % (appfile,instancename))
+                response, content = callRestServer(request.user, filters, 'jboss', 'deploy', 'appfile=%s;instancename=%s' % (appfile,instancename), True)
                 if response.status == 200:
                     json_content = json.loads(content)
                     rdict.update({"result":json_content[0]["statusmsg"]})
@@ -173,7 +173,7 @@ def get_log(request, filters, dialog_name, xhr=None):
             if instancename:
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to get log on %s filtered server" % (filters))
-                response, content = callRestServer(request.user, filters, 'jboss', 'get_log', 'instancename=%s' % (instancename))
+                response, content = callRestServer(request.user, filters, 'jboss', 'get_log', 'instancename=%s' % (instancename), True)
                 if response.status == 200:
                     json_content = json.loads(content)
                     s_resps = []

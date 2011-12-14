@@ -155,7 +155,7 @@
 				<p>
 					<table>
 						<tr>
-							<td style="vertical-align:middle"><a href="{% url index %}"><img src="/static/img/menu-16.png" align="middle" /></a></td>
+							<td style="vertical-align:middle"><a href="{% url index %}"><img src="{{STATIC_URL}}img/menu-16.png" align="middle" /></a></td>
 							<td style="vertical-align:middle"><a href="{% url index %}"> Main Menu</a></td>
 							<td width="30"></td>
 							{% block extra-manu %}{% endblock%}
@@ -165,6 +165,13 @@
 				</p>
 				{% endblock %}
 				<p>
+					<style>
+						.ui-progressbar-value { background-image: url("{{STATIC_URL}}images/redmond/pbar-ani.gif"); }
+					</style>
+					<div id="modalprogress">
+						<div id="progressbar"></div>
+						<div id="taskstate"></div>
+					</div>
 					{% block content %}{% endblock %}
 				</p>
 			</div>

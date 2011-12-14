@@ -22,7 +22,7 @@ def verify_action_acl(user, agent_name, action_name):
     except:
         return False
         
-def update_info(user, agent):
+def update_info(user, agent, use_another_task):
     logger.info('Calling Mcollective to get info for agent ' + agent.name)
     #Extract n servers containing the agent
     servers_list = Server.objects.filter(agents=agent, deleted=False)
@@ -30,7 +30,7 @@ def update_info(user, agent):
     for current in servers_list:
         filters = "identity_filter=%s" % current.hostname
         break;
-    response, content = callRestServer(user, filters, "agentinfo", "desc", "agentname="+agent.name)
+    response, content = callRestServer(user, filters, "agentinfo", "desc", "agentname="+agent.name, True, use_another_task)
     if response['status'] == '200':
         json_content = json.loads(content)
         for msg in json_content:

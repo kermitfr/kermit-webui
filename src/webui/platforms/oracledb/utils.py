@@ -15,7 +15,7 @@ def sql_list(user, filters):
     file_type = "sql"
     logger.debug("Calling get_sql_list with filters %s and type %s" % (filters, str(file_type)))
     try: 
-        response, content = callRestServer(user, filters, "oracledb", "sql_list")
+        response, content = callRestServer(user, filters, "oracledb", "sql_list", None, True)
         if response.status == 200:
             jsonObj = json.loads(content)
             if jsonObj:

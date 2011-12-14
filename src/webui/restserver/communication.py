@@ -2,18 +2,23 @@ import httplib2
 from django.conf import settings
 import logging
 from celery.execute import send_task
+from webui.restserver.tasks import httpcall
 
 logger = logging.getLogger(__name__)
 
-#TODO: Refactor using httplib address parser
-def callRestServer(user, filters, agent, action, args=None, wait_response=True):
+def callRestServer(user, filters, agent, action, args=None, wait_response=False, use_task=True):
     logger.info("%s is calling agent %s action %s on %s" % (user, agent, action, filters))
-    result = send_task("webui.restserver.tasks.httpcall", [filters, agent, action, args])
-    if wait_response:
-        response, content = result.get()
+    
+    if use_task:
+        result = send_task("webui.restserver.tasks.httpcall", [filters, agent, action, args])
+        if wait_response:
+            response, content, agent, action = result.get()
+        else:
+            logger.debug("Returning task id. Result should be checked polling task")
+            return result, 'webui.restserver.tasks.httpcall'
     else:
-        logger.debug("Returning task id. Result should be checked polling task")
-        return result, ''
+        logger.debug("Running MCollective call without using another task")
+        response, content, agent, action = httpcall(filters, agent, action, args, use_task)
     return response, content
 
 def verifyRestServer():

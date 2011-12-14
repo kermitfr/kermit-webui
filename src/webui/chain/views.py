@@ -56,7 +56,7 @@ def execute_chain(request, xhr=None):
                 if request.POST["operation%s"%i] == 'script_ex':
                     sqlScript = request.POST["sqlScript%s"%i]
                     instancename = request.POST["dbinstancename%s"%i]
-                    callRestServer(request.user, filters, 'oracledb', 'execute_sql', "instance=%s;sqlfile=%s" % (instancename, sqlScript))
+                    callRestServer(request.user, filters, 'oracledb', 'execute_sql', "instance=%s;sqlfile=%s" % (instancename, sqlScript), True)
                 elif request.POST["operation%s"%i] == 'deploy_ear':
                     try:
                         appfile = request.POST['earApp%s'%i]
@@ -67,7 +67,7 @@ def execute_chain(request, xhr=None):
                     if appname and instancename and appname:
                         logger.debug("Parameters check: OK.")
                         logger.debug("Calling MCollective to deploy %s application on %s filtered server" % (appfile, filters))
-                        response, content = callRestServer(request.user, filters, 'a7xoas', 'deploy', 'appname=%s;instancename=%s;appfile=%s' %(appname, instancename, appfile))
+                        response, content = callRestServer(request.user, filters, 'a7xoas', 'deploy', 'appname=%s;instancename=%s;appfile=%s' %(appname, instancename, appfile), True)
                         if response.status == 200:
                             json_content = json.loads(content)
                             rdict.update({"result%s"%i:json_content[0]["statusmsg"]})
@@ -83,7 +83,7 @@ def execute_chain(request, xhr=None):
                     if barapp and consolename:
                         logger.debug("Parameters check: OK.")
                         logger.debug("Calling MCollective to deploy %s bar on %s filtered server" % (barapp, filters))
-                        response, content = callRestServer(request.user, filters, 'a7xbar', 'deploy', 'filename=%s;bcname=%s' %(barapp, consolename))
+                        response, content = callRestServer(request.user, filters, 'a7xbar', 'deploy', 'filename=%s;bcname=%s' %(barapp, consolename), True)
                         if response.status == 200:
                             json_content = json.loads(content)
                             rdict.update({"result%s"%i:json_content[0]["statusmsg"]})
@@ -97,8 +97,8 @@ def execute_chain(request, xhr=None):
                     if instancename:
                         logger.debug("Parameters check: OK.")
                         logger.debug("Calling MCollective to restart instance %s" % (instancename))
-                        response, content = callRestServer(request.user, filters, 'a7xaos', 'stopinstance', 'instancename=%s' %(instancename))
-                        response, content = callRestServer(request.user, filters, 'a7xaos', 'startinstance', 'instancename=%s' %(instancename))
+                        response, content = callRestServer(request.user, filters, 'a7xaos', 'stopinstance', 'instancename=%s' %(instancename), True)
+                        response, content = callRestServer(request.user, filters, 'a7xaos', 'startinstance', 'instancename=%s' %(instancename), True)
                         if response.status == 200:
                             json_content = json.loads(content)
                             rdict.update({"result%s"%i:json_content[0]["statusmsg"]})

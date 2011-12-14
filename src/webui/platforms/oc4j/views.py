@@ -163,7 +163,7 @@ def deploy_app(request, filters, dialog_name, xhr=None):
             if appname and app_type and action:
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to deploy %s application on %s filtered server" % (appfile, filters))
-                response, content = callRestServer(request.user, filters, 'a7xoas', action, 'appname=%s;instancename=%s;appfile=%s' %(appname, instancename, appfile))
+                response, content = callRestServer(request.user, filters, 'a7xoas', action, 'appname=%s;instancename=%s;appfile=%s' %(appname, instancename, appfile), True)
                 if response.status == 200:
                     json_content = json.loads(content)
                     rdict.update({"result":json_content[0]["statusmsg"]})
@@ -221,7 +221,7 @@ def get_log(request, filters, dialog_name, xhr=None):
             if instancename and appname:
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to get log on %s filtered server" % (filters))
-                response, content = callRestServer(request.user, filters, 'a7xoas', 'get_log', 'instancename=%s;appname=%s' % (instancename,appname))
+                response, content = callRestServer(request.user, filters, 'a7xoas', 'get_log', 'instancename=%s;appname=%s' % (instancename,appname), True)
                 if response.status == 200:
                     json_content = json.loads(content)
                     s_resps = []
@@ -282,7 +282,7 @@ def create_instance(request, filters, dialog_name, xhr=None):
             if instancename and groupname:
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to create instance %s on %s filtered server" % (instancename, filters))
-                response, content = callRestServer(request.user, filters, 'a7xoas', 'createinstace', 'instancename=%s;groupname=%s;isflow=%s' %(instancename, groupname, isflow))
+                response, content = callRestServer(request.user, filters, 'a7xoas', 'createinstace', 'instancename=%s;groupname=%s;isflow=%s' %(instancename, groupname, isflow), True)
                 if response.status == 200:
                     json_content = json.loads(content)
                     rdict.update({"result":json_content[0]["statusmsg"]})
@@ -342,7 +342,7 @@ def add_pool(request, filters, dialog_name, xhr=None):
             if instancename and poolname and username and password and database and dbinstance:
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to create instance %s on %s filtered server" % (instancename, filters))
-                response, content = callRestServer(request.user, filters, 'a7xoas', 'add_pool', 'oc4j=%s;poolname=%s;user=%s;password=%s;database=%s;instance=%s' %(instancename, poolname, username, password, database, dbinstance))
+                response, content = callRestServer(request.user, filters, 'a7xoas', 'add_pool', 'oc4j=%s;poolname=%s;user=%s;password=%s;database=%s;instance=%s' %(instancename, poolname, username, password, database, dbinstance), True)
                 if response.status == 200:
                     json_content = json.loads(content)
                     rdict.update({"result":json_content[0]["statusmsg"]})

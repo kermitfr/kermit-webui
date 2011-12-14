@@ -14,10 +14,10 @@ logger = logging.getLogger(__name__)
 
 class JbossUpdate(UpdatePlatform):
     
-    def inventoryUpdate(self, user):
+    def inventoryUpdate(self, user, use_another_task=True):
         logger.debug("Calling JBoss Inventory")
         try: 
-            response, content = callRestServer(user, 'no-filter', 'jboss', 'inventory')
+            response, content = callRestServer(user, 'no-filter', 'jboss', 'inventory', None, True, use_another_task)
         except Exception, err:
             logger.error('ERROR: ' + str(err))
 
