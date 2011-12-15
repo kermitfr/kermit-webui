@@ -73,6 +73,9 @@
 								} else if (result.type == 'html') {
 									$("#" + data.response_container).html(result.response);	
 								}
+								if (result.state == 'FAILURE' && result.message == 'TIMEOUT') {
+									alert('Request Timeout');
+								}
 					        	$('#modalprogress').dialog('close');
 					        }
 				        // do something else

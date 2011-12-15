@@ -287,15 +287,14 @@ def create_instance(request, filters, dialog_name, xhr=None):
                 isflow = request.POST['isflow']
             except:
                 instancename=None
-            if instancename:
+                groupname=None
+            if instancename and groupname:
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to create instance %s on %s filtered server" % (instancename, filters))
-                args = 'instancename=%s' %(instancename)
-                if groupname:
-                    args = "%s;groupname=%s" % (args, groupname)
+                args = 'instancename=%s;groupname=%s' %(instancename, groupname)
                 if isflow:
                     args = "%s;isflow=%s" % (args, isflow)
-                response, content = callRestServer(request.user, filters, 'a7xoas', 'createinstace', args, True)
+                response, content = callRestServer(request.user, filters, 'a7xoas', 'createinstance', args, True)
                 if response.status == 200:
                     json_content = json.loads(content)
                     s_resps = []

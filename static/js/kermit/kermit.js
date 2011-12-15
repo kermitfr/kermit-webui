@@ -226,6 +226,7 @@ function sendRequestToMcollectiveSync(url, destination) {
 		complete : function() {
 			$('#loading').hide();
 		},
+		timeout: 600000,
 		success : function(data) {
 			$("#" + destination).empty();
 			if(data.type == 'json') {

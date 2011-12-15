@@ -100,6 +100,7 @@ def execute_action_form(request, agent, action, filters, dialog_name, response_c
                 logger.debug("Arguments for MCollective call %s" % arguments)
                 wait_for_response = False
                 response, content = callRestServer(request.user, filters, agent, action, arguments, wait_for_response)
+                #Leave wait for response check it to support both two in the future (read wait_for_response from config file)
                 if wait_for_response:
                     if response.status == 200:
                         json_data = render_agent_template(request, rdict, content, form.cleaned_data, agent, action)

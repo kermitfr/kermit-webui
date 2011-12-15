@@ -29,6 +29,9 @@ def get_progress(request, taskname, taskid):
             if response.status == 200:
                 json_data = render_agent_template(request, {}, content, {}, agent, action)
                 return HttpResponse(json_data, mimetype="application/json")
+            elif response.status == 408:
+                dict['state'] = 'FAILURE'
+                dict['message'] = 'TIMEOUT'
         else:
             value = float(1.0*result.result['current']/result.result['total'])*100
             dict['value'] = value
