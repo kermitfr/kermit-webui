@@ -287,11 +287,15 @@ def create_instance(request, filters, dialog_name, xhr=None):
                 isflow = request.POST['isflow']
             except:
                 instancename=None
-                groupname=None
-            if instancename and groupname:
+            if instancename:
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to create instance %s on %s filtered server" % (instancename, filters))
-                response, content = callRestServer(request.user, filters, 'a7xoas', 'createinstace', 'instancename=%s;groupname=%s;isflow=%s' %(instancename, groupname, isflow), True)
+                args = 'instancename=%s' %(instancename)
+                if groupname:
+                    args = "%s;groupname=%s" % (args, groupname)
+                if isflow:
+                    args = "%s;isflow=%s" % (args, isflow)
+                response, content = callRestServer(request.user, filters, 'a7xoas', 'createinstace', args, True)
                 if response.status == 200:
                     json_content = json.loads(content)
                     s_resps = []
@@ -302,7 +306,8 @@ def create_instance(request, filters, dialog_name, xhr=None):
                             s_resps.append({"server": server_response["sender"], "message":server_response["statusmsg"]})
                     rdict.update({"result":s_resps})
                 else:
-                    rdict.update({"result": "KO", "message": "Error communicating with server. <br> %s"%content})
+                    logger.error(str(content));
+                    rdict.update({"result": "KO", "message": "Error communicating with server"})
                 
                 rdict.update({'dialog_name':dialog_name})
                 # And send it off.

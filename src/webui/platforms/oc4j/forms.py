@@ -17,9 +17,9 @@ class LogForm(forms.Form):
     appname = forms.CharField(label=u"Application Name")
     
 class InstanceForm(forms.Form):
-    instancename = forms.CharField(label=u"Instance Name")
-    groupname = forms.CharField(label=u"Group Name")
-    isflow = forms.CharField(label=u"Is Flow?")
+    instancename = forms.CharField(label=u"Instance Name", required=True)
+    groupname = forms.CharField(label=u"Group Name", required=False)
+    isflow = forms.CharField(label=u"Is Flow?", required=False)
     
 class PoolForm(forms.Form):
     poolname = forms.CharField(label=u"Pool name")

@@ -119,9 +119,9 @@
 	        <div class="fieldWrapper">
 	            {{ field.errors }}
 	            {% if field.field.required %}
-	            <b>{{ field.label_tag }}</b>: {{ field }}
+	            <p><b>{{ field.label_tag }}</b>: {{ field }}</p>
 	            {% else %}
-	            {{ field.label_tag }}: {{ field }}
+	            <p>{{ field.label_tag }}: {{ field }}</p>
 	            {% endif %}
 	        </div>
 	    {% endfor %}
