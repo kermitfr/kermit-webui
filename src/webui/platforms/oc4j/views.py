@@ -302,7 +302,7 @@ def create_instance(request, filters, dialog_name, xhr=None):
                             s_resps.append({"server": server_response["sender"], "message":server_response["statusmsg"]})
                     rdict.update({"result":s_resps})
                 else:
-                    rdict.update({"result": "KO", "message": "Error communicating with server"})
+                    rdict.update({"result": "KO", "message": "Error communicating with server. <br> %s"%content})
                 
                 rdict.update({'dialog_name':dialog_name})
                 # And send it off.

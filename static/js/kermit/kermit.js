@@ -10,7 +10,7 @@ function getExecutionForm(base_url, execution_dialog_name, agent, action, filter
 		error : function() {
 			//TODO: Show error message
 			//$('#loading').hide();
-			alert('Error communicating with server');
+			alert('Con get execution form. Error communicating with server');
 		},
 		beforeSend : function() {
 			//$('#loading').show();
@@ -47,7 +47,7 @@ function getUploadForm(url, upload_dialog) {
 		error : function() {
 			//TODO: Show error message
 			//$('#loading').hide();
-			alert('Error communicating with server');
+			alert('Cannot get upload form. Error communicating with server');
 		},
 		beforeSend : function() {
 			//$('#loading').show();
@@ -81,7 +81,7 @@ function getDeployForm(base_url, platform_name, deploy_form_name, operation, fil
 		error : function() {
 			//TODO: Show error message
 			//$('#loading').hide();
-			alert('Error communicating with server');
+			alert('Cannot get deploy form. Error communicating with server');
 		},
 		beforeSend : function() {
 			//$('#loading').show();
@@ -115,7 +115,7 @@ function getForm(base_url, platform_name, form_name, operation, filters) {
 		error : function() {
 			//TODO: Show error message
 			//$('#loading').hide();
-			alert('Error communicating with server');
+			alert('Cannot get desired form. Error communicating with server');
 		},
 		beforeSend : function() {
 			//$('#loading').show();
@@ -150,7 +150,7 @@ function getSqlExecutionForm(base_url, platform_name, deploy_form_name, operatio
 		error : function() {
 			//TODO: Show error message
 			//$('#loading').hide();
-			alert('Error communicating with server');
+			alert('Cannot get sql form. Error communicating with server');
 		},
 		beforeSend : function() {
 			//$('#loading').show();
@@ -184,7 +184,7 @@ function getLogForm(base_url, platform_name, container, operation, filters) {
 		error : function() {
 			//TODO: Show error message
 			//$('#loading').hide();
-			alert('Error communicating with server');
+			alert('Cannot get log form. Error communicating with server');
 		},
 		beforeSend : function() {
 			//$('#loading').show();
@@ -290,9 +290,9 @@ function sendRequestToMcollective(url, destination) {
 				checkStatus();
 			} else {
 				if (data.error) {
-					alert(data.error);
+					$( "#taskstate").html(data.error);
 				}
-				$('#modalprogress').dialog('close');	
+				//$('#modalprogress').dialog('close');	
 			}
 		});
 }
@@ -309,14 +309,14 @@ function randomString() {
 }
 
 function callMcollective(url, destination) {
-	$('#'+destination).dialog({
-            width: 600,
-            modal: true,
-    });
 	sendRequestToMcollective(url, destination);
 }
 
 function callMcollectiveModal(url, destination) {
+	$('#'+destination).dialog({
+            width: 600,
+            modal: true,
+    });
 	sendRequestToMcollective(url, destination);
 }
 

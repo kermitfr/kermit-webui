@@ -10,6 +10,8 @@ from webui.restserver.template import render_agent_template, get_action_inputs
 from django.contrib.auth.decorators import login_required
 from guardian.shortcuts import get_objects_for_user
 from guardian.decorators import permission_required
+from django.core.urlresolvers import reverse
+from webui import settings
 
 logger = logging.getLogger(__name__)
 
@@ -96,18 +98,24 @@ def execute_action_form(request, agent, action, filters, dialog_name, response_c
                         arguments = arguments + input['name'] + '=' + form.cleaned_data[input['name']] 
                 
                 logger.debug("Arguments for MCollective call %s" % arguments)
-                #TODO: Refactor to use async here too
-                response, content = callRestServer(request.user, filters, agent, action, arguments, True)
-                if response.status == 200:
-                    json_data = render_agent_template(request, rdict, content, form.cleaned_data, agent, action)
+                wait_for_response = False
+                response, content = callRestServer(request.user, filters, agent, action, arguments, wait_for_response)
+                if wait_for_response:
+                    if response.status == 200:
+                        json_data = render_agent_template(request, rdict, content, form.cleaned_data, agent, action)
+                        return HttpResponse(json_data, mimetype='application/javascript')
+                    else:
+                        rdict.update({"result": "KO", "message": "Error communicating with server. <br> %s"%content})
+                else: 
+                    logger.debug("Returning request UUID")
+                    update_url = reverse('get_progress', kwargs={'taskname':content, 'taskid':response.task_id})
+                    rdict.update({"UUID": response.task_id, "taskname": content, 'update_url': update_url})
              
-            # And send it off.
-            return HttpResponse(json_data, mimetype='application/javascript')
-        # It's a normal submit - non ajax.
+            return HttpResponse(json.dumps(rdict, ensure_ascii=False), mimetype='application/javascript')
         else:
             if form.is_valid():
-                # We don't accept non-ajax requests for the moment
-                return HttpResponseRedirect("/")
+                logger.error("Trying to execute a NON Ajax call. Rejected and redirected to DashBoard.")
+                return HttpResponseRedirect(settings.BASE_URL)
     else:
         # It's not post so make a new form
         logger.warn("Cannot access this page using GET")

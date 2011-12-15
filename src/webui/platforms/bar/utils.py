@@ -69,7 +69,7 @@ def check_contains(applications, appli):
 def get_available_bars(user, filters):
     logger.debug("Calling bar_list with filters %s" % (filters))
     try: 
-        response, content = callRestServer(user, filters, "a7xbar", "applist", "apptype=%s" % 'jar', True)
+        response, content = callRestServer(user, filters, "a7xbar", "applist", "apptype=%s" % 'bar', True)
         if response.status == 200:
             jsonObj = json.loads(content)
             if jsonObj:
