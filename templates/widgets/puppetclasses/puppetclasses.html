@@ -72,7 +72,22 @@
 					return false;
 			},
 			onShow : function(e, context) {
-
+				var node = $.ui.dynatree.getNode(context);
+				var children = $(this).children('li');
+				for (child_id in children) {
+					if (parseInt(child_id)) {
+						var current_child = children[child_id];
+						if ($(current_child).attr('groups')) {
+							if (contains(node.data.classes, $(current_child).attr('groups'))) {
+								$(current_child).show();
+							} else {
+								$(current_child).hide();
+							}
+						}
+					}
+					
+				}
+				return true;
 			},
 			onHide : function(e, context) {
 
@@ -260,11 +275,11 @@
 		{% endif %}
 		{% if automatic_operations %}
 			{%for menu_name, menu_ops in automatic_operations.items %}
-			<li class="icon">
+			<li class="icon" groups="{{menu_name}}">
 				<span class="icon folder"></span>{{menu_name}}
 				<ul>
 					{%for current_op in menu_ops %}
-					<li class="icon" type="automatic_op" javascript="{{current_op.javascript}}">
+					<li class="icon" type="automatic_op" javascript="{{current_op.javascript}}" groups="{{current_op.class}}">
 						<span class="icon file"></span>{{current_op.description}}
 					</li>
 					{% endfor %}

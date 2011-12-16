@@ -22,6 +22,11 @@ class OC4JReDeployContextMenu(ContextOperation):
     def get_type(self):
         return 'OC4J'
     
+    def get_visible(self, server):
+        agent = server.agents.filter(name='a7xoas')
+        classes = server.puppet_classes.filter(name='oas')
+        return len(agent)==1 and len(classes)==1
+    
 class OC4JCreateInstanceContextMenu(ContextOperation):
     
     def get_operations(self):
@@ -36,6 +41,11 @@ class OC4JCreateInstanceContextMenu(ContextOperation):
     
     def get_type(self):
         return 'OC4J'
+    
+    def get_visible(self, server):
+        agent = server.agents.filter(name='a7xoas')
+        classes = server.puppet_classes.filter(name='oas')
+        return len(agent)==1 and len(classes)==1
     
 class OC4JAddPoolContextMenu(ContextOperation):
     
@@ -52,6 +62,11 @@ class OC4JAddPoolContextMenu(ContextOperation):
     def get_type(self):
         return 'OC4J'
     
+    def get_visible(self, server):
+        agent = server.agents.filter(name='a7xoas')
+        classes = server.puppet_classes.filter(name='oas')
+        return len(agent)==1 and len(classes)==1
+    
 class OC4JDeployContextMenu(ContextOperation):
     
     def get_operations(self):
@@ -67,6 +82,11 @@ class OC4JDeployContextMenu(ContextOperation):
     def get_type(self):
         return 'OC4J'
     
+    def get_visible(self, server):
+        agent = server.agents.filter(name='a7xoas')
+        classes = server.puppet_classes.filter(name='oas')
+        return len(agent)==1 and len(classes)==1
+    
 class OC4JGetAppLogContextMenu(ContextOperation):
     
     def get_operations(self):
@@ -81,6 +101,11 @@ class OC4JGetAppLogContextMenu(ContextOperation):
     
     def get_type(self):
         return 'OC4J'
+    
+    def get_visible(self, server):
+        agent = server.agents.filter(name='a7xoas')
+        classes = server.puppet_classes.filter(name='oas')
+        return len(agent)==1 and len(classes)==1
     
 class StartOC4JInstance(ServerOperation):
     

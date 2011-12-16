@@ -22,6 +22,10 @@ class JbossDeployContextMenu(ContextOperation):
     def get_type(self):
         return 'JBoss'
     
+    def get_visible(self, server):
+        agent = server.agents.filter(name='jboss')
+        return len(agent)==1
+    
 class JbossLogContextMenu(ContextOperation):
     
     def get_operations(self):
@@ -36,6 +40,10 @@ class JbossLogContextMenu(ContextOperation):
     
     def get_type(self):
         return 'JBoss'
+    
+    def get_visible(self, server):
+        agent = server.agents.filter(name='jboss')
+        return len(agent)==1
     
 kermit_modules.register(JbossDeployContextMenu)
 kermit_modules.register(JbossLogContextMenu)

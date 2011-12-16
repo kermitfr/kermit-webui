@@ -22,5 +22,9 @@ class BarDeployContextMenu(ContextOperation):
     def get_type(self):
         return 'BAR'
     
+    def get_visible(self, server):
+        agent = server.agents.filter(name='a7xbar')
+        return len(agent)==1
+    
 
 kermit_modules.register(BarDeployContextMenu)

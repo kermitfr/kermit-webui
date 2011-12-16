@@ -22,5 +22,9 @@ class PostgreSQLExecuteContextMenu(ContextOperation):
     def get_type(self):
         return 'PostgreSQL'
     
+    def get_visible(self, server):
+        agent = server.agents.filter(name='postgresql')
+        return len(agent)==1
+    
     
 kermit_modules.register(PostgreSQLExecuteContextMenu)

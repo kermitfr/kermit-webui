@@ -1,3 +1,13 @@
+function contains(a, obj) {
+    var i = a.length;
+    while (i--) {
+       if (a[i] === obj) {
+           return true;
+       }
+    }
+    return false;
+}
+
 function getExecutionForm(base_url, execution_dialog_name, agent, action, filters, response_container_name) {
 	url = base_url + '/agent/action/get_dialog_form/' + agent + '/' + action + '/' + filters + '/' + execution_dialog_name + '/' + response_container_name + '/';
 	$.ajax({

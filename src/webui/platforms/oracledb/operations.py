@@ -22,6 +22,11 @@ class OracleDBxecuteContextMenu(ContextOperation):
     def get_type(self):
         return 'OracleDB'
     
+    def get_visible(self, server):
+        agent = server.agents.filter(name='oracledb')
+        classes = server.puppet_classes.filter(name='odb')
+        return len(agent)==1 and len(classes)==1
+    
     
 class OracleCloneDatabaseContextMenu(ContextOperation):
     
@@ -37,6 +42,11 @@ class OracleCloneDatabaseContextMenu(ContextOperation):
     
     def get_type(self):
         return 'OracleDB'
+    
+    def get_visible(self, server):
+        agent = server.agents.filter(name='oracledb')
+        classes = server.puppet_classes.filter(name='odb')
+        return len(agent)==1 and len(classes)==1
     
     
 kermit_modules.register(OracleDBxecuteContextMenu)

@@ -12,6 +12,9 @@ class ContextOperation(object):
     
     def get_operations(self):
         raise NotImplementedAbstract
+    
+    def get_visible(self, server):
+        return None
         
         
 class CoreService(object):

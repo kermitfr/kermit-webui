@@ -22,6 +22,11 @@ class WeblogicReDeployContextMenu(ContextOperation):
     def get_type(self):
         return 'Weblogic'
     
+    def get_visible(self, server):
+        agent = server.agents.filter(name='a7xows')
+        classes = server.puppet_classes.filter(name='ows')
+        return len(agent)==1 and len(classes)==1
+    
 class WeblogicDeployContextMenu(ContextOperation):
     
     def get_operations(self):
@@ -36,6 +41,11 @@ class WeblogicDeployContextMenu(ContextOperation):
     
     def get_type(self):
         return 'Weblogic'
+    
+    def get_visible(self, server):
+        agent = server.agents.filter(name='a7xows')
+        classes = server.puppet_classes.filter(name='ows')
+        return len(agent)==1 and len(classes)==1
     
 class WeblogicLogContextMenu(ContextOperation):
     
@@ -52,6 +62,11 @@ class WeblogicLogContextMenu(ContextOperation):
     def get_type(self):
         return 'Weblogic'
     
+    def get_visible(self, server):
+        agent = server.agents.filter(name='a7xows')
+        classes = server.puppet_classes.filter(name='ows')
+        return len(agent)==1 and len(classes)==1
+    
 class WeblogicCreateInstanceContextMenu(ContextOperation):
     
     def get_operations(self):
@@ -66,6 +81,11 @@ class WeblogicCreateInstanceContextMenu(ContextOperation):
     
     def get_type(self):
         return 'Weblogic'
+    
+    def get_visible(self, server):
+        agent = server.agents.filter(name='a7xows')
+        classes = server.puppet_classes.filter(name='ows')
+        return len(agent)==1 and len(classes)==1
     
     
 class StartWeblogicInstance(ServerOperation):
