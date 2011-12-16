@@ -11,6 +11,7 @@ from webui.serverstatus.models import Server
 from django.utils import simplejson as json
 from webui.agent.models import Agent
 from webui.puppetclasses.models import PuppetClass
+from webui import settings
 
 logger = logging.getLogger(__name__)
 
@@ -111,10 +112,9 @@ def add_agents(server, agents_list):
 
 def create_path(server, puppet_classes):
     path = ''
-    #TODO: refactor the levels with value got from settings.py
-    for i in range (0, 5):
+    for i in range (0, settings.LEVELS_NUMBER):
         level_classes = PuppetClass.objects.filter(level=i).values_list('name', flat=True)
-        intersection = set(puppet_classes).intersection(set(level_classes))
+        intersection = list(set(puppet_classes).intersection(set(level_classes)))
         if intersection:
             extracted_class = iter(intersection).next()
             if extracted_class:

@@ -69,17 +69,20 @@ def check_contains(applications, appli):
 def get_available_bars(user, filters):
     logger.debug("Calling bar_list with filters %s" % (filters))
     try: 
-        response, content = callRestServer(user, filters, "a7xbar", "applist", "apptype=%s" % 'bar', True)
+        response, content = callRestServer(user, filters, "a7xbar", "applist", "apptype=%s" % 'bar', False, False)
         if response.status == 200:
             jsonObj = json.loads(content)
             if jsonObj:
                 #Looking for "intersections"
                 app_list = None
                 for server_response in jsonObj:
-                    if not app_list:
-                        app_list = server_response['data']['applist']
+                    if server_response['statuscode']==0 and server_response['data']:
+                        if not app_list:
+                            app_list = server_response['data']['applist']
+                        else:
+                            app_list = list(set(app_list).intersection(server_response['data']['applist']))
                     else:
-                        app_list = set(app_list).intersection(server_response['data']['applist'])
+                        logger.warn("No bar list response received")
                 return json.dumps({"errors":"", "applist":app_list})
             else:
                 return json.dumps({"errors":"Cannot retrieve apps list"})

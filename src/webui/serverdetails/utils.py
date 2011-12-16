@@ -18,7 +18,7 @@ def extract_user_servers(user):
                 level_classes = get_objects_for_user(user, "access_puppet_class", PuppetClass).filter(enabled=True, level=i)
                 servers_list = Server.objects.filter(puppet_classes__in=level_classes, deleted=False).distinct()
                 if servers:
-                    servers = set(servers).intersection(set(servers_list))
+                    servers = list(set(servers).intersection(set(servers_list)))
                 else:
                     servers = servers_list
         else:
