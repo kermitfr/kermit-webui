@@ -15,6 +15,12 @@ class ContextOperation(object):
     
     def get_visible(self, server):
         return None
+    
+    def get_enabled(self, user):
+        if not user.is_superuser:
+            return False
+        else:
+            return True
         
         
 class CoreService(object):

@@ -9,6 +9,9 @@ from webui.defaultop.models import Operation
 from guardian.shortcuts import get_objects_for_user
 from webui.core import kermit_modules
 from webui.abstracts import ContextOperation
+import logging
+
+logger = logging.getLogger(__name__)
 
 class DashBoardPuppetClasses(Widget):
     template = "widgets/puppetclasses/puppetclasses.html"
@@ -34,12 +37,15 @@ class DashBoardPuppetClasses(Widget):
         automatic_operations = {}
         if context_operations:
             for c_op in context_operations:
-                menu_name = "Undefined"
-                if c_op.get_type():
-                    menu_name = c_op.get_type()
-                if not menu_name in automatic_operations:
-                    automatic_operations[menu_name] = []
-                automatic_operations[menu_name].extend(c_op.get_operations())
+                if c_op.get_enabled(self.user):
+                    menu_name = "Undefined"
+                    if c_op.get_type():
+                        menu_name = c_op.get_type()
+                    if not menu_name in automatic_operations:
+                        automatic_operations[menu_name] = []
+                    automatic_operations[menu_name].extend(c_op.get_operations())
+                else:
+                    logger.debug("Excluding operation %s. Not enabled for user %s" % (c_op.get_type(), self.user))
         widget_context = {"agents":agents, "operations":operations, "actions": actions, 'automatic_operations':automatic_operations}
         return dict(super_context.items() + widget_context.items())
     

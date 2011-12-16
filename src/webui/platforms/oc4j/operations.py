@@ -6,6 +6,8 @@ Created on Nov 8, 2011
 from webui.abstracts import ContextOperation, ServerOperation
 from webui import settings
 from webui.core import kermit_modules
+from guardian.shortcuts import get_objects_for_user
+from webui.agent.models import Agent, Action
 
 class OC4JReDeployContextMenu(ContextOperation):
     
@@ -27,6 +29,17 @@ class OC4JReDeployContextMenu(ContextOperation):
         classes = server.puppet_classes.filter(name='oas')
         return len(agent)==1 and len(classes)==1
     
+    def get_enabled(self, user):
+        if not user.is_superuser:
+            agents = get_objects_for_user(user, 'use_agent', Agent).filter(enabled=True, name="a7xoas")
+            if len(agents)==1:
+                action = get_objects_for_user(user, 'use_action', Action).filter(agent=agents[0], name="redeploy")
+                return action and len(action)==1
+            else:
+                return False
+        else:
+            return True
+    
 class OC4JCreateInstanceContextMenu(ContextOperation):
     
     def get_operations(self):
@@ -46,6 +59,17 @@ class OC4JCreateInstanceContextMenu(ContextOperation):
         agent = server.agents.filter(name='a7xoas')
         classes = server.puppet_classes.filter(name='oas')
         return len(agent)==1 and len(classes)==1
+    
+    def get_enabled(self, user):
+        if not user.is_superuser:
+            agents = get_objects_for_user(user, 'use_agent', Agent).filter(enabled=True, name="a7xoas")
+            if len(agents)==1:
+                action = get_objects_for_user(user, 'use_action', Action).filter(agent=agents[0], name="createinstance")
+                return action and len(action)==1
+            else:
+                return False
+        else:
+            return True
     
 class OC4JAddPoolContextMenu(ContextOperation):
     
@@ -67,6 +91,17 @@ class OC4JAddPoolContextMenu(ContextOperation):
         classes = server.puppet_classes.filter(name='oas')
         return len(agent)==1 and len(classes)==1
     
+    def get_enabled(self, user):
+        if not user.is_superuser:
+            agents = get_objects_for_user(user, 'use_agent', Agent).filter(enabled=True, name="a7xoas")
+            if len(agents)==1:
+                action = get_objects_for_user(user, 'use_action', Action).filter(agent=agents[0], name="add_pool")
+                return action and len(action)==1
+            else:
+                return False
+        else:
+            return True
+    
 class OC4JDeployContextMenu(ContextOperation):
     
     def get_operations(self):
@@ -87,6 +122,17 @@ class OC4JDeployContextMenu(ContextOperation):
         classes = server.puppet_classes.filter(name='oas')
         return len(agent)==1 and len(classes)==1
     
+    def get_enabled(self, user):
+        if not user.is_superuser:
+            agents = get_objects_for_user(user, 'use_agent', Agent).filter(enabled=True, name="a7xoas")
+            if len(agents)==1:
+                action = get_objects_for_user(user, 'use_action', Action).filter(agent=agents[0], name="deploy")
+                return action and len(action)==1
+            else:
+                return False
+        else:
+            return True
+    
 class OC4JGetAppLogContextMenu(ContextOperation):
     
     def get_operations(self):
@@ -106,6 +152,17 @@ class OC4JGetAppLogContextMenu(ContextOperation):
         agent = server.agents.filter(name='a7xoas')
         classes = server.puppet_classes.filter(name='oas')
         return len(agent)==1 and len(classes)==1
+    
+    def get_enabled(self, user):
+        if not user.is_superuser:
+            agents = get_objects_for_user(user, 'use_agent', Agent).filter(enabled=True, name="a7xoas")
+            if len(agents)==1:
+                action = get_objects_for_user(user, 'use_action', Action).filter(agent=agents[0], name="get_log")
+                return action and len(action)==1
+            else:
+                return False
+        else:
+            return True
     
 class StartOC4JInstance(ServerOperation):
     
