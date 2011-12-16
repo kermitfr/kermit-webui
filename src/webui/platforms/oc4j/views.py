@@ -300,7 +300,10 @@ def create_instance(request, filters, dialog_name, xhr=None):
                     s_resps = []
                     for server_response in json_content:
                         if server_response['statuscode']==0:
-                            s_resps.append({"server": server_response["sender"], "response":server_response["statusmsg"]})
+                            response_message = 'Instance Created'
+                            if server_response["statusmsg"] and server_response["statusmsg"]!='OK':
+                                response_message = server_response["statusmsg"]
+                            s_resps.append({"server": server_response["sender"], "response":response_message})
                         else:
                             s_resps.append({"server": server_response["sender"], "message":server_response["statusmsg"]})
                     rdict.update({"result":s_resps})
