@@ -36,11 +36,11 @@ class CoreService(object):
     
 class ServerOperation(object):
     
-    def get_visible(self, server):
+    def get_visible(self, server, user):
         raise NotImplementedAbstract
     
     def get_enabled(self, server):
-        raise NotImplementedAbstract
+        return not server.online
     
     def get_name(self):
         raise NotImplementedAbstract

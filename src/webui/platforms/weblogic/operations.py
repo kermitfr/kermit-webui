@@ -136,10 +136,21 @@ class WeblogicCreateInstanceContextMenu(ContextOperation):
     
 class StartWeblogicInstance(ServerOperation):
     
-    def get_visible(self, server):
+    def get_visible(self, server, user):
         agent = server.agents.filter(name='a7xows')
         classes = server.puppet_classes.filter(name='ows')
-        return len(agent)==1 and len(classes)==1
+        if len(agent)==1 and len(classes)==1:
+            if not user.is_superuser:
+                agents = get_objects_for_user(user, 'use_agent', Agent).filter(enabled=True, name="a7xows")
+                if len(agents)==1:
+                    action = get_objects_for_user(user, 'use_action', Action).filter(agent=agents[0], name="startinstance")
+                    return action and len(action)==1
+                else:
+                    return False
+            else:
+                return True
+        else:
+            return False
     
     def get_enabled(self, server):
         return not server.online
@@ -173,10 +184,21 @@ class StartWeblogicInstance(ServerOperation):
     
 class StopWeblogicInstance(ServerOperation):
     
-    def get_visible(self, server):
+    def get_visible(self, server, user):
         agent = server.agents.filter(name='a7xows')
         classes = server.puppet_classes.filter(name='ows')
-        return len(agent)==1 and len(classes)==1
+        if len(agent)==1 and len(classes)==1:
+            if not user.is_superuser:
+                agents = get_objects_for_user(user, 'use_agent', Agent).filter(enabled=True, name="a7xows")
+                if len(agents)==1:
+                    action = get_objects_for_user(user, 'use_action', Action).filter(agent=agents[0], name="stoptinstance")
+                    return action and len(action)==1
+                else:
+                    return False
+            else:
+                return True
+        else:
+            return False
     
     def get_enabled(self, server):
         return not server.online

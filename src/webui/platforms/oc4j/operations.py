@@ -166,10 +166,21 @@ class OC4JGetAppLogContextMenu(ContextOperation):
     
 class StartOC4JInstance(ServerOperation):
     
-    def get_visible(self, server):
+    def get_visible(self, server, user):
         agent = server.agents.filter(name='a7xoas')
         classes = server.puppet_classes.filter(name='oas')
-        return len(agent)==1 and len(classes)==1
+        if len(agent)==1 and len(classes)==1:
+            if not user.is_superuser:
+                agents = get_objects_for_user(user, 'use_agent', Agent).filter(enabled=True, name="a7xoas")
+                if len(agents)==1:
+                    action = get_objects_for_user(user, 'use_action', Action).filter(agent=agents[0], name="startinstance")
+                    return action and len(action)==1
+                else:
+                    return False
+            else:
+                return True
+        else:
+            return False
     
     def get_enabled(self, server):
         return not server.online
@@ -203,10 +214,21 @@ class StartOC4JInstance(ServerOperation):
     
 class StopOC4JInstance(ServerOperation):
     
-    def get_visible(self, server):
+    def get_visible(self, server, user):
         agent = server.agents.filter(name='a7xoas')
         classes = server.puppet_classes.filter(name='oas')
-        return len(agent)==1 and len(classes)==1
+        if len(agent)==1 and len(classes)==1:
+            if not user.is_superuser:
+                agents = get_objects_for_user(user, 'use_agent', Agent).filter(enabled=True, name="a7xoas")
+                if len(agents)==1:
+                    action = get_objects_for_user(user, 'use_action', Action).filter(agent=agents[0], name="stoptinstance")
+                    return action and len(action)==1
+                else:
+                    return False
+            else:
+                return True
+        else:
+            return False
     
     def get_enabled(self, server):
         return not server.online

@@ -48,7 +48,7 @@ def hostInventory(request, hostname):
     server_operations = core.kermit_modules.extract(ServerOperation)
     if server_operations:
         for op in server_operations:
-            if op.get_visible(my_server):
+            if op.get_visible(my_server, request.user):
                 group_name = 'nogroup'
                 group_icon = None
                 if op.get_group_name():
