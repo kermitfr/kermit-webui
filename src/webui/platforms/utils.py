@@ -82,7 +82,7 @@ def extract_servers(filters):
         
 def read_file_log(file_name):
     toSearch = settings.AMQP_RECEIVER_LOG_FOLDER + '/*' + file_name
-    time_out = 600
+    time_out = 1000
     filesFound = []
     counter = 0
     while (len(filesFound) == 0 and counter < time_out):

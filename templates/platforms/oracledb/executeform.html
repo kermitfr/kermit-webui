@@ -84,24 +84,24 @@
 				} else {
 					$("#logcontainer").empty();
 					if (data.result!="KO") {
+						$("#logcontainer").dialog({
+							modal : true,
+							title : 'Query Log',
+							height : 400,
+							width : 800,
+							open: function(event, ui){
+								$('body').css('overflow','auto');
+								$('.ui-widget-overlay').css('width','100%'); 
+							} 
+						});
 						for (server_resp in data.result) {
 							if (data.result[server_resp].message!=undefined) {
 								$("#emsg").html("<div class='errorbox'>" + data.result[server_resp].message + "</div><br/>").fadeIn("slow");
 							} else {	
 								getLogContent(data.result[server_resp].server, data.result[server_resp].logfile);
-								$("#logcontainer").dialog({
-									modal : true,
-									title : 'Query Log',
-									height : 400,
-									width : 800,
-									open: function(event, ui){
-										$('body').css('overflow','auto');
-										$('.ui-widget-overlay').css('width','100%'); 
-									} 
-								});
-								$("#" + data.dialog_name).dialog('close');
 							}
 						}
+						$("#" + data.dialog_name).dialog('close');
 					} else {
 						$("#emsg").append("<div class='errorbox'>" + data.message + "</div><br/>").fadeIn("slow");
 					}
@@ -125,7 +125,6 @@
 			error : function() {
 				//TODO: Show error message
 				alert("Server communication error. Cannot download sql List");
-				$('#loading').hide();
 			},
 			beforeSend : function() {
 				$('#loading').show();
