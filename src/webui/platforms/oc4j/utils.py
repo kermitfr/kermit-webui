@@ -13,8 +13,9 @@ logger = logging.getLogger(__name__)
 def extract_instances_name(hostname):
     instances = []
     server_info = read_server_info(hostname)
-    for instance in server_info:
-        instances.append(instance['id'])
+    if server_info:
+        for instance in server_info:
+            instances.append(instance['id'])
         
     return instances
 
