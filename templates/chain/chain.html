@@ -39,27 +39,8 @@
 				newElem.find('#addServer').attr('id', 'addServer' + newNum);
 				newElem.find('#removeServer').attr('id', 'removeServer' + newNum);
 				newElem.find('#listServer').attr('id', 'listServer' + newNum).attr('name', 'listServer' + newNum);
-				newElem.find('#hiddenServerList').attr('id', 'hiddenServerList' + newNum).attr('name', 'hiddenServerList' + newNum);
 				newElem.find('#listServerContainer').attr('id', 'listServerContainer' + newNum).attr('name', 'listServerContainer' + newNum);
-				//Execute Script
-				newElem.find('#executeScript').attr('id', 'executeScript' + newNum);
-				newElem.find('#sqlScript').attr('id', 'sqlScript' + newNum).attr('name', 'sqlScript' + newNum);
-				newElem.find('#dbinstancename').attr('id', 'dbinstancename' + newNum).attr('name', 'dbinstancename' + newNum);
-				newElem.find('#refreshSql').attr('id', 'refreshSql' + newNum);
-				//DeployEar
-				newElem.find('#deployEar').attr('id', 'deployEar' + newNum);
-				newElem.find('#earApp').attr('id', 'earApp' + newNum).attr('name', 'earApp' + newNum);
-				newElem.find('#instancename').attr('id', 'instancename' + newNum).attr('name', 'instancename' + newNum);
-				newElem.find('#appname').attr('id', 'appname' + newNum).attr('name', 'appname' + newNum);
-				newElem.find('#refreshEar').attr('id', 'refreshEar' + newNum);
-				//DeployBar
-				newElem.find('#deployBar').attr('id', 'deployBar' + newNum);
-				newElem.find('#barApp').attr('id', 'barApp' + newNum).attr('name', 'barApp' + newNum);
-				newElem.find('#consoleName').attr('id', 'consoleName' + newNum).attr('name', 'consoleName' + newNum);
-				newElem.find('#refreshBar').attr('id', 'refreshBar' + newNum);
-				//Restart Instance
-				newElem.find('#restartInstance').attr('id', 'restartInstance' + newNum);
-				newElem.find('#instancename').attr('id', 'instancename' + newNum).attr('name', 'instancename' + newNum);
+				newElem.find('#operationdata').attr('id', 'operationdata' + newNum);
 				if (num == 0) {
 					$("#buttons").after(newElem);	
 				} else {
@@ -80,14 +61,23 @@
 					$('#removeServer'+newNum).css({visibility: "visible"});
 					$('#server'+newNum).flexbox('{% url chain_server_list %}');
 					if (this.value == 'script_ex') {
-						$('#executeScript'+newNum).css({visibility: "visible"});	
-						$('#deployBar'+newNum).remove();
-						$('#deployEar'+newNum).remove();
-						$('#restartInstance'+newNum).remove();	
+						var execScript = $('#executeScript').clone().attr('id', 'executeScript' + newNum).css({visibility: "visible"});
+						//Execute Script
+						execScript.find('#sqlScript').attr('id', 'sqlScript' + newNum).attr('name', 'sqlScript' + newNum);
+						execScript.find('#dbinstancename').attr('id', 'dbinstancename' + newNum).attr('name', 'dbinstancename' + newNum);
+						execScript.find('#refreshSql').attr('id', 'refreshSql' + newNum);
+						$("#operationdata"+newNum).html(execScript);
 						$('#refreshSql'+newNum).click(function() {
+							var serverFilter = ""
+							$("#listServer"+newNum+" option").each(function(i, selected){ 
+							  if (serverFilter!="") {
+							  	serverFilter=serverFilter+";";
+							  }
+							  serverFilter = serverFilter + $(selected).text(); 
+							});
 							$.ajax({
 								// The link we are accessing.
-								url : '{{base_url}}/chain/sql_list/' + $("#hiddenServerList"+newNum).val() + '/',
+								url : '{{base_url}}/chain/sql_list/' + serverFilter + '/',
 								// The type of request.
 								type : "get",
 								// The type of data that is getting returned.
@@ -117,10 +107,12 @@
 							});	
 						});
 					} else if (this.value == 'deploy_bar') {
-						$('#executeScript'+newNum).remove();	
-						$('#deployBar'+newNum).css({visibility: "visible"});
-						$('#deployEar'+newNum).remove();
-						$('#restartInstance'+newNum).remove();
+						//DeployBar
+						var deployBar = $('#deployBar').clone().attr('id', 'deployBar' + newNum).css({visibility: "visible"});
+						deployBar.find('#barApp').attr('id', 'barApp' + newNum).attr('name', 'barApp' + newNum);
+						deployBar.find('#consoleName').attr('id', 'consoleName' + newNum).attr('name', 'consoleName' + newNum);
+						deployBar.find('#refreshBar').attr('id', 'refreshBar' + newNum);
+						$("#operationdata"+newNum).html(deployBar);
 						$('#refreshBar'+newNum).click(function() {
 							$.ajax({
 								// The link we are accessing.
@@ -154,10 +146,13 @@
 							});
 						});	
 					} else if (this.value == 'deploy_ear') {
-						$('#executeScript'+newNum).remove();	
-						$('#deployBar'+newNum).remove();
-						$('#deployEar'+newNum).css({visibility: "visible"});
-						$('#restartInstance'+newNum).remove();
+						//DeployEar
+						var deployEar = $('#deployEar').clone().attr('id', 'deployEar' + newNum).css({visibility: "visible"});
+						deployEar.find('#earApp').attr('id', 'earApp' + newNum).attr('name', 'earApp' + newNum);
+						deployEar.find('#instancename').attr('id', 'instancename' + newNum).attr('name', 'instancename' + newNum);
+						deployEar.find('#appname').attr('id', 'appname' + newNum).attr('name', 'appname' + newNum);
+						deployEar.find('#refreshEar').attr('id', 'refreshEar' + newNum);
+						$("#operationdata"+newNum).html(deployEar);
 						$('#refreshEar'+newNum).click(function() {
 							$.ajax({
 								// The link we are accessing.
@@ -191,10 +186,10 @@
 							});	
 						});	
 					} else if (this.value == 'restart_instance') {
-						$('#executeScript'+newNum).remove();	
-						$('#deployBar'+newNum).remove();
-						$('#deployEar'+newNum).remove();
-						$('#restartInstance'+newNum).css({visibility: "visible"});	
+						//Restart Instance
+						var restartInstance = $('#restartInstance').clone().attr('id', 'restartInstance' + newNum).css({visibility: "visible"});
+						restartInstance.find('#instancename').attr('id', 'instancename' + newNum).attr('name', 'instancename' + newNum);
+						$("#operationdata"+newNum).html(restartInstance);
 					}
 				});
 				
@@ -215,11 +210,11 @@
             });
  
             $('#btnDel').click(function() {
-                var num = $('.clonedInput').length;
-                $('#input' + num).remove();
+                var num = $('.clonedOperation').length;
+                $('#template' + num).remove();
                 //$('#btnAdd').attr('disabled','');
  
-                if (num-1 == 1)
+                if (num == 1)
                     $('#btnDel').attr('disabled','disabled');
             });
  
@@ -267,10 +262,10 @@
 		function parseError(data) {
 			i = 1;
 			while (i <= 5) {
-				id = "#listServer"+i;
-				if ($(id)!=undefined) {
-					$(id).each(function(){
-						$(id + " option").removeAttr("selected");
+				id = "#listServer"+i; 
+				if ($(id)!=undefined) {	
+					$(id + " option").each(function(i, value){
+						$(value).removeAttr("selected");
 					});
 				}
 				i++;
@@ -289,9 +284,9 @@
 			i = 1;
 			while (i <= 5) {
 				id = "#listServer"+i; 
-				if ($(id)!=undefined) {
-					$(id).each(function(){
-						$(id + " option").attr("selected","selected");
+				if ($(id)!=undefined) {	
+					$(id + " option").each(function(i, value){
+						$(value).attr("selected","selected");
 					});
 				}
 				i++;
@@ -343,37 +338,37 @@
 				</td>
 				<td>
 					<div id="listServerContainer" style="visibility: hidden;">{% trans 'Servers selected' %}:<br/>
-						<input type="hidden" id="hiddenServerList"/>
-						<!--<div id="listServer" style="visibility: hidden; border: 1px solid black; width: 200px; max-height: 100px; min-height: 100px; overflow: auto;"></div> -->
 						<select id="listServer" NAME="listServer" multiple size="5" style="visibility: hidden;width:250px;"></select>
 					</div>
 				</td>
 			</tr>
 			<tr>
-				<td colspan="4">
-					<div id="deployEar" style="visibility: hidden;">
-						{% trans 'Application'%}: <select id="earApp"></select>
-						<input type="button" id="refreshEar" value="Refresh App list"/><br/>
-						{% trans 'Instance Name'%}: <input type="text" id="instancename"/><br/>
-						{% trans 'Application Name'%}: <input type="text" id="appname"/>
-					</div>
-					<div id="executeScript" style="visibility: hidden;">
-						{% trans 'SQL Script'%}: <select id="sqlScript"></select>	
-						<input type="button" id="refreshSql" value="Refresh SQL list"/><br/>
-						{% trans 'DB Instance Name'%}: <input type="text" id="dbinstancename"/>
-					</div>
-					<div id="deployBar" style="visibility: hidden;">
-						{% trans 'BAR Name'%}: <select id="barApp"></select>
-						<input type="button" id="refreshBar" value="Refresh Bar list"/><br/>
-						{% trans 'Console Name'%}: <input type="text" id="consoleName"></input>
-					</div>
-					<div id="restartInstance" style="visibility: hidden;">
-						{% trans 'Instance Name'%}: <input type="text" id="instancename"></input>
-					</div>	
+				<td id="operationdata" colspan="4">
+					
 				</td>
 			</tr>
 		</table>
 	</fieldset>
 </div>
+
+<div id="deployEar" style="visibility: hidden;">
+	{% trans 'Application'%}: <select id="earApp"></select>
+	<input type="button" id="refreshEar" value="Refresh App list"/><br/>
+	{% trans 'Instance Name'%}: <input type="text" id="instancename"/><br/>
+	{% trans 'Application Name'%}: <input type="text" id="appname"/>
+</div>
+<div id="executeScript" style="visibility: hidden;">
+	{% trans 'SQL Script'%}: <select id="sqlScript"></select>	
+	<input type="button" id="refreshSql" value="Refresh SQL list"/><br/>
+	{% trans 'DB Instance Name'%}: <input type="text" id="dbinstancename"/>
+</div>
+<div id="deployBar" style="visibility: hidden;">
+	{% trans 'BAR Name'%}: <select id="barApp"></select>
+	<input type="button" id="refreshBar" value="Refresh Bar list"/><br/>
+	{% trans 'Console Name'%}: <input type="text" id="consoleName"></input>
+</div>
+<div id="restartInstance" style="visibility: hidden;">
+	{% trans 'Instance Name'%}: <input type="text" id="instancename"></input>
+</div>	
 
 {% endblock %}

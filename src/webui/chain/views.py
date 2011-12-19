@@ -34,12 +34,11 @@ def show_page(request):
 @login_required
 def server_list(request):
     servers = Server.objects.filter(deleted=False)
-    if request.user != 'fooUser':
-            if not request.user.is_superuser and settings.FILTERS_SERVER:
-                servers = get_objects_for_user(request.user, 'use_server', Server).filter(deleted=False)
+    if not request.user.is_superuser and settings.FILTERS_SERVER:
+        servers = get_objects_for_user(request.user, 'use_server', Server).filter(deleted=False)
     server_list = []
     for server in servers:
-        server_list.append({'id': server.hostname, 'name': server.fqdn})
+        server_list.append({'id': server.fqdn, 'name': server.fqdn})
     return HttpResponse(json.dumps({"results":server_list}))
 
 @login_required
