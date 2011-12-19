@@ -42,6 +42,7 @@
 	$(document).ready(function() {
 		$('.errorlist').remove();
 		$('#logcontainer').hide();
+		
 		// prepare Options Object
 		var options = {
 			url : '{% url postgres_execute_sql filters "deploy-dialog" "xhr" %}', // Here we pass the xhr flag
@@ -82,26 +83,29 @@
 				if (data.errors) {
 					$('#emsg').text(data.errors);
 				} else {
-					$("#logcontainer").empty();
 					if (data.result!="KO") {
+						$("#logcontainer").dialog({
+							modal : true,
+							title : 'Query Log',
+							height : 400,
+							width : 800,
+							close: function(event, ui) {
+								$(this).remove();	
+							},
+							open: function(event, ui){
+								$('body').css('overflow','auto');
+								$('.ui-widget-overlay').css('width','100%'); 
+							} 
+						});
 						for (server_resp in data.result) {
+							$("#logcontainer-content").append("<b>" + data.result[server_resp].server + "</b><br/>");
 							if (data.result[server_resp].message!=undefined) {
-								$("#emsg").html("<div class='errorbox'>" + data.result[server_resp].message + "</div><br/>").fadeIn("slow");
+								$("#logcontainer-content").append(data.result[server_resp].message);
 							} else {	
 								getLogContent(data.result[server_resp].server, data.result[server_resp].logfile);
-								$("#logcontainer").dialog({
-									modal : true,
-									title : 'Query Log',
-									height : 400,
-									width : 800,
-									open: function(event, ui){
-										$('body').css('overflow','auto');
-										$('.ui-widget-overlay').css('width','100%'); 
-									} 
-								});
-								$("#" + data.dialog_name).dialog('close');
 							}
 						}
+						$("#" + data.dialog_name).dialog('close');
 					} else {
 						$("#emsg").append("<div class='errorbox'>" + data.message + "</div><br/>").fadeIn("slow");
 					}
@@ -134,9 +138,9 @@
 			},
 			success : function(data) {
 				if(data) {
-					$("#logcontainer").append(data.logfilecontent);	
+					$("#logcontainer-content").append(data.logfilecontent);
 				} else {
-					$("#logcontainer").append("No log file found with the given name " + logFile);
+					$("#logcontainer-content").append("No log file found with the given name " + logFile);
 				}
 			}
 		});
@@ -145,7 +149,6 @@
 	function parseError(data) {
 		$('#loading').hide();
 		if(data) {
-			alert(data.result);
 			$("#" + data.dialog_name).dialog('close');
 		} else {
 			//DON'T PANIC :D
@@ -178,4 +181,6 @@
 	<input class="input" type="submit" value="Execute" id="bt"/>
 	</fieldset>
 </form>
-<div id="logcontainer"></div>
+<div id="logcontainer">
+	<div id="logcontainer-content"></div>
+</div>

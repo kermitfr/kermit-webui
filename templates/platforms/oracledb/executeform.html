@@ -89,14 +89,18 @@
 							title : 'Query Log',
 							height : 400,
 							width : 800,
+							close: function(event, ui) {
+								$(this).remove();	
+							},
 							open: function(event, ui){
 								$('body').css('overflow','auto');
 								$('.ui-widget-overlay').css('width','100%'); 
 							} 
 						});
 						for (server_resp in data.result) {
+							$("#logcontainer-content").append("<b>" + data.result[server_resp].server + "</b><br/>");
 							if (data.result[server_resp].message!=undefined) {
-								$("#emsg").html("<div class='errorbox'>" + data.result[server_resp].message + "</div><br/>").fadeIn("slow");
+								$("#logcontainer").append(data.result[server_resp].message);
 							} else {	
 								getLogContent(data.result[server_resp].server, data.result[server_resp].logfile);
 							}
