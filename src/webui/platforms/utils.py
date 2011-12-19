@@ -106,7 +106,9 @@ def read_file_log(file_name):
 def plaintext2html(text, tabstop=4):
     new_string = text.replace("\\r\\n", "<br/>")
     new_string = new_string.replace("\\n", "<br/>")
+    new_string = new_string.replace("\n", "<br/>")
     new_string = new_string.replace('\\r', '<br/>')
+    new_string = new_string.replace("\r", "<br/>")
     new_string = new_string.replace(' ', '&nbsp;')
     new_string = new_string.replace('\\t', '&nbsp;&nbsp;&nbsp;&nbsp;')    
     return new_string
