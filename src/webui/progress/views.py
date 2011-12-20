@@ -33,8 +33,11 @@ def get_progress(request, taskname, taskid):
                 dict['state'] = 'FAILURE'
                 dict['message'] = 'TIMEOUT'
         else:
-            value = float(1.0*result.result['current']/result.result['total'])*100
-            dict['value'] = value
+            if "current" in result.result and "total" in result.result:
+                value = float(1.0*result.result['current']/result.result['total'])*100
+                dict['value'] = value
+            else:
+                dict.update({"responsecontent": result.result})
     else: 
         dict['value'] = 0
     json_data = json.dumps(dict)

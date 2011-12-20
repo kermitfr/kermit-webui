@@ -11,6 +11,18 @@
 {% endblock %}
 {% block content %}
 <script type="text/javascript">
+
+	function createServerList(selectId) {
+		var serverFilter = ""
+		$(selectId+" option").each(function(i, selected){ 
+		  if (serverFilter!="") {
+		  	serverFilter=serverFilter+";";
+		  }
+		  serverFilter = serverFilter + $(selected).text(); 
+		});
+		return serverFilter;
+	}
+
 	$('html').ajaxSend(function(event, xhr, settings) {
 		if(!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
 			// Only send the token to relative URLs i.e. locally.
@@ -25,8 +37,12 @@
 				error: parseError,
 				beforeSubmit : beforeForm
 			};
+			var string_server = "{{server_list}}".replace(/&quot;/g, '"');
+			var server_list = jQuery.parseJSON(string_server);
+			alert(server_list);
 			// bind form using ajaxForm
 			$('#chainForm').ajaxForm(options);
+			$("#submitForm").attr('disabled','disabled');
 	
             $('#btnAdd').click(function() {
                 var num = $('.clonedOperation').length;
@@ -39,6 +55,7 @@
 				newElem.find('#addServer').attr('id', 'addServer' + newNum);
 				newElem.find('#removeServer').attr('id', 'removeServer' + newNum);
 				newElem.find('#listServer').attr('id', 'listServer' + newNum).attr('name', 'listServer' + newNum);
+				newElem.find('#listServerHidden').attr('id', 'listServerHidden' + newNum).attr('name', 'listServerHidden' + newNum);
 				newElem.find('#listServerContainer').attr('id', 'listServerContainer' + newNum).attr('name', 'listServerContainer' + newNum);
 				newElem.find('#operationdata').attr('id', 'operationdata' + newNum);
 				if (num == 0) {
@@ -47,6 +64,7 @@
                 	$('#template' + num).after(newElem);
                 }
 				$('#btnDel').removeAttr('disabled');
+				$('#submitForm').removeAttr('disabled');
  
                 if (newNum == 5) {
                     $('#btnAdd').attr('disabled','disabled');
@@ -59,7 +77,11 @@
 					$('#listServerContainer'+newNum).css({visibility: "visible"});
 					$('#addServer'+newNum).css({visibility: "visible"});
 					$('#removeServer'+newNum).css({visibility: "visible"});
-					$('#server'+newNum).flexbox('{% url chain_server_list %}');
+					$('#server'+newNum).flexbox(server_list, {
+						watermark: 'Enter server name',
+						paging: false,  
+    					maxVisibleRows: 8  
+					});
 					if (this.value == 'script_ex') {
 						var execScript = $('#executeScript').clone().attr('id', 'executeScript' + newNum).css({visibility: "visible"});
 						//Execute Script
@@ -68,13 +90,7 @@
 						execScript.find('#refreshSql').attr('id', 'refreshSql' + newNum);
 						$("#operationdata"+newNum).html(execScript);
 						$('#refreshSql'+newNum).click(function() {
-							var serverFilter = ""
-							$("#listServer"+newNum+" option").each(function(i, selected){ 
-							  if (serverFilter!="") {
-							  	serverFilter=serverFilter+";";
-							  }
-							  serverFilter = serverFilter + $(selected).text(); 
-							});
+							var serverFilter = createServerList("#listServer"+newNum);
 							$.ajax({
 								// The link we are accessing.
 								url : '{{base_url}}/chain/sql_list/' + serverFilter + '/',
@@ -114,9 +130,9 @@
 						deployBar.find('#refreshBar').attr('id', 'refreshBar' + newNum);
 						$("#operationdata"+newNum).html(deployBar);
 						$('#refreshBar'+newNum).click(function() {
+							var serverFilter = createServerList("#listServer"+newNum);
 							$.ajax({
-								// The link we are accessing.
-								url : '{{base_url}}/chain/bar_list/' + $("#hiddenServerList"+newNum).val() + '/',
+								url : '{{base_url}}/chain/bar_list/' + serverFilter + '/',
 								// The type of request.
 								type : "get",
 								// The type of data that is getting returned.
@@ -154,9 +170,9 @@
 						deployEar.find('#refreshEar').attr('id', 'refreshEar' + newNum);
 						$("#operationdata"+newNum).html(deployEar);
 						$('#refreshEar'+newNum).click(function() {
+							var serverFilter = createServerList("#listServer"+newNum);
 							$.ajax({
-								// The link we are accessing.
-								url : '{{base_url}}/chain/ear_list/' + $("#hiddenServerList"+newNum).val() + '/',
+								url : '{{base_url}}/chain/ear_list/' + serverFilter + '/',
 								// The type of request.
 								type : "get",
 								// The type of data that is getting returned.
@@ -195,7 +211,9 @@
 				
 				$('#addServer'+newNum).click(function() {
 					if ($('#server'+newNum+'_hidden').val()!='' && $('#server'+newNum+'_hidden').val()!=undefined) {
-						$('#listServer'+newNum).append('<option value="'+$('#server'+newNum+'_hidden').val()+'">'+$('#server'+newNum+'_hidden').val()+'</option>');	
+						$('#listServer'+newNum).append('<option value="'+$('#server'+newNum+'_hidden').val()+'">'+$('#server'+newNum+'_hidden').val()+'</option>');
+						var serverFilter = createServerList("#listServer"+newNum);
+						$("#listServerHidden"+newNum).val(serverFilter);	
 					} else {
 						alert("You must select server to add...");
 					}
@@ -204,6 +222,8 @@
 				$('#removeServer'+newNum).click(function() {
 					$("#listServer"+newNum+" :selected").each(function(i, selected){ 
 					  $(selected).remove(); 
+					  var serverFilter = createServerList("#listServer"+newNum);
+					  $("#listServerHidden"+newNum).val(serverFilter);
 					});
 				});
 			
@@ -214,8 +234,10 @@
                 $('#template' + num).remove();
                 //$('#btnAdd').attr('disabled','');
  
-                if (num == 1)
+                if (num == 1) {
                     $('#btnDel').attr('disabled','disabled');
+					$('#submitForm').attr('disabled','disabled');
+				}
             });
  
             $('#btnDel').attr('disabled','disabled');
@@ -232,26 +254,61 @@
 				if(eval(data.bad)) {
 					e_msg = "Please check your form.";
 					errors = eval(data.errs);
-					//Again with the eval :)
-					// This is very nice: Go thru the errors, build an id name and
-					// then access that tag and add the HTML from the Django error
 					$.each(errors, function(fieldname, errmsg) {
-						id = "#id_" + fieldname;
+						id = "#" + fieldname;
 						$(id).parent().before(errmsg);
-						//I want the error above the <p> holding the field
 					});
-					// re-enable the submit button, coz user has to fix stuff.
-		//				$('#bt').attr("disabled", "");
 				} else {
-					i = 1;
-					result = "";
-					while (i <= 5) { 
-						if (eval('data.result'+i)!=undefined) {
-							result = result + '\n' + eval('data.result'+i);
+					$('#modalprogress').dialog({
+							modal : true,
+							title : 'Progress...',
+							height : 100,
+							width : 500
+					});
+					$( "#progressbar" ).progressbar({ value: 0 });
+					$( "#taskstate").html('<b>Waiting...	</b>');
+					$.get(data.update_url, function(response) {
+						var checkStatus = function() {
+							$.getJSON(data.update_url, function(result) {
+					    		$( "#progressbar").progressbar({ value: result.value });
+								$( "#taskstate").html('<b>' + result.state + '</b>');	
+						        if(result.state!='SUCCESS' && result.state!='FAILURE' && result.state!=undefined) {
+						            setTimeout(checkStatus, 2000);
+						        } else {
+						        	var response_container = "#modalresponsecontainer";
+						        	$(response_container).empty();
+						        	alert(result.responsecontent)
+									for (i in result.responsecontent) {
+										resp = result.responsecontent[i];
+										content = '<strong>' + resp.name + '</strong>';
+										content += '<ul>';
+										content += '<li> Status Code: ' + resp.message + '</li>';
+										content += '</ul>';
+										$(content).appendTo(response_container);	
+									}
+									
+									if (result.state == 'FAILURE' && result.message == 'TIMEOUT') {
+										alert('Request Timeout');
+									}
+									$(response_container).dialog({
+											modal : true,
+											title : 'Execution response',
+											height : 200,
+											width : 500
+									});
+						        	$('#modalprogress').dialog('close');
+						        }
+					        // do something else
+			    		 	});
 						}
-						i++;
-					}
-					alert(result);				
+						if (data.UUID) {
+							checkStatus();
+						} else {
+							if (data.error) {
+								$( "#taskstate").html(data.error);
+							}
+						}
+					});			
 				}
 			} else {
 				//DON'T PANIC :D
@@ -260,16 +317,6 @@
 		}
 		
 		function parseError(data) {
-			i = 1;
-			while (i <= 5) {
-				id = "#listServer"+i; 
-				if ($(id)!=undefined) {	
-					$(id + " option").each(function(i, value){
-						$(value).removeAttr("selected");
-					});
-				}
-				i++;
-			}
 			$('#loading').hide();
 			if(data) {
 				alert(data.result);				
@@ -281,25 +328,10 @@
 		}
 	
 		function beforeForm() {
-			i = 1;
-			while (i <= 5) {
-				id = "#listServer"+i; 
-				if ($(id)!=undefined) {	
-					$(id + " option").each(function(i, value){
-						$(value).attr("selected","selected");
-					});
-				}
-				i++;
-			}
-			//$('#bt').attr("disabled", "disabled");
-			//Disable the submit button - can't click twice
 			$('.errorlist').remove();
-			//Get rid of any old error uls
 			$('#emsg').fadeOut('slow');
 			$('#loading').show();
-			//Get rid of the main error message
 			return true;
-			//Might not need this...
 		}
 </script>
 <br/>
@@ -312,7 +344,7 @@
     	<input type="button" id="btnDel" value="Remove Operation" />
     	<input type="submit" id="submitForm" value="Execute Chain" />    
 	</div>
-	
+	<div id="errMsg"></div>
 </form>
 
 <div id="template" style="visibility: hidden;">
@@ -338,7 +370,8 @@
 				</td>
 				<td>
 					<div id="listServerContainer" style="visibility: hidden;">{% trans 'Servers selected' %}:<br/>
-						<select id="listServer" NAME="listServer" multiple size="5" style="visibility: hidden;width:250px;"></select>
+						<select id="listServer" name="listServer" multiple size="5" style="visibility: hidden;width:250px;"></select>
+						<input type="hidden" id="listServerHidden" value=""/>
 					</div>
 				</td>
 			</tr>
@@ -358,9 +391,13 @@
 	{% trans 'Application Name'%}: <input type="text" id="appname"/>
 </div>
 <div id="executeScript" style="visibility: hidden;">
-	{% trans 'SQL Script'%}: <select id="sqlScript"></select>	
-	<input type="button" id="refreshSql" value="Refresh SQL list"/><br/>
-	{% trans 'DB Instance Name'%}: <input type="text" id="dbinstancename"/>
+	<p>
+		{% trans 'SQL Script'%}: <select id="sqlScript"></select>	
+		<input type="button" id="refreshSql" value="Refresh SQL list"/><br/>
+	</p>
+	<p>
+		{% trans 'DB Instance Name'%}: <input type="text" id="dbinstancename"/>
+	</p>
 </div>
 <div id="deployBar" style="visibility: hidden;">
 	{% trans 'BAR Name'%}: <select id="barApp"></select>

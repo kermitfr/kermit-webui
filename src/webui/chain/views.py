@@ -14,10 +14,11 @@ from django.http import HttpResponse, Http404
 from django.utils import simplejson as json
 from webui.platforms.oracledb.utils import sql_list
 from webui.chain.utils import construct_filters
-from webui.restserver.communication import callRestServer
 from guardian.decorators import permission_required
 from webui.platforms.oc4j.utils import get_apps_list
 from webui.platforms.bar.utils import get_available_bars
+from celery.execute import send_task
+from django.core.urlresolvers import reverse
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +29,16 @@ def show_page(request):
                   {'id': 'deploy_bar', 'name': 'Deploy Bar'},
                   {'id': 'deploy_ear', 'name': 'Deploy EAR'},
                   {'id': 'restart_instance', 'name': 'Restart Instance'}]
-    return render_to_response('chain/chain.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, 'operations': operations ,'service_status_url':settings.RUBY_REST_PING_URL}, context_instance=RequestContext(request))
+    
+    servers = Server.objects.filter(deleted=False)
+    if not request.user.is_superuser and settings.FILTERS_SERVER:
+        servers = get_objects_for_user(request.user, 'use_server', Server).filter(deleted=False)
+    server_list = []
+    for server in servers:
+        server_list.append({'id': server.fqdn, 'name': server.fqdn})
+    
+    server_dict = {"results": server_list, "total": len(server_list)}
+    return render_to_response('chain/chain.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, 'operations': operations, 'server_list':json.dumps(server_dict, ensure_ascii=False), 'service_status_url':settings.RUBY_REST_PING_URL}, context_instance=RequestContext(request))
 
 
 @login_required
@@ -47,15 +57,42 @@ def execute_chain(request, xhr=None):
     if request.method == "POST":
         #Check if the <xhr> var had something passed to it.
         if xhr == "xhr":
+            operations =[]
             i = 1
+            errors = False
+            errs = {}
             while "operation%s" % i in request.POST:
-                servers = request.POST["listServer%s"%i]
-                filters = construct_filters(servers)
-                rdict = {'bad':'false', 'filters':filters }
+                rdict = {'bad':'false'}
+                try:
+                    servers = request.POST["listServerHidden%s"%i]
+                    filters = construct_filters(servers)
+                    rdict.update({'filters':filters})
+                except:
+                    errors = True
+                    errs.update({"listServer%s"%i:'<ul class="errorlist"><li>You must select at least one server</li></ul>'})
+                    
+                
                 if request.POST["operation%s"%i] == 'script_ex':
-                    sqlScript = request.POST["sqlScript%s"%i]
-                    instancename = request.POST["dbinstancename%s"%i]
-                    callRestServer(request.user, filters, 'oracledb', 'execute_sql', "instance=%s;sqlfile=%s" % (instancename, sqlScript), True)
+                    try:
+                        sqlScript = request.POST["sqlScript%s"%i]
+                        instancename = request.POST["dbinstancename%s"%i]
+                    except:
+                        sqlScript=None
+                        instancename=None
+                    if sqlScript and instancename:
+                        current_op = {"user": request.user,
+                                      "filters": filters,
+                                      "agent": "oracledb",
+                                      "action": "execute_sql",
+                                      "args": "instance=%s;sqlfile=%s" % (instancename, sqlScript),
+                                      "name": "Execute SQL Script"}
+                        operations.append(current_op)
+                    else:
+                        errors = True
+                        if sqlScript==None:
+                            errs.update({"sqlScript%s"%i: '<ul class="errorlist"><li>Select a valid SqlScript to execute</li></ul>'})
+                        if instancename==None:
+                            errs.update({"dbinstancename%s"%i:'<ul class="errorlist"><li>Database Name is required</li></ul>'})
                 elif request.POST["operation%s"%i] == 'deploy_ear':
                     try:
                         appfile = request.POST['earApp%s'%i]
@@ -63,15 +100,24 @@ def execute_chain(request, xhr=None):
                         appname = request.POST['appname%s'%i]
                     except:
                         appname=None
-                    if appname and instancename and appname:
+                    if appfile and instancename and appname:
                         logger.debug("Parameters check: OK.")
                         logger.debug("Calling MCollective to deploy %s application on %s filtered server" % (appfile, filters))
-                        response, content = callRestServer(request.user, filters, 'a7xoas', 'deploy', 'appname=%s;instancename=%s;appfile=%s' %(appname, instancename, appfile), True)
-                        if response.status == 200:
-                            json_content = json.loads(content)
-                            rdict.update({"result%s"%i:json_content[0]["statusmsg"]})
-                        else:
-                            rdict.update({"result%s"%i: "Error communicating with server"})
+                        current_op = {"user": request.user,
+                                  "filters": filters,
+                                  "agent": "a7xoas",
+                                  "action": "deploy",
+                                  "args": "appname=%s;instancename=%s;appfile=%s" %(appname, instancename, appfile),
+                                    "name": "Deploy Application"}
+                        operations.append(current_op)
+                    else:
+                        errors = True 
+                        if appfile==None:
+                            errs.update({"earApp%s"%i: '<ul class="errorlist"><li>Application to deploy is required</li></ul>'})
+                        if instancename==None:
+                            errs.update({"instancename%s"%i:'<ul class="errorlist"><li>Instance Name is required</li></ul>'})
+                        if appname==None:
+                            errs.update({"appname%s"%i:'<ul class="errorlist"><li>Application Name is required</li></ul>'})
                 elif request.POST["operation%s"%i] == 'deploy_bar':
                     try:
                         barapp = request.POST['barApp%s'%i]
@@ -82,12 +128,19 @@ def execute_chain(request, xhr=None):
                     if barapp and consolename:
                         logger.debug("Parameters check: OK.")
                         logger.debug("Calling MCollective to deploy %s bar on %s filtered server" % (barapp, filters))
-                        response, content = callRestServer(request.user, filters, 'a7xbar', 'deploy', 'filename=%s;bcname=%s' %(barapp, consolename), True)
-                        if response.status == 200:
-                            json_content = json.loads(content)
-                            rdict.update({"result%s"%i:json_content[0]["statusmsg"]})
-                        else:
-                            rdict.update({"result%s"%i: "Error communicating with server"})
+                        current_op = {"user": request.user,
+                                  "filters": filters,
+                                  "agent": "a7xbar",
+                                  "action": "deploy",
+                                  "args": 'filename=%s;bcname=%s' %(barapp, consolename),
+                                  "name": "Deploy Bar"}
+                        operations.append(current_op)
+                    else:
+                        errors = True
+                        if barapp==None:
+                            errs.update({"barApp%s"%i: '<ul class="errorlist"><li>BAR to deploy is required</li></ul>'})
+                        if consolename==None:
+                            errs.update({"consoleName%s"%i:'<ul class="errorlist"><li>Console Name is required</li></ul>'})
                 elif request.POST["operation%s"%i] == 'restart_instance':
                     try:
                         instancename = request.POST['instancename%s'%i]
@@ -96,15 +149,34 @@ def execute_chain(request, xhr=None):
                     if instancename:
                         logger.debug("Parameters check: OK.")
                         logger.debug("Calling MCollective to restart instance %s" % (instancename))
-                        response, content = callRestServer(request.user, filters, 'a7xaos', 'stopinstance', 'instancename=%s' %(instancename), True)
-                        response, content = callRestServer(request.user, filters, 'a7xaos', 'startinstance', 'instancename=%s' %(instancename), True)
-                        if response.status == 200:
-                            json_content = json.loads(content)
-                            rdict.update({"result%s"%i:json_content[0]["statusmsg"]})
-                        else:
-                            rdict.update({"result%s"%i: "Error communicating with server"})
+                        stop_op = {"user": request.user,
+                                  "filters": filters,
+                                  "agent": "a7xaos",
+                                  "action": "stopinstance",
+                                  "args": 'instancename=%s' %(instancename)}
+                        operations.append(stop_op)
+                        start_op = {"user": request.user,
+                                  "filters": filters,
+                                  "agent": "a7xaos",
+                                  "action": "startinstance",
+                                  "args": 'instancename=%s' %(instancename),
+                                  "name": "Restart Instance"}
+                        operations.append(start_op)
+                    else:
+                        errors = True
+                        if instancename==None:
+                            errs.update({"instancename%s"%i:'<ul class="errorlist"><li>Instance Name is required</li></ul>'})
                         
                 i = i + 1
+            if errors:
+                rdict.update({'bad':'true'})
+                rdict.update({'errs': errs })
+            else:
+                logger.debug("No errors detected. Executing %s operations." % (len(operations)))
+                task_name = "webui.chain.tasks.execute_chain_ops"
+                result = send_task(task_name, [operations])
+                update_url = reverse('get_progress', kwargs={'taskname':task_name, 'taskid':result.task_id})
+                rdict.update({'UUID': result.task_id, 'taskname':task_name, 'update_url': update_url})
         return HttpResponse(json.dumps(rdict, ensure_ascii=False), mimetype='application/javascript')
     else:
         # It's not post so make a new form
