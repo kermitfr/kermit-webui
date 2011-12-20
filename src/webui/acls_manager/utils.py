@@ -29,7 +29,7 @@ def update_acls(json_acls):
         elif 'username' in acl:
             logger.debug('ACL for single user')
             try:
-                current_user = User.objects.get(name=acl['username'])
+                current_user = User.objects.get(username=acl['username'])
             except:
                 logger.error("User %s does not exist. Cannot assign acls!" % acl['username'])
                 continue
@@ -39,7 +39,7 @@ def update_acls(json_acls):
 def add_acl(acl, group=None, user=None):
     logger.debug("Verifying Class ACLs")
     for current_class in acl["classes"]:
-        if current_class != "+":
+        if current_class != HERITABLE_CHAR:
             heritable, db_class = check_heritable(current_class)
             if db_class:
                 try:
@@ -83,36 +83,62 @@ def add_acl(acl, group=None, user=None):
             logger.error("Cannot assign permission: %s" % sys.exc_info())
             
     logger.debug("Verifying Agent ACLs")
-    for current_agent in acl["agents"]:
-        try:
-            db_agent = Agent.objects.get(name=current_agent)
-        except:
-            logger.warn("Cannot find agent %s in database. Need to create it first!" % current_agent)
-            continue
-        try:
-            if group:
-                GroupObjectPermission.objects.assign('use_agent', group, db_agent)
-            if user:
-                UserObjectPermission.objects.assign('use_agent', user, db_agent)
-        except:
-            logger.error("Cannot assign permission: %s" % sys.exc_info())
+    for current_agent, agent_actions in acl["agents"].iteritems():
+        if current_agent != HERITABLE_CHAR:
+            logger.debug("Assign ACL on single agent: %s" % current_agent)
+            try:
+                db_agent = Agent.objects.get(name=current_agent)
+            except:
+                logger.warn("Cannot find agent %s in database. Need to create it first!" % current_agent)
+                continue
+            add_agent_acl(db_agent, group, user)
+        else:
+            logger.debug("Assign permission to all agents")
+            all_agents = Agent.objects.filter(enabled=True)
+            for agent in all_agents:
+                add_agent_acl(agent, group, user)
             
-    logger.debug("Verifying Action ACLs")     
-    for current_action in acl["actions"]:
-        try:
-            db_action = Action.objects.get(name=current_action)
-        except:
-            logger.warn("Cannot find action %s in database. Need to create it first!" % current_action)
-            continue
-        try:
-            if group:
-                GroupObjectPermission.objects.assign('use_action', group, db_action)
-            if user:
-                UserObjectPermission.objects.assign('use_action', user, db_action)
-        except:
-            logger.error("Cannot assign permission: %s" % sys.exc_info())
-            
+        for action in agent_actions:
+            if action != HERITABLE_CHAR:
+                if current_agent != HERITABLE_CHAR:
+                    logger.debug("Assign single action acl")
+                    try:
+                        db_action = Action.objects.get(name=action, agent=db_agent)
+                    except:
+                        logger.warn("Cannot find action %s in database. Need to create it first!" % action)
+                        continue
+                    add_action_acl(db_action, group, user)
+                else:
+                    logger.warn("Cannot assign single action acl with all agents specified")
+            else:
+                if current_agent != HERITABLE_CHAR: 
+                    logger.debug("Assign permission to all agent actions (agent: %s)" % current_agent)
+                    all_agent_actions = Action.objects.filter(agent=db_agent)
+                else:
+                    logger.debug("Assign permission to all agents actions)")
+                    all_agent_actions = Action.objects.all()
+                    
+                for current_action in all_agent_actions:
+                    add_action_acl(current_action, group, user)
+         
+def add_agent_acl(agent, group=None, user=None):   
+    try:
+        if group:
+            GroupObjectPermission.objects.assign('use_agent', group, agent)
+        if user:
+            UserObjectPermission.objects.assign('use_agent', user, agent)
+    except:
+        logger.error("Cannot assign permission: %s" % sys.exc_info())
 
+def add_action_acl(action, group=None, user=None):
+    try:
+        if group:
+            GroupObjectPermission.objects.assign('use_action', group, action)
+        if user:
+            UserObjectPermission.objects.assign('use_action', user, action)
+    except:
+        logger.error("Cannot assign permission: %s" % sys.exc_info())        
+        
 def add_sub_classes_acls(current_class, group=None, user=None):
     level = current_class.level+1
     sub_classes = PuppetClass.objects.filter(level=level)
@@ -131,7 +157,7 @@ def check_heritable(puppet_class):
     new_class_name = puppet_class
     if puppet_class.endswith(HERITABLE_CHAR):
         heritable = True
-        new_class_name = puppet_class.rstrip("+")
+        new_class_name = puppet_class.rstrip(HERITABLE_CHAR)
     try:
         db_class = PuppetClass.objects.get(name=new_class_name)
     except:
