@@ -83,7 +83,7 @@ def get_app_list(request, filters, type):
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)
 def get_instance_list(request, filters):
-    servers = extract_servers(filters)
+    servers = extract_servers(filters, request.user)
     instances = []
     for server in servers:
         instances.extend(extract_instances_name(server.hostname))

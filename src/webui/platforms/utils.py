@@ -6,6 +6,7 @@ import glob
 from django.utils import simplejson as json
 from webui.puppetclasses.models import PuppetClass
 import time
+from guardian.shortcuts import get_objects_for_user
 
 logger = logging.getLogger(__name__)
 
@@ -53,7 +54,7 @@ def read_file_info(hostname, prefix, suffix):
             return json.loads(file_content)
     return None
         
-def extract_servers(filters):
+def extract_servers(filters, user):
     logger.debug("Extracting servers from filters to retrieve instances")
     classes = []
     server_selected = None
@@ -73,7 +74,10 @@ def extract_servers(filters):
     servers_list = []
     if classes:
         logger.debug("Retrieving server using classes")
-        servers_list = Server.objects.filter(puppet_classes__in = classes, deleted=False)
+        if not user.is_superuser and settings.FILTERS_SERVER:
+            servers_list = get_objects_for_user(user, 'use_server', Server).filter(puppet_classes__in = classes, deleted=False).distinct()
+        else:
+            servers_list = Server.objects.filter(puppet_classes__in = classes, deleted=False).distinct()
     else:
         servers_list.append(server_selected)
         

@@ -98,7 +98,7 @@
 							} 
 						});
 						for (server_resp in data.result) {
-							$("#logcontainer-content").append("<b>" + data.result[server_resp].server + "</b><br/>");
+							$("#logcontainer").append("<b>" + data.result[server_resp].server + "</b><br/>");
 							if (data.result[server_resp].message!=undefined) {
 								$("#logcontainer").append(data.result[server_resp].message);
 							} else {	

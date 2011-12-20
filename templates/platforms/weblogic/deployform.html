@@ -110,9 +110,9 @@
 				if (data.result!="KO") {
 					for (server_resp in data.result) {
 						if (data.result[server_resp].message!=undefined) {
-							$("#emsg").append("<div class='errorbox'>" + data.result[server_resp].message + "</div><br/>").fadeIn("slow");
+							$("#emsg").append("<div class='errorbox'>" + data.result[server_resp].server + ": " + data.result[server_resp].message + "</div><br/>").fadeIn("slow");
 						} else {
-							$("#emsg").append("<div class='messagebox'>" + data.result[server_resp].response + "</div><br/>").fadeIn("slow");			
+							$("#emsg").append("<div class='messagebox'>" + data.result[server_resp].server + ": " + data.result[server_resp].response + "</div><br/>").fadeIn("slow");			
 						}
 					}
 				} else {

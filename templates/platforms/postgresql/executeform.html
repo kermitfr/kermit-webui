@@ -98,9 +98,9 @@
 							} 
 						});
 						for (server_resp in data.result) {
-							$("#logcontainer-content").append("<b>" + data.result[server_resp].server + "</b><br/>");
+							$("#logcontainer").append("<b>" + data.result[server_resp].server + "</b><br/>");
 							if (data.result[server_resp].message!=undefined) {
-								$("#logcontainer-content").append(data.result[server_resp].message);
+								$("#logcontainer").append(data.result[server_resp].message);
 							} else {	
 								getLogContent(data.result[server_resp].server, data.result[server_resp].logfile);
 							}
@@ -138,9 +138,9 @@
 			},
 			success : function(data) {
 				if(data) {
-					$("#logcontainer-content").append(data.logfilecontent);
+					$("#logcontainer").append(data.logfilecontent);
 				} else {
-					$("#logcontainer-content").append("No log file found with the given name " + logFile);
+					$("#logcontainer").append("No log file found with the given name " + logFile);
 				}
 			}
 		});
@@ -182,5 +182,4 @@
 	</fieldset>
 </form>
 <div id="logcontainer">
-	<div id="logcontainer-content"></div>
 </div>

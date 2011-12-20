@@ -134,7 +134,7 @@ def get_form(request, dialog_name, action, filters):
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)
 def get_instance_list(request, filters):
-    servers = extract_servers(filters)
+    servers = extract_servers(filters, request.user)
     instances = []
     for server in servers:
         instances.extend(extract_instances_name(server.hostname))
@@ -143,7 +143,7 @@ def get_instance_list(request, filters):
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)
 def get_schema_list(request, filters, instancename):
-    servers = extract_servers(filters)
+    servers = extract_servers(filters, request.user)
     schemas = []
     for server in servers:
         extracted = extract_schema(server.hostname, instancename)
