@@ -94,7 +94,19 @@
 </div>
 <form action="{% url weblogic_create_instance filters 'deploy-dialog' None%}" method="post" id="tf">
 	{% csrf_token %}
-		{{ form.as_p }}
+		<fieldset>
+		{% for field in form %}
+	        <div class="fieldWrapper">
+	        	
+	            {{ field.errors }}
+	            {% if field.field.required %}
+	            <p><b>{{ field.label_tag }}</b>: {{ field }}</p>
+	            {% else %}
+	            <p>{{ field.label_tag }}: {{ field }}</p>
+	            {% endif %}
+	            
+	        </div>
+	    {% endfor %}
 		<br/>
 		<input class="input" type="submit" value="Execute" id="bt"/>
 	</fieldset>
