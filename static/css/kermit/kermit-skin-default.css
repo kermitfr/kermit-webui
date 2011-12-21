@@ -56,7 +56,7 @@ a:hover, a:active, a.selected {
 }
 
 #header a:link, #header a:visited {
-    color: #000;
+    color: #59AFCC;
     text-decoration: none;
     font-size: 13px;
 }
@@ -65,6 +65,9 @@ a:hover, a:active, a.selected {
     text-decoration: none;
 }
 
+.mainmenu {
+	margin-top:20px;
+}
 
 
 /*  Blockquote, Pre, Code

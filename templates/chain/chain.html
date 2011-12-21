@@ -39,7 +39,6 @@
 			};
 			var string_server = "{{server_list}}".replace(/&quot;/g, '"');
 			var server_list = jQuery.parseJSON(string_server);
-			alert(server_list);
 			// bind form using ajaxForm
 			$('#chainForm').ajaxForm(options);
 			$("#submitForm").attr('disabled','disabled');

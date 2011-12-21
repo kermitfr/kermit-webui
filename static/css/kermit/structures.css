@@ -310,7 +310,7 @@ li.user-options-container.open ul.user-options {
     float: none;
     clear: both;
     z-index: 1000;
-    margin: 14px -10px 0;
+    margin: 8px -10px 0;
     width: 221px;
 }
 ul.user-options li {
