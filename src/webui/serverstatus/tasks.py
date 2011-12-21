@@ -93,6 +93,7 @@ def complete_server_info(server, mcresponse, update_time):
         create_path(server, mcresponse['data']['classes'])
         
 def add_puppet_classes(server, puppet_classes):
+    server.puppet_classes.clear()
     for current in puppet_classes:
         retrieved = PuppetClass.objects.filter(name=current)
         if retrieved:     
@@ -101,6 +102,7 @@ def add_puppet_classes(server, puppet_classes):
             logger.warn("Cannot find class with name " + current)
             
 def add_agents(server, agents_list):
+    server.agents.clear()
     for agent in agents_list:
         retrieved = Agent.objects.filter(name=agent)
         if retrieved:     
