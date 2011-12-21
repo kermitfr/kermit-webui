@@ -85,7 +85,7 @@ def execute_chain(request, xhr=None):
                                       "filters": filters,
                                       "agent": "oracledb",
                                       "action": "execute_sql",
-                                      "args": "instance=%s;sqlfile=%s" % (instancename, sqlScript),
+                                      "args": "instancename=%s;sqlfile=%s" % (instancename, sqlScript),
                                       "name": "Execute SQL Script"}
                         operations.append(current_op)
                     else:
