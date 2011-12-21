@@ -4,12 +4,13 @@ Created on Nov 3, 2011
 @author: mmornati
 '''
 import logging
-from django.contrib.auth.models import Group, User
+from django.contrib.auth.models import Group, User, Permission
 from guardian.models import GroupObjectPermission, UserObjectPermission
 import sys
 from webui.puppetclasses.models import PuppetClass
 from webui.serverstatus.models import Server
 from webui.agent.models import Agent, Action
+from django.contrib.contenttypes.models import ContentType
 
 logger = logging.getLogger(__name__)
 
@@ -83,6 +84,7 @@ def add_acl(acl, group=None, user=None):
             logger.error("Cannot assign permission: %s" % sys.exc_info())
             
     logger.debug("Verifying Agent ACLs")
+    assign_mco_call = False
     for current_agent, agent_actions in acl["agents"].iteritems():
         if current_agent != HERITABLE_CHAR:
             logger.debug("Assign ACL on single agent: %s" % current_agent)
@@ -108,6 +110,7 @@ def add_acl(acl, group=None, user=None):
                         logger.warn("Cannot find action %s in database. Need to create it first!" % action)
                         continue
                     add_action_acl(db_action, group, user)
+                    assign_mco_call = True
                 else:
                     logger.warn("Cannot assign single action acl with all agents specified")
             else:
@@ -120,6 +123,19 @@ def add_acl(acl, group=None, user=None):
                     
                 for current_action in all_agent_actions:
                     add_action_acl(current_action, group, user)
+                    assign_mco_call = True
+    if assign_mco_call:
+        logger.debug("Assign at least one Mcollective action. Adding call_mcollective acl")
+        try:
+            agent_ct = ContentType.objects.get(model='agent')
+            call_mco_perm = Permission.objects.get(codename="call_mcollective", content_type=agent_ct)
+            if group:
+                group.permissions.add(call_mco_perm)
+            if user:
+                user.user_permissions.add(call_mco_perm)
+        except:
+            print sys.exc_info()   
+        
          
 def add_agent_acl(agent, group=None, user=None):   
     try:
