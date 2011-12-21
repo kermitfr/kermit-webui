@@ -21,6 +21,7 @@ class Agent(models.Model):
         permissions = (
             ("call_mcollective", "Can call MCollective"),
             ('use_agent', 'Can use agent'),
+            ("show_widget_agent", "Show widget agents"),
         )
     
 class Action(models.Model):

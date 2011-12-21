@@ -267,7 +267,7 @@ else:
 
 RUBY_REST_BASE_URL=CONF.get('webui', 'rest_server_url')
 #HTTPLIB TimeOut 10 minutes (seconds)
-RUBY_REST_SERVER_TIMEOUT=600
+RUBY_REST_SERVER_TIMEOUT=1200
 
 RUBY_REST_PING_URL=CONF.get('webui', 'rest_server_ping_url')
 
