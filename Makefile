@@ -7,8 +7,8 @@ MESSAGESPOT=po/messages.pot
 TOPDIR = $(shell pwd)
 DATE="date +%Y%m%d"
 PROGRAMNAME=kermit-webui
-#RELEASE=$(grep "Version:" ./misc/specs/kermit-webui.spec | awk '{ print $2 }')
-RELEASE=0.2.0
+VERSION=$(shell grep "Version:" ./misc/specs/kermit-webui.spec)
+RELEASE=`expr substr '${VERSION}' 10 5`
 TMPDIR=/tmp
 BUILDDIR=build
 
