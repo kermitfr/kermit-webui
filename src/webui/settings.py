@@ -291,7 +291,35 @@ LEVELS_NUMBER = CONF.getint("webui", "levels.number")
 import djcelery
 djcelery.setup_loader()
 
+#To use directly the django database as a broker (no other tools required)
+#With this configuration you can't use celery monitor
 BROKER_TRANSPORT = "django"
+
+#Sample Configuration for Redis
+#BROKER_TRANSPORT = "redis"
+#BROKER_URL = "redis://127.0.0.1:6379/0"
+#CELERY_RESULT_BACKEND = "redis"
+#CELERY_REDIS_HOST = "127.0.0.1"
+#CELERY_REDIS_PORT = 6379
+#CELERY_REDIS_DB = 0
+
+#Sample configuration for mongodb
+#CELERY_RESULT_BACKEND = "mongodb"
+#CELERY_MONGODB_BACKEND_SETTINGS = {
+#    "host": "127.0.0.1",
+#    "port": 27017,
+#    "database": "celery",
+#    "taskmeta_collection": "my_taskmeta" # Collection name to use for task output
+#}
+#
+#BROKER_BACKEND = "mongodb"
+#BROKER_HOST = "localhost"
+#BROKER_PORT = 27017
+#BROKER_USER = ""
+#BROKER_PASSWORD = ""
+#BROKER_VHOST = "celery"
+
+#Sample Configuration for AMQP transport
 #BROKER_HOST = "127.0.0.1"
 #BROKER_PORT = 5672
 #BROKER_USER = "celery"
@@ -316,6 +344,14 @@ CELERYBEAT_SCHEDULE = {
         "schedule": crontab(hour=6, minute=30),
         "args": ('CronJob',)
     }, 
+        
+#Example to run a ping operation every minute               
+#    "runs-cronjob-mco-action": {
+#        "task": "webui.restserver.tasks.httpcall",
+#        "schedule": crontab(minute="*"),
+#        "args": ('no-filter', 'rpc-util', 'ping', None)
+#    }, 
+
 #    "runs-update-user-groups-once-a-day": {
 #        "task": "webui.serverstatus.tasks.server_inventory",
 #        "schedule": crontab(hour=6, minute=30),
