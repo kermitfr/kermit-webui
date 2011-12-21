@@ -15,7 +15,8 @@ from django.utils import simplejson as json
 from webui.platforms.oracledb.utils import sql_list
 from webui.chain.utils import construct_filters
 from guardian.decorators import permission_required
-from webui.platforms.oc4j.utils import get_apps_list
+from webui.platforms.oc4j.utils import get_apps_list as oc4j_app_list
+from webui.platforms.weblogic.utils import get_apps_list as weblo_app_list
 from webui.platforms.bar.utils import get_available_bars
 from celery.execute import send_task
 from django.core.urlresolvers import reverse
@@ -98,14 +99,20 @@ def execute_chain(request, xhr=None):
                         appfile = request.POST['earApp%s'%i]
                         instancename = request.POST['instancename%s'%i]
                         appname = request.POST['appname%s'%i]
+                        serverType = request.POST['serverType%s'%i]
                     except:
                         appname=None
-                    if appfile and instancename and appname:
+                    if appfile and instancename and appname and serverType:
                         logger.debug("Parameters check: OK.")
                         logger.debug("Calling MCollective to deploy %s application on %s filtered server" % (appfile, filters))
+                        agent_name = None
+                        if serverType == 'OC4J':
+                            agent_name = 'a7xoas'
+                        elif serverType == 'WebLogic':
+                            agent_name = 'a7xows'
                         current_op = {"user": request.user,
                                   "filters": filters,
-                                  "agent": "a7xoas",
+                                  "agent": agent_name,
                                   "action": "deploy",
                                   "args": "appname=%s;instancename=%s;appfile=%s" %(appname, instancename, appfile),
                                     "name": "Deploy Application"}
@@ -118,6 +125,8 @@ def execute_chain(request, xhr=None):
                             errs.update({"instancename%s"%i:'<ul class="errorlist"><li>Instance Name is required</li></ul>'})
                         if appname==None:
                             errs.update({"appname%s"%i:'<ul class="errorlist"><li>Application Name is required</li></ul>'})
+                        if serverType==None:
+                            errs.update({"serverType%s"%i:'<ul class="errorlist"><li>Server Type is required</li></ul>'})
                 elif request.POST["operation%s"%i] == 'deploy_bar':
                     try:
                         barapp = request.POST['barApp%s'%i]
@@ -144,14 +153,20 @@ def execute_chain(request, xhr=None):
                 elif request.POST["operation%s"%i] == 'restart_instance':
                     try:
                         instancename = request.POST['instancename%s'%i]
+                        serverType = request.POST['serverType%s'%i]
                     except:
                         instancename=None
-                    if instancename:
+                        serverType=None
+                    if instancename and serverType:
                         logger.debug("Parameters check: OK.")
                         logger.debug("Calling MCollective to restart instance %s" % (instancename))
+                        if serverType == 'OC4J':
+                            agent_name = 'a7xoas'
+                        elif serverType == 'WebLogic':
+                            agent_name = 'a7xows'
                         stop_op = {"user": request.user,
                                   "filters": filters,
-                                  "agent": "a7xaos",
+                                  "agent": agent_name,
                                   "action": "stopinstance",
                                   "args": 'instancename=%s' %(instancename)}
                         operations.append(stop_op)
@@ -166,6 +181,8 @@ def execute_chain(request, xhr=None):
                         errors = True
                         if instancename==None:
                             errs.update({"instancename%s"%i:'<ul class="errorlist"><li>Instance Name is required</li></ul>'})
+                        if serverType==None:
+                            errs.update({"serverType%s"%i:'<ul class="errorlist"><li>Server Type is required</li></ul>'})
                         
                 i = i + 1
             if errors:
@@ -195,10 +212,13 @@ def get_sql_list(request, servers):
     
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)
-def get_app_list(request, servers):
+def get_app_list(request, servers, server_type):
     if servers:
         filters = construct_filters(servers)
-        return HttpResponse(get_apps_list(request.user, filters, 'ear'))
+        if server_type == 'OC4J':
+            return HttpResponse(oc4j_app_list(request.user, filters, 'ear'))
+        elif server_type == 'WebLogic':
+            return HttpResponse(weblo_app_list(request.user, filters, 'ear'))
     else:
         return HttpResponse('')
     

@@ -167,11 +167,13 @@
 						deployEar.find('#instancename').attr('id', 'instancename' + newNum).attr('name', 'instancename' + newNum);
 						deployEar.find('#appname').attr('id', 'appname' + newNum).attr('name', 'appname' + newNum);
 						deployEar.find('#refreshEar').attr('id', 'refreshEar' + newNum);
+						deployEar.find('#serverType').attr('id', 'serverType' + newNum).attr('name', 'serverType' + newNum);
 						$("#operationdata"+newNum).html(deployEar);
 						$('#refreshEar'+newNum).click(function() {
 							var serverFilter = createServerList("#listServer"+newNum);
+							var serverType = $("#serverType"+newNum).val();
 							$.ajax({
-								url : '{{base_url}}/chain/ear_list/' + serverFilter + '/',
+								url : '{{base_url}}/chain/ear_list/' + serverFilter + '/' + serverType + '/',
 								// The type of request.
 								type : "get",
 								// The type of data that is getting returned.
@@ -204,6 +206,7 @@
 						//Restart Instance
 						var restartInstance = $('#restartInstance').clone().attr('id', 'restartInstance' + newNum).css({visibility: "visible"});
 						restartInstance.find('#instancename').attr('id', 'instancename' + newNum).attr('name', 'instancename' + newNum);
+						restartInstance.find('#serverType').attr('id', 'serverType' + newNum).attr('name', 'serverType' + newNum);
 						$("#operationdata"+newNum).html(restartInstance);
 					}
 				});
@@ -276,7 +279,6 @@
 						        } else {
 						        	var response_container = "#modalresponsecontainer";
 						        	$(response_container).empty();
-						        	alert(result.responsecontent)
 									for (i in result.responsecontent) {
 										resp = result.responsecontent[i];
 										content = '<strong>' + resp.name + '</strong>';
@@ -384,10 +386,19 @@
 </div>
 
 <div id="deployEar" style="visibility: hidden;">
+	<p>
+	{% trans 'Server Type'%}: <select id="serverType"><option value="OC4J">OC4J</option><option value="WebLogic">WebLogic</option></select>
+	</p>
+	<p>
 	{% trans 'Application'%}: <select id="earApp"></select>
 	<input type="button" id="refreshEar" value="Refresh App list"/><br/>
+	</p>
+	<p>
 	{% trans 'Instance Name'%}: <input type="text" id="instancename"/><br/>
+	</p>
+	<p>
 	{% trans 'Application Name'%}: <input type="text" id="appname"/>
+	</p>
 </div>
 <div id="executeScript" style="visibility: hidden;">
 	<p>
@@ -399,12 +410,21 @@
 	</p>
 </div>
 <div id="deployBar" style="visibility: hidden;">
+	<p>
 	{% trans 'BAR Name'%}: <select id="barApp"></select>
 	<input type="button" id="refreshBar" value="Refresh Bar list"/><br/>
+	</p>
+	<p>
 	{% trans 'Console Name'%}: <input type="text" id="consoleName"></input>
+	</p>
 </div>
 <div id="restartInstance" style="visibility: hidden;">
+	<p>
+	{% trans 'Server Type'%}: <select id="serverType"><option value="OC4J">OC4J</option><option value="WebLogic">WebLogic</option></select>
+	</p>
+	<p>
 	{% trans 'Instance Name'%}: <input type="text" id="instancename"></input>
+	</p>
 </div>	
 
 {% endblock %}
