@@ -12,6 +12,8 @@ from django.utils import simplejson as json
 from webui.agent.models import Agent
 from webui.puppetclasses.models import PuppetClass
 from webui import settings
+from webui.platforms.platforms import platforms
+from webui.platforms.abstracts import UpdatePlatform
 
 logger = logging.getLogger(__name__)
 
@@ -55,7 +57,11 @@ def server_basic_info(user):
         logger.error('ERROR: ' + str(err))
         
 @task()
-def server_inventory(user, updates_defined):
+def server_inventory(user, updates_defined=None):
+    if not updates_defined:
+        logger.debug("Calling without updates. Trying to retrieve them")
+        updates_defined = platforms.extract(UpdatePlatform)
+        
     if updates_defined:
         total_updates = len(updates_defined)
         i = 0

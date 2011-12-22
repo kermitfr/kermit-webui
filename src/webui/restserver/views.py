@@ -15,6 +15,10 @@ from django.contrib.auth.decorators import login_required
 from guardian.decorators import permission_required
 from webui.agent.utils import verify_agent_acl, verify_action_acl
 from django.core.urlresolvers import reverse
+import djcelery
+from django.template.loader import render_to_string
+import ast
+import sys
 
 logger = logging.getLogger(__name__)
 
@@ -78,5 +82,28 @@ def executeGeneralAction(request, action, filter, type):
     actionToExecute = getattr(actions, action)
     actionToExecute(request.user, filter, type)
     return HttpResponse('')
-        
+
+@login_required()
+def get_task_info(request, uuid):
+    logger.debug("Retrieving task %s information" % uuid)
+    celery_task = djcelery.models.TaskState.objects.get(task_id=uuid)
+    arguments_list = ast.literal_eval(celery_task.args)
+    if len(arguments_list) == 4:
+        arguments = {"filter":arguments_list[0],
+                     "agent": arguments_list[1],
+                     "action": arguments_list[2],
+                     "arguments": arguments_list[3]}
+    else:
+        arguments = {"filter":"",
+                     "agent": "",
+                     "action": "",
+                     "arguments": ""}
+    response_list = ast.literal_eval(celery_task.result)
+    if len(response_list) > 2:
+        response = {"response": response_list[0],
+                    "content": ast.literal_eval(response_list[1])}
+    else:
+        response = {"response": "", "content": ""}
+    
+    return HttpResponse(render_to_string('widgets/restserver/jobdetails.html', {'task': celery_task, "jobarg": arguments, "response": response}, context_instance=RequestContext(request)))
 

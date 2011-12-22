@@ -17,4 +17,7 @@ urlpatterns = patterns('webui.restserver.views',
   #Admin Actions
   url(r'^execute/(?P<action>[\w|\W]+)/(?P<type>[\w|\W]+)/$', 'executeAction', name = "action_executer"),
   
+  #Task information
+  url(r'^taskinfo/(?P<uuid>[\w|\W]+)/$', 'get_task_info', name = "get_task_info"),
+  
 )

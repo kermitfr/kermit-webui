@@ -1,0 +1,119 @@
+{% extends "widgets/base_widget.html" %}
+{% load i18n%}
+{% block widget-content %}
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#jobstable').dataTable({
+			 "oLanguage": {
+	            "sSearch": "Job Search:"
+        	}
+		});
+		
+		$(".uuid").hover(function () {
+		    $(this).css("color","#999999");
+		    $(this).css("cursor","pointer");
+		  },
+		  function () {
+		    $(this).css("color","#444444");
+		    $(this).css("cursor","default");
+		  });
+	} );
+	
+	function showJobDetails(url) {
+		$.ajax({
+			// The link we are accessing.
+			url : url,
+			// The type of request.
+			type : "get",
+			// The type of data that is getting returned.
+			dataType : "html",
+			error : function(xhr, ajaxOptions, thrownError) {
+				//TODO: Show error message
+				alert("Server communication error. Cannot get task information");
+				$('#loading').hide();
+			},
+			beforeSend : function() {
+				$('#loading').show();
+			},
+			complete : function() {
+				$('#loading').hide();
+			},
+			success : function(data) {
+				$("#detailscontainer").empty();
+				$("#detailscontainer").html(data);
+				
+				$("#detailscontainer").dialog({
+					modal : true,
+					title : 'Job Details',
+					height : 400,
+					width : 800,
+					open: function(event, ui){
+						$('body').css('overflow','auto');
+						$('.ui-widget-overlay').css('width','100%'); 
+						} 
+				});
+			}
+		});
+	}
+</script>
+
+<style type="text/css">
+table.jobstable {
+	border-width: 2px;
+	border-spacing: 2px;
+	border-style: outset;
+	border-color: gray;
+	border-collapse: collapse;
+	background-color: white;
+	width: 100%;
+}
+
+table.jobstable th {
+	font-size: 12px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	color: #000;
+}
+
+table.jobstable tr.even {
+	background: #CCCCCC;
+}
+table.jobstable tr.odd {
+	background: #F0F0F0
+}
+
+</style>
+<br/>
+<div id="detailscontainer"></div>
+<div id="actual-jobs">
+	<table id="jobstable" class="jobstable">
+		<thead>
+			{% if user.is_staff %}
+			<th>{% trans 'User'%}</th>
+			{% endif %}
+			<th>{% trans 'Status'%}</th>
+			<th>{% trans 'Run at'%}</th>
+			<th>{% trans 'UUID'%}</th>
+			<th>{% trans 'Operation'%}</th>
+		</thead>
+		<tbody>
+			{% for job in jobs %}
+			<tr class="{% cycle odd,even %}">
+				{% if user.is_staff %}
+				<td>{{job.user}}</td>
+				{% endif %}
+				<td><span style="color: {% if job.status == 'SUCCESS'%}green{% else %}red{% endif%};">{{job.status}}</span></td>
+				<td>{{job.run_at}}</td>
+				<td><span class="uuid" style="text-decoration:underline; color: #444444;" onclick="showJobDetails('{% url get_task_info job.task_uuid %}'	);">{{job.task_uuid}}</span></td>
+				<td>{% if job.arguments %}
+					<b>Filter</b>: {{job.arguments.filter}}&nbsp;<b>Agent</b>: {{job.arguments.agent}}&nbsp;<b>Action</b>: {{job.arguments.action}}&nbsp;<b>Arguments</b>: {{job.arguments.arguments}}
+					{% endif %}
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+<br/>
+{% endblock %} 

@@ -39,7 +39,7 @@ def show_page(request):
         server_list.append({'id': server.fqdn, 'name': server.fqdn})
     
     server_dict = {"results": server_list, "total": len(server_list)}
-    return render_to_response('chain/chain.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, 'operations': operations, 'server_list':json.dumps(server_dict, ensure_ascii=False), 'service_status_url':settings.RUBY_REST_PING_URL}, context_instance=RequestContext(request))
+    return render_to_response('chain/chain.html', {"settings":settings,  "base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, 'operations': operations, 'server_list':json.dumps(server_dict, ensure_ascii=False), 'service_status_url':settings.RUBY_REST_PING_URL}, context_instance=RequestContext(request))
 
 
 @login_required

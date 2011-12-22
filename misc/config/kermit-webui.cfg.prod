@@ -21,6 +21,7 @@ email.password=
 email.usetls=False
 admin.area.title=Kermit Admin Area
 levels.number=5
+show_scheduler=false
 
 [webui-database]
 driver=django.db.backends.sqlite3

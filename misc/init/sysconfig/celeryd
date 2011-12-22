@@ -1,7 +1,7 @@
 # Name of nodes to start, here we have a single node
-CELERYD_NODES="w1"
+#CELERYD_NODES="w1"
 # or we could have three nodes:
-#CELERYD_NODES="w1 w2 w3"
+CELERYD_NODES="w1 w2 w3"
 
 # Where to chdir at start.
 CELERYD_CHDIR="/usr/share/kermit-webui/webui"

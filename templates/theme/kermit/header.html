@@ -30,10 +30,11 @@
 		<li>
 			<a href="{{base_url}}/">Dashboard</a>
 		</li>
-		{% if user.is_staff %}
+		{% if settings.SHOW_SCHEDULER %}
 		<li>
 			<a href="{{base_url}}/chain/show/">Scheduler</a>
 		</li>
+		{% endif %}
 		<li class="user-options-container collapse closed">
 			<a href="javascript://" class="user-options-handler collapse-handler">{% trans 'Export'%}</a>
 			<ul class="user-options">
@@ -43,6 +44,7 @@
 				</li>
 			</ul>
 		</li>
+		{% if user.is_staff %}
 		<li>
 			<a href="{{base_url}}/admin/">{% trans 'Admin area' %}</a>
 		</li>

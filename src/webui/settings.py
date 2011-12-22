@@ -279,6 +279,8 @@ AMQP_RECEIVER_LOG_FOLDER=CONF.get('webui', 'amqp_receive_log_folder')
 FILTERS_SERVER = CONF.getboolean("webui", "filters.server")
 FILTERS_CLASS = CONF.getboolean("webui", "filters.class")
 
+SHOW_SCHEDULER = CONF.getboolean("webui", "show_scheduler")
+
 EMAIL_HOST = CONF.get("webui", "email.host")
 EMAIL_PORT = CONF.get("webui", "email.port")
 EMAIL_HOST_USER = CONF.get("webui", "email.username")
@@ -293,15 +295,15 @@ djcelery.setup_loader()
 
 #To use directly the django database as a broker (no other tools required)
 #With this configuration you can't use celery monitor
-BROKER_TRANSPORT = "django"
+#BROKER_TRANSPORT = "django"
 
 #Sample Configuration for Redis
-#BROKER_TRANSPORT = "redis"
-#BROKER_URL = "redis://127.0.0.1:6379/0"
-#CELERY_RESULT_BACKEND = "redis"
-#CELERY_REDIS_HOST = "127.0.0.1"
-#CELERY_REDIS_PORT = 6379
-#CELERY_REDIS_DB = 0
+BROKER_TRANSPORT = "redis"
+BROKER_URL = "redis://127.0.0.1:6379/0"
+CELERY_RESULT_BACKEND = "redis"
+CELERY_REDIS_HOST = "127.0.0.1"
+CELERY_REDIS_PORT = 6379
+CELERY_REDIS_DB = 0
 
 #Sample configuration for mongodb
 #CELERY_RESULT_BACKEND = "mongodb"

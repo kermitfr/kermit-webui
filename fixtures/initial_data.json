@@ -224,7 +224,28 @@
                         "order": 1, 
                         "icon": ""
                 }
-        }, 
+        },
+        {
+                "pk": 11, 
+                "model": "widgets.widget", 
+                "fields": {
+                        "refreshable": false, 
+                        "description": "", 
+                        "title": "Job History", 
+                        "color": "white", 
+                        "editable": true, 
+                        "enabled": true, 
+                        "movable": true, 
+                        "refreshUrl": "", 
+                        "name": "BackendJobHistory", 
+                        "column": 2, 
+                        "removable": true, 
+                        "created_time": "2011-12-22 10:45:45", 
+                        "updated_time": "2011-12-22 10:45:45", 
+                        "order": 3, 
+                        "icon": ""
+                }
+        },  
         {
                 "pk": 28, 
                 "model": "auth.permission", 

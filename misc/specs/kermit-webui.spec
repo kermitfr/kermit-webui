@@ -6,11 +6,11 @@ License: GPL
 Group: Applications/System
 URL: https://github.com/thinkfr/kermit-webui
 Source: %{name}-%{version}.tar.gz
-Requires: httpd, Django, django-grappelli, django-guardian, django-celery, django-kombu, uuid
+Requires: httpd, Django, django-grappelli, django-guardian, django-celery, django-kombu, uuid, redis
 %if 0%{?fedora}
-Requires: python(abi) >= 2.6, mod_wsgi, python-httplib2
+Requires: python(abi) >= 2.6, mod_wsgi, python-httplib2, python-redis >= 2.4.10
 %else
-Requires: python(abi) = 2.6, python26-mod_wsgi, python26-httplib2, ordereddict
+Requires: python(abi) = 2.6, python26-mod_wsgi, python26-httplib2, ordereddict, python26-redis >= 2.4.10 
 %endif 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch: noarch

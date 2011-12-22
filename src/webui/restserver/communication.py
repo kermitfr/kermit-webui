@@ -3,6 +3,8 @@ from django.conf import settings
 import logging
 from celery.execute import send_task
 from webui.restserver.tasks import httpcall
+from webui.restserver.models import BackendJob
+import sys
 
 logger = logging.getLogger(__name__)
 
@@ -11,6 +13,13 @@ def callRestServer(user, filters, agent, action, args=None, wait_response=False,
     
     if use_task:
         result = send_task("webui.restserver.tasks.httpcall", [filters, agent, action, args])
+        logger.debug("Storing task reference in database")
+        try:
+            BackendJob.objects.create(user=user, task_uuid=result.task_id)
+        except:
+            print sys.exc_info()
+            #logger.error("Error storing job in database %s" % sys.exc_info())
+            
         if wait_response:
             response, content, agent, action = result.get()
         else:

@@ -1,0 +1,89 @@
+{% load i18n %}
+
+<table id="details" class="serverstatus" width="100%">	
+	<tr>
+		<td>
+			{% trans 'State'%}
+		</td>
+		<td>
+			<span style="color: {% if task.state == 'SUCCESS'%}green{% else %}red{% endif %};">
+			{{task.state}}
+			</span>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			{% trans 'UUID'%}
+		</td>
+		<td>
+			{{task.task_id}}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			{% trans 'Time'%}
+		</td>
+		<td>
+			{{task.tstamp}}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			{% trans 'Name'%}
+		</td>
+		<td>
+			{{task.name}}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			{% trans 'Arguments'%}
+		</td>
+		<td>
+			{% if jobarg %}
+			<b>Filter</b>: {{jobarg.filter}}&nbsp;<b>Agent</b>: {{jobarg.agent}}&nbsp;<b>Action</b>: {{jobarg.action}}&nbsp;<b>Arguments</b>: {{jobarg.arguments}}
+			{% endif %}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			{% trans 'Worker'%}
+		</td>
+		<td>
+			{{task.worker}}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			{% trans 'Retries'%}
+		</td>
+		<td>
+			{{task.retries}}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			{% trans 'Result'%}
+		</td>
+		<td>
+			<div style="width: 100%; height: 50px; overflow: auto;">
+				<table style="width: 100%;">
+					<thead>
+						<th>{% trans 'Status'%}</th>
+						<th>{% trans 'Server'%}</th>
+						<th>{% trans 'Data'%}</th>
+					</thead>
+					<tbody>
+						{% for resp in response.content %}
+						<tr>
+							<td>{{resp.statusmsg}}</td>
+							<td>{{resp.sender}}</td>
+							<td>{{resp.data}}</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</td>
+	</tr>
+</table>
