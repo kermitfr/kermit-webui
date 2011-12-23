@@ -84,7 +84,7 @@
 							var serverFilter = createServerList("#listServer"+newNum);
 							$.ajax({
 								// The link we are accessing.
-								url : '{{base_url}}/chain/sql_list/' + serverFilter + '/',
+								url : '{{settings.BASE_URL}}/chain/sql_list/' + serverFilter + '/',
 								// The type of request.
 								type : "get",
 								// The type of data that is getting returned.
@@ -123,7 +123,7 @@
 						$('#refreshBar'+newNum).click(function() {
 							var serverFilter = createServerList("#listServer"+newNum);
 							$.ajax({
-								url : '{{base_url}}/chain/bar_list/' + serverFilter + '/',
+								url : '{{settings.BASE_URL}}/chain/bar_list/' + serverFilter + '/',
 								// The type of request.
 								type : "get",
 								// The type of data that is getting returned.
@@ -165,7 +165,7 @@
 							var serverFilter = createServerList("#listServer"+newNum);
 							var serverType = $("#serverType"+newNum).val();
 							$.ajax({
-								url : '{{base_url}}/chain/ear_list/' + serverFilter + '/' + serverType + '/',
+								url : '{{settings.BASE_URL}}/chain/ear_list/' + serverFilter + '/' + serverType + '/',
 								// The type of request.
 								type : "get",
 								// The type of data that is getting returned.
