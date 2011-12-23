@@ -46,12 +46,14 @@ table.detailstable tr.odd {
 			<th>{% trans 'Action'%}</th>
 			<th>{% trans 'Parameters'%}</th>
 			<th>{% trans 'Run At'%}</th>
-			<th>{% trans 'Task UUID'%}</th>
+			<th>{% trans 'Response Details'%}</th>
 		</thead>
 		<tbody>
 			{% for task in tasks %}
 			<tr>
-				<td>{{task.state}}</td>
+				<td>
+					<span style="color: {% if task.state == 'SUCCESS'%}green{% else %}{% if task.state == 'WAITING' %}yellow{% else %}red{% endif%}{% endif%};">{{task.state}}</span>
+				</td>
 				<td>{{task.order}}</td>
 				<td>{{task.name}}</td>
 				<td>{{task.filter}}</td>
@@ -59,7 +61,13 @@ table.detailstable tr.odd {
 				<td>{{task.action}}</td>
 				<td>{{task.parameters}}</td>
 				<td>{{task.run_at}}</td>
-				<td>{{task.uuid}}</td>
+				<td>
+					{%if task.servers_response %}
+					{% for resp in task.servers_response %}
+					<b>{{resp.sender}}</b>: {{resp.statusmsg}}<br/>
+					{% endfor %}
+					{%endif%}
+				</td>
 			</tr>
 			{% endfor %}
 		</tbody>

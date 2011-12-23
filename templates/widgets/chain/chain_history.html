@@ -56,6 +56,39 @@
 			}
 		});
 	}
+
+	function rescheduleJob(url) {
+		$.ajax({
+			// The link we are accessing.
+			url : url,
+			// The type of request.
+			type : "get",
+			// The type of data that is getting returned.
+			dataType : "html",
+			error : function(xhr, ajaxOptions, thrownError) {
+				//TODO: Show error message
+				alert("Server communication error. Cannot restart selected Scheduler");
+				$('#loading').hide();
+			},
+			beforeSend : function() {
+				$('#loading').show();
+			},
+			complete : function() {
+				$('#loading').hide();
+			},
+			success : function(data) {
+				$("#detailscontainer").empty();
+				$("#detailscontainer").html("Selected operations chain added to scheduler. Chech in the history widget for results.");
+				
+				$("#detailscontainer").dialog({
+					modal : true,
+					title : 'Restart Failuer Scheduler',
+					height : 100,
+					width : 300
+				});
+			}
+		});
+	}
 </script>
 
 <style type="text/css">
@@ -106,7 +139,12 @@ table.schedulertable tr.odd {
 				<td><span class="uuid" style="text-decoration:underline; color: #444444;" onclick="showJobDetails('{% url get_scheduler_details job.name %}');">{{job.name}}</span></td>
 				<td>{{job.last_run}}</td>
 				<td>{{job.task_running}}</td>
-				<td><span style="color: {% if job.status == 'COMPLETED'%}green{% else %}{% if job.status == 'WAITING' %}yellow{% else %}red{% endif%}{% endif%};">{{job.status}}</span></td>
+				<td>
+					<span style="color: {% if job.status == 'COMPLETED'%}green{% else %}{% if job.status == 'WAITING' %}yellow{% else %}red{% endif%}{% endif%};">{{job.status}}</span>
+					{% if job.status == 'FAILURE' %}
+					<span onclick="rescheduleJob('{% url restart_failed_scheduler job.name %}');"><img src="{{settings.STATIC_URL}}images/icons/restart_20x20.png"/></span>
+					{%endif%}
+				</td>
 			</tr>
 			{% endfor %}
 		</tbody>

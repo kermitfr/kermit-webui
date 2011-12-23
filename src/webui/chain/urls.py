@@ -16,5 +16,6 @@ urlpatterns = patterns('webui.chain.views',
     url(r'^bar_list/(?P<servers>[\w|\W]+)/$', 'get_bar_list', name = "chain_bar_list"),
     
     url(r'^sched_details/(?P<name>[\w|\W]+)/$', 'get_scheduler_details', name = "get_scheduler_details"),
+    url(r'^restart_sched/(?P<name>[\w|\W]+)/$', 'restart_failed_scheduler', name = "restart_failed_scheduler"),
   
 )

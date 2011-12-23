@@ -100,8 +100,13 @@ def get_task_info(request, uuid):
                      "arguments": ""}
     response_list = ast.literal_eval(celery_task.result)
     if len(response_list) > 2:
+        try:
+            content = ast.literal_eval(response_list[1])
+        except:
+            logger.debug("String stored is in JSON format and not a python object")
+            content = json.loads(response_list[1])
         response = {"response": response_list[0],
-                    "content": ast.literal_eval(response_list[1])}
+                    "content": content}
     else:
         response = {"response": "", "content": ""}
     

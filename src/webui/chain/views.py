@@ -24,8 +24,8 @@ from webui.chain.models import Scheduler, SchedulerTask
 import sys
 from datetime import datetime
 import djcelery
-import ast
 from django.template.loader import render_to_string
+import ast
 
 logger = logging.getLogger(__name__)
 
@@ -192,14 +192,10 @@ def execute_chain(request, xhr=None):
                         SchedulerTask.objects.create(order=count, scheduler=sched, agent=op["agent"], action=op["action"], parameters=op["args"], filters=op["filters"])
                         count = count + 1
                 
-                    len(sched.tasks.values())
                     result = send_task(task_name, [sched])
-                    sched.task_uuid = result.task_id
-                    sched.save()
                     update_url = reverse('get_progress', kwargs={'taskname':task_name, 'taskid':result.task_id})
                     rdict.update({'UUID': result.task_id, 'taskname':task_name, 'update_url': update_url})
                 except:
-                    print sys.exc_info()
                     rdict.update({'bad':'true'})
         return HttpResponse(json.dumps(rdict, ensure_ascii=False), mimetype='application/javascript')
     else:
@@ -242,15 +238,16 @@ def get_bar_list(request, servers):
 def get_scheduler_details(request, name):
     logger.debug("Retrieving Scheduler %s information" % name)
     scheduler = Scheduler.objects.get(name=name)
+    try:
+        celery_task = djcelery.models.TaskState.objects.get(task_id=scheduler.task_uuid)
+        celery_result = ast.literal_eval(celery_task.result)
+        servers_response = celery_result[0]["messages"]
+    except:
+        logger.error("Cannot find celery task %s in database" % scheduler.task_uuid)
+        servers_response = []
     tasks_list = []
     for task in scheduler.tasks.iterator():
-        try:
-            celery_task = djcelery.models.TaskState.objects.get(task_id=task.task_uuid)
-            status = celery_task.state
-        except:
-            logger.error("Cannot find celery task %s in database" % task.task_uuid)
-            status = ""
-        task_obj = {"state": status,
+        task_obj = {"state": task.status,
                     "order": task.order,
                     "name": task.name,
                     "filter": task.filters,
@@ -258,8 +255,19 @@ def get_scheduler_details(request, name):
                     "action": task.action,
                     "parameters": task.parameters,
                     "run_at": task.run_at,
-                    "uuid": task.task_uuid
+                    "servers_response": servers_response
                     }
         tasks_list.append(task_obj)
     return HttpResponse(render_to_string('widgets/chain/scheddetails.html', {'tasks': tasks_list}, context_instance=RequestContext(request)))
 
+@login_required()
+@permission_required('agent.call_mcollective', return_403=True)
+def restart_failed_scheduler(request, name):
+    logger.debug("Retrieving Scheduler %s information" % name)
+    scheduler = Scheduler.objects.get(name=name)
+    task_name = "webui.chain.tasks.execute_chain_ops"
+    result = send_task(task_name, [scheduler])
+    rdict = {}
+    update_url = reverse('get_progress', kwargs={'taskname':task_name, 'taskid':result.task_id})
+    rdict.update({'UUID': result.task_id, 'taskname':task_name, 'update_url': update_url})
+    return HttpResponse(json.dumps(rdict, ensure_ascii=False), mimetype='application/javascript')

@@ -253,55 +253,14 @@
 						$(id).parent().before(errmsg);
 					});
 				} else {
-					$('#modalprogress').dialog({
+					var response_container = "#modalresponsecontainer";
+		        	$(response_container).html("Selected operations chain added to scheduler. Chech in the history widget for results.");
+					$(response_container).dialog({
 							modal : true,
-							title : 'Progress...',
+							title : 'Start Scheduler',
 							height : 100,
-							width : 500
-					});
-					$( "#progressbar" ).progressbar({ value: 0 });
-					$( "#taskstate").html('<b>Waiting...	</b>');
-					$.get(data.update_url, function(response) {
-						var checkStatus = function() {
-							$.getJSON(data.update_url, function(result) {
-					    		$( "#progressbar").progressbar({ value: result.value });
-								$( "#taskstate").html('<b>' + result.state + '</b>');	
-						        if(result.state!='SUCCESS' && result.state!='FAILURE' && result.state!=undefined) {
-						            setTimeout(checkStatus, 2000);
-						        } else {
-						        	var response_container = "#modalresponsecontainer";
-						        	$(response_container).empty();
-									for (i in result.responsecontent) {
-										resp = result.responsecontent[i];
-										content = '<strong>' + resp.name + '</strong>';
-										content += '<ul>';
-										content += '<li> Status Code: ' + resp.message + '</li>';
-										content += '</ul>';
-										$(content).appendTo(response_container);	
-									}
-									
-									if (result.state == 'FAILURE' && result.message == 'TIMEOUT') {
-										alert('Request Timeout');
-									}
-									$(response_container).dialog({
-											modal : true,
-											title : 'Execution response',
-											height : 200,
-											width : 500
-									});
-						        	$('#modalprogress').dialog('close');
-						        }
-					        // do something else
-			    		 	});
-						}
-						if (data.UUID) {
-							checkStatus();
-						} else {
-							if (data.error) {
-								$( "#taskstate").html(data.error);
-							}
-						}
-					});			
+							width : 300
+					});		
 				}
 			} else {
 				//DON'T PANIC :D

@@ -46,6 +46,19 @@ class CeleryBeatService(CoreService):
             return True
         return False
     
+class CeleryEvService(CoreService):
+    
+    def get_name(self):
+        return 'SchedMon'
+    
+    def get_description(self):
+        return check_service('celeryev')
+
+    def get_status(self):
+        if (check_service('celeryev')):
+            return True
+        return False
+    
 class KermitInventoryService(CoreService):
     
     def get_name(self):
@@ -76,5 +89,6 @@ class KermitLogService(CoreService):
 kermit_modules.register(RestService)
 kermit_modules.register(CeleryService)
 kermit_modules.register(CeleryBeatService)
+kermit_modules.register(CeleryEvService)
 kermit_modules.register(KermitInventoryService)
 kermit_modules.register(KermitLogService)
