@@ -18,9 +18,9 @@ class SchedulerAdmin(admin.ModelAdmin):
 class SchedulerTaskAdmin(admin.ModelAdmin):
     fieldsets = [
         ("General",   {'fields': ['order', 'name', 'scheduler']}),
-        ("Details",   {'fields': ['agent', 'action', 'parameters', 'filters', 'run_at']}),         
+        ("Details",   {'fields': ['agent', 'action', 'parameters', 'filters', 'run_at', 'result']}),         
     ]
-    list_display = ('scheduler', 'name', 'agent', 'action', 'parameters', 'filters', 'run_at')
+    list_display = ('scheduler', 'name', 'agent', 'action', 'parameters', 'filters', 'run_at', 'result')
     search_fields = ['user']
     
     

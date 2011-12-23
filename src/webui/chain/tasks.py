@@ -24,6 +24,10 @@ def execute_chain_ops(scheduler, task_id=None):
     scheduler.save()
     errors = False
     for op in scheduler.tasks.iterator():
+        if errors:
+            execute_chain_ops.update_state(state="FAILURE", meta={"current": i, "total": total_operations})
+            break
+        
         if op.status and op.status=='SUCCESS':
             logger.debug("Operation already completed. Skipping")
             continue
@@ -35,24 +39,29 @@ def execute_chain_ops(scheduler, task_id=None):
         response, content = callRestServer(scheduler.user, op.filters, op.agent, op.action, op.parameters, True)
         if response.status == 200:
             json_content = json.loads(content)
-            if json_content[0]["statuscode"] == 0:
-                op.status = "SUCCESS"
+            if json_content:
+                operation_success = True
                 servers_data = []
                 for server_data in json_content:
-                    servers_data.append(server_data)
+                    if server_data["statuscode"] == 0:
+                        servers_data.append(server_data)
+                    else:
+                        operation_success = False
+                        servers_data.append(server_data)
+                        errors = True
+                
                 response_list.append({"name": op.name, "messages": servers_data})
-            else:
-                scheduler.status = "FAILURE"
-                scheduler.save()
-                op.status = "FAILURE"
-                op.save()
-                servers_data = []
-                for server_data in json_content:
-                    servers_data.append(server_data)
-                response_list.append({"name": op.name, "messages": servers_data})
-                execute_chain_ops.update_state(state="FAILURE", meta={"current": i, "total": total_operations})
-                errors = True
-                break
+                if operation_success:
+                    op.status = "SUCCESS"
+                    op.result = servers_data
+                    op.save()
+                else:
+                    scheduler.status = "FAILURE"
+                    scheduler.save()
+                    op.status = "FAILURE"
+                    op.result = servers_data
+                    op.save()
+                    
         else:
             scheduler.status = "FAILURE"
             scheduler.save()

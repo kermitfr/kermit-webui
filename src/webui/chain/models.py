@@ -25,3 +25,4 @@ class SchedulerTask(models.Model):
     filters = models.CharField(max_length=255, null=True, blank=True)
     run_at = models.DateTimeField(null=True, blank=True)
     status = models.CharField(max_length=255, null=True, blank=True)
+    result = models.CharField(max_length=255, null=True, blank=True)

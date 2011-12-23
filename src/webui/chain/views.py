@@ -161,14 +161,15 @@ def execute_chain(request, xhr=None):
                                   "filters": filters,
                                   "agent": agent_name,
                                   "action": "stopinstance",
-                                  "args": 'instancename=%s' %(instancename)}
+                                  "args": 'instancename=%s' %(instancename),
+                                  "name": "Stop Instance"}
                         operations.append(stop_op)
                         start_op = {"user": request.user,
                                   "filters": filters,
                                   "agent": "a7xaos",
                                   "action": "startinstance",
                                   "args": 'instancename=%s' %(instancename),
-                                  "name": "Restart Instance"}
+                                  "name": "Start Instance"}
                         operations.append(start_op)
                     else:
                         errors = True
@@ -189,13 +190,14 @@ def execute_chain(request, xhr=None):
                     sched = Scheduler.objects.create(name="%s-%s"%(request.user, datetime.now()), user=request.user, status="WAITING")
                     count = 0
                     for op in operations:
-                        SchedulerTask.objects.create(order=count, scheduler=sched, agent=op["agent"], action=op["action"], parameters=op["args"], filters=op["filters"])
+                        SchedulerTask.objects.create(order=count, scheduler=sched, name=op["name"], agent=op["agent"], action=op["action"], parameters=op["args"], filters=op["filters"], status="WAITING")
                         count = count + 1
                 
                     result = send_task(task_name, [sched])
                     update_url = reverse('get_progress', kwargs={'taskname':task_name, 'taskid':result.task_id})
                     rdict.update({'UUID': result.task_id, 'taskname':task_name, 'update_url': update_url})
                 except:
+                    print sys.exc_info()
                     rdict.update({'bad':'true'})
         return HttpResponse(json.dumps(rdict, ensure_ascii=False), mimetype='application/javascript')
     else:
@@ -247,6 +249,10 @@ def get_scheduler_details(request, name):
         servers_response = []
     tasks_list = []
     for task in scheduler.tasks.iterator():
+        if task.result:
+            result = ast.literal_eval(task.result)
+        else:
+            result = []
         task_obj = {"state": task.status,
                     "order": task.order,
                     "name": task.name,
@@ -255,7 +261,7 @@ def get_scheduler_details(request, name):
                     "action": task.action,
                     "parameters": task.parameters,
                     "run_at": task.run_at,
-                    "servers_response": servers_response
+                    "servers_response": result
                     }
         tasks_list.append(task_obj)
     return HttpResponse(render_to_string('widgets/chain/scheddetails.html', {'tasks': tasks_list}, context_instance=RequestContext(request)))
