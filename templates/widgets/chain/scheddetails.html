@@ -1,0 +1,67 @@
+{% load i18n %}
+<script>
+	$(document).ready(function() {
+		$('#detailstable').dataTable({
+			 "oLanguage": {
+	            "sSearch": "Task Search:"
+        	}
+		});
+	})
+	
+</script>
+<style type="text/css">
+table.detailstable {
+	border-width: 2px;
+	border-spacing: 2px;
+	border-style: outset;
+	border-color: gray;
+	border-collapse: collapse;
+	background-color: white;
+	width: 100%;
+}
+
+table.detailstable th {
+	font-size: 12px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	color: #000;
+}
+
+table.detailstable tr.even {
+	background: #CCCCCC;
+}
+table.detailstable tr.odd {
+	background: #F0F0F0
+}
+
+</style>
+<div id="actual-scheduler">
+	<table id="detailstable" class="detailstable" style="width: 100%;">
+		<thead>
+			<th>{% trans 'Status'%}</th>
+			<th>{% trans 'Order'%}</th>
+			<th>{% trans 'Name'%}</th>
+			<th>{% trans 'Filter'%}</th>
+			<th>{% trans 'Agent'%}</th>
+			<th>{% trans 'Action'%}</th>
+			<th>{% trans 'Parameters'%}</th>
+			<th>{% trans 'Run At'%}</th>
+			<th>{% trans 'Task UUID'%}</th>
+		</thead>
+		<tbody>
+			{% for task in tasks %}
+			<tr>
+				<td>{{task.state}}</td>
+				<td>{{task.order}}</td>
+				<td>{{task.name}}</td>
+				<td>{{task.filter}}</td>
+				<td>{{task.agent}}</td>
+				<td>{{task.action}}</td>
+				<td>{{task.parameters}}</td>
+				<td>{{task.run_at}}</td>
+				<td>{{task.uuid}}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>

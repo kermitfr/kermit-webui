@@ -1,0 +1,116 @@
+{% extends "widgets/base_widget.html" %}
+{% load i18n%}
+{% block widget-content %}
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#schedulertable').dataTable({
+			 "oLanguage": {
+	            "sSearch": "Scheduler Search:"
+        	}
+		});
+		
+		$(".uuid").hover(function () {
+		    $(this).css("color","#999999");
+		    $(this).css("cursor","pointer");
+		  },
+		  function () {
+		    $(this).css("color","#444444");
+		    $(this).css("cursor","default");
+		  });
+	} );
+	
+	function showJobDetails(url) {
+		$.ajax({
+			// The link we are accessing.
+			url : url,
+			// The type of request.
+			type : "get",
+			// The type of data that is getting returned.
+			dataType : "html",
+			error : function(xhr, ajaxOptions, thrownError) {
+				//TODO: Show error message
+				alert("Server communication error. Cannot get Scheduler information");
+				$('#loading').hide();
+			},
+			beforeSend : function() {
+				$('#loading').show();
+			},
+			complete : function() {
+				$('#loading').hide();
+			},
+			success : function(data) {
+				$("#detailscontainer").empty();
+				$("#detailscontainer").html(data);
+				
+				$("#detailscontainer").dialog({
+					modal : true,
+					title : 'Scheduler Details',
+					height : 400,
+					width : 900,
+					open: function(event, ui){
+						$('body').css('overflow','auto');
+						$('.ui-widget-overlay').css('width','100%'); 
+						} 
+				});
+			}
+		});
+	}
+</script>
+
+<style type="text/css">
+table.schedulertable {
+	border-width: 2px;
+	border-spacing: 2px;
+	border-style: outset;
+	border-color: gray;
+	border-collapse: collapse;
+	background-color: white;
+	width: 100%;
+}
+
+table.schedulertable th {
+	font-size: 12px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	color: #000;
+}
+
+table.schedulertable tr.even {
+	background: #CCCCCC;
+}
+table.schedulertable tr.odd {
+	background: #F0F0F0
+}
+
+</style>
+<br/>
+<div id="detailscontainer"></div>
+<div id="actual-scheduler">
+	<table id="schedulertable" class="schedulertable">
+		<thead>
+			{% if user.is_staff %}
+			<th>{% trans 'User'%}</th>
+			{% endif %}
+			<th>{% trans 'Name'%}</th>
+			<th>{% trans 'Last Run'%}</th>
+			<th>{% trans 'Task Running'%}</th>
+			<th>{% trans 'Status'%}</th>
+		</thead>
+		<tbody>
+			{% for job in schedulers %}
+			<tr class="{% cycle odd,even %}">
+				{% if user.is_staff %}
+				<td>{{job.user}}</td>
+				{% endif %}
+				<td><span class="uuid" style="text-decoration:underline; color: #444444;" onclick="showJobDetails('{% url get_scheduler_details job.name %}');">{{job.name}}</span></td>
+				<td>{{job.last_run}}</td>
+				<td>{{job.task_running}}</td>
+				<td><span style="color: {% if job.status == 'COMPLETED'%}green{% else %}{% if job.status == 'WAITING' %}yellow{% else %}red{% endif%}{% endif%};">{{job.status}}</span></td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+<br/>
+{% endblock %} 

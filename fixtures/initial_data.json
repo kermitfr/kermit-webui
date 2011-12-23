@@ -245,7 +245,49 @@
                         "order": 3, 
                         "icon": ""
                 }
+        },
+        {
+                "pk": 12, 
+                "model": "widgets.widget", 
+                "fields": {
+                        "refreshable": false, 
+                        "description": "", 
+                        "title": "Scheduler History", 
+                        "color": "white", 
+                        "editable": true, 
+                        "enabled": false, 
+                        "movable": true, 
+                        "refreshUrl": "", 
+                        "name": "ChainHistory", 
+                        "column": 1, 
+                        "removable": true, 
+                        "created_time": "2011-12-22 15:50:45", 
+                        "updated_time": "2011-12-22 15:50:45", 
+                        "order": 0, 
+                        "icon": ""
+                }
         },  
+        {
+                "pk": 13, 
+                "model": "widgets.widget", 
+                "fields": {
+                        "refreshable": false, 
+                        "description": "", 
+                        "title": "Scheduler Editor", 
+                        "color": "white", 
+                        "editable": true, 
+                        "enabled": false, 
+                        "movable": true, 
+                        "refreshUrl": "", 
+                        "name": "ChainEditor", 
+                        "column": 1, 
+                        "removable": true, 
+                        "created_time": "2011-12-22 15:50:45", 
+                        "updated_time": "2011-12-22 15:50:45", 
+                        "order": 1, 
+                        "icon": ""
+                }
+        },
         {
                 "pk": 28, 
                 "model": "auth.permission", 

@@ -31,9 +31,9 @@ class QueryMethods(object):
             servers = Server.objects.filter(puppet_path__startswith=test_path)
             if not user.is_superuser and settings.FILTERS_SERVER:
                 servers = get_objects_for_user(user, 'use_server', Server).filter(puppet_path__startswith=test_path)
-            elif not user.is_superuser and level==0:
-                logger.debug("Hide servers with no class for non-admin users")
-                servers = []
+#            elif not user.is_superuser and level==0:
+#                logger.debug("Hide servers with no class for non-admin users")
+#                servers = []
                 
             if len(servers)>0:
                 classes = check_context_operation_visibility_list(servers)

@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils.datetime_safe import datetime
+from datetime import datetime
 
 class BackendJob(models.Model):
     user = models.ForeignKey(User, verbose_name="User executing job")

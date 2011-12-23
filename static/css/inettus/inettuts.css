@@ -32,6 +32,15 @@ a {color:white;}
 		height: 400px;
 }
 
+#columns #singlecolumn {
+    float: left;
+    width: 100%;
+	/* Min-height: */
+	min-height: 400px;
+	height: auto !important; 
+	height: 400px;
+}
+
 #columns #column2 {
     float: left;
     width: 80%;

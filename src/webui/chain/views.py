@@ -20,26 +20,19 @@ from webui.platforms.weblogic.utils import get_apps_list as weblo_app_list
 from webui.platforms.bar.utils import get_available_bars
 from celery.execute import send_task
 from django.core.urlresolvers import reverse
+from webui.chain.models import Scheduler, SchedulerTask
+import sys
+from datetime import datetime
+import djcelery
+import ast
+from django.template.loader import render_to_string
 
 logger = logging.getLogger(__name__)
 
 @login_required
 def show_page(request):
-    logger.debug("Composing chain operation")
-    operations = [{'id': 'script_ex', 'name': 'Execute Script'},
-                  {'id': 'deploy_bar', 'name': 'Deploy Bar'},
-                  {'id': 'deploy_ear', 'name': 'Deploy EAR'},
-                  {'id': 'restart_instance', 'name': 'Restart Instance'}]
-    
-    servers = Server.objects.filter(deleted=False)
-    if not request.user.is_superuser and settings.FILTERS_SERVER:
-        servers = get_objects_for_user(request.user, 'use_server', Server).filter(deleted=False)
-    server_list = []
-    for server in servers:
-        server_list.append({'id': server.fqdn, 'name': server.fqdn})
-    
-    server_dict = {"results": server_list, "total": len(server_list)}
-    return render_to_response('chain/chain.html', {"settings":settings,  "base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, 'operations': operations, 'server_list':json.dumps(server_dict, ensure_ascii=False), 'service_status_url':settings.RUBY_REST_PING_URL}, context_instance=RequestContext(request))
+    logger.debug("Rendering Scheduler Page")
+    return render_to_response('chain/chain.html', {"settings":settings,  "base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, 'service_status_url':settings.RUBY_REST_PING_URL}, context_instance=RequestContext(request))
 
 
 @login_required
@@ -191,9 +184,23 @@ def execute_chain(request, xhr=None):
             else:
                 logger.debug("No errors detected. Executing %s operations." % (len(operations)))
                 task_name = "webui.chain.tasks.execute_chain_ops"
-                result = send_task(task_name, [operations])
-                update_url = reverse('get_progress', kwargs={'taskname':task_name, 'taskid':result.task_id})
-                rdict.update({'UUID': result.task_id, 'taskname':task_name, 'update_url': update_url})
+                logger.debug("Store scheduler information on database")
+                try:
+                    sched = Scheduler.objects.create(name="%s-%s"%(request.user, datetime.now()), user=request.user, status="WAITING")
+                    count = 0
+                    for op in operations:
+                        SchedulerTask.objects.create(order=count, scheduler=sched, agent=op["agent"], action=op["action"], parameters=op["args"], filters=op["filters"])
+                        count = count + 1
+                
+                    len(sched.tasks.values())
+                    result = send_task(task_name, [sched])
+                    sched.task_uuid = result.task_id
+                    sched.save()
+                    update_url = reverse('get_progress', kwargs={'taskname':task_name, 'taskid':result.task_id})
+                    rdict.update({'UUID': result.task_id, 'taskname':task_name, 'update_url': update_url})
+                except:
+                    print sys.exc_info()
+                    rdict.update({'bad':'true'})
         return HttpResponse(json.dumps(rdict, ensure_ascii=False), mimetype='application/javascript')
     else:
         # It's not post so make a new form
@@ -230,3 +237,29 @@ def get_bar_list(request, servers):
         return HttpResponse(get_available_bars(request.user, filters))
     else:
         return HttpResponse('')
+    
+@login_required()
+def get_scheduler_details(request, name):
+    logger.debug("Retrieving Scheduler %s information" % name)
+    scheduler = Scheduler.objects.get(name=name)
+    tasks_list = []
+    for task in scheduler.tasks.iterator():
+        try:
+            celery_task = djcelery.models.TaskState.objects.get(task_id=task.task_uuid)
+            status = celery_task.state
+        except:
+            logger.error("Cannot find celery task %s in database" % task.task_uuid)
+            status = ""
+        task_obj = {"state": status,
+                    "order": task.order,
+                    "name": task.name,
+                    "filter": task.filters,
+                    "agent": task.agent,
+                    "action": task.action,
+                    "parameters": task.parameters,
+                    "run_at": task.run_at,
+                    "uuid": task.task_uuid
+                    }
+        tasks_list.append(task_obj)
+    return HttpResponse(render_to_string('widgets/chain/scheddetails.html', {'tasks': tasks_list}, context_instance=RequestContext(request)))
+
