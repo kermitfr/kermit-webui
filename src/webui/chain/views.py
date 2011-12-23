@@ -166,7 +166,7 @@ def execute_chain(request, xhr=None):
                         operations.append(stop_op)
                         start_op = {"user": request.user,
                                   "filters": filters,
-                                  "agent": "a7xaos",
+                                  "agent": agent_name,
                                   "action": "startinstance",
                                   "args": 'instancename=%s' %(instancename),
                                   "name": "Start Instance"}

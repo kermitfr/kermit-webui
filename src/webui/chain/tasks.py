@@ -9,6 +9,7 @@ import logging
 from webui.restserver.communication import callRestServer
 from django.utils import simplejson as json
 from datetime import datetime
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +37,7 @@ def execute_chain_ops(scheduler, task_id=None):
         op.save()
         scheduler.task_running = i + 1
         scheduler.save()
-        response, content = callRestServer(scheduler.user, op.filters, op.agent, op.action, op.parameters, True)
+        response, content = callRestServer(scheduler.user, op.filters, op.agent, op.action, op.parameters, True, False)
         if response.status == 200:
             json_content = json.loads(content)
             if json_content:
@@ -61,6 +62,9 @@ def execute_chain_ops(scheduler, task_id=None):
                     op.status = "FAILURE"
                     op.result = servers_data
                     op.save()
+            #Fix for restart operation
+            if op.action == 'stopinstance':
+                time.sleep(10)
                     
         else:
             scheduler.status = "FAILURE"
