@@ -21,13 +21,16 @@ class DashBoardPuppetClasses(Widget):
         agents = Agent.objects.filter(enabled=True)
         actions = {}
         if not self.user.is_superuser:
-            agents = get_objects_for_user(self.user, 'use_agent', Agent).filter(enabled=True)
-            #Fix added to filter agents actions on set acls
-            for agent in agents:
-                if not self.user.is_superuser:
-                    current_actions = get_objects_for_user(self.user, 'use_action', Action).filter(agent=agent)
-                    actions[agent.name] = current_actions
-            if not actions:
+            if self.user.has_perm('agent.show_widget_agent'):
+                agents = get_objects_for_user(self.user, 'use_agent', Agent).filter(enabled=True)
+                #Fix added to filter agents actions on set acls
+                for agent in agents:
+                    if not self.user.is_superuser:
+                        current_actions = get_objects_for_user(self.user, 'use_action', Action).filter(agent=agent)
+                        actions[agent.name] = current_actions
+                if not actions:
+                    agents = {}
+            else: 
                 agents = {}
         operations = Operation.objects.filter(enabled=True)
         if not self.user.is_superuser:

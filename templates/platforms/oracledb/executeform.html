@@ -98,7 +98,6 @@
 							} 
 						});
 						for (server_resp in data.result) {
-							$("#logcontainer").append("<b>" + data.result[server_resp].server + "</b><br/>");
 							if (data.result[server_resp].message!=undefined) {
 								$("#logcontainer").append(data.result[server_resp].message);
 							} else {	
@@ -137,6 +136,7 @@
 				$('#loading').hide();
 			},
 			success : function(data) {
+				$("#logcontainer").append("<b>" + server + "</b><br/>");
 				if(data) {
 					$("#logcontainer").append(data.logfilecontent);	
 				} else {
