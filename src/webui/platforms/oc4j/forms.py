@@ -23,9 +23,9 @@ class InstanceForm(forms.Form):
     
 class PoolForm(forms.Form):
     poolname = forms.CharField(label=u"Pool name", required=True)
-    instancename = forms.CharField(label=u"Instance Name", required=True)
+    instancename = forms.CharField(label=u"Oc4J Name", required=True)
     username = forms.CharField(label=u"Database Username", required=True)
     password = forms.CharField(widget=forms.PasswordInput, label=u"Database Password", required=True)
-    database = forms.CharField(label=u"Database connection", required=True)
+    database = forms.CharField(label=u"Server Name", required=True)
     dbinstance = forms.CharField(label=u"Database Instance", required=True)
     
