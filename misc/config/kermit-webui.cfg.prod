@@ -22,6 +22,7 @@ email.usetls=False
 admin.area.title=Kermit Admin Area
 levels.number=5
 show_scheduler=false
+show_status_bar=True
 
 [webui-database]
 driver=django.db.backends.sqlite3
@@ -30,6 +31,14 @@ host=
 port=
 user=
 password=
+
+#Sample PostgreSQL configuration
+#driver=postgresql_psycopg2
+#name=kermit
+#host=
+#port=
+#user=kermit
+#password=kermit
 
 [webui_logs]
 main.file=/var/log/kermit/kermit-webui.log
