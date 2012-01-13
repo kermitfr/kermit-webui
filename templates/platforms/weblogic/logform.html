@@ -125,6 +125,8 @@
 			url : '{{base_url}}/platform/weblogic/get_log_file/' + logFile + '/',
 			// The type of request.
 			type : "get",
+			cache: false,
+            async: false,
 			// The type of data that is getting returned.
 			dataType : "json",
 			error : function() {

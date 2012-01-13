@@ -125,7 +125,9 @@
 			url : '{{base_url}}/platform/oc4j/get_log_file/' + logFile + '/',
 			// The type of request.
 			type : "get",
-			// The type of data that is getting returned.
+            // The type of data that is getting returned.
+            cache: false,
+            async: false,
 			dataType : "json",
 			error : function() {
 				//TODO: Show error message
