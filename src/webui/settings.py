@@ -29,6 +29,10 @@ DATABASES = {
         'PASSWORD': CONF.get('webui-database', 'password'),  # Not used with sqlite3.
         'HOST': CONF.get('webui-database', 'host'),    # Set to empty string for localhost. Not used with sqlite3.
         'PORT': CONF.get('webui-database', 'port'),    # Set to empty string for default. Not used with sqlite3.
+        #Options for PostgreSQL database backend
+        #'OPTIONS': {
+        #    'autocommit': True,
+        #}
     }
 }
 
@@ -248,6 +252,7 @@ BASE_URL=CONF.get('webui', 'base_url')
 #LOGIN_REDIRECT_URL = '/'
 #LOGOUT_LINK = ""
 
+SHOW_STATUS_BAR=CONF.getboolean('webui', 'show_status_bar')
 auth_method=CONF.get('webui', 'authentication')
 
 if auth_method:

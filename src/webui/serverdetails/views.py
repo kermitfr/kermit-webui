@@ -37,7 +37,8 @@ def hostInventory(request, hostname):
     server_info = []   
     services = core.kermit_modules.extract(CoreService)
     service_status = []
-    if services:
+    show_status_bar = request.user.is_superuser or settings.SHOW_STATUS_BAR 
+    if services and show_status_bar:
         for service in services:
             data = {"name": service.get_name(),
                     "description" : service.get_description(),

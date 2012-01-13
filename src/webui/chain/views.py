@@ -26,6 +26,7 @@ from datetime import datetime
 import djcelery
 from django.template.loader import render_to_string
 import ast
+from webui.serverdetails import utils
 
 logger = logging.getLogger(__name__)
 
@@ -37,9 +38,7 @@ def show_page(request):
 
 @login_required
 def server_list(request):
-    servers = Server.objects.filter(deleted=False)
-    if not request.user.is_superuser and settings.FILTERS_SERVER:
-        servers = get_objects_for_user(request.user, 'use_server', Server).filter(deleted=False)
+    servers = utils.extract_user_servers(request.user)
     server_list = []
     for server in servers:
         server_list.append({'id': server.fqdn, 'name': server.fqdn})
