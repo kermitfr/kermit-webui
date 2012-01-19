@@ -87,7 +87,7 @@ def execute_sql(request, filters, dialog_name, xhr=None):
                 logger.debug("Calling MCollective to deploy %s sql on %s filtered server" % (sql_script, filters))
                 user_ip_address = request.META.get('REMOTE_ADDR') 
                 #;user=%s;userip=%s
-                response, content = callRestServer(request.user, filters, 'oracledb', 'execute_sql', 'sqlfile=%s;instancename=%s' % (sql_script, dbname), True)
+                response, content = callRestServer(request.user, filters, 'oracledb', 'execute_sql', 'sqlfile=%s;instancename=%s' % (sql_script, dbname), True, True, True)
                 #TODO: Improve reading content data
                 if response.status == 200:
                     json_content = json.loads(content)
@@ -183,7 +183,7 @@ def clone_db(request, filters, dialog_name, xhr=None):
             if instance and schema and target_server and target_instance:
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to export %s from %s to %s" % (schema, instance, target_server))
-                response, content = callRestServer(request.user, filters, 'oracledb', 'export_database', 'instancename=%s;schema=%s' %(instance, schema), True)
+                response, content = callRestServer(request.user, filters, 'oracledb', 'export_database', 'instancename=%s;schema=%s' %(instance, schema), True, True, True)
                 if response.status == 200:
                     json_content = json.loads(content)
                     s_resps = []

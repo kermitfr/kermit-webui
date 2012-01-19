@@ -276,6 +276,10 @@ RUBY_REST_SERVER_TIMEOUT=1200
 
 RUBY_REST_PING_URL=CONF.get('webui', 'rest_server_ping_url')
 
+RUBY_REST_SCHEDULER_URL=CONF.get('webui', 'rest_server_scheduler')
+RUBY_REST_SCHEDULER_STATUS_URL=CONF.get('webui', 'rest_server_scheduler_status')
+RUBY_REST_SCHEDULER_OUTPUT_URL=CONF.get('webui', 'rest_server_scheduler_output')
+
 CRON_POLLING_FREQUENCY=60
 
 AMQP_RECEIVER_INVENTORY_FOLDER=CONF.get('webui', 'amqp_receive_inventory_folder')

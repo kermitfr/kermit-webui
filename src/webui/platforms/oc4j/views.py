@@ -163,7 +163,7 @@ def deploy_app(request, filters, dialog_name, xhr=None):
             if appname and app_type and action:
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to deploy %s application on %s filtered server" % (appfile, filters))
-                response, content = callRestServer(request.user, filters, 'a7xoas', action, 'appname=%s;instancename=%s;appfile=%s' %(appname, instancename, appfile), True)
+                response, content = callRestServer(request.user, filters, 'a7xoas', action, 'appname=%s;instancename=%s;appfile=%s' %(appname, instancename, appfile), True, True, True)
                 if response.status == 200:
                     json_content = json.loads(content)
                     s_resps = []
@@ -227,7 +227,7 @@ def get_log(request, filters, dialog_name, xhr=None):
             if instancename and appname:
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to get log on %s filtered server" % (filters))
-                response, content = callRestServer(request.user, filters, 'a7xoas', 'get_log', 'instancename=%s;appname=%s' % (instancename,appname), True)
+                response, content = callRestServer(request.user, filters, 'a7xoas', 'get_log', 'instancename=%s;appname=%s' % (instancename,appname), True, True, True)
                 if response.status == 200:
                     json_content = json.loads(content)
                     s_resps = []
@@ -294,7 +294,7 @@ def create_instance(request, filters, dialog_name, xhr=None):
                 args = 'instancename=%s;groupname=%s' %(instancename, groupname)
                 if isflow:
                     args = "%s;isflow=%s" % (args, isflow)
-                response, content = callRestServer(request.user, filters, 'a7xoas', 'createinstance', args, True)
+                response, content = callRestServer(request.user, filters, 'a7xoas', 'createinstance', args, True, True, True)
                 if response.status == 200:
                     json_content = json.loads(content)
                     s_resps = []
@@ -364,7 +364,7 @@ def add_pool(request, filters, dialog_name, xhr=None):
             if instancename and poolname and username and password and database and dbinstance:
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to create instance %s on %s filtered server" % (instancename, filters))
-                response, content = callRestServer(request.user, filters, 'a7xoas', 'add_pool', 'oc4j=%s;poolname=%s;user=%s;password=%s;database=%s;instance=%s' %(instancename, poolname, username, password, database, dbinstance), True)
+                response, content = callRestServer(request.user, filters, 'a7xoas', 'add_pool', 'oc4j=%s;poolname=%s;user=%s;password=%s;database=%s;instance=%s' %(instancename, poolname, username, password, database, dbinstance), True, True, True)
                 if response.status == 200:
                     json_content = json.loads(content)
                     s_resps = []

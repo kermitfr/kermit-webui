@@ -2,23 +2,26 @@ import httplib2
 from django.conf import settings
 import logging
 from celery.execute import send_task
-from webui.restserver.tasks import httpcall
+from webui.restserver.tasks import httpcall, httpcallscheduler
 from webui.restserver.models import BackendJob
 import sys
 
 logger = logging.getLogger(__name__)
 
-def callRestServer(user, filters, agent, action, args=None, wait_response=False, use_task=True):
+def callRestServer(user, filters, agent, action, args=None, wait_response=False, use_task=True, use_backend_scheduler=False):
     logger.info("%s is calling agent %s action %s on %s" % (user, agent, action, filters))
     
     if use_task:
-        result = send_task("webui.restserver.tasks.httpcall", [filters, agent, action, args])
+        task_name = "webui.restserver.tasks.httpcall"
+        if use_backend_scheduler:
+            task_name = "webui.restserver.tasks.httpcallscheduler"
+        result = send_task(task_name, [filters, agent, action, args])
         logger.debug("Storing task reference in database")
         try:
             BackendJob.objects.create(user=user, task_uuid=result.task_id)
         except:
-            print sys.exc_info()
-            #logger.error("Error storing job in database %s" % sys.exc_info())
+            #print sys.exc_info()
+            logger.error("Error storing job in database %s" % sys.exc_info())
             
         if wait_response:
             response, content, agent, action = result.get()
@@ -27,7 +30,10 @@ def callRestServer(user, filters, agent, action, args=None, wait_response=False,
             return result, 'webui.restserver.tasks.httpcall'
     else:
         logger.debug("Running MCollective call without using another task")
-        response, content, agent, action = httpcall(filters, agent, action, args, use_task)
+        if use_backend_scheduler:
+            response, content, agent, action = httpcallscheduler(filters, agent, action, args, use_task)
+        else:
+            response, content, agent, action = httpcall(filters, agent, action, args, use_task)
     return response, content
 
 def verifyRestServer():
