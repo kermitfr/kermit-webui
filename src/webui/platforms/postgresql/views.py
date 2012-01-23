@@ -98,7 +98,7 @@ def execute_sql(request, filters, dialog_name, xhr=None):
                         if "data" in server_response and "logfile" in server_response["data"]:
                             s_resps.append({"server": server_response["sender"], "logfile":server_response["data"]["logfile"]})
                         else:
-                            s_resps.append({"server": server_response["sender"], "message":server_response["statusmsg"]})
+                            s_resps.append({"server": server_response["sender"], "message":server_response["data"]["statusmsg"]})
                     rdict.update({"result":s_resps})
                 else:
                     rdict.update({"result": "KO", "message": "Error communicating with server"})

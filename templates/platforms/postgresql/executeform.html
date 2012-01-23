@@ -99,6 +99,7 @@
 						});
 						for (server_resp in data.result) {
 							if (data.result[server_resp].message!=undefined) {
+								$("#logcontainer").append("<b>" + data.result[server_resp].server + "</b><br/>");
 								$("#logcontainer").append(data.result[server_resp].message);
 							} else {	
 								getLogContent(data.result[server_resp].server, data.result[server_resp].logfile);

@@ -72,27 +72,45 @@ def httpcallscheduler(filters, agent, action, args, use_task=True):
     
     if response.status == 200:
         json_content = json.loads(content)
-        jobid = json_content[0]["data"]["jobid"]
+        if len(json_content)==0:
+            logger.warn("No response received!!")
+            return response, content, agent, action
+        
+        logger.debug("Looking for jobid in response")
+        jobid = None
+        for data_received in json_content:
+            if "data" in data_received and "jobid" in data_received["data"]:
+                jobid = data_received["data"]["jobid"]
+                break
+                
+        if not jobid:
+            logger.warn("JobID not found in response data")
+            return response, content, agent, action
+        
         logger.debug('Job scheduled on backend with id: %s' % jobid)
         finished = False
         status_url = settings.RUBY_REST_SCHEDULER_STATUS_URL + jobid
         while not finished:
-            time.sleep(10)
             logger.debug("Calling status url %s" % status_url)
             status_response, status_content = http.request(status_url, "GET")
             if status_response.status == 200:
                 json_content_status = json.loads(status_content)
                 finished = True
                 for status_response in json_content_status:
-                    if status_response["data"]["state"] != 'finished':
-                        finished = False
-                        break
+                    if "data" in status_response and "state" in status_response["data"]:
+                        if status_response["data"]["state"] != 'finished':
+                            finished = False
+                            break
                 if finished:
                     logger.debug('Job finished')
                     finished = True
-                    output_url = settings.RUBY_REST_SCHEDULER_STATUS_URL + jobid
+                    output_url = settings.RUBY_REST_SCHEDULER_OUTPUT_URL + jobid
                     output_response, output_content = http.request(output_url, "GET")
+                    logger.debug('Response: ' + str(output_response))
+                    logger.debug('Content: ' + str(output_content))
                     return output_response, output_content, agent, action
+                else:
+                    time.sleep(10)
     
     logger.debug('Response: ' + str(response))
     logger.debug('Content: ' + str(content))
