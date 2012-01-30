@@ -49,6 +49,8 @@
 				newElem.find('#listServerHidden').attr('id', 'listServerHidden' + newNum).attr('name', 'listServerHidden' + newNum);
 				newElem.find('#listServerContainer').attr('id', 'listServerContainer' + newNum).attr('name', 'listServerContainer' + newNum);
 				newElem.find('#operationdata').attr('id', 'operationdata' + newNum);
+				newElem.find('#deleteSingleOperation').attr('id', 'deleteSingleOperation' + newNum);
+				newElem.find('#deleteThisOp').attr('id', 'deleteThisOp' + newNum);
 				if (num == 0) {
 					$("#buttons").after(newElem);	
 				} else {
@@ -220,6 +222,15 @@
 					  $("#listServerHidden"+newNum).val(serverFilter);
 					});
 				});
+				
+				$('#deleteThisOp'+newNum).click(function() {
+	                $('#template' + newNum).remove();
+	                var num = $('.clonedOperation').length;
+	                if (num == 0) {
+	                    $('#btnDel').attr('disabled','disabled');
+						$('#submitForm').attr('disabled','disabled');
+					}
+				});
 			
             });
  
@@ -303,6 +314,7 @@
 	<br/>
 	<fieldset style="border: 1px solid black; padding: 10px;">
 		<legend>Configure operation</legend>
+		<div id="deleteSingleOperation" style="width: 100%; text-align: right;"><img src="{{settings.STATIC_URL}}images/icons/delete.png" alt="Delete" id="deleteThisOp"/></div>
 		<table>
 			<tr>
 				<td>

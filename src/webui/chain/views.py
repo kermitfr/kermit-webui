@@ -8,8 +8,6 @@ import logging
 from django.shortcuts import render_to_response
 from webui import settings
 from django.template.context import RequestContext
-from guardian.shortcuts import get_objects_for_user
-from webui.serverstatus.models import Server
 from django.http import HttpResponse, Http404
 from django.utils import simplejson as json
 from webui.platforms.oracledb.utils import sql_list
@@ -33,7 +31,7 @@ logger = logging.getLogger(__name__)
 @login_required
 def show_page(request):
     logger.debug("Rendering Scheduler Page")
-    return render_to_response('chain/chain.html', {"settings":settings,  "base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, 'service_status_url':settings.RUBY_REST_PING_URL}, context_instance=RequestContext(request))
+    return render_to_response('chain/chain.html', {"settings":settings, "base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, 'service_status_url':settings.RUBY_REST_PING_URL}, context_instance=RequestContext(request))
 
 
 @login_required
@@ -54,129 +52,130 @@ def execute_chain(request, xhr=None):
             i = 1
             errors = False
             errs = {}
-            while "operation%s" % i in request.POST:
-                rdict = {'bad':'false'}
-                try:
-                    servers = request.POST["listServerHidden%s"%i]
-                    filters = construct_filters(servers)
-                    rdict.update({'filters':filters})
-                except:
-                    errors = True
-                    errs.update({"listServer%s"%i:'<ul class="errorlist"><li>You must select at least one server</li></ul>'})
-                    
-                
-                if request.POST["operation%s"%i] == 'script_ex':
+            while i<=5:
+                if "operation%s" % i in request.POST:
+                    rdict = {'bad':'false'}
                     try:
-                        sqlScript = request.POST["sqlScript%s"%i]
-                        instancename = request.POST["dbinstancename%s"%i]
+                        servers = request.POST["listServerHidden%s"%i]
+                        filters = construct_filters(servers)
+                        rdict.update({'filters':filters})
                     except:
-                        sqlScript=None
-                        instancename=None
-                    if sqlScript and instancename:
-                        current_op = {"user": request.user,
-                                      "filters": filters,
-                                      "agent": "oracledb",
-                                      "action": "execute_sql",
-                                      "args": "instancename=%s;sqlfile=%s" % (instancename, sqlScript),
-                                      "name": "Execute SQL Script"}
-                        operations.append(current_op)
-                    else:
                         errors = True
-                        if sqlScript==None:
-                            errs.update({"sqlScript%s"%i: '<ul class="errorlist"><li>Select a valid SqlScript to execute</li></ul>'})
-                        if instancename==None:
-                            errs.update({"dbinstancename%s"%i:'<ul class="errorlist"><li>Database Name is required</li></ul>'})
-                elif request.POST["operation%s"%i] == 'deploy_ear':
-                    try:
-                        appfile = request.POST['earApp%s'%i]
-                        instancename = request.POST['instancename%s'%i]
-                        appname = request.POST['appname%s'%i]
-                        serverType = request.POST['serverType%s'%i]
-                    except:
-                        appname=None
-                    if appfile and instancename and appname and serverType:
-                        logger.debug("Parameters check: OK.")
-                        logger.debug("Calling MCollective to deploy %s application on %s filtered server" % (appfile, filters))
-                        agent_name = None
-                        if serverType == 'OC4J':
-                            agent_name = 'a7xoas'
-                        elif serverType == 'WebLogic':
-                            agent_name = 'a7xows'
-                        current_op = {"user": request.user,
-                                  "filters": filters,
-                                  "agent": agent_name,
-                                  "action": "deploy",
-                                  "args": "appname=%s;instancename=%s;appfile=%s" %(appname, instancename, appfile),
-                                    "name": "Deploy Application"}
-                        operations.append(current_op)
-                    else:
-                        errors = True 
-                        if appfile==None:
-                            errs.update({"earApp%s"%i: '<ul class="errorlist"><li>Application to deploy is required</li></ul>'})
-                        if instancename==None:
-                            errs.update({"instancename%s"%i:'<ul class="errorlist"><li>Instance Name is required</li></ul>'})
-                        if appname==None:
-                            errs.update({"appname%s"%i:'<ul class="errorlist"><li>Application Name is required</li></ul>'})
-                        if serverType==None:
-                            errs.update({"serverType%s"%i:'<ul class="errorlist"><li>Server Type is required</li></ul>'})
-                elif request.POST["operation%s"%i] == 'deploy_bar':
-                    try:
-                        barapp = request.POST['barApp%s'%i]
-                        consolename = request.POST['consoleName%s'%i]
-                    except:
-                        barapp=None
-                        consolename = None
-                    if barapp and consolename:
-                        logger.debug("Parameters check: OK.")
-                        logger.debug("Calling MCollective to deploy %s bar on %s filtered server" % (barapp, filters))
-                        current_op = {"user": request.user,
-                                  "filters": filters,
-                                  "agent": "a7xbar",
-                                  "action": "deploy",
-                                  "args": 'filename=%s;bcname=%s' %(barapp, consolename),
-                                  "name": "Deploy Bar"}
-                        operations.append(current_op)
-                    else:
-                        errors = True
-                        if barapp==None:
-                            errs.update({"barApp%s"%i: '<ul class="errorlist"><li>BAR to deploy is required</li></ul>'})
-                        if consolename==None:
-                            errs.update({"consoleName%s"%i:'<ul class="errorlist"><li>Console Name is required</li></ul>'})
-                elif request.POST["operation%s"%i] == 'restart_instance':
-                    try:
-                        instancename = request.POST['instancename%s'%i]
-                        serverType = request.POST['serverType%s'%i]
-                    except:
-                        instancename=None
-                        serverType=None
-                    if instancename and serverType:
-                        logger.debug("Parameters check: OK.")
-                        logger.debug("Calling MCollective to restart instance %s" % (instancename))
-                        if serverType == 'OC4J':
-                            agent_name = 'a7xoas'
-                        elif serverType == 'WebLogic':
-                            agent_name = 'a7xows'
-                        stop_op = {"user": request.user,
-                                  "filters": filters,
-                                  "agent": agent_name,
-                                  "action": "stopinstance",
-                                  "args": 'instancename=%s' %(instancename),
-                                  "name": "Stop Instance"}
-                        operations.append(stop_op)
-                        start_op = {"user": request.user,
-                                  "filters": filters,
-                                  "agent": agent_name,
-                                  "action": "startinstance",
-                                  "args": 'instancename=%s' %(instancename),
-                                  "name": "Start Instance"}
-                        operations.append(start_op)
-                    else:
-                        errors = True
-                        if instancename==None:
-                            errs.update({"instancename%s"%i:'<ul class="errorlist"><li>Instance Name is required</li></ul>'})
-                        if serverType==None:
-                            errs.update({"serverType%s"%i:'<ul class="errorlist"><li>Server Type is required</li></ul>'})
+                        errs.update({"listServer%s"%i:'<ul class="errorlist"><li>You must select at least one server</li></ul>'})
                         
+                    
+                    if request.POST["operation%s"%i] == 'script_ex':
+                        try:
+                            sqlScript = request.POST["sqlScript%s"%i]
+                            instancename = request.POST["dbinstancename%s"%i]
+                        except:
+                            sqlScript=None
+                            instancename=None
+                        if sqlScript and instancename:
+                            current_op = {"user": request.user,
+                                          "filters": filters,
+                                          "agent": "oracledb",
+                                          "action": "execute_sql",
+                                          "args": "instancename=%s;sqlfile=%s" % (instancename, sqlScript),
+                                          "name": "Execute SQL Script"}
+                            operations.append(current_op)
+                        else:
+                            errors = True
+                            if sqlScript==None:
+                                errs.update({"sqlScript%s"%i: '<ul class="errorlist"><li>Select a valid SqlScript to execute</li></ul>'})
+                            if instancename==None:
+                                errs.update({"dbinstancename%s"%i:'<ul class="errorlist"><li>Database Name is required</li></ul>'})
+                    elif request.POST["operation%s"%i] == 'deploy_ear':
+                        try:
+                            appfile = request.POST['earApp%s'%i]
+                            instancename = request.POST['instancename%s'%i]
+                            appname = request.POST['appname%s'%i]
+                            serverType = request.POST['serverType%s'%i]
+                        except:
+                            appname=None
+                        if appfile and instancename and appname and serverType:
+                            logger.debug("Parameters check: OK.")
+                            logger.debug("Calling MCollective to deploy %s application on %s filtered server" % (appfile, filters))
+                            agent_name = None
+                            if serverType == 'OC4J':
+                                agent_name = 'a7xoas'
+                            elif serverType == 'WebLogic':
+                                agent_name = 'a7xows'
+                            current_op = {"user": request.user,
+                                      "filters": filters,
+                                      "agent": agent_name,
+                                      "action": "deploy",
+                                      "args": "appname=%s;instancename=%s;appfile=%s" %(appname, instancename, appfile),
+                                        "name": "Deploy Application"}
+                            operations.append(current_op)
+                        else:
+                            errors = True 
+                            if appfile==None:
+                                errs.update({"earApp%s"%i: '<ul class="errorlist"><li>Application to deploy is required</li></ul>'})
+                            if instancename==None:
+                                errs.update({"instancename%s"%i:'<ul class="errorlist"><li>Instance Name is required</li></ul>'})
+                            if appname==None:
+                                errs.update({"appname%s"%i:'<ul class="errorlist"><li>Application Name is required</li></ul>'})
+                            if serverType==None:
+                                errs.update({"serverType%s"%i:'<ul class="errorlist"><li>Server Type is required</li></ul>'})
+                    elif request.POST["operation%s"%i] == 'deploy_bar':
+                        try:
+                            barapp = request.POST['barApp%s'%i]
+                            consolename = request.POST['consoleName%s'%i]
+                        except:
+                            barapp=None
+                            consolename = None
+                        if barapp and consolename:
+                            logger.debug("Parameters check: OK.")
+                            logger.debug("Calling MCollective to deploy %s bar on %s filtered server" % (barapp, filters))
+                            current_op = {"user": request.user,
+                                      "filters": filters,
+                                      "agent": "a7xbar",
+                                      "action": "deploy",
+                                      "args": 'filename=%s;bcname=%s' %(barapp, consolename),
+                                      "name": "Deploy Bar"}
+                            operations.append(current_op)
+                        else:
+                            errors = True
+                            if barapp==None:
+                                errs.update({"barApp%s"%i: '<ul class="errorlist"><li>BAR to deploy is required</li></ul>'})
+                            if consolename==None:
+                                errs.update({"consoleName%s"%i:'<ul class="errorlist"><li>Console Name is required</li></ul>'})
+                    elif request.POST["operation%s"%i] == 'restart_instance':
+                        try:
+                            instancename = request.POST['instancename%s'%i]
+                            serverType = request.POST['serverType%s'%i]
+                        except:
+                            instancename=None
+                            serverType=None
+                        if instancename and serverType:
+                            logger.debug("Parameters check: OK.")
+                            logger.debug("Calling MCollective to restart instance %s" % (instancename))
+                            if serverType == 'OC4J':
+                                agent_name = 'a7xoas'
+                            elif serverType == 'WebLogic':
+                                agent_name = 'a7xows'
+                            stop_op = {"user": request.user,
+                                      "filters": filters,
+                                      "agent": agent_name,
+                                      "action": "stopinstance",
+                                      "args": 'instancename=%s' %(instancename),
+                                      "name": "Stop Instance"}
+                            operations.append(stop_op)
+                            start_op = {"user": request.user,
+                                      "filters": filters,
+                                      "agent": agent_name,
+                                      "action": "startinstance",
+                                      "args": 'instancename=%s' %(instancename),
+                                      "name": "Start Instance"}
+                            operations.append(start_op)
+                        else:
+                            errors = True
+                            if instancename==None:
+                                errs.update({"instancename%s"%i:'<ul class="errorlist"><li>Instance Name is required</li></ul>'})
+                            if serverType==None:
+                                errs.update({"serverType%s"%i:'<ul class="errorlist"><li>Server Type is required</li></ul>'})
+                            
                 i = i + 1
             if errors:
                 rdict.update({'bad':'true'})
