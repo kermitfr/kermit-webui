@@ -133,8 +133,11 @@ def deploy_app(request, filters, dialog_name, xhr=None):
                     s_resps = []
                     for server_response in json_content:
                         if server_response['statuscode']==0:
-                            if "data" in server_response and "statusmsg" in server_response["data"]:
-                                s_resps.append({"server": server_response["sender"], "response":server_response["data"]["statusmsg"]})
+                            if "data" in server_response and "data" in server_response["data"]:
+                                if "status" in server_response["data"]["data"]:
+                                    s_resps.append({"server": server_response["sender"], "response":server_response["data"]["data"]["status"]})
+                                else:
+                                    s_resps.append({"server": server_response["sender"], "response":server_response["data"]["data"]["statusmsg"]})
                             else:
                                 s_resps.append({"server": server_response["sender"], "response":server_response["statusmsg"]})
                         else:
@@ -207,7 +210,10 @@ def get_log(request, filters, dialog_name, xhr=None):
                                 logger.debug("Discovered log for server %s: %s" % (server_response["sender"], log_file))
                                 s_resps.append({"server": server_response["sender"], "logfile":log_file})
                             else:
-                                s_resps.append({"server": server_response["sender"], "message":server_response["statusmsg"]})
+                                if server_response["data"] and "statusmsg" in server_response["data"]:
+                                    s_resps.append({"server": server_response["sender"], "message":server_response["data"]["statusmsg"]})
+                                else:    
+                                    s_resps.append({"server": server_response["sender"], "message":server_response["statusmsg"]})
                     rdict.update({"result":s_resps})
                 else:
                     rdict.update({"result": "KO", "message": "Error communicating with server"})
@@ -273,10 +279,12 @@ def create_instance(request, filters, dialog_name, xhr=None):
                     s_resps = []
                     for server_response in json_content:
                         if server_response['statuscode']==0:
-                            if "data" in server_response and "statusmsg" in server_response["data"]:
-                                s_resps.append({"server": server_response["sender"], "response":server_response["data"]["statusmsg"]})
-                            else:
-                                s_resps.append({"server": server_response["sender"], "response":server_response["statusmsg"]})
+                            response_message = 'Instance Created'
+                            if "data" in server_response and "statusmsg" in server_response["data"] and server_response["data"]["statusmsg"]!='OK':
+                                response_message = server_response["data"]["statusmsg"]
+                            elif server_response["statusmsg"] and server_response["statusmsg"]!='OK':
+                                response_message = server_response["statusmsg"]
+                            s_resps.append({"server": server_response["sender"], "response":response_message})
                         else:
                             s_resps.append({"server": server_response["sender"], "message":server_response["statusmsg"]})
                     rdict.update({"result":s_resps})
