@@ -37,7 +37,7 @@ def execute_chain_ops(scheduler, task_id=None):
         op.save()
         scheduler.task_running = i + 1
         scheduler.save()
-        response, content = callRestServer(scheduler.user, op.filters, op.agent, op.action, op.parameters, True, False)
+        response, content = callRestServer(scheduler.user, op.filters, op.agent, op.action, op.parameters, True, False, True)
         if response.status == 200:
             json_content = json.loads(content)
             if json_content:
