@@ -91,10 +91,14 @@
 					});
 					for (server_resp in data.result) {
 						$("#logcontainer").append("<b>" + data.result[server_resp].server + "</b><br/>");
-						if (data.result[server_resp].message!=undefined) {
-							$("#logcontainer").append(data.result[server_resp].message);
-						} else {
+						if (data.result[server_resp].logfile!=undefined) {
 							getLogContent(data.result[server_resp].server, data.result[server_resp].logfile);
+						} else {
+							if (data.result[server_resp].message!=undefined) {
+								$("#logcontainer").append(data.result[server_resp].message);
+							} else {
+								$("#logcontainer").append("Unknown error");
+							}
 						}
 					}		
 					$("#" + data.dialog_name).dialog('close');

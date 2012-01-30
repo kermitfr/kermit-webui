@@ -69,7 +69,7 @@ def httpcallscheduler(filters, agent, action, args, use_task=True):
                             })
         content = [{"data":{},"statuscode":1,"sender":filters,"statusmsg":"Connection Timeout!"}]
         return response, content, agent, action
-    
+   
     if response.status == 200:
         json_content = json.loads(content)
         if len(json_content)==0:
@@ -79,7 +79,8 @@ def httpcallscheduler(filters, agent, action, args, use_task=True):
         logger.debug("Looking for jobid in response")
         jobid = None
         for data_received in json_content:
-            if "data" in data_received and "jobid" in data_received["data"]:
+            #if "data" in data_received and "jobid" in data_received["data"]:
+            if data_received and "data" in data_received and "jobid" in data_received["data"]:
                 jobid = data_received["data"]["jobid"]
                 break
                 
@@ -89,7 +90,7 @@ def httpcallscheduler(filters, agent, action, args, use_task=True):
         
         logger.debug('Job scheduled on backend with id: %s' % jobid)
         finished = False
-        status_url = settings.RUBY_REST_SCHEDULER_STATUS_URL + jobid
+        status_url = settings.RUBY_REST_SCHEDULER_STATUS_URL + jobid + '/' + filters
         while not finished:
             logger.debug("Calling status url %s" % status_url)
             status_response, status_content = http.request(status_url, "GET")
@@ -97,14 +98,15 @@ def httpcallscheduler(filters, agent, action, args, use_task=True):
                 json_content_status = json.loads(status_content)
                 finished = True
                 for status_response in json_content_status:
-                    if "data" in status_response and "state" in status_response["data"]:
-                        if status_response["data"]["state"] != 'finished':
+                    #if "data" in status_response and "state" in status_response["data"]:
+                    if status_response and "data" in status_response and status_response["data"] and "state" in status_response["data"]:
+                        if status_response["data"]["state"] != 'finished' and status_response["data"]["state"] != 'lost in space':
                             finished = False
                             break
                 if finished:
                     logger.debug('Job finished')
                     finished = True
-                    output_url = settings.RUBY_REST_SCHEDULER_OUTPUT_URL + jobid
+                    output_url = settings.RUBY_REST_SCHEDULER_OUTPUT_URL + jobid + '/' + filters
                     output_response, output_content = http.request(output_url, "GET")
                     logger.debug('Response: ' + str(output_response))
                     logger.debug('Content: ' + str(output_content))

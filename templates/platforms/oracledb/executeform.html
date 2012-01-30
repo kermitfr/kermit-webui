@@ -82,7 +82,7 @@
 				if (data.errors) {
 					$('#emsg').text(data.errors);
 				} else {
-					$("#logcontainer").empty();
+                    $("#logcontainer").empty();
 					if (data.result!="KO") {
 						$("#logcontainer").dialog({
 							modal : true,
@@ -97,13 +97,19 @@
 								$('.ui-widget-overlay').css('width','100%'); 
 							} 
 						});
-						for (server_resp in data.result) {
-							if (data.result[server_resp].message!=undefined) {
-								$("#logcontainer").append(data.result[server_resp].message);
-							} else {	
-								getLogContent(data.result[server_resp].server, data.result[server_resp].logfile);
-							}
-						}
+                        for (server_resp in data.result) {
+                            if (data.result[server_resp].logfile!=undefined) {
+                               getLogContent(data.result[server_resp].server, data.result[server_resp].logfile);
+                            } else {
+                                var message = "Unknown error";
+                                if (data.result[server_resp].message!=undefined) {
+                                    message = data.result[server_resp].message;
+                                }
+                                $("#logcontainer").append("<b>" + data.result[server_resp].server + "</b><br/>");
+                                $("#logcontainer").append(message);
+                                $("#logcontainer").append("<br/>");
+                            }
+                        }
 						$("#" + data.dialog_name).dialog('close');
 					} else {
 						$("#emsg").append("<div class='errorbox'>" + data.message + "</div><br/>").fadeIn("slow");

@@ -141,7 +141,10 @@ def deploy_bar(request, filters, dialog_name, xhr=None):
                     s_resps = []
                     for server_response in json_content:
                         if server_response['statuscode']==0:
-                            s_resps.append({"server": server_response["sender"], "response":server_response["statusmsg"]})
+                            if "data" in server_response and "statusmsg" in server_response["data"]:
+                                s_resps.append({"server": server_response["sender"], "response":server_response["data"]["statusmsg"]})
+                            else:
+                                s_resps.append({"server": server_response["sender"], "response":server_response["statusmsg"]})
                         else:
                             s_resps.append({"server": server_response["sender"], "message":server_response["statusmsg"]})
                     rdict.update({"result":s_resps})

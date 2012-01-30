@@ -133,7 +133,10 @@ def deploy_app(request, filters, dialog_name, xhr=None):
                     s_resps = []
                     for server_response in json_content:
                         if server_response['statuscode']==0:
-                            s_resps.append({"server": server_response["sender"], "response":server_response["statusmsg"]})
+                            if "data" in server_response and "statusmsg" in server_response["data"]:
+                                s_resps.append({"server": server_response["sender"], "response":server_response["data"]["statusmsg"]})
+                            else:
+                                s_resps.append({"server": server_response["sender"], "response":server_response["statusmsg"]})
                         else:
                             s_resps.append({"server": server_response["sender"], "message":server_response["statusmsg"]})
                     rdict.update({"result":s_resps})
@@ -193,10 +196,18 @@ def get_log(request, filters, dialog_name, xhr=None):
                     json_content = json.loads(content)
                     s_resps = []
                     for server_response in json_content:
-                        if server_response['statuscode']==0:
-                            s_resps.append({"server": server_response["sender"], "logfile":server_response["data"]["logfile"]})
-                        else:
-                            s_resps.append({"server": server_response["sender"], "message":server_response["statusmsg"]})
+                        if server_response and server_response["statuscode"] == 0 and "data" in server_response:
+                            log_file = None
+                            if server_response["data"] and "logfile" in server_response["data"]:
+                                log_file = server_response["data"]["logfile"]
+                            elif server_response["data"] and "data" in server_response["data"] and "logfile" in server_response["data"]["data"]:
+                                log_file = server_response["data"]["data"]["logfile"]
+
+                            if log_file:
+                                logger.debug("Discovered log for server %s: %s" % (server_response["sender"], log_file))
+                                s_resps.append({"server": server_response["sender"], "logfile":log_file})
+                            else:
+                                s_resps.append({"server": server_response["sender"], "message":server_response["statusmsg"]})
                     rdict.update({"result":s_resps})
                 else:
                     rdict.update({"result": "KO", "message": "Error communicating with server"})
@@ -262,7 +273,10 @@ def create_instance(request, filters, dialog_name, xhr=None):
                     s_resps = []
                     for server_response in json_content:
                         if server_response['statuscode']==0:
-                            s_resps.append({"server": server_response["sender"], "response":server_response["statusmsg"]})
+                            if "data" in server_response and "statusmsg" in server_response["data"]:
+                                s_resps.append({"server": server_response["sender"], "response":server_response["data"]["statusmsg"]})
+                            else:
+                                s_resps.append({"server": server_response["sender"], "response":server_response["statusmsg"]})
                         else:
                             s_resps.append({"server": server_response["sender"], "message":server_response["statusmsg"]})
                     rdict.update({"result":s_resps})
