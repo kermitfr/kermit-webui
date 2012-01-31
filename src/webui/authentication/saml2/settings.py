@@ -44,7 +44,7 @@ SAML_CONFIG = {
                 # url and binding to the single logout service view
                 # do not change the binding or service name
                 'single_logout_service': [
-                    ('http://npplam01.preprod.org/automatix/saml2/logout/',
+                    ('http://npplam01.preprod.org/automatix/auth/saml2/SLO/',
                      saml2.BINDING_HTTP_REDIRECT),
                     ],
                 },
@@ -106,5 +106,5 @@ SAML_CONFIG = {
         'display_name': [('Oxylane', 'fr'), ('Oxylane', 'en')],
         'url': [('http://www.oxylane.com', 'fr'), ('http://www.oxylane.com/en', 'en')],
         },
-    'valid_for': 24,  # how long is our metadata valid
+    'valid_for': 1,  # how long is our metadata valid
     }
