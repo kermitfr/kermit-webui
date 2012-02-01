@@ -42,14 +42,15 @@ class QueryMethods(object):
             else:
                 logger.info("Excluding class " + str(puppetclass) + " because there are no server inside")
         
-        logger.info("Looking for servers in path: " + path)
-        servers = Server.objects.filter(puppet_path=path, deleted=False)
-        if not user.is_superuser and settings.FILTERS_SERVER:
-            servers = get_objects_for_user(user, 'use_server', Server).filter(puppet_path=path, deleted=False)
-        for server in servers:
-            classes = check_context_operation_visibility(server)
-            serverdata = {"title":server.fqdn, "url": settings.BASE_URL + "/server/details/"+server.hostname+"/", "key":server.fqdn, "filtername":server.hostname, "classes": classes}
-            data.append(serverdata)
+        if path != '' or (path == '' and user.is_superuser):
+            logger.info("Looking for servers in path: " + path)
+            servers = Server.objects.filter(puppet_path=path, deleted=False)
+            if not user.is_superuser and settings.FILTERS_SERVER:
+                servers = get_objects_for_user(user, 'use_server', Server).filter(puppet_path=path, deleted=False)
+            for server in servers:
+                classes = check_context_operation_visibility(server)
+                serverdata = {"title":server.fqdn, "url": settings.BASE_URL + "/server/details/"+server.hostname+"/", "key":server.fqdn, "filtername":server.hostname, "classes": classes}
+                data.append(serverdata)
              
         return json.dumps(data)
     
