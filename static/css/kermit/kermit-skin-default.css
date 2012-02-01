@@ -2038,3 +2038,9 @@ div.messagebox {
 	color: green; 
 	padding: 3px;
 }
+
+div.versionlabel {
+	float:right;
+	margin-right: 20px;
+	font-weight: bold;
+}

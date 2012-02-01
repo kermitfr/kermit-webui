@@ -1,6 +1,6 @@
 Summary: Mcollective WebUI
 Name: kermit-webui
-Version: 0.5.6
+Version: 0.5.7
 Release: 1
 License: GPL
 Group: Applications/System
@@ -79,6 +79,8 @@ echo "Fedora: Do nothing..."
 %else
 %{__cp} ./misc/fixes/manage.py $RPM_BUILD_ROOT/usr/share/%{name}/webui/manage.py
 %endif
+#create version file
+echo %{version} > $RPM_BUILD_ROOT/etc/kermit/webui/version.txt
 
 
 %clean

@@ -11,6 +11,7 @@ from webui.abstracts import CoreService, ServerOperation
 from django.core.urlresolvers import reverse
 from webui.restserver.communication import callRestServer
 from webui.serverstatus.models import Server
+from webui.utils import read_kermit_version
 
 logger = logging.getLogger(__name__)
 
@@ -44,6 +45,7 @@ def hostInventory(request, hostname):
                     "description" : service.get_description(),
                     "status": service.get_status()}
             service_status.append(data)
+    version = read_kermit_version()
     my_server = Server.objects.get(hostname=hostname)
     operations = {}  
     server_operations = core.kermit_modules.extract(ServerOperation)
@@ -73,7 +75,7 @@ def hostInventory(request, hostname):
                 logger.debug("Operation %s is not visible for %s server" % (op.get_name(), hostname))
 
     #TODO: Make a refactor to remove base_url and statis_url from context
-    return render_to_response('server/details.html', {"settings": settings, "base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "serverdetails": server_info, "hostname": hostname, "service_status":service_status, 'server_operations': operations}, context_instance=RequestContext(request))
+    return render_to_response('server/details.html', {"settings": settings, "base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "serverdetails": server_info, "hostname": hostname, "service_status":service_status, 'server_operations': operations, "kermit_version":version}, context_instance=RequestContext(request))
 
 @login_required()
 def hostCallInventory(request, hostname):

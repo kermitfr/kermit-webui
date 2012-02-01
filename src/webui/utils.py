@@ -19,3 +19,14 @@ CONF = ConfigParser.ConfigParser()
 CONF.read(MAINCONF)
 
 logger = logging.getLogger(__name__);
+
+
+def read_kermit_version():
+    try:
+        f = open('/etc/kermit/webui/version.txt', 'r')
+        version = f.read()
+        return version
+    except:
+        logger.warn("No version file found in /etc/kermit/webui/version.txt")
+        return None
+    

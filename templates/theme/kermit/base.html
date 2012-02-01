@@ -185,6 +185,9 @@
 				<img src="{{static_url}}images/icons/{% if service.status %}online.png{% else %}offline.png{% endif %}" style="border: 0px; height: 10px;margin: 0px;float:none;"/>
 				{{service.name}} {% if service.description %}({{service.description}}){% endif %} &nbsp;&nbsp;&nbsp;
 				{%endfor%}
+				{% if kermit_version%}
+				<div class="versionlabel">Version: {{kermit_version}}</div>
+				{% endif %}
 			</div>
 			{% endif %}
 		</div>

@@ -6,7 +6,7 @@ Created on Nov 26, 2011
 from django.contrib.auth.decorators import login_required
 import logging
 from django.shortcuts import render_to_response
-from webui import settings
+from webui import settings, core
 from django.template.context import RequestContext
 from django.http import HttpResponse, Http404
 from django.utils import simplejson as json
@@ -25,13 +25,26 @@ import djcelery
 from django.template.loader import render_to_string
 import ast
 from webui.serverdetails import utils
+from webui.utils import read_kermit_version
+from webui.abstracts import CoreService
+from webui import settings as kermitsettings
 
 logger = logging.getLogger(__name__)
 
 @login_required
 def show_page(request):
     logger.debug("Rendering Scheduler Page")
-    return render_to_response('chain/chain.html', {"settings":settings, "base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, 'service_status_url':settings.RUBY_REST_PING_URL}, context_instance=RequestContext(request))
+    version = read_kermit_version()
+    services = core.kermit_modules.extract(CoreService)
+    service_status = []
+    show_status_bar = request.user.is_superuser or kermitsettings.SHOW_STATUS_BAR 
+    if services and show_status_bar:
+        for service in services:
+            data = {"name": service.get_name(),
+                    "description" : service.get_description(),
+                    "status": service.get_status()}
+            service_status.append(data)
+    return render_to_response('chain/chain.html', {"settings":settings, "base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, 'service_status_url':settings.RUBY_REST_PING_URL, "service_status":service_status, "kermit_version":version}, context_instance=RequestContext(request))
 
 
 @login_required

@@ -9,6 +9,7 @@ from django.contrib.auth import logout
 from webui import core
 from webui.abstracts import CoreService
 from webui import settings as kermitsettings
+from webui.utils import read_kermit_version
 
 @login_required()
 def index(request):
@@ -25,7 +26,8 @@ def index(request):
                     "status": service.get_status()}
             service_status.append(data)
     widgets = registry.get_widgets_dashboard(request.user)    
-    return render_to_response('index/index.html', {"settings": kermitsettings, "base_url": settings.BASE_URL, "widgets": widgets, "service_status":service_status, "static_url":settings.STATIC_URL}, context_instance=RequestContext(request))
+    version = read_kermit_version()
+    return render_to_response('index/index.html', {"settings": kermitsettings, "base_url": settings.BASE_URL, "widgets": widgets, "service_status":service_status, "static_url":settings.STATIC_URL, "kermit_version":version}, context_instance=RequestContext(request))
 
 def logout_view(request):
     logout(request)
