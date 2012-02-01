@@ -7,7 +7,9 @@
 		$('#serverstatustable').dataTable({
 			 "oLanguage": {
 	            "sSearch": "Server Search:"
-        	}
+        	},
+        	"aaSorting": [[ 1, "asc" ]],
+        	"bStateSave": true
 		});
 	} );
 </script>
@@ -42,7 +44,7 @@ table.serverstatus tr.odd {
 <div id="actual-server-status">
 	<table id="serverstatustable" class="serverstatus">
 		<thead>
-			<th width="60px">{% trans 'Online'%}</th>
+			<th width="60px">{% trans 'A7X'%}</th>
 			<th>{% trans 'Hostname'%}</th>
 			<th>{% trans 'Level 1'%}</th>
 			<th>{% trans 'Level 2'%}</th>

@@ -152,7 +152,7 @@
 		<h2>{% trans 'Refresh Actions' %}</h2>
 		<ul class="actionlist">
 			<li>
-				<a href="#" onclick="executeActionNoProgress('Refresh Widgets', '{% url action_executer "refresh_dashboard" "ASYNC"%}');">{% trans 'Refresh Widgets' %}</a>
+				<a href="#" onclick="executeActionNoProgress('Refresh Widgets', '{% url action_executer "refresh_dashboard" "SYNC"%}');">{% trans 'Refresh Widgets' %}</a>
 			</li>
 			<li>
 				<a href="#" onclick="executeAction('Refresh Server Basic Info', '{% url action_executer "refresh_server_basic_info" "ASYNC"%}');">{% trans 'Refresh Server Basic Info' %}</a>

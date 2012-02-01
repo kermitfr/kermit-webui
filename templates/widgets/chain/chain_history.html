@@ -7,7 +7,9 @@
 		$('#schedulertable').dataTable({
 			 "oLanguage": {
 	            "sSearch": "Scheduler Search:"
-        	}
+        	},
+        	"aaSorting": [[ 2, "asc" ]],
+        	"bStateSave": true
 		});
 		
 		$(".uuid").hover(function () {

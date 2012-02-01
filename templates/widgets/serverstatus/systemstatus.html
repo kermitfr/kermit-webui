@@ -7,7 +7,9 @@
 		$('#systemstatustable').dataTable({
 			 "oLanguage": {
 	            "sSearch": "System Search:"
-        	}
+        	},
+        	"aaSorting": [[ 1, "asc" ]],
+        	"bStateSave": true
 		});
 	} );
 </script>

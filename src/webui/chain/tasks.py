@@ -24,7 +24,7 @@ def execute_chain_ops(scheduler, task_id=None):
     scheduler.task_uuid = task_id
     scheduler.save()
     errors = False
-    for op in scheduler.tasks.iterator():
+    for op in scheduler.tasks.order_by( 'order' ).iterator():
         if errors:
             execute_chain_ops.update_state(state="FAILURE", meta={"current": i, "total": total_operations})
             break

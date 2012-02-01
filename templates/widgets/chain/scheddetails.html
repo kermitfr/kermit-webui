@@ -4,7 +4,9 @@
 		$('#detailstable').dataTable({
 			 "oLanguage": {
 	            "sSearch": "Task Search:"
-        	}
+        	},
+        	"aaSorting": [[ 1, "asc" ]],
+        	"bStateSave": true
 		});
 	})
 	
