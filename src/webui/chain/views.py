@@ -11,7 +11,7 @@ from django.template.context import RequestContext
 from django.http import HttpResponse, Http404
 from django.utils import simplejson as json
 from webui.platforms.oracledb.utils import sql_list
-from webui.chain.utils import construct_filters
+from webui.chain.utils import construct_filters, check_servers
 from guardian.decorators import permission_required
 from webui.platforms.oc4j.utils import get_apps_list as oc4j_app_list
 from webui.platforms.weblogic.utils import get_apps_list as weblo_app_list
@@ -65,13 +65,20 @@ def execute_chain(request, xhr=None):
                         
                     
                     if request.POST["operation%s"%i] == 'script_ex':
+                        error_server = check_servers(servers, "oracledb")
+                        if error_server:
+                            logger.info("Servers selected does not contains desired agent")
+                            errors = True
+                            errs.update({"listServer%s"%i: '<ul class="errorlist"><li>Server %s does not contain oracledb agent</li></ul>' % error_server})
+                            
+                            
                         try:
                             sqlScript = request.POST["sqlScript%s"%i]
                             instancename = request.POST["dbinstancename%s"%i]
                         except:
                             sqlScript=None
                             instancename=None
-                        if sqlScript and instancename:
+                        if sqlScript and instancename and not errors:
                             current_op = {"user": request.user,
                                           "filters": filters,
                                           "agent": "oracledb",
@@ -101,13 +108,20 @@ def execute_chain(request, xhr=None):
                                 agent_name = 'a7xoas'
                             elif serverType == 'WebLogic':
                                 agent_name = 'a7xows'
-                            current_op = {"user": request.user,
-                                      "filters": filters,
-                                      "agent": agent_name,
-                                      "action": "deploy",
-                                      "args": "appname=%s;instancename=%s;appfile=%s" %(appname, instancename, appfile),
-                                        "name": "Deploy Application"}
-                            operations.append(current_op)
+                                
+                            error_server = check_servers(servers, agent_name)
+                            if error_server:
+                                logger.info("Servers selected does not contains desired agent")
+                                errors = True
+                                errs.update({"listServer%s"%i: '<ul class="errorlist"><li>Server %s does not contain %s agent</li></ul>' % (error_server, agent_name)})
+                            else:
+                                current_op = {"user": request.user,
+                                          "filters": filters,
+                                          "agent": agent_name,
+                                          "action": "deploy",
+                                          "args": "appname=%s;instancename=%s;appfile=%s" %(appname, instancename, appfile),
+                                            "name": "Deploy Application"}
+                                operations.append(current_op)
                         else:
                             errors = True 
                             if appfile==None:
@@ -119,13 +133,18 @@ def execute_chain(request, xhr=None):
                             if serverType==None:
                                 errs.update({"serverType%s"%i:'<ul class="errorlist"><li>Server Type is required</li></ul>'})
                     elif request.POST["operation%s"%i] == 'deploy_bar':
+                        error_server = check_servers(servers, agent_name)
+                        if error_server:
+                            logger.info("Servers selected does not contains desired agent")
+                            errors = True
+                            errs.update({"listServer%s"%i: '<ul class="errorlist"><li>Server %s does not contain a7xbar agent</li></ul>' % error_server})
                         try:
                             barapp = request.POST['barApp%s'%i]
                             consolename = request.POST['consoleName%s'%i]
                         except:
                             barapp=None
                             consolename = None
-                        if barapp and consolename:
+                        if barapp and consolename and not errors:
                             logger.debug("Parameters check: OK.")
                             logger.debug("Calling MCollective to deploy %s bar on %s filtered server" % (barapp, filters))
                             current_op = {"user": request.user,
@@ -155,20 +174,26 @@ def execute_chain(request, xhr=None):
                                 agent_name = 'a7xoas'
                             elif serverType == 'WebLogic':
                                 agent_name = 'a7xows'
-                            stop_op = {"user": request.user,
-                                      "filters": filters,
-                                      "agent": agent_name,
-                                      "action": "stopinstance",
-                                      "args": 'instancename=%s' %(instancename),
-                                      "name": "Stop Instance"}
-                            operations.append(stop_op)
-                            start_op = {"user": request.user,
-                                      "filters": filters,
-                                      "agent": agent_name,
-                                      "action": "startinstance",
-                                      "args": 'instancename=%s' %(instancename),
-                                      "name": "Start Instance"}
-                            operations.append(start_op)
+                                
+                            if error_server:
+                                logger.info("Servers selected does not contains desired agent")
+                                errors = True
+                                errs.update({"listServer%s"%i: '<ul class="errorlist"><li>Server %s does not contain %s agent</li></ul>' % (error_server, agent_name)})
+                            else:
+                                stop_op = {"user": request.user,
+                                          "filters": filters,
+                                          "agent": agent_name,
+                                          "action": "stopinstance",
+                                          "args": 'instancename=%s' %(instancename),
+                                          "name": "Stop Instance"}
+                                operations.append(stop_op)
+                                start_op = {"user": request.user,
+                                          "filters": filters,
+                                          "agent": agent_name,
+                                          "action": "startinstance",
+                                          "args": 'instancename=%s' %(instancename),
+                                          "name": "Start Instance"}
+                                operations.append(start_op)
                         else:
                             errors = True
                             if instancename==None:
@@ -203,12 +228,11 @@ def execute_chain(request, xhr=None):
         logger.warn("Cannot access this page using GET")
         raise Http404
     
-    
 @login_required
 @permission_required('agent.call_mcollective', return_403=True)
 def get_sql_list(request, servers):
     if servers:
-        filters = construct_filters(servers)
+        filters = construct_filters(servers, "oracledb")
         return HttpResponse(sql_list(request.user, filters))
     else:
         return HttpResponse('')
@@ -217,10 +241,11 @@ def get_sql_list(request, servers):
 @permission_required('agent.call_mcollective', return_403=True)
 def get_app_list(request, servers, server_type):
     if servers:
-        filters = construct_filters(servers)
         if server_type == 'OC4J':
+            filters = construct_filters(servers, "a7xoas")
             return HttpResponse(oc4j_app_list(request.user, filters, 'ear'))
         elif server_type == 'WebLogic':
+            filters = construct_filters(servers, "a7xows")
             return HttpResponse(weblo_app_list(request.user, filters, 'ear'))
     else:
         return HttpResponse('')
@@ -229,7 +254,7 @@ def get_app_list(request, servers, server_type):
 @permission_required('agent.call_mcollective', return_403=True)
 def get_bar_list(request, servers):
     if servers:
-        filters = construct_filters(servers)
+        filters = construct_filters(servers, "a7xbar")
         return HttpResponse(get_available_bars(request.user, filters))
     else:
         return HttpResponse('')
