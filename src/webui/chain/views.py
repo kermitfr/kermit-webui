@@ -233,7 +233,10 @@ def execute_chain(request, xhr=None):
 def get_sql_list(request, servers):
     if servers:
         filters = construct_filters(servers, "oracledb")
-        return HttpResponse(sql_list(request.user, filters))
+        if filters:
+            return HttpResponse(sql_list(request.user, filters))
+        else:
+            return HttpResponse(json.dumps({"errors":"Server(s) selected does not have Oracledb agent installed"}))
     else:
         return HttpResponse('')
     
@@ -243,10 +246,16 @@ def get_app_list(request, servers, server_type):
     if servers:
         if server_type == 'OC4J':
             filters = construct_filters(servers, "a7xoas")
-            return HttpResponse(oc4j_app_list(request.user, filters, 'ear'))
+            if filters:
+                return HttpResponse(oc4j_app_list(request.user, filters, 'ear'))
+            else:
+                return HttpResponse(json.dumps({"errors":"Server(s) selected does not have OC4J agent installed"}))
         elif server_type == 'WebLogic':
             filters = construct_filters(servers, "a7xows")
-            return HttpResponse(weblo_app_list(request.user, filters, 'ear'))
+            if filters:
+                return HttpResponse(weblo_app_list(request.user, filters, 'ear'))
+            else:
+                return HttpResponse(json.dumps({"errors":"Server(s) selected does not have WebLogic agent installed"}))
     else:
         return HttpResponse('')
     
@@ -255,7 +264,10 @@ def get_app_list(request, servers, server_type):
 def get_bar_list(request, servers):
     if servers:
         filters = construct_filters(servers, "a7xbar")
-        return HttpResponse(get_available_bars(request.user, filters))
+        if filters:
+            return HttpResponse(get_available_bars(request.user, filters))
+        else:
+            return HttpResponse(json.dumps({"errors":"Server(s) selected does not have BAR agent installed"}))
     else:
         return HttpResponse('')
     
