@@ -182,7 +182,11 @@ var iNettuts = {
             $sortableItems = (function () {
                 var notSortable = '';
                 $(settings.widgetSelector,$(settings.columns)).each(function (i) {
-                    if (!iNettuts.getWidgetSettings(this.id).movable) {
+                	var movable = iNettuts.getWidgetSettings(this.id).movable;
+                	if ($('#' +this.id).attr('movable')) {
+		            	movable = $('#' +this.id).attr('movable')=='True';	
+		            } 
+                    if (!movable) {
                         if(!this.id) {
                             this.id = 'widget-no-id-' + i;
                         }
