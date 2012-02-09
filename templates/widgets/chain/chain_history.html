@@ -9,7 +9,14 @@
 	            "sSearch": "Scheduler Search:"
         	},
         	"aaSorting": [[ 2, "asc" ]],
-        	"bStateSave": true
+        	"bStateSave": true,
+        	"aoColumns": [
+		        {"bSortable": true},
+		        {"bSortable": true},
+		        {"sType": "date-euro"},
+		        {"bSortable": true},
+		        {"bSortable": true}
+		      ]
 		});
 		
 		$(".uuid").hover(function () {
@@ -139,7 +146,7 @@ table.schedulertable tr.odd {
 				<td>{{job.user}}</td>
 				{% endif %}
 				<td><span class="uuid" style="text-decoration:underline; color: #444444;" onclick="showJobDetails('{% url get_scheduler_details job.name %}');">{{job.name}}</span></td>
-				<td>{{job.last_run}}</td>
+				<td>{{job.last_run|date:"d/m/Y h:i:s"}}</td>
 				<td>{{job.task_running}}</td>
 				<td>
 					<span style="color: {% if job.status == 'COMPLETED'%}green{% else %}{% if job.status == 'WAITING' %}yellow{% else %}red{% endif%}{% endif%};">{{job.status}}</span>

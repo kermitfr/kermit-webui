@@ -8,7 +8,14 @@
 			 "oLanguage": {
 	            "sSearch": "Job Search:"
 	        },
-	        "bStateSave": true
+	        "bStateSave": true,
+	        "aoColumns": [
+		        {"bSortable": true},
+		        {"bSortable": true},
+		        {"sType": "date-euro"},
+		        {"bSortable": true},
+		        {"bSortable": true}
+		      ]
 		});
 		
 		$(".uuid").hover(function () {
@@ -105,7 +112,7 @@ table.jobstable tr.odd {
 				<td>{{job.user}}</td>
 				{% endif %}
 				<td><span style="color: {% if job.status == 'SUCCESS'%}green{% else %}red{% endif%};">{{job.status}}</span></td>
-				<td>{{job.run_at}}</td>
+				<td>{{job.run_at|date:"d/m/Y h:i:s"}}</td>
 				<td><span class="uuid" style="text-decoration:underline; color: #444444;" onclick="showJobDetails('{% url get_task_info job.task_uuid %}'	);">{{job.task_uuid}}</span></td>
 				<td>{% if job.arguments %}
 					<b>Filter</b>: {{job.arguments.filter}}&nbsp;<b>Agent</b>: {{job.arguments.agent}}&nbsp;<b>Action</b>: {{job.arguments.action}}&nbsp;<b>Arguments</b>: {{job.arguments.arguments}}
