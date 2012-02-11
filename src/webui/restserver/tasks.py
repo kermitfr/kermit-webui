@@ -80,12 +80,18 @@ def httpcallscheduler(filters, agent, action, args, use_task=True):
         jobid = None
         for data_received in json_content:
             #if "data" in data_received and "jobid" in data_received["data"]:
-            if data_received and "data" in data_received and "jobid" in data_received["data"]:
+            if data_received and "data" in data_received and data_received["data"] and "jobid" in data_received["data"]:
                 jobid = data_received["data"]["jobid"]
                 break
                 
         if not jobid:
             logger.warn("JobID not found in response data")
+            response = httplib2.Response( {
+                            "content-type": "text/plain",
+                            "status": "200",
+                            "content-length": len(content)
+                            })
+            content = json.dumps([{"data":{},"statuscode":0,"sender":filters,"statusmsg":"No response received! Check if Backend Scheduler is started"}])
             return response, content, agent, action
         
         logger.debug('Job scheduled on backend with id: %s' % jobid)

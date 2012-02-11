@@ -106,7 +106,10 @@ def execute_sql(request, filters, dialog_name, xhr=None):
                                 logger.debug("Discovered log for server %s: %s" % (server_response["sender"], log_file))
                                 s_resps.append({"server": server_response["sender"], "logfile":log_file})
                             else:
-                                s_resps.append({"server": server_response["sender"], "message":server_response["statusmsg"]})
+                                if "data" in server_response and "statusmsg" in server_response["data"]:
+                                    s_resps.append({"server": server_response["sender"], "message":server_response["data"]["statusmsg"]})
+                                else:
+                                    s_resps.append({"server": server_response["sender"], "message":server_response["statusmsg"]})
                     rdict.update({"result":s_resps})
                 else:
                     rdict.update({"result": "KO", "message": "Error communicating with server"})
