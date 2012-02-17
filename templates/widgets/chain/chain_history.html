@@ -8,10 +8,16 @@
 			 "oLanguage": {
 	            "sSearch": "Scheduler Search:"
         	},
-        	"aaSorting": [[ 2, "asc" ]],
+        	{% if user.is_staff %}
+        	"aaSorting": [[ 2, "desc" ]],
+        	{% else %}
+        	"aaSorting": [[ 1, "desc" ]],
+        	{% endif %}
         	"bStateSave": true,
         	"aoColumns": [
+        		{% if user.is_staff %}
 		        {"bSortable": true},
+		        {% endif %}
 		        {"bSortable": true},
 		        {"sType": "date-euro"},
 		        {"bSortable": true},

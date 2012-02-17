@@ -235,7 +235,7 @@
 <!--  Context menu -->
 <div class="context">
 	<ul id="menu" class="jeegoocontext cm_default">
-		<li class="icon" style="display: none;></li>
+		<li class="icon" style="display: none;"></li>
 		{% if agents %}
 		<li class="icon">
 			<span class="icon folder"></span>Agents
@@ -280,7 +280,7 @@
 				<span class="icon folder"></span>{{menu_name}}
 				<ul>
 					{%for current_op in menu_ops %}
-					<li class="icon" type="automatic_op" javascript="{{current_op.javascript}}" groups="{{current_op.class}}">
+					<li class="icon" type="automatic_op" javascript="{{current_op.javascript}}">
 						<span class="icon file"></span>{{current_op.description}}
 					</li>
 					{% endfor %}

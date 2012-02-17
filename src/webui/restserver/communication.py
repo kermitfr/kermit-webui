@@ -5,6 +5,7 @@ from celery.execute import send_task
 from webui.restserver.tasks import httpcall, httpcallscheduler
 from webui.restserver.models import BackendJob
 import sys
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +19,7 @@ def callRestServer(user, filters, agent, action, args=None, wait_response=False,
         result = send_task(task_name, [filters, agent, action, args])
         logger.debug("Storing task reference in database")
         try:
-            BackendJob.objects.create(user=user, task_uuid=result.task_id)
+            BackendJob.objects.create(user=user, task_uuid=result.task_id, run_at=datetime.now())
         except:
             #print sys.exc_info()
             logger.error("Error storing job in database %s" % sys.exc_info())

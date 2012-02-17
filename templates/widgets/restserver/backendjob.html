@@ -9,8 +9,15 @@
 	            "sSearch": "Job Search:"
 	        },
 	        "bStateSave": true,
+	        {% if user.is_staff %}
+        	"aaSorting": [[ 2, "desc" ]],
+        	{% else %}
+        	"aaSorting": [[ 1, "desc" ]],
+        	{% endif %}
 	        "aoColumns": [
+	        	{% if user.is_staff %}
 		        {"bSortable": true},
+		        {% endif %}
 		        {"bSortable": true},
 		        {"sType": "date-euro"},
 		        {"bSortable": true},
