@@ -63,4 +63,3 @@ Quick and dirty version :
 
 python26 src/webui/manage.py syncdb --noinput
 python26 src/webui/manage.py runserver 0.0.0.0:8000
-
