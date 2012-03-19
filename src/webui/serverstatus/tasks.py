@@ -124,7 +124,13 @@ def create_path(server, puppet_classes):
         level_classes = PuppetClass.objects.filter(level=i).values_list('name', flat=True)
         intersection = list(set(puppet_classes).intersection(set(level_classes)))
         if intersection:
-            extracted_class = iter(intersection).next()
+            if len(intersection)>1:
+                for current_class in intersection:
+                    if current_class != 'bcx':
+                        extracted_class = current_class
+                        break
+            else:
+                extracted_class = iter(intersection).next()
             if extracted_class:
                 path = path + '/' + extracted_class
     

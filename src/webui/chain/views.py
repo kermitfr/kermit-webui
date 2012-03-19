@@ -309,10 +309,36 @@ def get_scheduler_details(request, name):
                     "action": task.action,
                     "parameters": task.parameters,
                     "run_at": task.run_at,
-                    "servers_response": result
+                    "servers_response": result,
+                    "sched_name":scheduler.name
                     }
         tasks_list.append(task_obj)
     return HttpResponse(render_to_string('widgets/chain/scheddetails.html', {'tasks': tasks_list}, context_instance=RequestContext(request)))
+
+@login_required()
+def get_task_details(request, sched_name, task_name):
+    logger.debug("Retrieving task %s information" % sched_name)
+    scheduler = Scheduler.objects.get(name=sched_name)
+    try:
+        celery_task = djcelery.models.TaskState.objects.get(task_id=scheduler.task_uuid)
+        celery_result = ast.literal_eval(celery_task.result)
+        servers_response = celery_result[0]["messages"]
+    except:
+        logger.error("Cannot find celery task %s in database" % scheduler.task_uuid)
+        servers_response = []
+    tasks_filtered=scheduler.tasks.filter(name=task_name)
+    if (tasks_filtered and len(tasks_filtered) == 1):
+        raw_content = tasks_filtered[0].result
+        raw_content = raw_content.replace("'", '"')
+        content = json.loads(raw_content)
+        response = {"response": servers_response, "content": content}
+    
+    arguments = {"filter":"",
+                 "agent": "",
+                 "action": "",
+                 "arguments": ""}
+    return HttpResponse(render_to_string('widgets/restserver/jobdetails.html', {'task': celery_task, "jobarg": arguments, "response": response}, context_instance=RequestContext(request)))
+
 
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)

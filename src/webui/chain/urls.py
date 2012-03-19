@@ -18,4 +18,5 @@ urlpatterns = patterns('webui.chain.views',
     url(r'^sched_details/(?P<name>[\w|\W]+)/$', 'get_scheduler_details', name = "get_scheduler_details"),
     url(r'^restart_sched/(?P<name>[\w|\W]+)/$', 'restart_failed_scheduler', name = "restart_failed_scheduler"),
   
+    url(r'^task_details/(?P<sched_name>[\w|\W]+)/(?P<task_name>[\w|\W]+)/$', 'get_task_details', name = "get_task_details"),
 )

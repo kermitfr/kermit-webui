@@ -26,7 +26,8 @@ class BarDeployContextMenu(ContextOperation):
     
     def get_visible(self, server):
         agent = server.agents.filter(name='a7xbar')
-        return len(agent)==1
+        classes = server.puppet_classes.filter(name='bcx')
+        return len(agent)==1 and len(classes)==1
     
     def get_enabled(self, user):
         if not user.is_superuser:

@@ -108,7 +108,7 @@ table.detailstable tr.odd {
 					{% endfor %}
 					{%endif%}
 				</td>
-				<td style="width: 50px;"><span class="uuid" style="text-decoration:underline; color: #444444;" onclick="showJobDetails('{% url get_task_info task.task_uuid %}'	);">{% trans 'Show Details'%}</span></td>
+				<td style="width: 50px;"><span class="uuid" style="text-decoration:underline; color: #444444;" onclick="showJobDetails('{% url get_task_details task.sched_name task.name %}'	);">{% trans 'Show Details'%}</span></td>
 			</tr>
 			{% endfor %}
 		</tbody>

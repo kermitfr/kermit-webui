@@ -1536,5 +1536,17 @@
       "level": 4,
       "order": 10
     }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 51,
+    "fields": {
+      "name": "bcx",
+      "description": "Bar",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 4,
+      "order": 11
+    }
   }
 ]
