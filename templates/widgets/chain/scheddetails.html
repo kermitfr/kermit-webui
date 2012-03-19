@@ -8,7 +8,44 @@
         	"aaSorting": [[ 1, "asc" ]],
         	"bStateSave": true
 		});
-	})
+	});
+	
+	function showJobDetails(url) {
+		$.ajax({
+			// The link we are accessing.
+			url : url,
+			// The type of request.
+			type : "get",
+			// The type of data that is getting returned.
+			dataType : "html",
+			error : function(xhr, ajaxOptions, thrownError) {
+				//TODO: Show error message
+				alert("Server communication error. Cannot get task information");
+				$('#loading').hide();
+			},
+			beforeSend : function() {
+				$('#loading').show();
+			},
+			complete : function() {
+				$('#loading').hide();
+			},
+			success : function(data) {
+				$("#detailscontainer").empty();
+				$("#detailscontainer").html(data);
+				
+				$("#detailscontainer").dialog({
+					modal : true,
+					title : 'Job Details',
+					height : 400,
+					width : 800,
+					open: function(event, ui){
+						$('body').css('overflow','auto');
+						$('.ui-widget-overlay').css('width','100%'); 
+						} 
+				});
+			}
+		});
+	}
 	
 </script>
 <style type="text/css">
@@ -49,6 +86,7 @@ table.detailstable tr.odd {
 			<th>{% trans 'Parameters'%}</th>
 			<th>{% trans 'Run At'%}</th>
 			<th>{% trans 'Response Details'%}</th>
+			<th></th>
 		</thead>
 		<tbody>
 			{% for task in tasks %}
@@ -62,7 +100,7 @@ table.detailstable tr.odd {
 				<td>{{task.agent}}</td>
 				<td>{{task.action}}</td>
 				<td>{{task.parameters}}</td>
-				<td>{{task.run_at}}</td>
+				<td>{{task.run_at|date:"d/m/Y H:i:s"}}</td>
 				<td>
 					{%if task.servers_response %}
 					{% for resp in task.servers_response %}
@@ -70,8 +108,11 @@ table.detailstable tr.odd {
 					{% endfor %}
 					{%endif%}
 				</td>
+				<td style="width: 50px;"><span class="uuid" style="text-decoration:underline; color: #444444;" onclick="showJobDetails('{% url get_task_info task.task_uuid %}'	);">{% trans 'Show Details'%}</span></td>
 			</tr>
 			{% endfor %}
 		</tbody>
 	</table>
 </div>
+
+<div id="detailscontainer"></div>

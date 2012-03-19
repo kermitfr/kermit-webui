@@ -87,7 +87,10 @@ def executeGeneralAction(request, action, filter, type):
 def get_task_info(request, uuid):
     logger.debug("Retrieving task %s information" % uuid)
     celery_task = djcelery.models.TaskState.objects.get(task_id=uuid)
-    arguments_list = ast.literal_eval(celery_task.args)
+    if (celery_task.name != 'webui.chain.tasks.execute_chain_ops'):
+        arguments_list = ast.literal_eval(celery_task.args)
+    else:
+        arguments_list = []
     if len(arguments_list) == 4:
         arguments = {"filter":arguments_list[0],
                      "agent": arguments_list[1],
@@ -99,16 +102,20 @@ def get_task_info(request, uuid):
                      "action": "",
                      "arguments": ""}
     response_list = ast.literal_eval(celery_task.result)
-    if len(response_list) > 2:
-        try:
-            content = ast.literal_eval(response_list[1])
-        except:
-            logger.debug("String stored is in JSON format and not a python object")
-            content = json.loads(response_list[1])
-        response = {"response": response_list[0],
-                    "content": content}
+    if (celery_task.name != 'webui.chain.tasks.execute_chain_ops'):
+        if len(response_list) > 2:
+            try:
+                content = ast.literal_eval(response_list[1])
+            except:
+                logger.debug("String stored is in JSON format and not a python object")
+                content = json.loads(response_list[1])
+            response = {"response": response_list[0],
+                        "content": content}
+        else:
+            response = {"response": "", "content": ""}
     else:
-        response = {"response": "", "content": ""}
+        content = response_list[0]['messages']
+        response = {"response": response_list[0], "content": content}
     
     return HttpResponse(render_to_string('widgets/restserver/jobdetails.html', {'task': celery_task, "jobarg": arguments, "response": response}, context_instance=RequestContext(request)))
 
