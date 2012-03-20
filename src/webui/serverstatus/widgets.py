@@ -42,7 +42,10 @@ class ServerStatus(Widget):
                 elif puppetclass["level"]==3:
                     serverdict["lvl4"]=puppetclass["name"]
                 elif puppetclass["level"]==4:
-                    serverdict["lvl5"]=puppetclass["name"]
+                    if serverdict["lvl5"]:
+                        serverdict["lvl5"]=serverdict["lvl5"] + ', ' + puppetclass["name"]
+                    else:    
+                        serverdict["lvl5"]=puppetclass["name"]
             serverslist.append(serverdict)
         widget_context = {"servers":serverslist}
         return dict(super_context.items() + widget_context.items())
