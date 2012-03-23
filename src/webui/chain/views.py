@@ -10,11 +10,13 @@ from webui import settings, core
 from django.template.context import RequestContext
 from django.http import HttpResponse, Http404
 from django.utils import simplejson as json
-from webui.platforms.oracledb.utils import sql_list
+from webui.platforms.oracledb.utils import sql_list as oracle_sql_list
+from webui.platforms.postgresql.utils import sql_list as postgresql_sql_list
 from webui.chain.utils import construct_filters, check_servers
 from guardian.decorators import permission_required
 from webui.platforms.oc4j.utils import get_apps_list as oc4j_app_list
 from webui.platforms.weblogic.utils import get_apps_list as weblo_app_list
+from webui.platforms.jboss.utils import get_apps_list as jboss_app_list
 from webui.platforms.bar.utils import get_available_bars
 from celery.execute import send_task
 from django.core.urlresolvers import reverse
@@ -78,27 +80,34 @@ def execute_chain(request, xhr=None):
                         
                     
                     if request.POST["operation%s"%i] == 'script_ex':
-                        error_server = check_servers(servers, "oracledb")
-                        if error_server:
-                            logger.info("Servers selected does not contains desired agent")
-                            errors = True
-                            errs.update({"listServer%s"%i: '<ul class="errorlist"><li>Server %s does not contain oracledb agent</li></ul>' % error_server})
-                            
-                            
                         try:
                             sqlScript = request.POST["sqlScript%s"%i]
                             instancename = request.POST["dbinstancename%s"%i]
+                            dbType = request.POST["dbType%s"%i]
                         except:
                             sqlScript=None
                             instancename=None
-                        if sqlScript and instancename and not errors:
-                            current_op = {"user": request.user,
-                                          "filters": filters,
-                                          "agent": "oracledb",
-                                          "action": "execute_sql",
-                                          "args": "instancename=%s;sqlfile=%s" % (instancename, sqlScript),
-                                          "name": "Execute SQL Script"}
-                            operations.append(current_op)
+                            dbType=None
+                        if sqlScript and instancename and dbType and not errors:
+                            agent_name = None
+                            if dbType == 'Oracle':
+                                agent_name = 'oracledb'
+                            elif dbType == 'PostgreSQL':
+                                agent_name = 'postgresql'
+                                
+                            error_server = check_servers(servers, agent_name)
+                            if error_server:
+                                logger.info("Servers selected does not contains desired agent")
+                                errors = True
+                                errs.update({"listServer%s"%i: '<ul class="errorlist"><li>Server %s does not contain %s agent</li></ul>' % (error_server, agent_name)})
+                            else:
+                                current_op = {"user": request.user,
+                                              "filters": filters,
+                                              "agent": agent_name,
+                                              "action": "execute_sql",
+                                              "args": "instancename=%s;sqlfile=%s" % (instancename, sqlScript),
+                                              "name": "Execute SQL Script"}
+                                operations.append(current_op)
                         else:
                             errors = True
                             if sqlScript==None:
@@ -121,6 +130,8 @@ def execute_chain(request, xhr=None):
                                 agent_name = 'a7xoas'
                             elif serverType == 'WebLogic':
                                 agent_name = 'a7xows'
+                            elif serverType == 'JBoss':
+                                agent_name = 'jboss'
                                 
                             error_server = check_servers(servers, agent_name)
                             if error_server:
@@ -243,13 +254,20 @@ def execute_chain(request, xhr=None):
     
 @login_required
 @permission_required('agent.call_mcollective', return_403=True)
-def get_sql_list(request, servers):
+def get_sql_list(request, servers, db_type):
     if servers:
-        filters = construct_filters(servers, "oracledb")
-        if filters:
-            return HttpResponse(sql_list(request.user, filters))
-        else:
-            return HttpResponse(json.dumps({"errors":"Server(s) selected does not have Oracledb agent installed"}))
+        if db_type == 'Oracle':
+            filters = construct_filters(servers, "oracledb")
+            if filters:
+                return HttpResponse(oracle_sql_list(request.user, filters))
+            else:
+                return HttpResponse(json.dumps({"errors":"Server(s) selected does not have Oracledb agent installed"}))
+        elif db_type == 'PostgreSQL':
+            filters = construct_filters(servers, "postgresql")
+            if filters:
+                return HttpResponse(postgresql_sql_list(request.user, filters))
+            else:
+                return HttpResponse(json.dumps({"errors":"Server(s) selected does not have Oracledb agent installed"}))
     else:
         return HttpResponse('')
     
@@ -267,6 +285,12 @@ def get_app_list(request, servers, server_type):
             filters = construct_filters(servers, "a7xows")
             if filters:
                 return HttpResponse(weblo_app_list(request.user, filters, 'ear'))
+            else:
+                return HttpResponse(json.dumps({"errors":"Server(s) selected does not have WebLogic agent installed"}))
+        elif server_type == 'JBoss':
+            filters = construct_filters(servers, "jboss")
+            if filters:
+                return HttpResponse(jboss_app_list(request.user, filters, 'ear'))
             else:
                 return HttpResponse(json.dumps({"errors":"Server(s) selected does not have WebLogic agent installed"}))
     else:

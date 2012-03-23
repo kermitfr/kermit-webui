@@ -81,12 +81,14 @@
 						execScript.find('#sqlScript').attr('id', 'sqlScript' + newNum).attr('name', 'sqlScript' + newNum);
 						execScript.find('#dbinstancename').attr('id', 'dbinstancename' + newNum).attr('name', 'dbinstancename' + newNum);
 						execScript.find('#refreshSql').attr('id', 'refreshSql' + newNum);
+						execScript.find('#dbType').attr('id', 'dbType' + newNum).attr('name', 'dbType' + newNum);;
 						$("#operationdata"+newNum).html(execScript);
 						$('#refreshSql'+newNum).click(function() {
 							var serverFilter = createServerList("#listServer"+newNum);
+							var databaseType = $("#dbType"+newNum).val();
 							$.ajax({
 								// The link we are accessing.
-								url : '{{settings.BASE_URL}}/chain/sql_list/' + serverFilter + '/',
+								url : '{{settings.BASE_URL}}/chain/sql_list/' + serverFilter + '/' + databaseType + '/',
 								// The type of request.
 								type : "get",
 								// The type of data that is getting returned.
@@ -350,7 +352,7 @@
 
 <div id="deployEar" style="visibility: hidden;overflow:hidden;height: 0px;">
 	<p>
-	{% trans 'Server Type'%}: <select id="serverType"><option value="OC4J">OC4J</option><option value="WebLogic">WebLogic</option></select>
+	{% trans 'Server Type'%}: <select id="serverType"><option value="OC4J">OC4J</option><option value="WebLogic">WebLogic</option><option value="JBoss">JBoss</option></select>
 	</p>
 	<p>
 	{% trans 'Application'%}: <select id="earApp"></select>
@@ -364,6 +366,9 @@
 	</p>
 </div>
 <div id="executeScript" style="visibility: hidden;overflow:hidden;height: 0px;">
+	<p>
+	{% trans 'Database Type'%}: <select id="dbType"><option value="Oracle">Oracle</option><option value="PostgreSQL">PostgreSQL</option></select>
+	</p>
 	<p>
 		{% trans 'SQL Script'%}: <select id="sqlScript"></select>	
 		<input type="button" id="refreshSql" value="Refresh SQL list"/><br/>
