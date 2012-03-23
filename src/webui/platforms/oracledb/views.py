@@ -200,6 +200,23 @@ def clone_db(request, filters, dialog_name, xhr=None):
                     for server_response in json_content:
                         if server_response['statuscode']==0:
                             s_resps.append({"server": server_response["sender"], "response":server_response["statusmsg"]})
+                            logger.debug("Calling Import on the target server and target instance: %s, %s" % (target_server, target_instance))
+                            new_filter = "identity_filter=%s"%target_server
+                            if server_response["data"] and "filename" in server_response["data"]:
+                                file_name = server_response["data"]["filename"]
+                                response, content = callRestServer(request.user, new_filter, 'oracledb', 'import_database', 'instancename=%s;schema=%s;filename=%s' %(target_instance, schema, file_name), True, True, True)
+                                if response.status == 200:
+                                    s_json_content = json.loads(content)
+                                    s_resps = []
+                                    for s_server_response in s_json_content:
+                                        if s_server_response['statuscode']==0:
+                                            s_resps.append({"server": s_server_response["sender"], "response":s_server_response["statusmsg"]})
+                                        else:
+                                            s_resps.append({"server": s_server_response["sender"], "message":s_server_response["statusmsg"]})
+                            else:
+                                logger.error("No export filename found in response. %s" % server_response)
+                                rdict.update({"result": "KO"})
+                                s_resps.append({"server": server_response["sender"], "message":server_response["data"]["statusmsg"]})
                         else:
                             s_resps.append({"server": server_response["sender"], "message":server_response["statusmsg"]})
                     rdict.update({"result":s_resps})
