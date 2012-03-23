@@ -26,11 +26,12 @@ class PostgreSQLExecuteContextMenu(ContextOperation):
     
     def get_visible(self, server):
         agent = server.agents.filter(name='postgresql')
-        return len(agent)==1
+        classes = server.puppet_classes.filter(name='pgs')
+        return len(agent)==1 and len(classes)==1
     
     def get_enabled(self, user):
         if not user.is_superuser:
-            agents = get_objects_for_user(user, 'use_agent', Agent).filter(enabled=True, name="pgs")
+            agents = get_objects_for_user(user, 'use_agent', Agent).filter(enabled=True, name="postgresql")
             if len(agents)==1:
                 action = get_objects_for_user(user, 'use_action', Action).filter(agent=agents[0], name="execute_sql")
                 return action and len(action)==1

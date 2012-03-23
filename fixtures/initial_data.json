@@ -1548,5 +1548,41 @@
       "level": 4,
       "order": 11
     }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 52,
+    "fields": {
+      "name": "spid",
+      "description": "Spid",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 1,
+      "order": 22
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 53,
+    "fields": {
+      "name": "jbs",
+      "description": "JBpss",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 4,
+      "order": 12
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 54,
+    "fields": {
+      "name": "pgs",
+      "description": "PostgreSQL",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 4,
+      "order": 13
+    }
   }
 ]
