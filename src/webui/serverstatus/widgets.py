@@ -42,7 +42,7 @@ class ServerStatus(Widget):
                 elif puppetclass["level"]==3:
                     serverdict["lvl4"]=puppetclass["name"]
                 elif puppetclass["level"]==4:
-                    if serverdict["lvl5"]:
+                    if "lvl5" in serverdict:
                         serverdict["lvl5"]=serverdict["lvl5"] + ', ' + puppetclass["name"]
                     else:    
                         serverdict["lvl5"]=puppetclass["name"]
