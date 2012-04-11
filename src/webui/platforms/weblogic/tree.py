@@ -43,7 +43,7 @@ class WebLogicServerTree(ServerTree):
                 applications = {'title': 'Applications', 'isFolder':True, "key":"applications", "icon":"folder_applications.png", "type":"applications"}
                 apps = []
                 for appli in server_info['applilist']:
-                    if instance['name'] == appli['target']:
+                    if instance['name'] in appli['target']:
                         app = {'title':appli['name'], "key":appli['name'], "icon":"application.png", "type":"application", "instance":instance['name'], "detailsEnabled":"true", 'url': reverse('weblogic_application_details', kwargs={'hostname':hostname, 'resource_name':appli['name']})}
                         apps.append(app)
                 applications['children'] = apps
