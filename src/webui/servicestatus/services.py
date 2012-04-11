@@ -65,10 +65,10 @@ class KermitInventoryService(CoreService):
         return 'InvQueue'
     
     def get_description(self):
-        return check_service('kermit.inventory')
+        return check_service('kermit-inventory')
 
     def get_status(self):
-        if (check_service('kermit.inventory')):
+        if (check_service('kermit-inventory')):
             return True
         return False
     
@@ -78,10 +78,10 @@ class KermitLogService(CoreService):
         return 'LogQueue'
     
     def get_description(self):
-        return check_service('kermit.log')
+        return check_service('kermit-log')
 
     def get_status(self):
-        if (check_service('kermit.log')):
+        if (check_service('kermit-log')):
             return True
         return False
     
