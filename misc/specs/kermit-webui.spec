@@ -1,6 +1,6 @@
 Summary: Mcollective WebUI
 Name: kermit-webui
-Version: 0.7.1
+Version: 0.7.2
 Release: 1
 License: GPL
 Group: Applications/System
@@ -104,6 +104,7 @@ echo %{version} > $RPM_BUILD_ROOT/etc/kermit/webui/version.txt
 %attr(0755,apache,apache) %dir /var/log/celery
 %attr(0755,apache,apache) %dir /var/run/celery
 %attr(0644,apache,apache) %dir /etc/kermit/kermit-webui.cfg
+%attr(0755,apache,apache) /usr/share/kermit-webui/webui/manage.py
 %attr(0755, root, root) /etc/rc.d/init.d/celeryd
 %attr(0755, root, root) /etc/rc.d/init.d/celeryev
 %attr(0755, root, root) /etc/rc.d/init.d/celerybeat
