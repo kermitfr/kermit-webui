@@ -17,17 +17,16 @@ def sql_list(user, filters):
     try: 
         #Does not use celery for fast operations (with celery it's longer)
         response, content = callRestServer(user, filters, "oracledb", "sql_list", None, False, False)
-        if response.status == 200:
-            jsonObj = json.loads(content)
-            if jsonObj:
+        if response.getStatus() == 200:
+            if content:
                 #Looking for "intersections"
                 sql_list = None
-                for server_response in jsonObj:
-                    if server_response['statuscode']==0 and server_response['data']:
+                for server_response in content:
+                    if server_response.getStatusCode()==0 and server_response.getData():
                         if not sql_list:
-                            sql_list = server_response['data']['sqllist']
+                            sql_list = server_response.getData()['sqllist']
                         else:
-                            sql_list = list(set(sql_list).intersection(server_response['data']['sqllist']))
+                            sql_list = list(set(sql_list).intersection(server_response.getData()['sqllist']))
                     else:
                         logger.warn("No sqllist in server response")
                 return json.dumps({"errors":"", "sqllist":sql_list})

@@ -89,24 +89,23 @@ def execute_sql(request, filters, dialog_name, xhr=None):
                 #;user=%s;userip=%s
                 response, content = callRestServer(request.user, filters, 'oracledb', 'execute_sql', 'sqlfile=%s;instancename=%s' % (sql_script, dbname), True, True, True)
                 #TODO: Improve reading content data
-                if response.status == 200:
-                    json_content = json.loads(content)
+                if response.getStatus() == 200:
                     s_resps = []
-                    for server_response in json_content:
-                        if server_response and server_response["statuscode"] == 0 and "data" in server_response:
+                    for server_response in content:
+                        if server_response and server_response.getStatusCode() == 0 and server_response.getData():
                             log_file = None
-                            if server_response["data"] and "logfile" in server_response["data"]:
-                                log_file = server_response["data"]["logfile"]
-                            elif server_response["data"] and "data" in server_response["data"] and "logfile" in server_response["data"]["data"]:
-                                log_file = server_response["data"]["data"]["logfile"]
+                            if server_response.getData() and "logfile" in server_response.getData():
+                                log_file = server_response.getData()["logfile"]
+                            elif server_response.getData() and "data" in server_response.getData() and "logfile" in server_response.getData()["data"]:
+                                log_file = server_response.getData()["data"]["logfile"]
 
                             if log_file:
-                                logger.debug("Discovered log for server %s: %s" % (server_response["sender"], log_file))
-                                s_resps.append({"server": server_response["sender"], "logfile":log_file})
+                                logger.debug("Discovered log for server %s: %s" % (server_response.getSender(), log_file))
+                                s_resps.append({"server": server_response.getSender(), "logfile":log_file})
                             else:
-                                s_resps.append({"server": server_response["sender"], "message":server_response["statusmsg"]})
+                                s_resps.append({"server": server_response.getSender(), "message":server_response.getStatusMessage()})
                         else:
-                            s_resps.append({"server": server_response["sender"], "message":server_response["statusmsg"]})
+                            s_resps.append({"server": server_response.getSender(), "message":server_response.getStatusMessage()})
                     rdict.update({"result":s_resps})
                 else:
                     rdict.update({"result": "KO", "message": "Error communicating with server"})
@@ -194,31 +193,30 @@ def clone_db(request, filters, dialog_name, xhr=None):
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to export %s from %s to %s" % (schema, instance, target_server))
                 response, content = callRestServer(request.user, filters, 'oracledb', 'export_database', 'instancename=%s;schema=%s' %(instance, schema), True, True, True)
-                if response.status == 200:
-                    json_content = json.loads(content)
+                if response.getStatus() == 200:
                     s_resps = []
-                    for server_response in json_content:
-                        if server_response['statuscode']==0:
-                            s_resps.append({"server": server_response["sender"], "response":server_response["statusmsg"]})
+                    for server_response in content:
+                        if server_response.getStatusCode()==0:
+                            s_resps.append({"server": server_response.getSender(), "response":server_response.getStatusMessage()})
                             logger.debug("Calling Import on the target server and target instance: %s, %s" % (target_server, target_instance))
                             new_filter = "identity_filter=%s"%target_server
-                            if server_response["data"] and "filename" in server_response["data"]:
-                                file_name = server_response["data"]["filename"]
+                            if server_response.getData() and "filename" in server_response.getData():
+                                file_name = server_response.getData()["filename"]
                                 response, content = callRestServer(request.user, new_filter, 'oracledb', 'import_database', 'instancename=%s;schema=%s;filename=%s' %(target_instance, schema, file_name), True, True, True)
-                                if response.status == 200:
+                                if response.getStatus() == 200:
                                     s_json_content = json.loads(content)
                                     s_resps = []
                                     for s_server_response in s_json_content:
-                                        if s_server_response['statuscode']==0:
-                                            s_resps.append({"server": s_server_response["sender"], "response":s_server_response["statusmsg"]})
+                                        if s_server_response.getStatusCode()==0:
+                                            s_resps.append({"server": s_server_response.getSender(), "response":s_server_response.getStatusMessage()})
                                         else:
-                                            s_resps.append({"server": s_server_response["sender"], "message":s_server_response["statusmsg"]})
+                                            s_resps.append({"server": s_server_response.getSender(), "message":s_server_response.getStatusMessage()})
                             else:
                                 logger.error("No export filename found in response. %s" % server_response)
                                 rdict.update({"result": "KO"})
-                                s_resps.append({"server": server_response["sender"], "message":server_response["data"]["statusmsg"]})
+                                s_resps.append({"server": server_response.getSender(), "message":server_response.getData()["statusmsg"]})
                         else:
-                            s_resps.append({"server": server_response["sender"], "message":server_response["statusmsg"]})
+                            s_resps.append({"server": server_response.getSender(), "message":server_response.getStatusMessage()})
                     rdict.update({"result":s_resps})
                 else:
                     rdict.update({"result": "KO", "message": "Error communicating with server"})

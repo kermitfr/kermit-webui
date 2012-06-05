@@ -33,12 +33,13 @@ def update_info(user, agent, use_another_task):
             break;
     if filters:
         response, content = callRestServer(user, filters, "agentinfo", "desc", "agentname="+agent.name, True, use_another_task)
-        if response['status'] == '200':
-            json_content = json.loads(content)
-            for msg in json_content:
-                if msg['statusmsg'] == 'OK':
+        logger.debug(response.getStatus())
+        if response.getStatus() == 200:
+            for msg in content:
+                if msg.getStatusMessage() == 'OK':
                     #Verifying Action. If already present in DB just update it
-                    for action_name, action_content in msg['data']['actionhash'].items():
+                    for action_name, action_content in msg.getData()['actionhash'].items():
+                        logger.debug("Working on %s" % action_name)
                         action_db = Action.objects.filter(name=action_name, agent=agent)
                         saved_action = None
                         if len(action_db) == 0:

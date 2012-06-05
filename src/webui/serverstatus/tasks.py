@@ -8,7 +8,6 @@ import logging
 from webui.restserver.communication import callRestServer
 from datetime import datetime
 from webui.serverstatus.models import Server
-from django.utils import simplejson as json
 from webui.agent.models import Agent
 from webui.puppetclasses.models import PuppetClass
 from webui import settings
@@ -22,14 +21,13 @@ logger = logging.getLogger(__name__)
 def server_basic_info(user):
     try: 
         response, content = callRestServer(user, 'no-filter', 'nodeinfo', 'basicinfo', None, True, False)
-        if response.status == 200:
-            jsonObj = json.loads(content)
+        if response.getStatus() == 200:
             update_time = datetime.now()
-            total_servers = len(jsonObj)
+            total_servers = len(content)
             i = 0
-            for server in jsonObj:
+            for server in content:
                 #verify if server exists in database
-                server_name = server['sender']
+                server_name = server.getSender()
                 #Using filter because get sometimes generates query error
                 #The filter result is a collection, so you need to select the first element to work
                 query_response = Server.objects.filter(hostname=server_name)
@@ -47,9 +45,9 @@ def server_basic_info(user):
                 #Retrieving not updated/created server and set them to OFFLINE
                 logger.info("Checking offline servers")
                 not_updated = Server.objects.filter(updated_time__lt=update_time)
-                for server in not_updated:
-                    server.online = False
-                    server.save()
+                for not_updated_server in not_updated:
+                    not_updated_server.online = False
+                    not_updated_server.save()
                 i = i + 1
                 server_basic_info.update_state(state="PROGRESS", meta={"current": i, "total": total_servers})
                         
@@ -74,17 +72,17 @@ def server_inventory(user, updates_defined=None):
         
 def complete_server_info(server, mcresponse, update_time):
         server.online = True
-        if mcresponse['data'].has_key('facts'):
+        if mcresponse.getData().has_key('facts'):
             try:
-                server.os = mcresponse['data']['facts']['lsbdistdescription']
+                server.os = mcresponse.getData()['facts']['lsbdistdescription']
             except KeyError:
                 server.os = 'Unknown'
             try:
-                server.architecture = mcresponse['data']['facts']['architecture']
+                server.architecture = mcresponse.getData()['facts']['architecture']
             except KeyError:
                 server.architecture = 'Unknown' 
             try:
-                server.fqdn = mcresponse['data']['facts']['fqdn']
+                server.fqdn = mcresponse.getData()['facts']['fqdn']
             except KeyError:
                 server.fqdn = server.hostname
         else:
@@ -92,11 +90,11 @@ def complete_server_info(server, mcresponse, update_time):
             server.architecture = 'Unknown'
         server.updated_time = update_time
         #Add puppet_classes
-        add_puppet_classes(server, mcresponse['data']['classes'])
+        add_puppet_classes(server, mcresponse.getData()['classes'])
         #Add agents
-        add_agents(server, mcresponse['data']['agentlist'])
+        add_agents(server, mcresponse.getData()['agentlist'])
         #Create PuppetClass Path
-        create_path(server, mcresponse['data']['classes'])
+        create_path(server, mcresponse.getData()['classes'])
         
 def add_puppet_classes(server, puppet_classes):
     server.puppet_classes.clear()

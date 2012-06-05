@@ -91,25 +91,24 @@ def execute_sql(request, filters, dialog_name, xhr=None):
                 #;user=%s;userip=%s
                 response, content = callRestServer(request.user, filters, 'postgresql', 'execute_sql', 'sqlfile=%s;dbname=%s' % (sql_script, dbname), True, True, True)
                 #TODO: Improve reading content data
-                if response.status == 200:
-                    json_content = json.loads(content)
+                if response.getStatus() == 200:
                     s_resps = []
-                    for server_response in json_content:
-                        if server_response and server_response["statuscode"] == 0 and "data" in server_response:
+                    for server_response in content:
+                        if server_response and server_response.getStatusCode() == 0 and server_response.getData():
                             log_file = None
-                            if server_response["data"] and "logfile" in server_response["data"]:
-                                log_file = server_response["data"]["logfile"]
-                            elif server_response["data"] and "data" in server_response["data"] and "logfile" in server_response["data"]["data"]:
-                                log_file = server_response["data"]["data"]["logfile"]
+                            if server_response.getData() and "logfile" in server_response.getData():
+                                log_file = server_response.getData()["logfile"]
+                            elif server_response.getData() and "data" in server_response.getData() and "logfile" in server_response.getData()["data"]:
+                                log_file = server_response.getData()["data"]["logfile"]
 
                             if log_file:
-                                logger.debug("Discovered log for server %s: %s" % (server_response["sender"], log_file))
-                                s_resps.append({"server": server_response["sender"], "logfile":log_file})
+                                logger.debug("Discovered log for server %s: %s" % (server_response.getSender(), log_file))
+                                s_resps.append({"server": server_response.getSender(), "logfile":log_file})
                             else:
-                                if "data" in server_response and "statusmsg" in server_response["data"]:
-                                    s_resps.append({"server": server_response["sender"], "message":server_response["data"]["statusmsg"]})
+                                if server_response.getData() and "statusmsg" in server_response.getData():
+                                    s_resps.append({"server": server_response.getSender(), "message":server_response.getData()["statusmsg"]})
                                 else:
-                                    s_resps.append({"server": server_response["sender"], "message":server_response["statusmsg"]})
+                                    s_resps.append({"server": server_response.getSender(), "message":server_response.getStatusMessage()})
                     rdict.update({"result":s_resps})
                 else:
                     rdict.update({"result": "KO", "message": "Error communicating with server"})

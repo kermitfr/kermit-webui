@@ -7,6 +7,40 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+class KermitMcoResponse(object):
+    
+    def __init__(self, status=None):
+        self.status = status
+        
+    def getStatus(self):
+        return self.status
+        
+class KermitMcoContent(object):
+    
+    def __init__(self, data=None, status_code=None, sender=None, status_message=None):
+        self.data = data
+        self.status_code = status_code
+        self.sender = sender
+        self.status_message = status_message
+        
+    def getData(self):
+        return self.data
+    
+    def getStatusCode(self):
+        return self.status_code
+    
+    def getSender(self):
+        return self.sender
+    
+    def getStatusMessage(self):
+        return self.status_message
+    
+    def to_dict(self):
+        {"data":self.data, "statuscode":self.status_code,"sender":self.sender,"statusmsg":self.status_message}
+        
+    
+        
+
 class KermitModule(object):
 
     def __init__(self, name=None, platform_name=None):

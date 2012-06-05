@@ -117,14 +117,13 @@ def redeploy_app(request, filters, dialog_name, xhr=None):
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to deploy %s application on %s filtered server" % (appfile, filters))
                 response, content = callRestServer(request.user, filters, 'jboss', 'deploy', 'appfile=%s;instancename=%s' % (appfile,instancename), True)
-                if response.status == 200:
-                    json_content = json.loads(content)
+                if response.getStatus() == 200:
                     s_resps = []
-                    for server_response in json_content:
-                        if server_response['statuscode']==0:
-                            s_resps.append({"server": server_response["sender"], "response":server_response["data"]["status"]})
+                    for server_response in content:
+                        if server_response.getStatusCode()==0:
+                            s_resps.append({"server": server_response.getSender(), "response":server_response.getData()["status"]})
                         else:
-                            s_resps.append({"server": server_response["sender"], "message":server_response["statusmsg"]})
+                            s_resps.append({"server": server_response.getSender(), "message":server_response.getStatusMessage()})
                     rdict.update({"result":s_resps})
                 else:
                     rdict.update({"result": "KO", "message": "Error communicating with server"})
@@ -180,14 +179,13 @@ def get_log(request, filters, dialog_name, xhr=None):
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to get log on %s filtered server" % (filters))
                 response, content = callRestServer(request.user, filters, 'jboss', 'get_log', 'instancename=%s' % (instancename), True)
-                if response.status == 200:
-                    json_content = json.loads(content)
+                if response.getStatus() == 200:
                     s_resps = []
-                    for server_response in json_content:
-                        if server_response['statuscode']==0:
-                            s_resps.append({"server": server_response["sender"], "logfile":server_response["data"]["logfile"]})
+                    for server_response in content:
+                        if server_response.getStatusCode()==0:
+                            s_resps.append({"server": server_response.getSender(), "logfile":server_response.getData()["logfile"]})
                         else:
-                            s_resps.append({"server": server_response["sender"], "message":server_response["statusmsg"]})
+                            s_resps.append({"server": server_response.getSender(), "message":server_response.getStatusMessage()})
                     rdict.update({"result":s_resps})
                 else:
                     rdict.update({"result": "KO", "message": "Error communicating with server"})

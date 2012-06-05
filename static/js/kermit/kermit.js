@@ -218,7 +218,6 @@ function getLogForm(base_url, platform_name, container, operation, filters) {
 
 function sendRequestToMcollectiveSync(url, destination) {
 	$("#" + destination).empty();
-
 	$.ajax({
 		// The link we are accessing.
 		url : url,
@@ -259,7 +258,6 @@ function sendRequestToMcollectiveSync(url, destination) {
 
 function sendRequestToMcollective(url, destination) {
 	$("#" + destination).empty();
-
 	$('#modalprogress').dialog({
 			modal : true,
 			title : 'Progress...',

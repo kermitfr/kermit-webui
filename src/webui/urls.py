@@ -8,11 +8,6 @@ admin.autodiscover()
 from webui import initialize
 initialize()
 
-#Look for cron jobs
-if 'webui.django_cron' in settings.INSTALLED_APPS:
-    import django_cron
-    django_cron.autodiscover()
-
 #Discovering all widgets
 if 'webui.widgets' in settings.INSTALLED_APPS:
     from widgets.loading import registry

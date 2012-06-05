@@ -70,17 +70,16 @@ def get_available_bars(user, filters):
     logger.debug("Calling bar_list with filters %s" % (filters))
     try: 
         response, content = callRestServer(user, filters, "a7xbar", "applist", "apptype=%s" % 'bar', False, False)
-        if response.status == 200:
-            jsonObj = json.loads(content)
-            if jsonObj:
+        if response.getStatus() == 200:
+            if content:
                 #Looking for "intersections"
                 app_list = None
-                for server_response in jsonObj:
-                    if server_response['statuscode']==0 and server_response['data']:
+                for server_response in content:
+                    if server_response.getStatusCode()==0 and server_response.getData():
                         if not app_list:
-                            app_list = server_response['data']['applist']
+                            app_list = server_response.getData()['applist']
                         else:
-                            app_list = list(set(app_list).intersection(server_response['data']['applist']))
+                            app_list = list(set(app_list).intersection(server_response.getData()['applist']))
                     else:
                         logger.warn("No bar list response received")
                 return json.dumps({"errors":"", "applist":app_list})

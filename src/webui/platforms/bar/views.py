@@ -136,17 +136,16 @@ def deploy_bar(request, filters, dialog_name, xhr=None):
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to deploy %s application on %s filtered server" % (barname, filters))
                 response, content = callRestServer(request.user, filters, 'a7xbar', 'deploy', 'bcname=%s;filename=%s' %(bcname, barname), True, True, True)
-                if response.status == 200:
-                    json_content = json.loads(content)
+                if response.getStatus() == 200:
                     s_resps = []
-                    for server_response in json_content:
-                        if server_response['statuscode']==0:
-                            if "data" in server_response and "statusmsg" in server_response["data"]:
-                                s_resps.append({"server": server_response["sender"], "response":server_response["data"]["statusmsg"]})
+                    for server_response in content:
+                        if server_response.getStatusCode()==0:
+                            if server_response.getData() and "statusmsg" in server_response.getData():
+                                s_resps.append({"server": server_response.getSender(), "response":server_response.getData()["statusmsg"]})
                             else:
-                                s_resps.append({"server": server_response["sender"], "response":server_response["statusmsg"]})
+                                s_resps.append({"server": server_response.getSender(), "response":server_response.getStatusMessage()})
                         else:
-                            s_resps.append({"server": server_response["sender"], "message":server_response["statusmsg"]})
+                            s_resps.append({"server": server_response.getSender(), "message":server_response.getStatusMessage()})
                     rdict.update({"result":s_resps})
                 else:
                     rdict.update({"result": "KO", "message": "Error communicating with server"})

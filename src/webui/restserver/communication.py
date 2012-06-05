@@ -6,6 +6,7 @@ from webui.restserver.tasks import httpcall, httpcallscheduler
 from webui.restserver.models import BackendJob
 import sys
 from datetime import datetime
+from webui.restserver.utils import convert_response, convert_content
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +36,8 @@ def callRestServer(user, filters, agent, action, args=None, wait_response=False,
             response, content, agent, action = httpcallscheduler(filters, agent, action, args, use_task)
         else:
             response, content, agent, action = httpcall(filters, agent, action, args, use_task)
-    return response, content
+            
+    return convert_response(response), convert_content(content)
 
 def verifyRestServer():
     logger.debug("Testing RestServer presence")

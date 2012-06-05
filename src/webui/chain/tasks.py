@@ -38,17 +38,16 @@ def execute_chain_ops(scheduler, task_id=None):
         scheduler.task_running = i + 1
         scheduler.save()
         response, content = callRestServer(scheduler.user, op.filters, op.agent, op.action, op.parameters, True, False, True)
-        if response.status == 200:
-            json_content = json.loads(content)
-            if json_content:
+        if response.getStatus() == 200:
+            if content:
                 operation_success = True
                 servers_data = []
-                for server_data in json_content:
-                    if server_data["statuscode"] == 0:
-                        servers_data.append(server_data)
+                for server_data in content:
+                    if server_data.getStatusCode() == 0:
+                        servers_data.append(server_data.to_dict())
                     else:
                         operation_success = False
-                        servers_data.append(server_data)
+                        servers_data.append(server_data.to_dict())
                         errors = True
                 
                 response_list.append({"name": op.name, "messages": servers_data})

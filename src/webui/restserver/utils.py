@@ -10,6 +10,7 @@ from webui.platforms.platforms import platforms
 from webui.platforms.abstracts import UpdatePlatform
 from webui.widgets.loading import registry
 from webui import settings
+from webui.core import KermitMcoResponse, KermitMcoContent
 
 logger = logging.getLogger(__name__)
 
@@ -71,3 +72,17 @@ class Actions(object):
             return json.dumps({'error':"Application Groups not installed"})
              
     
+def convert_response(response):
+    kmr = None
+    if response:
+        kmr = KermitMcoResponse(response.status)
+    return kmr
+
+def convert_content(content):
+    content_list = []
+    json_content = json.loads(content)
+    for msg in json_content:
+        content_list.append(KermitMcoContent(msg['data'], msg['statuscode'], msg['sender'], msg['statusmsg']))
+    return content_list
+                
+        

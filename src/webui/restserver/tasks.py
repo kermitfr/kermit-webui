@@ -56,7 +56,7 @@ def httpcallscheduler(filters, agent, action, args, use_task=True):
         url += args
         logger.debug('Calling RestServer on: ' + url)
     if use_task:
-        httpcall.update_state(state="PROGRESS", meta={"current": 50, "total": 100})
+        httpcallscheduler.update_state(state="PROGRESS", meta={"current": 50, "total": 100})
     try:
         response, content = http.request(url, "GET")
     except socket.timeout:
@@ -123,5 +123,5 @@ def httpcallscheduler(filters, agent, action, args, use_task=True):
     logger.debug('Response: ' + str(response))
     logger.debug('Content: ' + str(content))
     if use_task:
-        httpcall.update_state(state="COMPLETED", meta={"current": 100, "total": 100})
+        httpcallscheduler.update_state(state="COMPLETED", meta={"current": 100, "total": 100})
     return response, content, agent, action

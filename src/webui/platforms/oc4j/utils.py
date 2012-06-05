@@ -23,17 +23,16 @@ def get_apps_list(user, filters, file_type):
     logger.debug("Calling app_list with filters %s and type %s" % (filters, str(file_type)))
     try: 
         response, content = callRestServer(user, filters, "a7xoas", "applist", "apptype="+str(file_type), False, False)
-        if response.status == 200:
-            jsonObj = json.loads(content)
+        if response.getStatus() == 200:
             if jsonObj:
                 #Looking for "intersections"
                 app_list = None
-                for server_response in jsonObj:
-                    if server_response['statuscode']==0 and server_response['data']:
+                for server_response in content:
+                    if server_response.getStatusCode()==0 and server_response.getData():
                         if not app_list:
-                            app_list = server_response['data']['applist']
+                            app_list = server_response.getData()['applist']
                         else:
-                            app_list = list(set(app_list).intersection(server_response['data']['applist']))
+                            app_list = list(set(app_list).intersection(server_response.getData()['applist']))
                     else:
                         logger.warn("No app list received")
                 return json.dumps({"errors":"", "applist":app_list})

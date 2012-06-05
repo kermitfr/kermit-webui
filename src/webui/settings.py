@@ -161,7 +161,6 @@ INSTALLED_APPS = (
     "djkombu",
     'webui.platforms',
     'webui.restserver',
-    'webui.django_cron',
     'webui.widgets',
     'webui.defaultop',
     'webui.agent',
@@ -304,15 +303,15 @@ djcelery.setup_loader()
 
 #To use directly the django database as a broker (no other tools required)
 #With this configuration you can't use celery monitor
-#BROKER_TRANSPORT = "django"
+BROKER_TRANSPORT = "django"
 
 #Sample Configuration for Redis
-BROKER_TRANSPORT = "redis"
-BROKER_URL = "redis://127.0.0.1:6379/0"
-CELERY_RESULT_BACKEND = "redis"
-CELERY_REDIS_HOST = "127.0.0.1"
-CELERY_REDIS_PORT = 6379
-CELERY_REDIS_DB = 0
+#BROKER_TRANSPORT = "redis"
+#BROKER_URL = "redis://127.0.0.1:6379/0"
+#CELERY_RESULT_BACKEND = "redis"
+#CELERY_REDIS_HOST = "127.0.0.1"
+#CELERY_REDIS_PORT = 6379
+#CELERY_REDIS_DB = 0
 
 #Sample configuration for mongodb
 #CELERY_RESULT_BACKEND = "mongodb"
@@ -353,6 +352,11 @@ CELERYBEAT_SCHEDULE = {
     "runs-inventory-once-a-day": {
         "task": "webui.serverstatus.tasks.server_inventory",
         "schedule": crontab(hour=6, minute=30),
+        "args": ('CronJob',)
+    }, 
+    "update-servers-installed-agents": {
+        "task": "webui.agent.tasks.updateagents",
+        "schedule": crontab(hour=4, minute=30),
         "args": ('CronJob',)
     }, 
         

@@ -32,7 +32,7 @@ def get(request, filters, agent, action, args=None, wait_for_response=False):
     if verify_agent_acl(request.user, agent) and verify_action_acl(request.user, agent, action):
         response, content = callRestServer(request.user, filters, agent, action, args, wait_for_response)
         if wait_for_response:
-            if response.status == 200:
+            if response.getStatus() == 200:
                 json_data = render_agent_template(request, {}, content, {}, agent, action)
                 return HttpResponse(json_data, mimetype="application/json")
         else:
@@ -48,8 +48,10 @@ def get(request, filters, agent, action, args=None, wait_for_response=False):
 def getWithTemplate(request, template, filters, agent, action, args=None):
     if verify_agent_acl(request.user, agent) and verify_action_acl(request.user, agent, action):
         response, content = callRestServer(request.user, filters, agent, action, args, True)
-        if response.status == 200:
-            jsonObj = json.loads(content)
+        if response.getStatus() == 200:
+            jsonObj = []
+            for entry in content:
+                jsonObj.append(entry.to_dict())
             templatePath = 'ajax/' + template + '.html'
             data = {
                     'content': jsonObj

@@ -102,7 +102,7 @@ def execute_action_form(request, agent, action, filters, dialog_name, response_c
                 response, content = callRestServer(request.user, filters, agent, action, arguments, wait_for_response)
                 #Leave wait for response check it to support both two in the future (read wait_for_response from config file)
                 if wait_for_response:
-                    if response.status == 200:
+                    if response.getStatus() == 200:
                         json_data = render_agent_template(request, rdict, content, form.cleaned_data, agent, action)
                         return HttpResponse(json_data, mimetype='application/javascript')
                     else:

@@ -21,17 +21,17 @@ def get_server_details(request, hostname, instance_name, resource_name):
     filter = "identity_filter=%s"%hostname
     server = Server.objects.get(hostname=hostname)
     response, content = callRestServer(request.user, filter, "libvirt", "hvinfo", None, True)
-    if response.status == 200:
-        virtual = json.loads(content)[0]
+    if response.getStatus() == 200:
+        virtual = content[0]
         domains = []
-        for dom in virtual['data']['inactive_domains']:
+        for dom in virtual.getData()['inactive_domains']:
             info = {'name': dom,
                     'active': False,
                     'start_url': reverse('call_mcollective_with_arguments', kwargs={'filters':filter, 'agent':"libvirt", 'action':"start", 'args':"domain=%s"%dom, 'wait_for_response':True}),
                     'stop_url': reverse('call_mcollective_with_arguments', kwargs={'filters':filter, 'agent':"libvirt", 'action':"shutdown", 'args':"domain=%s"%dom, 'wait_for_response':True})
                     }
             domains.append(info)
-        for dom in virtual['data']['active_domains']:
+        for dom in virtual.getData()['active_domains']:
             vnc_agent = server.agents.filter(name='libvirtvnc')
             novnc_url = None
             if len(vnc_agent) > 0:
@@ -51,8 +51,10 @@ def get_server_details(request, hostname, instance_name, resource_name):
     
 def start_vnc_proxy(request, hostname, domain):
     response, content = callRestServer(request.user, "identity_filter=%s"%hostname, "libvirtvnc", "start_proxy", "domain=%s"%domain, True)
-    if response.status == 200:
-        json_data = json.loads(content)
+    if response.getStatus() == 200:
+        json_data = []
+        for entry in content:
+            json_data.append(entry.to_dict())
         return HttpResponse(json_data, mimetype='application/javascript')
     else:
         print "ERRROR"
