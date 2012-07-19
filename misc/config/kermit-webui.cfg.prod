@@ -49,6 +49,12 @@ main.level=INFO
 calls.file=/var/log/kermit/kermit-mcollective-calls.log
 calls.level=DEBUG
 
+[hiera]
+redis_server=localhost
+redis_port = 6379
+redis_database = 0
+redis_password = password 
+
 [saml2]
 xmlsec.binary=/usr/bin/xmlsec1
 entityId=AutomatixD1
