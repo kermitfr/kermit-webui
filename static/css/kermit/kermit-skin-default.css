@@ -2044,3 +2044,19 @@ div.versionlabel {
 	margin-right: 20px;
 	font-weight: bold;
 }
+
+div.listfilter-head {
+	position:relative;
+	width:100%;
+	margin-top: 10px;
+}
+
+div.sortbuttons {
+	position:absolute;
+	right:20px;
+}
+
+.sortbuttons img:hover{
+	  width: 28px;
+	  cursor: pointer;
+}

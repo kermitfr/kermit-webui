@@ -1,0 +1,200 @@
+{% extends "widgets/base_widget.html" %}
+{% load i18n %}
+
+{% block widget-extra-title %}{{hostname}}{% endblock %}
+
+{% block widget-content %}
+
+<style>
+	.dragarea {
+		margin-left: 60px;
+	}
+	ul.dragdrop { 
+		border: 1px solid black;
+		width: 340px; 
+		height: 200px; 
+		padding-left: 15px;
+		padding-top: 5px; 
+		padding-bottom: 5px;
+		margin: 10px;
+		color:#ddd; 
+		list-style: none;
+		overflow-y: scroll;
+	}
+	ul.dragdrop li { 
+		cursor: pointer;
+		list-style: none;  
+	}
+	li.puppetclassname {
+		font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+		font-size: 12px;
+		font-weight: 800;
+		color: black;
+	}
+	#serverclasses { 
+		background: #AFAFAF; 
+	}
+	#allclasses { 
+		background: #AFAFAF; 
+	}
+	#submitcontainer {
+		position: relative;
+		width: 100%;
+		margin: 10px;
+	}
+</style>
+<script>
+$(document).ready(function() {
+	var selectedClass = 'ui-state-highlight',
+    clickDelay = 600,
+    // click time (milliseconds)
+    lastClick, diffClick; // timestamps
+
+    $("#serverclasses li, #allclasses li")
+    // Script to deferentiate a click from a mousedown for drag event
+    .bind('mousedown mouseup', function(e) {
+        if (e.type == "mousedown") {
+            lastClick = e.timeStamp; // get mousedown time
+        } else {
+            diffClick = e.timeStamp - lastClick;
+            if (diffClick < clickDelay) {
+                // add selected class to group draggable objects
+                $(this).toggleClass(selectedClass);
+            }
+        }
+    });
+    
+    
+    filterList($("#SCform"), $("#serverclasses"));
+    filterList($("#ACform"), $("#allclasses"));
+    
+    function moveClasses(destination) {
+    	var movedList = [];
+    	$('.' + selectedClass).each(function(index, value) {
+    		if ($(value).parent()[0].id != destination) {
+    			movedList.push($(value).text());
+    		}
+    	});
+    	$('.' + selectedClass).appendTo($("#" + destination)) 
+            .removeClass(selectedClass).css({
+                top: 0,
+                left: 0
+        });	
+    }
+    
+    $("#addtoserver").click(function() {
+    	moveClasses("serverclasses");
+    });
+    
+    $("#removefromserver").click(function() {
+    	moveClasses("allclasses");
+    });
+    
+    $("#SCsortdescending").click(function() {
+    	$('ul#serverclasses>li').tsort({order:'desc'});	
+    });
+    
+    $("#SCsortascending").click(function() {
+    	$('ul#serverclasses>li').tsort({order:'asc'});	
+    });
+    
+    $("#ACsortdescending").click(function() {
+    	$('ul#allclasses>li').tsort({order:'desc'});	
+    });
+    
+    $("#ACsortascending").click(function() {
+    	$('ul#allclasses>li').tsort({order:'asc'});	
+    });
+    
+    //Order lists at page load
+    $('ul#allclasses>li').tsort({order:'asc'});
+    $('ul#serverclasses>li').tsort({order:'asc'});
+    
+    $("#submitbutton").click(function() {
+    	var classesArray = new Array();
+    
+    	$('ul#serverclasses>li').each(function() {
+    		classesArray.push($(this).text());
+    	});
+    	var forcePuppetUpdate;
+    	if($("#forceupdate").is(':checked')) {
+    		forcePuppetUpdate = true;
+    	} 
+    	var postData = { values: classesArray, forceUpdate: forcePuppetUpdate };	
+    	
+    	$.ajax({
+	        type: "POST",
+	        url: "{% url submit_server_edit hostname %}",
+	        data: postData,
+	        beforeSend : function() {
+				$('#loading').show()
+			},
+			complete : function() {
+				$('#loading').hide()
+			},
+			error : function() {
+				$('#loading').hide()
+			},
+			success : function(response) {
+				if (response.result == 'OK') {
+					alert("Operation Completed");
+				} else {
+					alert("Operation in error");
+				}
+			},
+	        dataType: "json",
+	        traditional: true
+	    });
+    });	
+	
+});
+</script>
+
+<br/>
+<img src="{{settings.STATIC_URL}}images/icons/server.png" height="64px" style="float:left;"/>
+	<!-- Using table because div and float break drag and drop --> 
+<table id="puppetclassestable" class="dragarea" width="80%">
+	<tr>
+		<td width="48%">
+	    	<p>{% trans "Server Classes" %}</p> 
+	    	<div class="listfilter-head">
+				<div id="SCform">
+					<div class="sortbuttons">
+						<img id="SCsortascending" src="{{settings.STATIC_URL}}images/icons/sort-ascending.png" width="24px" alt="{% trans 'Sort Ascending' %}" title="{% trans 'Sort Ascending' %}"/>
+				    	<img id="SCsortdescending" src="{{settings.STATIC_URL}}images/icons/sort-descending.png" width="24px" alt="{% trans 'Sort Descending' %}" title="{% trans 'Sort Descending' %}"/>
+				    </div>
+				</div>
+			</div>
+		    <ul id="serverclasses" class="dragdrop left">
+		    	{%for sc in server_classes%}
+		    		<li class="puppetclassname">{{sc}}</li>
+		    	{%endfor%}
+		    </ul>
+   	</td>
+   		<td width="4%" style="vertical-align: middle;">
+   			<input type="button" id="addtoserver" value="<<"/><br/>
+   			<input type="button"  id="removefromserver" value=">>"/>
+   		</td>
+   		<td width="48%">
+		    <p>{% trans "Assignable Classes" %}</p>
+		    <div class="listfilter-head">
+				<div id="ACform">
+					<div class="sortbuttons">
+						<img id="ACsortascending" src="{{settings.STATIC_URL}}images/icons/sort-ascending.png" width="24px" alt="{% trans 'Sort Ascending' %}" title="{% trans 'Sort Ascending' %}"/>
+				    	<img id="ACsortdescending" src="{{settings.STATIC_URL}}images/icons/sort-descending.png" width="24px" alt="{% trans 'Sort Descending' %}" title="{% trans 'Sort Descending' %}"/>
+				    </div>
+				</div>
+			</div>
+		    <ul id="allclasses" class="dragdrop right">
+		    	{%for ac in available_classes%}
+		    		<li class="puppetclassname">{{ac}}</li>
+		    	{%endfor%}
+		    </ul>
+    	</td>
+   </tr>
+</table>
+
+<div id="submitcontainer">
+		<input type="checkbox" id="forceupdate"/>{% trans "Force Puppet Update Immediately" %} <input id="submitbutton" type="button" value="{% trans 'Submit' %}"/>
+</div>
+{% endblock %}

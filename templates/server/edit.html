@@ -9,36 +9,7 @@
 	<a href="{{base_url}}/">{% trans 'Home' %}</a>{% if title %} &rsaquo; {{ title }}{% endif %} <a href="{{base_url}}/server/details/{{hostname}}/">{% trans 'Server Details' %} - {{hostname}}</a>
 </div>
 {% endblock %}
-
 {% block content %} 
-<script type="text/javascript">
-	$(document).ready(function() {
-	   $("#toolbar-response").hide();
-	   $('img[title]').qtip();
-	 });
-	function executeToolbarOperation(url) {
-		callMcollective(url, 'toolbar-response');
-		$("#toolbar-response").dialog({
-			modal : true,
-			title : 'Operation Result',
-			height : 200,
-			width : 400,
-			open: function(event, ui){
-				$('body').css('overflow','auto');
-				$('.ui-widget-overlay').css('width','100%'); 
-			} 
-		});		
-	}	
-	
-	function checkExecution(baseurl, hasparameters, agent, action, filter, url) {
-		if (hasparameters=='True') {
-			getExecutionForm(baseurl, "execution-dialog", agent, action, filter,  "actual-resource-details");
-		} else {
-			executeToolbarOperation(url);
-		}
-	}
-	
-</script>
 <div id="execution-dialog"></div>
 <div id="toolbar-response"></div>
 <div class="fg-toolbar">
@@ -64,9 +35,11 @@
 		&nbsp;<br/>&nbsp;<br/>
 	</ul>
 	<ul id="column2" class="column">
-		{% widget "ServerSummary" user hostname %}
-		{% widget "SelectedResourceDetails" user %}	
+		{% widget "ServerEdit" user hostname%}
 		&nbsp;<br/>&nbsp;<br/>
 	</ul>
 </div>
+
+​
+
 {% endblock %} 

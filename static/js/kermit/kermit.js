@@ -337,3 +337,31 @@ function openVNC(vncproxy_url, redirect_url) {
 	callMcollective(vncproxy_url, 'none');
 	window.open(redirect_url, '_blank');
 }
+
+jQuery.expr[':'].Contains = function(a,i,m){
+  return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase())>=0;
+};
+
+function filterList(header, list) {
+    var form = $("<form>").attr({"class":"filterform","action":"#"}),
+        input = $("<input>").attr({"class":"filterinput","type":"text"});
+    $(form).append("<span>Class Filter:</span> ").append(input).appendTo(header);
+ 
+    $(input)
+      .change( function () {
+        var filter = $(this).val();
+        if(filter) {
+ 
+          $matches = $(list).find('li:Contains(' + filter + ')');
+          $('li', list).not($matches).slideUp();
+          $matches.slideDown();
+ 
+        } else {
+          $(list).find("li").slideDown();
+        }
+        return false;
+      })
+    .keyup( function () {
+        $(this).change();
+    });
+}

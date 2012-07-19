@@ -297,6 +297,11 @@ EMAIL_USE_TLS = CONF.getboolean("webui", "email.usetls")
 
 LEVELS_NUMBER = CONF.getint("webui", "levels.number")
 
+HIERA_REDIS_SERVER = CONF.get("hiera", "redis_server")
+HIERA_REDIS_PORT = CONF.getint("hiera", "redis_port")
+HIERA_REDIS_DB = CONF.get("hiera", "redis_database")
+HIERA_REDIS_PASSWORD = CONF.get("hiera", "redis_password")
+
 
 import djcelery
 djcelery.setup_loader()
