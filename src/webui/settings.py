@@ -266,7 +266,7 @@ if auth_method:
             if setting == setting.upper():
                 locals()[setting] = getattr(conf_module, setting)
     except:
-        print "DEBUG: No auth module found. Initializing DB?"    
+        conf_module = None    
             
 else:
     from webui.authentication.default.settings import *
@@ -305,6 +305,8 @@ HIERA_REDIS_PORT = CONF.getint("hiera", "redis_port")
 HIERA_REDIS_DB = CONF.get("hiera", "redis_database")
 HIERA_REDIS_PASSWORD = CONF.get("hiera", "redis_password")
 
+PUPPET_EXCLUDE_CLASSES = ["settings", "default"]
+PUPPET_MASTER_SERVER_HOSTNAME = CONF.get("puppet", "puppetmaster_hostname")
 
 import djcelery
 djcelery.setup_loader()

@@ -1,0 +1,275 @@
+[
+{
+        "pk": 1, 
+        "model": "widgets.widget", 
+        "fields": {
+                "refreshable": false, 
+                "description": "", 
+                "title": "Default Operations", 
+                "color": "white", 
+                "editable": true, 
+                "enabled": true, 
+                "movable": true, 
+                "refreshUrl": "", 
+                "name": "DashBoardDefaultOps", 
+                "column": 1, 
+                "removable": true, 
+                "created_time": "2011-09-06 06:30:45", 
+                "updated_time": "2011-09-06 06:30:45", 
+                "order": 2, 
+                "icon": ""
+        }
+}, 
+{
+        "pk": 2, 
+        "model": "widgets.widget", 
+        "fields": {
+                "refreshable": false, 
+                "description": "", 
+                "title": "Results", 
+                "color": "white", 
+                "editable": true, 
+                "enabled": true, 
+                "movable": true, 
+                "refreshUrl": "", 
+                "name": "DashBoardOpResults", 
+                "column": 2, 
+                "removable": true, 
+                "created_time": "2011-09-06 06:30:45", 
+                "updated_time": "2011-09-06 06:30:45", 
+                "order": 0, 
+                "icon": ""
+        }
+}, 
+{
+        "pk": 3, 
+        "model": "widgets.widget", 
+        "fields": {
+                "refreshable": false, 
+                "description": "", 
+                "title": "Agents Available", 
+                "color": "white", 
+                "editable": true, 
+                "enabled": true, 
+                "movable": true, 
+                "refreshUrl": "", 
+                "name": "AgentsTree", 
+                "column": 1, 
+                "removable": true, 
+                "created_time": "2011-09-06 06:30:45", 
+                "updated_time": "2011-09-06 06:30:45", 
+                "order": 0, 
+                "icon": ""
+        }
+}, 
+{
+        "pk": 4, 
+        "model": "widgets.widget", 
+        "fields": {
+                "refreshable": false, 
+                "description": "", 
+                "title": "Classes", 
+                "color": "white", 
+                "editable": true, 
+                "enabled": true, 
+                "movable": true, 
+                "refreshUrl": "", 
+                "name": "DashBoardPuppetClasses", 
+                "column": 1, 
+                "removable": true, 
+                "created_time": "2011-09-06 06:30:45", 
+                "updated_time": "2011-09-06 06:30:45", 
+                "order": 1, 
+                "icon": ""
+        }
+}, 
+{
+        "pk": 5, 
+        "model": "widgets.widget", 
+        "fields": {
+                "refreshable": false, 
+                "description": "", 
+                "title": "System Status", 
+                "color": "white", 
+                "editable": true, 
+                "enabled": true, 
+                "movable": true, 
+                "refreshUrl": "", 
+                "name": "SystemStatus", 
+                "column": 2, 
+                "removable": true, 
+                "created_time": "2011-09-06 06:30:45", 
+                "updated_time": "2011-09-06 06:30:45", 
+                "order": 1, 
+                "icon": ""
+        }
+}, 
+{
+        "pk": 6, 
+        "model": "widgets.widget", 
+        "fields": {
+                "refreshable": false, 
+                "description": null, 
+                "title": "Server Details", 
+                "color": "white", 
+                "editable": true, 
+                "enabled": false, 
+                "movable": true, 
+                "refreshUrl": null, 
+                "name": "ServerDetails", 
+                "column": 1, 
+                "removable": true, 
+                "created_time": "2011-09-06 06:30:45", 
+                "updated_time": "2011-09-06 06:30:45", 
+                "order": 0, 
+                "icon": null
+        }
+}, 
+{
+        "pk": 7, 
+        "model": "widgets.widget", 
+        "fields": {
+                "refreshable": false, 
+                "description": null, 
+                "title": "Resource Details", 
+                "color": "white", 
+                "editable": true, 
+                "enabled": false, 
+                "movable": true, 
+                "refreshUrl": null, 
+                "name": "SelectedResourceDetails", 
+                "column": 1, 
+                "removable": true, 
+                "created_time": "2011-09-06 06:30:45", 
+                "updated_time": "2011-09-06 06:30:45", 
+                "order": 0, 
+                "icon": null
+        }
+}, 
+{
+        "pk": 8, 
+        "model": "widgets.widget", 
+        "fields": {
+                "refreshable": false, 
+                "description": null, 
+                "title": "Server Summary", 
+                "color": "white", 
+                "editable": true, 
+                "enabled": false, 
+                "movable": true, 
+                "refreshUrl": null, 
+                "name": "ServerSummary", 
+                "column": 1, 
+                "removable": true, 
+                "created_time": "2011-09-06 06:30:45", 
+                "updated_time": "2011-09-06 06:30:45", 
+                "order": 0, 
+                "icon": null
+        }
+}, 
+{
+        "pk": 9, 
+        "model": "widgets.widget", 
+        "fields": {
+                "refreshable": false, 
+                "description": "", 
+                "title": "Appli Status", 
+                "color": "white", 
+                "editable": true, 
+                "enabled": true, 
+                "movable": true, 
+                "refreshUrl": "", 
+                "name": "ApplicationsStatus", 
+                "column": 2, 
+                "removable": true, 
+                "created_time": "2011-10-25 06:30:45", 
+                "updated_time": "2011-10-25 06:30:45", 
+                "order": 2, 
+                "icon": ""
+        }
+},
+{
+        "pk": 10, 
+        "model": "widgets.widget", 
+        "fields": {
+                "refreshable": false, 
+                "description": "", 
+                "title": "Server Status", 
+                "color": "white", 
+                "editable": true, 
+                "enabled": false, 
+                "movable": true, 
+                "refreshUrl": "", 
+                "name": "ServerStatus", 
+                "column": 2, 
+                "removable": true, 
+                "created_time": "2011-10-25 06:30:45", 
+                "updated_time": "2011-10-25 06:30:45", 
+                "order": 1, 
+                "icon": ""
+        }
+},
+{
+        "pk": 11, 
+        "model": "widgets.widget", 
+        "fields": {
+                "refreshable": false, 
+                "description": "", 
+                "title": "Job History", 
+                "color": "white", 
+                "editable": true, 
+                "enabled": true, 
+                "movable": true, 
+                "refreshUrl": "", 
+                "name": "BackendJobHistory", 
+                "column": 2, 
+                "removable": true, 
+                "created_time": "2011-12-22 10:45:45", 
+                "updated_time": "2011-12-22 10:45:45", 
+                "order": 3, 
+                "icon": ""
+        }
+},
+{
+        "pk": 12, 
+        "model": "widgets.widget", 
+        "fields": {
+                "refreshable": false, 
+                "description": "", 
+                "title": "Scheduler History", 
+                "color": "white", 
+                "editable": true, 
+                "enabled": false, 
+                "movable": true, 
+                "refreshUrl": "", 
+                "name": "ChainHistory", 
+                "column": 1, 
+                "removable": true, 
+                "created_time": "2011-12-22 15:50:45", 
+                "updated_time": "2011-12-22 15:50:45", 
+                "order": 0, 
+                "icon": ""
+        }
+},  
+{
+        "pk": 13, 
+        "model": "widgets.widget", 
+        "fields": {
+                "refreshable": false, 
+                "description": "", 
+                "title": "Scheduler Editor", 
+                "color": "white", 
+                "editable": true, 
+                "enabled": false, 
+                "movable": true, 
+                "refreshUrl": "", 
+                "name": "ChainEditor", 
+                "column": 1, 
+                "removable": true, 
+                "created_time": "2011-12-22 15:50:45", 
+                "updated_time": "2011-12-22 15:50:45", 
+                "order": 1, 
+                "icon": ""
+        }
+}
+]

@@ -18,7 +18,6 @@ from django.core.urlresolvers import reverse
 import djcelery
 from django.template.loader import render_to_string
 import ast
-import sys
 
 logger = logging.getLogger(__name__)
 

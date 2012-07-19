@@ -132,10 +132,6 @@ def server_edit(request, hostname):
                 operations[group_name].append(data)
             else:
                 logger.debug("Operation %s is not visible for %s server" % (op.get_name(), hostname))
-
-    #TEST
-#    
-    #END TEST
     
     #TODO: Make a refactor to remove base_url and statis_url from context
     return render_to_response('server/edit.html', {"settings": settings, "base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "serverdetails": server_info, "hostname": hostname, "service_status":service_status, 'server_operations': operations, "kermit_version":version}, context_instance=RequestContext(request))
@@ -145,16 +141,16 @@ def submit_server_edit(request, hostname):
     if (request.POST and "values" in request.POST):
         server_classes = request.POST.getlist('values')
         try:
+            server = Server.objects.get(hostname=hostname)
+        except:
+            logger.debug("Trying to get server using fqdn")
+            server = Server.objects.get(fqdn=hostname)
+        try:
             redis_server = redis.Redis(host=settings.HIERA_REDIS_SERVER, password=settings.HIERA_REDIS_PASSWORD, port=settings.HIERA_REDIS_PORT, db=settings.HIERA_REDIS_DB)
             redis_server.delete("common:%s" % hostname)
             for current_class in server_classes:
                 redis_server.sadd("common:%s" % hostname, current_class)
             logger.debug("New server classes in the Hiera Redis Database: %s" % redis_server.smembers("common:%s" % hostname))
-            try:
-                server = Server.objects.get(hostname=hostname)
-            except:
-                logger.debug("Trying to get server using fqdn")
-                server = Server.objects.get(fqdn=hostname)
             server.puppet_classes.clear()
             for current in server_classes:
                 retrieved = PuppetClass.objects.filter(name=current)

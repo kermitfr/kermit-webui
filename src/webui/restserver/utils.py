@@ -70,6 +70,15 @@ class Actions(object):
         else:
             logger.warn('Application Groups not installed')
             return json.dumps({'error':"Application Groups not installed"})
+        
+    def updated_puppet_classes(self, user):
+        logger.info("Calling Update Puppet Classes")
+        try: 
+            result = send_task("webui.puppetclasses.tasks.update_all_puppet_classes", [user])    
+            json_data = json.dumps({'UUID': result.task_id, 'taskname':"webui.puppetclasses.tasks.update_all_puppet_classes"})
+            return json_data
+        except Exception, err:
+            logger.error('ERROR: ' + str(err))
              
     
 def convert_response(response):

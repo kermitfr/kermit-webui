@@ -99,11 +99,18 @@ def complete_server_info(server, mcresponse, update_time):
 def add_puppet_classes(server, puppet_classes):
     server.puppet_classes.clear()
     for current in puppet_classes:
-        retrieved = PuppetClass.objects.filter(name=current)
-        if retrieved:     
-            server.puppet_classes.add(retrieved[0])
-        else:
-            logger.warn("Cannot find class with name " + current)
+        try:
+            retrieved = PuppetClass.objects.get(name=current)
+        except:     
+            logger.debug("Cannot find class with name %s" % current)
+            splitted_name = server.hostname.split('.')
+            if (current in settings.PUPPET_EXCLUDE_CLASSES or current == server.hostname or current == server.fqdn or current == splitted_name[0]):
+                logger.debug("Skipping class %s" % current)
+                continue
+            logger.info("Creating new class %s" % current)
+            retrieved = PuppetClass.objects.create(name=current)
+        
+        server.puppet_classes.add(retrieved)
             
 def add_agents(server, agents_list):
     server.agents.clear()

@@ -55,6 +55,9 @@ redis_port = 6379
 redis_database = 0
 redis_password = password 
 
+[puppet]
+puppetmaster_hostname=puppet
+
 [saml2]
 xmlsec.binary=/usr/bin/xmlsec1
 entityId=AutomatixD1

@@ -1,1588 +1,1261 @@
 [
-        {
-                "pk": "c822d7fda411608efe55d8f287d076b1", 
-                "model": "sessions.session", 
-                "fields": {
-                        "expire_date": "2011-09-20 06:30:52", 
-                        "session_data": "NWYxNGY4OWNmZmMzMjBmNzI5YTdmNGJiZTJlM2M4OGU1MmViNTIxYjqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQRLAXUu\n"
-                }
-        }, 
-        {
-                "pk": 1, 
-                "model": "sites.site", 
-                "fields": {
-                        "domain": "example.com", 
-                        "name": "example.com"
-                }
-        },  
-        {
-                "pk": 1, 
-                "model": "widgets.widget", 
-                "fields": {
-                        "refreshable": false, 
-                        "description": "", 
-                        "title": "Default Operations", 
-                        "color": "white", 
-                        "editable": true, 
-                        "enabled": true, 
-                        "movable": true, 
-                        "refreshUrl": "", 
-                        "name": "DashBoardDefaultOps", 
-                        "column": 1, 
-                        "removable": true, 
-                        "created_time": "2011-09-06 06:30:45", 
-                        "updated_time": "2011-09-06 06:30:45", 
-                        "order": 2, 
-                        "icon": ""
-                }
-        }, 
-        {
-                "pk": 2, 
-                "model": "widgets.widget", 
-                "fields": {
-                        "refreshable": false, 
-                        "description": "", 
-                        "title": "Results", 
-                        "color": "white", 
-                        "editable": true, 
-                        "enabled": true, 
-                        "movable": true, 
-                        "refreshUrl": "", 
-                        "name": "DashBoardOpResults", 
-                        "column": 2, 
-                        "removable": true, 
-                        "created_time": "2011-09-06 06:30:45", 
-                        "updated_time": "2011-09-06 06:30:45", 
-                        "order": 0, 
-                        "icon": ""
-                }
-        }, 
-        {
-                "pk": 3, 
-                "model": "widgets.widget", 
-                "fields": {
-                        "refreshable": false, 
-                        "description": "", 
-                        "title": "Agents Available", 
-                        "color": "white", 
-                        "editable": true, 
-                        "enabled": true, 
-                        "movable": true, 
-                        "refreshUrl": "", 
-                        "name": "AgentsTree", 
-                        "column": 1, 
-                        "removable": true, 
-                        "created_time": "2011-09-06 06:30:45", 
-                        "updated_time": "2011-09-06 06:30:45", 
-                        "order": 0, 
-                        "icon": ""
-                }
-        }, 
-        {
-                "pk": 4, 
-                "model": "widgets.widget", 
-                "fields": {
-                        "refreshable": false, 
-                        "description": "", 
-                        "title": "Classes", 
-                        "color": "white", 
-                        "editable": true, 
-                        "enabled": true, 
-                        "movable": true, 
-                        "refreshUrl": "", 
-                        "name": "DashBoardPuppetClasses", 
-                        "column": 1, 
-                        "removable": true, 
-                        "created_time": "2011-09-06 06:30:45", 
-                        "updated_time": "2011-09-06 06:30:45", 
-                        "order": 1, 
-                        "icon": ""
-                }
-        }, 
-        {
-                "pk": 5, 
-                "model": "widgets.widget", 
-                "fields": {
-                        "refreshable": false, 
-                        "description": "", 
-                        "title": "System Status", 
-                        "color": "white", 
-                        "editable": true, 
-                        "enabled": true, 
-                        "movable": true, 
-                        "refreshUrl": "", 
-                        "name": "SystemStatus", 
-                        "column": 2, 
-                        "removable": true, 
-                        "created_time": "2011-09-06 06:30:45", 
-                        "updated_time": "2011-09-06 06:30:45", 
-                        "order": 1, 
-                        "icon": ""
-                }
-        }, 
-        {
-                "pk": 6, 
-                "model": "widgets.widget", 
-                "fields": {
-                        "refreshable": false, 
-                        "description": null, 
-                        "title": "Server Details", 
-                        "color": "white", 
-                        "editable": true, 
-                        "enabled": false, 
-                        "movable": true, 
-                        "refreshUrl": null, 
-                        "name": "ServerDetails", 
-                        "column": 1, 
-                        "removable": true, 
-                        "created_time": "2011-09-06 06:30:45", 
-                        "updated_time": "2011-09-06 06:30:45", 
-                        "order": 0, 
-                        "icon": null
-                }
-        }, 
-        {
-                "pk": 7, 
-                "model": "widgets.widget", 
-                "fields": {
-                        "refreshable": false, 
-                        "description": null, 
-                        "title": "Resource Details", 
-                        "color": "white", 
-                        "editable": true, 
-                        "enabled": false, 
-                        "movable": true, 
-                        "refreshUrl": null, 
-                        "name": "SelectedResourceDetails", 
-                        "column": 1, 
-                        "removable": true, 
-                        "created_time": "2011-09-06 06:30:45", 
-                        "updated_time": "2011-09-06 06:30:45", 
-                        "order": 0, 
-                        "icon": null
-                }
-        }, 
-        {
-                "pk": 8, 
-                "model": "widgets.widget", 
-                "fields": {
-                        "refreshable": false, 
-                        "description": null, 
-                        "title": "Server Summary", 
-                        "color": "white", 
-                        "editable": true, 
-                        "enabled": false, 
-                        "movable": true, 
-                        "refreshUrl": null, 
-                        "name": "ServerSummary", 
-                        "column": 1, 
-                        "removable": true, 
-                        "created_time": "2011-09-06 06:30:45", 
-                        "updated_time": "2011-09-06 06:30:45", 
-                        "order": 0, 
-                        "icon": null
-                }
-        }, 
-        {
-                "pk": 9, 
-                "model": "widgets.widget", 
-                "fields": {
-                        "refreshable": false, 
-                        "description": "", 
-                        "title": "Appli Status", 
-                        "color": "white", 
-                        "editable": true, 
-                        "enabled": true, 
-                        "movable": true, 
-                        "refreshUrl": "", 
-                        "name": "ApplicationsStatus", 
-                        "column": 2, 
-                        "removable": true, 
-                        "created_time": "2011-10-25 06:30:45", 
-                        "updated_time": "2011-10-25 06:30:45", 
-                        "order": 2, 
-                        "icon": ""
-                }
-        },
-        {
-                "pk": 10, 
-                "model": "widgets.widget", 
-                "fields": {
-                        "refreshable": false, 
-                        "description": "", 
-                        "title": "Server Status", 
-                        "color": "white", 
-                        "editable": true, 
-                        "enabled": false, 
-                        "movable": true, 
-                        "refreshUrl": "", 
-                        "name": "ServerStatus", 
-                        "column": 2, 
-                        "removable": true, 
-                        "created_time": "2011-10-25 06:30:45", 
-                        "updated_time": "2011-10-25 06:30:45", 
-                        "order": 1, 
-                        "icon": ""
-                }
-        },
-        {
-                "pk": 11, 
-                "model": "widgets.widget", 
-                "fields": {
-                        "refreshable": false, 
-                        "description": "", 
-                        "title": "Job History", 
-                        "color": "white", 
-                        "editable": true, 
-                        "enabled": true, 
-                        "movable": true, 
-                        "refreshUrl": "", 
-                        "name": "BackendJobHistory", 
-                        "column": 2, 
-                        "removable": true, 
-                        "created_time": "2011-12-22 10:45:45", 
-                        "updated_time": "2011-12-22 10:45:45", 
-                        "order": 3, 
-                        "icon": ""
-                }
-        },
-        {
-                "pk": 12, 
-                "model": "widgets.widget", 
-                "fields": {
-                        "refreshable": false, 
-                        "description": "", 
-                        "title": "Scheduler History", 
-                        "color": "white", 
-                        "editable": true, 
-                        "enabled": false, 
-                        "movable": true, 
-                        "refreshUrl": "", 
-                        "name": "ChainHistory", 
-                        "column": 1, 
-                        "removable": true, 
-                        "created_time": "2011-12-22 15:50:45", 
-                        "updated_time": "2011-12-22 15:50:45", 
-                        "order": 0, 
-                        "icon": ""
-                }
-        },  
-        {
-                "pk": 13, 
-                "model": "widgets.widget", 
-                "fields": {
-                        "refreshable": false, 
-                        "description": "", 
-                        "title": "Scheduler Editor", 
-                        "color": "white", 
-                        "editable": true, 
-                        "enabled": false, 
-                        "movable": true, 
-                        "refreshUrl": "", 
-                        "name": "ChainEditor", 
-                        "column": 1, 
-                        "removable": true, 
-                        "created_time": "2011-12-22 15:50:45", 
-                        "updated_time": "2011-12-22 15:50:45", 
-                        "order": 1, 
-                        "icon": ""
-                }
-        },
-        {
-                "pk": 28, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "add_logentry", 
-                        "name": "Can add log entry", 
-                        "content_type": 10
-                }
-        }, 
-        {
-                "pk": 29, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "change_logentry", 
-                        "name": "Can change log entry", 
-                        "content_type": 10
-                }
-        }, 
-        {
-                "pk": 30, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "delete_logentry", 
-                        "name": "Can delete log entry", 
-                        "content_type": 10
-                }
-        }, 
-        {
-                "pk": 49, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "add_action", 
-                        "name": "Can add action", 
-                        "content_type": 16
-                }
-        }, 
-        {
-                "pk": 50, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "change_action", 
-                        "name": "Can change action", 
-                        "content_type": 16
-                }
-        }, 
-        {
-                "pk": 51, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "delete_action", 
-                        "name": "Can delete action", 
-                        "content_type": 16
-                }
-        }, 
-        {
-                "pk": 52, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "use_action", 
-                        "name": "Can use action", 
-                        "content_type": 16
-                }
-        }, 
-        {
-                "pk": 56, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "add_actioninput", 
-                        "name": "Can add action input", 
-                        "content_type": 18
-                }
-        }, 
-        {
-                "pk": 57, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "change_actioninput", 
-                        "name": "Can change action input", 
-                        "content_type": 18
-                }
-        }, 
-        {
-                "pk": 58, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "delete_actioninput", 
-                        "name": "Can delete action input", 
-                        "content_type": 18
-                }
-        }, 
-        {
-                "pk": 53, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "add_actionoutput", 
-                        "name": "Can add action output", 
-                        "content_type": 17
-                }
-        }, 
-        {
-                "pk": 54, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "change_actionoutput", 
-                        "name": "Can change action output", 
-                        "content_type": 17
-                }
-        }, 
-        {
-                "pk": 55, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "delete_actionoutput", 
-                        "name": "Can delete action output", 
-                        "content_type": 17
-                }
-        }, 
-        {
-                "pk": 44, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "add_agent", 
-                        "name": "Can add agent", 
-                        "content_type": 15
-                }
-        }, 
-        {
-                "pk": 47, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "call_mcollective", 
-                        "name": "Can call MCollective", 
-                        "content_type": 15
-                }
-        }, 
-        {
-                "pk": 45, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "change_agent", 
-                        "name": "Can change agent", 
-                        "content_type": 15
-                }
-        }, 
-        {
-                "pk": 46, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "delete_agent", 
-                        "name": "Can delete agent", 
-                        "content_type": 15
-                }
-        }, 
-        {
-                "pk": 48, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "use_agent", 
-                        "name": "Can use agent", 
-                        "content_type": 15
-                }
-        }, 
-        {
-                "pk": 4, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "add_group", 
-                        "name": "Can add group", 
-                        "content_type": 2
-                }
-        }, 
-        {
-                "pk": 5, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "change_group", 
-                        "name": "Can change group", 
-                        "content_type": 2
-                }
-        }, 
-        {
-                "pk": 6, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "delete_group", 
-                        "name": "Can delete group", 
-                        "content_type": 2
-                }
-        }, 
-        {
-                "pk": 10, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "add_message", 
-                        "name": "Can add message", 
-                        "content_type": 4
-                }
-        }, 
-        {
-                "pk": 11, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "change_message", 
-                        "name": "Can change message", 
-                        "content_type": 4
-                }
-        }, 
-        {
-                "pk": 12, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "delete_message", 
-                        "name": "Can delete message", 
-                        "content_type": 4
-                }
-        }, 
-        {
-                "pk": 1, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "add_permission", 
-                        "name": "Can add permission", 
-                        "content_type": 1
-                }
-        }, 
-        {
-                "pk": 2, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "change_permission", 
-                        "name": "Can change permission", 
-                        "content_type": 1
-                }
-        }, 
-        {
-                "pk": 3, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "delete_permission", 
-                        "name": "Can delete permission", 
-                        "content_type": 1
-                }
-        }, 
-        {
-                "pk": 7, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "add_user", 
-                        "name": "Can add user", 
-                        "content_type": 3
-                }
-        }, 
-        {
-                "pk": 8, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "change_user", 
-                        "name": "Can change user", 
-                        "content_type": 3
-                }
-        }, 
-        {
-                "pk": 9, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "delete_user", 
-                        "name": "Can delete user", 
-                        "content_type": 3
-                }
-        }, 
-        {
-                "pk": 13, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "add_contenttype", 
-                        "name": "Can add content type", 
-                        "content_type": 5
-                }
-        }, 
-        {
-                "pk": 14, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "change_contenttype", 
-                        "name": "Can change content type", 
-                        "content_type": 5
-                }
-        }, 
-        {
-                "pk": 15, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "delete_contenttype", 
-                        "name": "Can delete content type", 
-                        "content_type": 5
-                }
-        }, 
-        {
-                "pk": 40, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "add_operation", 
-                        "name": "Can add operation", 
-                        "content_type": 14
-                }
-        }, 
-        {
-                "pk": 41, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "change_operation", 
-                        "name": "Can change operation", 
-                        "content_type": 14
-                }
-        }, 
-        {
-                "pk": 42, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "delete_operation", 
-                        "name": "Can delete operation", 
-                        "content_type": 14
-                }
-        }, 
-        {
-                "pk": 43, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "executo_operation", 
-                        "name": "Can execute operation", 
-                        "content_type": 14
-                }
-        }, 
-        {
-                "pk": 34, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "add_cron", 
-                        "name": "Can add cron", 
-                        "content_type": 12
-                }
-        }, 
-        {
-                "pk": 35, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "change_cron", 
-                        "name": "Can change cron", 
-                        "content_type": 12
-                }
-        }, 
-        {
-                "pk": 36, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "delete_cron", 
-                        "name": "Can delete cron", 
-                        "content_type": 12
-                }
-        }, 
-        {
-                "pk": 31, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "add_job", 
-                        "name": "Can add job", 
-                        "content_type": 11
-                }
-        }, 
-        {
-                "pk": 32, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "change_job", 
-                        "name": "Can change job", 
-                        "content_type": 11
-                }
-        }, 
-        {
-                "pk": 33, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "delete_job", 
-                        "name": "Can delete job", 
-                        "content_type": 11
-                }
-        }, 
-        {
-                "pk": 25, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "add_groupobjectpermission", 
-                        "name": "Can add group object permission", 
-                        "content_type": 9
-                }
-        }, 
-        {
-                "pk": 26, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "change_groupobjectpermission", 
-                        "name": "Can change group object permission", 
-                        "content_type": 9
-                }
-        }, 
-        {
-                "pk": 27, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "delete_groupobjectpermission", 
-                        "name": "Can delete group object permission", 
-                        "content_type": 9
-                }
-        }, 
-        {
-                "pk": 22, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "add_userobjectpermission", 
-                        "name": "Can add user object permission", 
-                        "content_type": 8
-                }
-        }, 
-        {
-                "pk": 23, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "change_userobjectpermission", 
-                        "name": "Can change user object permission", 
-                        "content_type": 8
-                }
-        }, 
-        {
-                "pk": 24, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "delete_userobjectpermission", 
-                        "name": "Can delete user object permission", 
-                        "content_type": 8
-                }
-        }, 
-        {
-                "pk": 62, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "access_puppet_class", 
-                        "name": "Can access PuppetClass", 
-                        "content_type": 19
-                }
-        }, 
-        {
-                "pk": 59, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "add_puppetclass", 
-                        "name": "Can add puppet class", 
-                        "content_type": 19
-                }
-        }, 
-        {
-                "pk": 60, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "change_puppetclass", 
-                        "name": "Can change puppet class", 
-                        "content_type": 19
-                }
-        }, 
-        {
-                "pk": 61, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "delete_puppetclass", 
-                        "name": "Can delete puppet class", 
-                        "content_type": 19
-                }
-        }, 
-        {
-                "pk": 63, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "add_server", 
-                        "name": "Can add server", 
-                        "content_type": 20
-                }
-        }, 
-        {
-                "pk": 64, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "change_server", 
-                        "name": "Can change server", 
-                        "content_type": 20
-                }
-        }, 
-        {
-                "pk": 65, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "delete_server", 
-                        "name": "Can delete server", 
-                        "content_type": 20
-                }
-        }, 
-        {
-                "pk": 66, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "use_server", 
-                        "name": "Can use server", 
-                        "content_type": 20
-                }
-        }, 
-        {
-                "pk": 16, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "add_session", 
-                        "name": "Can add session", 
-                        "content_type": 6
-                }
-        }, 
-        {
-                "pk": 17, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "change_session", 
-                        "name": "Can change session", 
-                        "content_type": 6
-                }
-        }, 
-        {
-                "pk": 18, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "delete_session", 
-                        "name": "Can delete session", 
-                        "content_type": 6
-                }
-        }, 
-        {
-                "pk": 19, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "add_site", 
-                        "name": "Can add site", 
-                        "content_type": 7
-                }
-        }, 
-        {
-                "pk": 20, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "change_site", 
-                        "name": "Can change site", 
-                        "content_type": 7
-                }
-        }, 
-        {
-                "pk": 21, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "delete_site", 
-                        "name": "Can delete site", 
-                        "content_type": 7
-                }
-        }, 
-        {
-                "pk": 37, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "add_widget", 
-                        "name": "Can add widget", 
-                        "content_type": 13
-                }
-        }, 
-        {
-                "pk": 38, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "change_widget", 
-                        "name": "Can change widget", 
-                        "content_type": 13
-                }
-        }, 
-        {
-                "pk": 39, 
-                "model": "auth.permission", 
-                "fields": {
-                        "codename": "delete_widget", 
-                        "name": "Can delete widget", 
-                        "content_type": 13
-                }
-        }, 
-        {
-                "pk": -1, 
-                "model": "auth.user", 
-                "fields": {
-                        "username": "AnonymousUser", 
-                        "first_name": "", 
-                        "last_name": "", 
-                        "is_active": true, 
-                        "is_superuser": false, 
-                        "is_staff": false, 
-                        "last_login": "2011-09-06 05:18:34", 
-                        "groups": [], 
-                        "user_permissions": [], 
-                        "password": "", 
-                        "email": "", 
-                        "date_joined": "2011-09-06 05:18:34"
-                }
-        }, 
-        {
-                "pk": 1, 
-                "model": "auth.user", 
-                "fields": {
-                        "username": "admin", 
-                        "first_name": "", 
-                        "last_name": "", 
-                        "is_active": true, 
-                        "is_superuser": true, 
-                        "is_staff": true, 
-                        "last_login": "2011-09-06 06:30:52", 
-                        "groups": [], 
-                        "user_permissions": [], 
-                        "password": "sha1$f6306$e8b065db7f40c188c2cd19e985d1773f7af85261", 
-                        "email": "admin@admin.py", 
-                        "date_joined": "2011-09-06 05:18:34"
-                }
-        }, 
-        {
-                "pk": 2, 
-                "model": "auth.user", 
-                "fields": {
-                        "username": "test", 
-                        "first_name": "", 
-                        "last_name": "", 
-                        "is_active": true, 
-                        "is_superuser": false, 
-                        "is_staff": false, 
-                        "last_login": "2011-09-06 06:32:47", 
-                        "groups": [], 
-                        "user_permissions": [], 
-                        "password": "sha1$4fa07$df0d42ad295139a2be21f45c9b5d74cb57f59bc2", 
-                        "email": "", 
-                        "date_joined": "2011-09-06 06:32:47"
-                }
-        },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 1,
-    "fields": {
-      "name": "retail",
-      "description": "Retail Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 0,
-      "order": 0
+    {
+        "pk": 24,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "action",
+            "name": "action",
+            "app_label": "agent"
+        }
+    },
+    {
+        "pk": 26,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "actioninput",
+            "name": "action input",
+            "app_label": "agent"
+        }
+    },
+    {
+        "pk": 25,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "actionoutput",
+            "name": "action output",
+            "app_label": "agent"
+        }
+    },
+    {
+        "pk": 23,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "agent",
+            "name": "agent",
+            "app_label": "agent"
+        }
+    },
+    {
+        "pk": 30,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "alert",
+            "name": "alert",
+            "app_label": "alerting"
+        }
+    },
+    {
+        "pk": 20,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "backendjob",
+            "name": "backend job",
+            "app_label": "restserver"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "contenttype",
+            "name": "content type",
+            "app_label": "contenttypes"
+        }
+    },
+    {
+        "pk": 13,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "crontabschedule",
+            "name": "crontab",
+            "app_label": "djcelery"
+        }
+    },
+    {
+        "pk": 29,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "event",
+            "name": "event",
+            "app_label": "alerting"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "group",
+            "name": "group",
+            "app_label": "auth"
+        }
+    },
+    {
+        "pk": 8,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "groupobjectpermission",
+            "name": "group object permission",
+            "app_label": "guardian"
+        }
+    },
+    {
+        "pk": 12,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "intervalschedule",
+            "name": "interval",
+            "app_label": "djcelery"
+        }
+    },
+    {
+        "pk": 9,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "logentry",
+            "name": "log entry",
+            "app_label": "admin"
+        }
+    },
+    {
+        "pk": 19,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "message",
+            "name": "message",
+            "app_label": "djkombu"
+        }
+    },
+    {
+        "pk": 22,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "operation",
+            "name": "operation",
+            "app_label": "defaultop"
+        }
+    },
+    {
+        "pk": 15,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "periodictask",
+            "name": "periodic task",
+            "app_label": "djcelery"
+        }
+    },
+    {
+        "pk": 14,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "periodictasks",
+            "name": "periodic tasks",
+            "app_label": "djcelery"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "permission",
+            "name": "permission",
+            "app_label": "auth"
+        }
+    },
+    {
+        "pk": 27,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "puppetclass",
+            "name": "puppet class",
+            "app_label": "puppetclasses"
+        }
+    },
+    {
+        "pk": 18,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "queue",
+            "name": "queue",
+            "app_label": "djkombu"
+        }
+    },
+    {
+        "pk": 31,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "scheduler",
+            "name": "scheduler",
+            "app_label": "chain"
+        }
+    },
+    {
+        "pk": 32,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "schedulertask",
+            "name": "scheduler task",
+            "app_label": "chain"
+        }
+    },
+    {
+        "pk": 28,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "server",
+            "name": "server",
+            "app_label": "serverstatus"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "session",
+            "name": "session",
+            "app_label": "sessions"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "site",
+            "name": "site",
+            "app_label": "sites"
+        }
+    },
+    {
+        "pk": 17,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "taskstate",
+            "name": "task",
+            "app_label": "djcelery"
+        }
+    },
+    {
+        "pk": 10,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "taskmeta",
+            "name": "task meta",
+            "app_label": "djcelery"
+        }
+    },
+    {
+        "pk": 11,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "tasksetmeta",
+            "name": "taskset meta",
+            "app_label": "djcelery"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "user",
+            "name": "user",
+            "app_label": "auth"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "userobjectpermission",
+            "name": "user object permission",
+            "app_label": "guardian"
+        }
+    },
+    {
+        "pk": 21,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "widget",
+            "name": "widget",
+            "app_label": "widgets"
+        }
+    },
+    {
+        "pk": 16,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "workerstate",
+            "name": "worker",
+            "app_label": "djcelery"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "sites.site",
+        "fields": {
+            "domain": "example.com",
+            "name": "example.com"
+        }
+    },
+    {
+        "pk": 25,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_logentry",
+            "name": "Can add log entry",
+            "content_type": 9
+        }
+    },
+    {
+        "pk": 26,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_logentry",
+            "name": "Can change log entry",
+            "content_type": 9
+        }
+    },
+    {
+        "pk": 27,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_logentry",
+            "name": "Can delete log entry",
+            "content_type": 9
+        }
+    },
+    {
+        "pk": 68,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_action",
+            "name": "Can add action",
+            "content_type": 24
+        }
+    },
+    {
+        "pk": 73,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_action",
+            "name": "Can change action",
+            "content_type": 24
+        }
+    },
+    {
+        "pk": 77,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_action",
+            "name": "Can delete action",
+            "content_type": 24
+        }
+    },
+    {
+        "pk": 81,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "use_action",
+            "name": "Can use action",
+            "content_type": 24
+        }
+    },
+    {
+        "pk": 69,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_actioninput",
+            "name": "Can add action input",
+            "content_type": 26
+        }
+    },
+    {
+        "pk": 74,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_actioninput",
+            "name": "Can change action input",
+            "content_type": 26
+        }
+    },
+    {
+        "pk": 78,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_actioninput",
+            "name": "Can delete action input",
+            "content_type": 26
+        }
+    },
+    {
+        "pk": 70,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_actionoutput",
+            "name": "Can add action output",
+            "content_type": 25
+        }
+    },
+    {
+        "pk": 75,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_actionoutput",
+            "name": "Can change action output",
+            "content_type": 25
+        }
+    },
+    {
+        "pk": 79,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_actionoutput",
+            "name": "Can delete action output",
+            "content_type": 25
+        }
+    },
+    {
+        "pk": 71,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_agent",
+            "name": "Can add agent",
+            "content_type": 23
+        }
+    },
+    {
+        "pk": 72,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "call_mcollective",
+            "name": "Can call MCollective",
+            "content_type": 23
+        }
+    },
+    {
+        "pk": 76,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_agent",
+            "name": "Can change agent",
+            "content_type": 23
+        }
+    },
+    {
+        "pk": 80,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_agent",
+            "name": "Can delete agent",
+            "content_type": 23
+        }
+    },
+    {
+        "pk": 83,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "show_widget_agent",
+            "name": "Show widget agents",
+            "content_type": 23
+        }
+    },
+    {
+        "pk": 82,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "use_agent",
+            "name": "Can use agent",
+            "content_type": 23
+        }
+    },
+    {
+        "pk": 92,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_alert",
+            "name": "Can add alert",
+            "content_type": 30
+        }
+    },
+    {
+        "pk": 94,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_alert",
+            "name": "Can change alert",
+            "content_type": 30
+        }
+    },
+    {
+        "pk": 96,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_alert",
+            "name": "Can delete alert",
+            "content_type": 30
+        }
+    },
+    {
+        "pk": 93,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_event",
+            "name": "Can add event",
+            "content_type": 29
+        }
+    },
+    {
+        "pk": 95,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_event",
+            "name": "Can change event",
+            "content_type": 29
+        }
+    },
+    {
+        "pk": 97,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_event",
+            "name": "Can delete event",
+            "content_type": 29
+        }
+    },
+    {
+        "pk": 1,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_group",
+            "name": "Can add group",
+            "content_type": 2
+        }
+    },
+    {
+        "pk": 4,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_group",
+            "name": "Can change group",
+            "content_type": 2
+        }
+    },
+    {
+        "pk": 7,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_group",
+            "name": "Can delete group",
+            "content_type": 2
+        }
+    },
+    {
+        "pk": 2,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_permission",
+            "name": "Can add permission",
+            "content_type": 1
+        }
+    },
+    {
+        "pk": 5,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_permission",
+            "name": "Can change permission",
+            "content_type": 1
+        }
+    },
+    {
+        "pk": 8,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_permission",
+            "name": "Can delete permission",
+            "content_type": 1
+        }
+    },
+    {
+        "pk": 3,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_user",
+            "name": "Can add user",
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 6,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_user",
+            "name": "Can change user",
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 9,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_user",
+            "name": "Can delete user",
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 98,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_scheduler",
+            "name": "Can add scheduler",
+            "content_type": 31
+        }
+    },
+    {
+        "pk": 100,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_scheduler",
+            "name": "Can change scheduler",
+            "content_type": 31
+        }
+    },
+    {
+        "pk": 102,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_scheduler",
+            "name": "Can delete scheduler",
+            "content_type": 31
+        }
+    },
+    {
+        "pk": 99,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_schedulertask",
+            "name": "Can add scheduler task",
+            "content_type": 32
+        }
+    },
+    {
+        "pk": 101,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_schedulertask",
+            "name": "Can change scheduler task",
+            "content_type": 32
+        }
+    },
+    {
+        "pk": 103,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_schedulertask",
+            "name": "Can delete scheduler task",
+            "content_type": 32
+        }
+    },
+    {
+        "pk": 10,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_contenttype",
+            "name": "Can add content type",
+            "content_type": 4
+        }
+    },
+    {
+        "pk": 11,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_contenttype",
+            "name": "Can change content type",
+            "content_type": 4
+        }
+    },
+    {
+        "pk": 12,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_contenttype",
+            "name": "Can delete content type",
+            "content_type": 4
+        }
+    },
+    {
+        "pk": 64,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_operation",
+            "name": "Can add operation",
+            "content_type": 22
+        }
+    },
+    {
+        "pk": 65,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_operation",
+            "name": "Can change operation",
+            "content_type": 22
+        }
+    },
+    {
+        "pk": 66,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_operation",
+            "name": "Can delete operation",
+            "content_type": 22
+        }
+    },
+    {
+        "pk": 67,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "execute_operation",
+            "name": "Can execute operation",
+            "content_type": 22
+        }
+    },
+    {
+        "pk": 28,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_crontabschedule",
+            "name": "Can add crontab",
+            "content_type": 13
+        }
+    },
+    {
+        "pk": 36,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_crontabschedule",
+            "name": "Can change crontab",
+            "content_type": 13
+        }
+    },
+    {
+        "pk": 44,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_crontabschedule",
+            "name": "Can delete crontab",
+            "content_type": 13
+        }
+    },
+    {
+        "pk": 29,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_intervalschedule",
+            "name": "Can add interval",
+            "content_type": 12
+        }
+    },
+    {
+        "pk": 37,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_intervalschedule",
+            "name": "Can change interval",
+            "content_type": 12
+        }
+    },
+    {
+        "pk": 45,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_intervalschedule",
+            "name": "Can delete interval",
+            "content_type": 12
+        }
+    },
+    {
+        "pk": 30,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_periodictask",
+            "name": "Can add periodic task",
+            "content_type": 15
+        }
+    },
+    {
+        "pk": 38,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_periodictask",
+            "name": "Can change periodic task",
+            "content_type": 15
+        }
+    },
+    {
+        "pk": 46,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_periodictask",
+            "name": "Can delete periodic task",
+            "content_type": 15
+        }
+    },
+    {
+        "pk": 31,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_periodictasks",
+            "name": "Can add periodic tasks",
+            "content_type": 14
+        }
+    },
+    {
+        "pk": 39,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_periodictasks",
+            "name": "Can change periodic tasks",
+            "content_type": 14
+        }
+    },
+    {
+        "pk": 47,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_periodictasks",
+            "name": "Can delete periodic tasks",
+            "content_type": 14
+        }
+    },
+    {
+        "pk": 33,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_taskmeta",
+            "name": "Can add task meta",
+            "content_type": 10
+        }
+    },
+    {
+        "pk": 41,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_taskmeta",
+            "name": "Can change task meta",
+            "content_type": 10
+        }
+    },
+    {
+        "pk": 49,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_taskmeta",
+            "name": "Can delete task meta",
+            "content_type": 10
+        }
+    },
+    {
+        "pk": 34,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_tasksetmeta",
+            "name": "Can add taskset meta",
+            "content_type": 11
+        }
+    },
+    {
+        "pk": 42,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_tasksetmeta",
+            "name": "Can change taskset meta",
+            "content_type": 11
+        }
+    },
+    {
+        "pk": 50,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_tasksetmeta",
+            "name": "Can delete taskset meta",
+            "content_type": 11
+        }
+    },
+    {
+        "pk": 32,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_taskstate",
+            "name": "Can add task",
+            "content_type": 17
+        }
+    },
+    {
+        "pk": 40,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_taskstate",
+            "name": "Can change task",
+            "content_type": 17
+        }
+    },
+    {
+        "pk": 48,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_taskstate",
+            "name": "Can delete task",
+            "content_type": 17
+        }
+    },
+    {
+        "pk": 35,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_workerstate",
+            "name": "Can add worker",
+            "content_type": 16
+        }
+    },
+    {
+        "pk": 43,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_workerstate",
+            "name": "Can change worker",
+            "content_type": 16
+        }
+    },
+    {
+        "pk": 51,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_workerstate",
+            "name": "Can delete worker",
+            "content_type": 16
+        }
+    },
+    {
+        "pk": 52,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_message",
+            "name": "Can add message",
+            "content_type": 19
+        }
+    },
+    {
+        "pk": 54,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_message",
+            "name": "Can change message",
+            "content_type": 19
+        }
+    },
+    {
+        "pk": 56,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_message",
+            "name": "Can delete message",
+            "content_type": 19
+        }
+    },
+    {
+        "pk": 53,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_queue",
+            "name": "Can add queue",
+            "content_type": 18
+        }
+    },
+    {
+        "pk": 55,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_queue",
+            "name": "Can change queue",
+            "content_type": 18
+        }
+    },
+    {
+        "pk": 57,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_queue",
+            "name": "Can delete queue",
+            "content_type": 18
+        }
+    },
+    {
+        "pk": 19,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_groupobjectpermission",
+            "name": "Can add group object permission",
+            "content_type": 8
+        }
+    },
+    {
+        "pk": 21,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_groupobjectpermission",
+            "name": "Can change group object permission",
+            "content_type": 8
+        }
+    },
+    {
+        "pk": 23,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_groupobjectpermission",
+            "name": "Can delete group object permission",
+            "content_type": 8
+        }
+    },
+    {
+        "pk": 20,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_userobjectpermission",
+            "name": "Can add user object permission",
+            "content_type": 7
+        }
+    },
+    {
+        "pk": 22,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_userobjectpermission",
+            "name": "Can change user object permission",
+            "content_type": 7
+        }
+    },
+    {
+        "pk": 24,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_userobjectpermission",
+            "name": "Can delete user object permission",
+            "content_type": 7
+        }
+    },
+    {
+        "pk": 84,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "access_puppet_class",
+            "name": "Can access PuppetClass",
+            "content_type": 27
+        }
+    },
+    {
+        "pk": 85,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_puppetclass",
+            "name": "Can add puppet class",
+            "content_type": 27
+        }
+    },
+    {
+        "pk": 86,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_puppetclass",
+            "name": "Can change puppet class",
+            "content_type": 27
+        }
+    },
+    {
+        "pk": 87,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_puppetclass",
+            "name": "Can delete puppet class",
+            "content_type": 27
+        }
+    },
+    {
+        "pk": 58,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_backendjob",
+            "name": "Can add backend job",
+            "content_type": 20
+        }
+    },
+    {
+        "pk": 59,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_backendjob",
+            "name": "Can change backend job",
+            "content_type": 20
+        }
+    },
+    {
+        "pk": 60,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_backendjob",
+            "name": "Can delete backend job",
+            "content_type": 20
+        }
+    },
+    {
+        "pk": 88,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_server",
+            "name": "Can add server",
+            "content_type": 28
+        }
+    },
+    {
+        "pk": 89,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_server",
+            "name": "Can change server",
+            "content_type": 28
+        }
+    },
+    {
+        "pk": 90,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_server",
+            "name": "Can delete server",
+            "content_type": 28
+        }
+    },
+    {
+        "pk": 91,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "use_server",
+            "name": "Can use server",
+            "content_type": 28
+        }
+    },
+    {
+        "pk": 13,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_session",
+            "name": "Can add session",
+            "content_type": 5
+        }
+    },
+    {
+        "pk": 14,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_session",
+            "name": "Can change session",
+            "content_type": 5
+        }
+    },
+    {
+        "pk": 15,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_session",
+            "name": "Can delete session",
+            "content_type": 5
+        }
+    },
+    {
+        "pk": 16,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_site",
+            "name": "Can add site",
+            "content_type": 6
+        }
+    },
+    {
+        "pk": 17,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_site",
+            "name": "Can change site",
+            "content_type": 6
+        }
+    },
+    {
+        "pk": 18,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_site",
+            "name": "Can delete site",
+            "content_type": 6
+        }
+    },
+    {
+        "pk": 61,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_widget",
+            "name": "Can add widget",
+            "content_type": 21
+        }
+    },
+    {
+        "pk": 62,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_widget",
+            "name": "Can change widget",
+            "content_type": 21
+        }
+    },
+    {
+        "pk": 63,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_widget",
+            "name": "Can delete widget",
+            "content_type": 21
+        }
+    },
+    {
+        "pk": -1,
+        "model": "auth.user",
+        "fields": {
+            "username": "AnonymousUser",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2012-07-19T20:46:26.262",
+            "groups": [],
+            "user_permissions": [],
+            "password": "",
+            "email": "",
+            "date_joined": "2012-07-19T20:46:26.262"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "auth.user",
+        "fields": {
+            "username": "admin",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "last_login": "2012-07-19T20:46:24.647",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$Hgyq4g7F6yro$5EcWKlTgtsYnQlJY/SDI2hRgsq7h3iFr7eGVReMJQg8=",
+            "email": "admin@mail.com",
+            "date_joined": "2012-07-19T20:46:24.647"
+        }
     }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 2,
-    "fields": {
-      "name": "industry",
-      "description": "Industry Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 0,
-      "order": 1
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 3,
-    "fields": {
-      "name": "peoplenfigures",
-      "description": "People en Figures Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 0,
-      "order": 2
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 4,
-    "fields": {
-      "name": "logistic",
-      "description": "Logistic Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 0,
-      "order": 3
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 5,
-    "fields": {
-      "name": "normsnmethod",
-      "description": "Normsnmethod Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 0,
-      "order": 4
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 6,
-    "fields": {
-      "name": "oxit",
-      "description": "Oxit Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 0,
-      "order": 5
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 7,
-    "fields": {
-      "name": "passionbrands",
-      "description": "Passionbrands Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 0,
-      "order": 6
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 8,
-    "fields": {
-      "name": "buxy",
-      "description": "buxy Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 1,
-      "order": 0
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 9,
-    "fields": {
-      "name": "centralise",
-      "description": "Centralise Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 1,
-      "order": 1
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 10,
-    "fields": {
-      "name": "crm",
-      "description": "Crm Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 1,
-      "order": 2
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 11,
-    "fields": {
-      "name": "easymailing",
-      "description": "Easymailing Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 1,
-      "order": 3
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 12,
-    "fields": {
-      "name": "finance",
-      "description": "Finance Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 1,
-      "order": 4
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 13,
-    "fields": {
-      "name": "hr",
-      "description": "HR Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 1,
-      "order": 5
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 14,
-    "fields": {
-      "name": "imedia",
-      "description": "IMedia Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 1,
-      "order": 6
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 15,
-    "fields": {
-      "name": "infra",
-      "description": "Infra Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 1,
-      "order": 7
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 16,
-    "fields": {
-      "name": "itool",
-      "description": "ITool Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 1,
-      "order": 8
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 17,
-    "fields": {
-      "name": "logistique",
-      "description": "Logistique Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 1,
-      "order": 9
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 18,
-    "fields": {
-      "name": "masterdatas",
-      "description": "Masterdatas Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 1,
-      "order": 10
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 19,
-    "fields": {
-      "name": "offer",
-      "description": "Offer Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 1,
-      "order": 11
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 20,
-    "fields": {
-      "name": "oxygift",
-      "description": "Oxy Gift Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 1,
-      "order": 12
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 21,
-    "fields": {
-      "name": "oxylaneconnect",
-      "description": "Oxylane Connect Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 1,
-      "order": 13
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 22,
-    "fields": {
-      "name": "proddotcom",
-      "description": "Prod.com Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 1,
-      "order": 14
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 23,
-    "fields": {
-      "name": "project",
-      "description": "Project Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 1,
-      "order": 15
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 24,
-    "fields": {
-      "name": "retailcentralise",
-      "description": "Retail Centralise Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 1,
-      "order": 16
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 25,
-    "fields": {
-      "name": "rfid",
-      "description": "Rfid Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 1,
-      "order": 17
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 26,
-    "fields": {
-      "name": "stores",
-      "description": "Stores Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 1,
-      "order": 18
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 27,
-    "fields": {
-      "name": "vada",
-      "description": "Vada Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 1,
-      "order": 19
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 28,
-    "fields": {
-      "name": "webdesk",
-      "description": "WebDesk Class",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 1,
-      "order": 20
-    }
-  },
-  
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 29,
-    "fields": {
-      "name": "preprod",
-      "description": "PreProd Environment",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 2,
-      "order": 0
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 30,
-    "fields": {
-      "name": "prod",
-      "description": "Prod Environment",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 2,
-      "order": 1
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 31,
-    "fields": {
-      "name": "integration",
-      "description": "Integration Environment",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 2,
-      "order": 2
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 32,
-    "fields": {
-      "name": "development",
-      "description": "Development Environment",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 2,
-      "order": 3
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 33,
-    "fields": {
-      "name": "sandbox",
-      "description": "SandBox Environment",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 2,
-      "order": 4
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 34,
-    "fields": {
-      "name": "zen",
-      "description": "Zen Zone",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 3,
-      "order": 0
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 35,
-    "fields": {
-      "name": "zes",
-      "description": "Zes Zone",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 3,
-      "order": 1
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 36,
-    "fields": {
-      "name": "franchise",
-      "description": "Franchise Zone",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 3,
-      "order": 2
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 37,
-    "fields": {
-      "name": "produ",
-      "description": "Produ Zone",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 3,
-      "order": 3
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 38,
-    "fields": {
-      "name": "ad",
-      "description": "AD Appli",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 4,
-      "order": 0
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 39,
-    "fields": {
-      "name": "fs",
-      "description": "FS Appli",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 4,
-      "order": 1
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 40,
-    "fields": {
-      "name": "oas",
-      "description": "OAS Appli",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 4,
-      "order": 2
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 41,
-    "fields": {
-      "name": "odb",
-      "description": "ODB Appli",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 4,
-      "order": 3
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 42,
-    "fields": {
-      "name": "ohs",
-      "description": "OHS Appli",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 4,
-      "order": 4
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 43,
-    "fields": {
-      "name": "oms",
-      "description": "OMS Appli",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 4,
-      "order": 5
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 44,
-    "fields": {
-      "name": "mgt",
-      "description": "MGT Appli",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 4,
-      "order": 6
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 45,
-    "fields": {
-      "name": "zasie",
-      "description": "Zone Asie",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 3,
-      "order": 4
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 46,
-    "fields": {
-      "name": "wlo",
-      "description": "Weblogic",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 4,
-      "order": 7
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 47,
-    "fields": {
-      "name": "ows",
-      "description": "Weblogic",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 4,
-      "order": 8
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 48,
-    "fields": {
-      "name": "nozone",
-      "description": "NoZone",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 3,
-      "order": 4
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 49,
-    "fields": {
-      "name": "twist",
-      "description": "Twist",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 4,
-      "order": 9
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 50,
-    "fields": {
-      "name": "permit",
-      "description": "Permit",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 4,
-      "order": 10
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 51,
-    "fields": {
-      "name": "bcx",
-      "description": "Bar",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 4,
-      "order": 11
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 52,
-    "fields": {
-      "name": "spid",
-      "description": "Spid",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 1,
-      "order": 22
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 53,
-    "fields": {
-      "name": "jbs",
-      "description": "JBpss",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 4,
-      "order": 12
-    }
-  },
-  {
-    "model": "puppetclasses.puppetclass",
-    "pk": 54,
-    "fields": {
-      "name": "pgs",
-      "description": "PostgreSQL",
-      "icon": "Platform_up_16.png",
-      "enabled": true,
-      "level": 4,
-      "order": 13
-    }
-  }
 ]
