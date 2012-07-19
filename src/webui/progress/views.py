@@ -8,6 +8,7 @@ from django.utils import simplejson as json
 import logging
 from celery.result import AsyncResult
 from webui.restserver.template import render_agent_template
+import sys
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +24,12 @@ def get_progress(request, taskname, taskid):
         dict['state'] = 'Operation in progress..'
     else:
         dict['state'] = result.state
-    if result.result:
+    backend_response = None
+    try:
+        backend_response = result.result
+    except:
+        logger.warn(sys.exc_info())
+    if backend_response:
         if isinstance(result.result, tuple):
             response,content,agent,action=result.result
             if response.status == 200:
