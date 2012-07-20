@@ -2,7 +2,6 @@
 
 {% block widget-content %}
 <script>
-
 	$(document).ready(function() {
 		$("#execution-dialog").hide();
 		$("#agentstree").dynatree({
@@ -81,11 +80,22 @@
 				logMsg("onKeypress(%o, %o)", node, event);
 			}
 		});
+		
+		var content = $('#agentsSearch').val();
+
+	    $('#agentsSearch').keyup(function() { 
+	        if ($('#agentsSearch').val() != content) {
+	            content = $('#agentsSearch').val();
+	            filterTree(content, "agentstree");
+	        }
+	    });
 	});
 
 </script>
 
 <div id="execution-dialog"></div>
-
+<div id="filter">
+	Filter: <input id="agentsSearch" type="text"/>
+</div>
 <div id="agentstree"></div>
 {% endblock %} 

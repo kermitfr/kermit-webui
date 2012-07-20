@@ -229,6 +229,15 @@
 				logMsg("onKeypress(%o, %o)", node, event);
 			}
 		});
+		
+		var content = $('#classesSearch').val();
+
+	    $('#classesSearch').keyup(function() { 
+	        if ($('#classesSearch').val() != content) {
+	            content = $('#classesSearch').val();
+	            filterTree(content, "classestree");
+	        }
+	    });
 	});
 
 </script>
@@ -308,6 +317,9 @@
 <div id="treecontainer">
 	<img id="expandChildren" src="{{settings.STATIC_URL}}/images/expand.png" width="24" height="24"/>
 	<img id="compressChildren" src="{{settings.STATIC_URL}}/images/collapse.png" width="24" height="24"/>
+	<div id="filter">
+		Filter: <input id="classesSearch" type="text"/>
+	</div>
 	<div id="classestree"></div>
 </div>
 {% endblock %} 

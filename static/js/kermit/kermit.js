@@ -365,3 +365,37 @@ function filterList(header, list) {
         $(this).change();
     });
 }
+
+function filterTree(searchTerm, dynatree) { 
+    var startNode = $("#" + dynatree).dynatree("getRoot"); 
+    startNode.visit(function(node) 
+    {
+        if (node.data.title) 
+        { 
+            // Filter currently visible non-root nodes. 
+            if (node.data.title.toUpperCase().indexOf(searchTerm.toUpperCase()) >= 0) 
+            { 
+            	if (searchTerm.length == 0) {
+            		if (node.isVisible() && node.getParent()!=null) {
+            			node.getParent().expand(false);	
+            		} 	
+            	} else {
+            		if (!node.isVisible() && node.getParent()!=null) {
+            			node.getParent().expand(true);
+            		}
+            	}
+                // Make sure we and all our parents are visible 
+                node.visitParents(function(node) 
+                { 
+                    $(node.li).show(); 
+                    return (node.parent != null); 
+                }, true); 
+
+                // Terminate the traversal of this branch since the  node matches 
+                //return 'skip'; 
+            } else { 
+                $(node.li).hide(); 
+            } 
+        } 
+    });
+}
