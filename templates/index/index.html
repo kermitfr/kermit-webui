@@ -20,7 +20,7 @@
 		{% for current_widget in content%}
 		{% widget current_widget.name user %}
 		{% endfor %}
-		&nbsp;<br/>&nbsp;<br/>
+		<div id="bottomSpacer{{column_id}}">&nbsp;<br/>&nbsp;<br/></div>
 	</ul>
 	{% endfor %}
 </div>

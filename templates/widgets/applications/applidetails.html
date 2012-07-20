@@ -2,18 +2,17 @@
 {% load i18n %}
 
 {% block widget-content %}
-
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#applistatustable').dataTable({
 			 "oLanguage": {
 	            "sSearch": "Appli Search:"
 	        },
-	        "bStateSave": true
+	        "bStateSave": true,
+        	"bRetrieve": true
 		});
 	} );
 </script>
-
 <style type="text/css">
 table.applistatus {
 	border-width: 2px;
@@ -40,7 +39,6 @@ table.applistatus tr.odd {
 }
 
 </style>
-<br/>
 <div id="actual-appli-status">
 	<table id="applistatustable" class="applistatus">
 		<thead>
@@ -65,5 +63,4 @@ table.applistatus tr.odd {
 		</tbody>
 	</table>
 </div>
-<br/>
 {% endblock %} 

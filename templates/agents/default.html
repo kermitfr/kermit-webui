@@ -24,7 +24,8 @@ background: #F0F0F0
 </style>
 <script>
 	$(document).ready(function() {
-        $('#responsedata').dataTable();
+        $('#responsedata').dataTable({
+        	"bRetrieve": true});
     });
 </script>
 

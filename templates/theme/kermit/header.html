@@ -10,7 +10,7 @@
 	{% if user.is_authenticated %}
 	<ul id="user-tools" class="mainmenu">
 		<li class="user-options-container collapse closed">
-			<a href="javascript://" class="user-options-handler collapse-handler">Welcome {% firstof user.first_name user.username %}</a>
+			<a href="javascript://" class="user-options-handler collapse-handler">Welcome {% firstof user.first_name user.username %} <img src="{{STATIC_URL}}images/icons/down_arrow.png" width="10px"/></a>
 			<ul class="user-options">
 				<!-- Change Password -->
 				{% url admin:password_change as password_change_url %}

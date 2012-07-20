@@ -1,7 +1,8 @@
 {% load i18n %} 
 <script type="text/javascript">
 	$(document).ready(function() {
-		$('#oracledb').dataTable();
+		$('#oracledb').dataTable({
+        	"bRetrieve": true});
 	} );
 </script>
 

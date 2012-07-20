@@ -1,7 +1,6 @@
 {% extends "widgets/base_widget.html" %}
 {% load i18n %}
 {% block widget-content %}
-
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#systemstatustable').dataTable({
@@ -9,11 +8,11 @@
 	            "sSearch": "System Search:"
         	},
         	"aaSorting": [[ 1, "asc" ]],
-        	"bStateSave": true
+        	"bStateSave": true,
+        	"bRetrieve": true
 		});
 	} );
 </script>
-
 <style type="text/css">
 table.systemstatus {
 	border-width: 2px;
@@ -40,7 +39,6 @@ table.systemstatus tr.odd {
 }
 
 </style>
-<br/>
 <div id="actual-server-status">
 	<table id="systemstatustable" class="systemstatus">
 		<thead>
@@ -61,5 +59,4 @@ table.systemstatus tr.odd {
 		</tbody>
 	</table>
 </div>
-<br/>
 {% endblock %} 

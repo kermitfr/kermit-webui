@@ -9,6 +9,7 @@
 	            "sSearch": "Job Search:"
 	        },
 	        "bStateSave": true,
+        	"bRetrieve": true,
 	        {% if user.is_staff %}
         	"aaSorting": [[ 2, "desc" ]],
         	{% else %}
@@ -99,7 +100,6 @@ table.jobstable tr.odd {
 }
 
 </style>
-<br/>
 <div id="detailscontainer"></div>
 <div id="actual-jobs">
 	<table id="jobstable" class="jobstable">
@@ -130,5 +130,4 @@ table.jobstable tr.odd {
 		</tbody>
 	</table>
 </div>
-<br/>
 {% endblock %} 

@@ -12,6 +12,9 @@ var iNettuts = {
         widgetSelector: '.widget',
         handleSelector: '.widget-head',
         contentSelector: '.widget-content',
+        /* If you don't want preferences to be saved change this value to
+            false, otherwise change it to the name of the cookie: */
+        saveToCookie: 'inettuts-widget-preferences',
         widgetDefault : {
             movable: true,
             removable: true,
@@ -40,6 +43,7 @@ var iNettuts = {
 
     init : function () {
         /*this.attachStylesheet('/static/css/inettus/inettuts.js.css');*/
+        this.sortWidgets();
         this.addWidgetControls();
         this.makeSortable();
     },
@@ -137,6 +141,10 @@ var iNettuts = {
                         .parents(settings.widgetSelector)
                             .find(settings.contentSelector).show();
                     return false;
+                }).click(function(){
+                    /* Save prefs to cookie: */
+                    iNettuts.savePreferences();
+                    return false;    
                 }).prependTo($(settings.handleSelector,this));
             }
             
@@ -162,6 +170,8 @@ var iNettuts = {
                     $(this).parents(settings.widgetSelector)
                         .removeClass(thisWidgetColorClass[0])
                         .addClass($(this).attr('class').match(colorStylePattern)[0]);
+                    /* Save prefs to cookie: */
+                    iNettuts.savePreferences();
                 }
                 return false;
                 
@@ -175,6 +185,86 @@ var iNettuts = {
         return $('<link href="' + href + '" rel="stylesheet" type="text/css" />').appendTo('head');
     },
     
+    savePreferences : function () {
+        var iNettuts = this,
+            $ = this.jQuery,
+            settings = this.settings,
+            cookieString = '';
+            
+        if(!settings.saveToCookie) {return;}
+        
+        /* Assemble the cookie string */
+        $(settings.columns).each(function(i){
+            cookieString += (i===0) ? '' : '|';
+            $(settings.widgetSelector,this).each(function(i){
+                cookieString += (i===0) ? '' : ';';
+                /* ID of widget: */
+                cookieString += $(this).attr('id') + ',';
+                /* Color of widget (color classes) */
+                cookieString += $(this).attr('class').match(/\bcolor-[\w]{1,}\b/) + ',';
+                /* Title of widget (replaced used characters) */
+                cookieString += $('h3:eq(0)',this).text().replace(/\|/g,'[-PIPE-]').replace(/,/g,'[-COMMA-]') + ',';
+                /* Collapsed/not collapsed widget? : */
+                cookieString += $(settings.contentSelector,this).css('display') === 'none' ? 'collapsed' : 'not-collapsed';
+            });
+        });
+        $.cookie(settings.saveToCookie,cookieString,{
+            expires: 10
+            //path: '/'
+        });
+    },
+    
+    sortWidgets : function () {
+        var iNettuts = this,
+            $ = this.jQuery,
+            settings = this.settings;
+        
+        /* Read cookie: */
+        var cookie = $.cookie(settings.saveToCookie);
+        if(!settings.saveToCookie||!cookie) {
+            /* Get rid of loading gif and show columns: */
+            //$('body').css({background:'#000'});
+            $(settings.columns).css({visibility:'visible'});
+            return;
+        }
+        
+        /* For each column */
+        $(settings.columns).each(function(i){
+            
+            var thisColumn = $(this),
+                widgetData = cookie.split('|')[i].split(';');
+                
+            $(widgetData).each(function(){
+                if(!this.length) {return;}
+                var thisWidgetData = this.split(','),
+                    clonedWidget = $('#' + thisWidgetData[0]),
+                    colorStylePattern = /\bcolor-[\w]{1,}\b/,
+                    thisWidgetColorClass = $(clonedWidget).attr('class').match(colorStylePattern);
+                
+                /* Add/Replace new colour class: */
+                if (thisWidgetColorClass) {
+                    $(clonedWidget).removeClass(thisWidgetColorClass[0]).addClass(thisWidgetData[1]);
+                }
+                
+                /* Add/replace new title (Bring back reserved characters): */
+                $(clonedWidget).find('h3:eq(0)').html(thisWidgetData[2].replace(/\[-PIPE-\]/g,'|').replace(/\[-COMMA-\]/g,','));
+                
+                /* Modify collapsed state if needed: */
+                if(thisWidgetData[3]==='collapsed') {
+                    /* Set CSS styles so widget is in COLLAPSED state */
+                    $(clonedWidget).addClass('collapsed');
+                }
+
+                $('#' + thisWidgetData[0]).remove();
+                $(thisColumn).append(clonedWidget);
+            });
+            bottomSpacerId = '#bottomSpacer'+(i+1);
+            clonedBottomSpacer=$(bottomSpacerId);
+            $(bottomSpacerId).remove();
+            $(thisColumn).append(clonedBottomSpacer);
+        })
+     },
+    
     makeSortable : function () {
         var iNettuts = this,
             $ = this.jQuery,
@@ -182,7 +272,7 @@ var iNettuts = {
             $sortableItems = (function () {
                 var notSortable = '';
                 $(settings.widgetSelector,$(settings.columns)).each(function (i) {
-                	var movable = iNettuts.getWidgetSettings(this.id).movable;
+                    var movable = iNettuts.getWidgetSettings(this.id).movable;
                 	if ($('#' +this.id).attr('movable')) {
 		            	movable = $('#' +this.id).attr('movable')=='True';	
 		            } 
@@ -227,9 +317,11 @@ var iNettuts = {
             stop: function (e,ui) {
                 $(ui.item).css({width:''}).removeClass('dragging');
                 $(settings.columns).sortable('enable');
+                /* Save prefs to cookie: */
+                iNettuts.savePreferences();
             }
         });
-    }
+    },
   
 };
 
