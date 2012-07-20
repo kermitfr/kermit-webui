@@ -79,6 +79,15 @@ class Actions(object):
             return json_data
         except Exception, err:
             logger.error('ERROR: ' + str(err))
+            
+    def updated_dyna_groups(self, user):
+        logger.info("Calling Update Dyna Groups")
+        try: 
+            result = send_task("webui.dynamicgroups.tasks.update_dyna_group", [user])    
+            json_data = json.dumps({'UUID': result.task_id, 'taskname':"webui.dynamicgroups.tasks.update_dyna_group"})
+            return json_data
+        except Exception, err:
+            logger.error('ERROR: ' + str(err))
              
     
 def convert_response(response):

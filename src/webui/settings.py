@@ -174,6 +174,7 @@ INSTALLED_APPS = (
     'webui.servicestatus',
     'webui.upload',
     'webui.acls_manager',
+    'webui.dynamicgroups',
     'webui.alerting',
     'webui.chain',
     #'a7x_wsgroups',
