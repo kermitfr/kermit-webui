@@ -1,9 +1,10 @@
 {% extends "widgets/base_widget.html" %}
-
+{% load i18n %}
 {% block widget-content %}
 <script>
 	$(document).ready(function() {
-		$("#execution-dialog").hide();
+		$("#dynagroup-dialog").hide();
+		$("#context-execution-dialog").hide();
 		$("#dynagroups").dynatree({
 			title : "Dyna Groups",
 			fx : {
@@ -15,7 +16,7 @@
 				//bindContextMenu(span);
       		},
 			initAjax : {
-				url : "{{settings.BASE_URL}}/dynagroups/get_dynagroup_tree/",
+				url : "{% url get_dynamicgroup_tree %}",
 				data : {
 					mode : "funnyMode"
 				}
@@ -87,9 +88,50 @@
 	            filterTree(content, "dynagroups");
 	        }
 	    });
+	    
+		$("#addDynaGroup").click(function() {
+			$.ajax({
+				// The link we are accessing.
+				url : "{% url get_dynamicgroup_form_no_param%}",
+				// The type of request.
+				type : "get",
+				// The type of data that is getting returned.
+				dataType : "html",
+				error : function() {
+					//TODO: Show error message
+					//$('#loading').hide();
+					showMessageDialog("{% trans 'Cannot get form. Error communicating with server' %}", "{% trans 'OK' %}");
+				},
+				beforeSend : function() {
+					//$('#loading').show();
+				},
+				complete : function() {
+					//$('#loading').hide();
+				},
+				success : function(data) {
+					if(data != 'None') {
+						$("#dynagroup-dialog").html(data);
+						$("#dynagroup-dialog").dialog({
+							modal : true,
+							title : 'Dynamic Group',
+							minHeight : 200,
+							minWidth : 500
+						});
+						$("#dynagroup-dialog").show();
+					} 
+				}
+			});
+		}).mouseover(function() { 
+            $(this).attr("src", "{{settings.STATIC_URL}}/images/expand_over.png");
+        }).mouseout(function() {
+            $(this).attr("src", "{{settings.STATIC_URL}}/images/expand.png");
+        });
 	});
 
 </script>
+<div id="context-execution-dialog"></div>
+<div id="dynagroup-dialog"></div>
+<img id="addDynaGroup" src="{{settings.STATIC_URL}}/images/expand.png" width="24" height="24"/>
 <div id="filter">
 	Filter: <input id="dynagSearch" type="text"/>
 </div>

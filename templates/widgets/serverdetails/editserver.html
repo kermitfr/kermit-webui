@@ -137,9 +137,9 @@ $(document).ready(function() {
 			},
 			success : function(response) {
 				if (response.result == 'OK') {
-					alert("Operation Completed");
+					showMessageDialog("{% trans 'Operation Completed' %}", "{% trans 'OK'%}");
 				} else {
-					alert("Operation in error");
+					showMessageDialog("{% trans 'Operation in error' %}", "{% trans 'OK'%}");
 				}
 			},
 	        dataType: "json",

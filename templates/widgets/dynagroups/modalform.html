@@ -1,0 +1,60 @@
+{% load i18n %}
+
+<script>
+	$('html').ajaxSend(function(event, xhr, settings) {
+		if(!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+			// Only send the token to relative URLs i.e. locally.
+			xhr.setRequestHeader("X-CSRFToken", $("#csrfmiddlewaretoken").val());
+		}
+	});
+
+	$(document).ready(function() {
+		// prepare Options Object
+		var options = {
+			url : '{% url post_dynagroup_mods "xhr"%}', // Here we pass the xhr flag
+			dataType : 'json',
+			success : function(data) {
+				$('#loading').hide();
+				if(data) {
+                    if(eval(data.bad)) {
+                        e_msg = "Please check your form.";
+                        errors = eval(data.errs);
+                        $.each(errors, function(fieldname, errmsg) {
+                            id = "#id_" + fieldname;
+                            $(id).parent().next().html(errmsg);
+                        });
+                    } else {
+                        showMessageDialog("{% trans 'Dynamic Group Created'%}", '{% trans "OK"%}');
+                        $( "#dynagroup-dialog" ).dialog( "close" );
+                    }
+            	}
+
+			},	
+			beforeSubmit : function() {
+				$('.errorlist').remove();
+				$('#emsg').empty();
+				$('#emsg').fadeOut('slow');
+				$('#loading').show();
+				return true;
+			},
+			error: function() {
+				$('#loading').hide();
+                if(data) {
+                    showMessageDialog(data.result, '{% trans "OK"%}');
+                    $("#" + data.dialog_name).dialog('close');
+                } else {
+                    $('#emsg').text("Ajax error : no data received. ").fadeIn("slow");
+                }
+
+			}
+		};
+		$('#dynaform').ajaxForm(options);
+	});
+</script>
+<div id="emsg">
+	&nbsp;
+</div>
+<form id="dynaform" action="{% url post_dynagroup_mods None %}" method="post">
+{{ form.as_p }}
+<input type="submit" value="Submit" />
+</form>

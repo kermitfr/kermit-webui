@@ -9,6 +9,10 @@ import logging
 from django.utils import simplejson as json
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from webui.dynamicgroups.forms import DynaGroupEditForm
+from django.template.loader import render_to_string
+from django.template.context import RequestContext
+from webui.dynamicgroups import tasks
 
 logger = logging.getLogger(__name__)
 
@@ -35,3 +39,44 @@ def get_dynamicgroup_tree(request):
         data.append(content)
          
     return HttpResponse(json.dumps(data))
+
+
+def get_dynamicgroup_form(request, dynagroup_id=None):
+    if not dynagroup_id:
+        logger.debug('Rendering empty form')
+        form = DynaGroupEditForm()
+        return HttpResponse(render_to_string('widgets/dynagroups/modalform.html', {'form':form}, context_instance=RequestContext(request)))
+    else:
+        return None
+    
+@login_required()
+def post_dynagroup_mods(request, xhr=None):
+    if request.method == "POST":
+        form = DynaGroupEditForm(request.POST)
+        if xhr == "xhr":
+            rdict = {'bad':'false'}
+            if form.is_valid():
+                logger.debug("Parameters check: OK.")
+                name = form.cleaned_data['name']
+                engine = form.cleaned_data['engine']
+                objname = form.cleaned_data['objname']
+                rule = form.cleaned_data['rule']
+                value = form.cleaned_data['value']
+                update = form.cleaned_data['force_update']
+                
+                dynag = DynaGroup.objects.create(name=name, engine=engine, obj_name=objname, rule=rule, value=value)
+                
+                if update:
+                    logger.debug("Forcing dynagroup update")
+                    tasks.update_single_dyna(request.user, dynag)
+            else: 
+                rdict.update({'bad':'true'})
+                d = {}
+                for e in form.errors.iteritems():
+                    d.update({e[0]:unicode(e[1])}) # e[0] is the id, unicode(e[1]) is the error HTML.
+                rdict.update({'errs': d })
+
+            rdict.update({'dialog_name':'course-form'})
+            return HttpResponse(json.dumps(rdict, ensure_ascii=False), mimetype='application/javascript') 
+        
+    return HttpResponse('', mimetype='application/javascript')

@@ -71,7 +71,7 @@
 				$('#loading').hide()
 			},
 			success : function() {
-				alert("Operation Completed");
+				showMessageDialog("{% trans 'Operation Completed' %}", "{% trans 'OK'%}");
 			},
 			timeout: 120000
 		});

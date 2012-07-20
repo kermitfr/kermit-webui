@@ -20,7 +20,7 @@ function getExecutionForm(base_url, execution_dialog_name, agent, action, filter
 		error : function() {
 			//TODO: Show error message
 			//$('#loading').hide();
-			alert('Con get execution form. Error communicating with server');
+			alert('Cannot get execution form. Error communicating with server');
 		},
 		beforeSend : function() {
 			//$('#loading').show();
@@ -398,4 +398,23 @@ function filterTree(searchTerm, dynatree) {
             } 
         } 
     });
+}
+
+function showMessageDialog(message, confirm_button) {
+        $('#message-dialog').text(message);
+        var buttons = {};
+
+        buttons[ confirm_button ] = function() {
+            $("#message-dialog").dialog("close");
+        };
+        $('#message-dialog').dialog({
+        autoOpen: false,
+        width: 400,
+        modal: true,
+        resizable: false,
+        buttons: buttons
+    });
+    $("#message-dialog").show();
+
+    $('#message-dialog').dialog('open');
 }
