@@ -16,7 +16,7 @@
                 "removable": true, 
                 "created_time": "2011-09-06 06:30:45", 
                 "updated_time": "2011-09-06 06:30:45", 
-                "order": 2, 
+                "order": 3, 
                 "icon": ""
         }
 }, 
@@ -30,7 +30,7 @@
                 "color": "white", 
                 "editable": true, 
                 "enabled": true, 
-                "movable": true, 
+                "movable": false, 
                 "refreshUrl": "", 
                 "name": "DashBoardOpResults", 
                 "column": 2, 
@@ -79,7 +79,7 @@
                 "removable": true, 
                 "created_time": "2011-09-06 06:30:45", 
                 "updated_time": "2011-09-06 06:30:45", 
-                "order": 1, 
+                "order": 2, 
                 "icon": ""
         }
 }, 
@@ -268,6 +268,27 @@
                 "removable": true, 
                 "created_time": "2011-12-22 15:50:45", 
                 "updated_time": "2011-12-22 15:50:45", 
+                "order": 1, 
+                "icon": ""
+        }
+},
+{
+        "pk": 14, 
+        "model": "widgets.widget", 
+        "fields": {
+                "refreshable": false, 
+                "description": "", 
+                "title": "Dynamic Groups", 
+                "color": "white", 
+                "editable": true, 
+                "enabled": true, 
+                "movable": true, 
+                "refreshUrl": "", 
+                "name": "DynaGroupTree", 
+                "column": 1,
+                "removable": true, 
+                "created_time": "2012-07-20 06:30:45", 
+                "updated_time": "2012-07-20 06:30:45", 
                 "order": 1, 
                 "icon": ""
         }
