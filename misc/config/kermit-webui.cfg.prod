@@ -1,7 +1,7 @@
 [webui]
 base_url=
-rest_server_url=http://127.0.0.1:4567/mcollective/
-rest_server_ping_url=http://127.0.0.1:4567/
+rest_server_url=http://localhost:4567/mcollective/
+rest_server_ping_url=http://locahost:4567/
 rest_server_scheduler=http://localhost:4567/schedule/
 rest_server_scheduler_status=http://localhost:4567/schedstatus/
 rest_server_scheduler_output=http://localhost:4567/schedoutput/
