@@ -36,7 +36,7 @@
         }
     },
     {
-        "pk": 30,
+        "pk": 31,
         "model": "contenttypes.contenttype",
         "fields": {
             "model": "alert",
@@ -73,6 +73,15 @@
     },
     {
         "pk": 29,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "dynagroup",
+            "name": "dyna group",
+            "app_label": "dynamicgroups"
+        }
+    },
+    {
+        "pk": 30,
         "model": "contenttypes.contenttype",
         "fields": {
             "model": "event",
@@ -180,7 +189,7 @@
         }
     },
     {
-        "pk": 31,
+        "pk": 32,
         "model": "contenttypes.contenttype",
         "fields": {
             "model": "scheduler",
@@ -189,7 +198,7 @@
         }
     },
     {
-        "pk": 32,
+        "pk": 33,
         "model": "contenttypes.contenttype",
         "fields": {
             "model": "schedulertask",
@@ -467,57 +476,57 @@
         }
     },
     {
-        "pk": 92,
+        "pk": 95,
         "model": "auth.permission",
         "fields": {
             "codename": "add_alert",
             "name": "Can add alert",
-            "content_type": 30
-        }
-    },
-    {
-        "pk": 94,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "change_alert",
-            "name": "Can change alert",
-            "content_type": 30
-        }
-    },
-    {
-        "pk": 96,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "delete_alert",
-            "name": "Can delete alert",
-            "content_type": 30
-        }
-    },
-    {
-        "pk": 93,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "add_event",
-            "name": "Can add event",
-            "content_type": 29
-        }
-    },
-    {
-        "pk": 95,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "change_event",
-            "name": "Can change event",
-            "content_type": 29
+            "content_type": 31
         }
     },
     {
         "pk": 97,
         "model": "auth.permission",
         "fields": {
+            "codename": "change_alert",
+            "name": "Can change alert",
+            "content_type": 31
+        }
+    },
+    {
+        "pk": 99,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_alert",
+            "name": "Can delete alert",
+            "content_type": 31
+        }
+    },
+    {
+        "pk": 96,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_event",
+            "name": "Can add event",
+            "content_type": 30
+        }
+    },
+    {
+        "pk": 98,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_event",
+            "name": "Can change event",
+            "content_type": 30
+        }
+    },
+    {
+        "pk": 100,
+        "model": "auth.permission",
+        "fields": {
             "codename": "delete_event",
             "name": "Can delete event",
-            "content_type": 29
+            "content_type": 30
         }
     },
     {
@@ -602,47 +611,11 @@
         }
     },
     {
-        "pk": 98,
+        "pk": 101,
         "model": "auth.permission",
         "fields": {
             "codename": "add_scheduler",
             "name": "Can add scheduler",
-            "content_type": 31
-        }
-    },
-    {
-        "pk": 100,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "change_scheduler",
-            "name": "Can change scheduler",
-            "content_type": 31
-        }
-    },
-    {
-        "pk": 102,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "delete_scheduler",
-            "name": "Can delete scheduler",
-            "content_type": 31
-        }
-    },
-    {
-        "pk": 99,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "add_schedulertask",
-            "name": "Can add scheduler task",
-            "content_type": 32
-        }
-    },
-    {
-        "pk": 101,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "change_schedulertask",
-            "name": "Can change scheduler task",
             "content_type": 32
         }
     },
@@ -650,9 +623,45 @@
         "pk": 103,
         "model": "auth.permission",
         "fields": {
+            "codename": "change_scheduler",
+            "name": "Can change scheduler",
+            "content_type": 32
+        }
+    },
+    {
+        "pk": 105,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_scheduler",
+            "name": "Can delete scheduler",
+            "content_type": 32
+        }
+    },
+    {
+        "pk": 102,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_schedulertask",
+            "name": "Can add scheduler task",
+            "content_type": 33
+        }
+    },
+    {
+        "pk": 104,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_schedulertask",
+            "name": "Can change scheduler task",
+            "content_type": 33
+        }
+    },
+    {
+        "pk": 106,
+        "model": "auth.permission",
+        "fields": {
             "codename": "delete_schedulertask",
             "name": "Can delete scheduler task",
-            "content_type": 32
+            "content_type": 33
         }
     },
     {
@@ -989,6 +998,33 @@
         }
     },
     {
+        "pk": 92,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_dynagroup",
+            "name": "Can add dyna group",
+            "content_type": 29
+        }
+    },
+    {
+        "pk": 93,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_dynagroup",
+            "name": "Can change dyna group",
+            "content_type": 29
+        }
+    },
+    {
+        "pk": 94,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_dynagroup",
+            "name": "Can delete dyna group",
+            "content_type": 29
+        }
+    },
+    {
         "pk": 19,
         "model": "auth.permission",
         "fields": {
@@ -1232,30 +1268,12 @@
             "is_active": true,
             "is_superuser": false,
             "is_staff": false,
-            "last_login": "2012-07-19T20:46:26.262",
+            "last_login": "2012-08-20T14:25:59.141",
             "groups": [],
             "user_permissions": [],
             "password": "",
             "email": "",
-            "date_joined": "2012-07-19T20:46:26.262"
-        }
-    },
-    {
-        "pk": 1,
-        "model": "auth.user",
-        "fields": {
-            "username": "admin",
-            "first_name": "",
-            "last_name": "",
-            "is_active": true,
-            "is_superuser": true,
-            "is_staff": true,
-            "last_login": "2012-07-19T20:46:24.647",
-            "groups": [],
-            "user_permissions": [],
-            "password": "pbkdf2_sha256$10000$Hgyq4g7F6yro$5EcWKlTgtsYnQlJY/SDI2hRgsq7h3iFr7eGVReMJQg8=",
-            "email": "admin@mail.com",
-            "date_joined": "2012-07-19T20:46:24.647"
+            "date_joined": "2012-08-20T14:25:59.141"
         }
     }
 ]

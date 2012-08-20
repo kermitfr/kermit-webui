@@ -26,6 +26,11 @@ bumprelease:
 #setversion: 
 
 build: clean
+	@if  [ "$(DIST)" = "%dist" ]; \
+	then \
+		echo "You must define %dist in your rpmmacros."; \
+		exit 1; \
+	fi
 	@echo 'DIST: $(DIST)'
 	@echo '$(RELEASE)'
 	@echo '$(TOPDIR)'
@@ -38,6 +43,7 @@ clean:
 	-rm -rf dist/ 
 	-rm -rf rpm-build/
 	-rm -rf $(TMPDIR)/$(BUILDDIR)
+	-rm -rf /tmp/sqlite.db
 
 clean_hard:
 

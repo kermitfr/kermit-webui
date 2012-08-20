@@ -6,11 +6,15 @@ License: GPL
 Group: Applications/System
 URL: https://github.com/thinkfr/kermit-webui
 Source: %{name}-%{version}.tar.gz
+
 Requires: httpd, Django, django-grappelli, django-guardian, django-celery, django-kombu, uuid, redis, django-picklefield
+
 %if "%dist" == ".el5"
 Requires: python(abi) = 2.6, python26-mod_wsgi, python26-httplib2, ordereddict, python26-redis, python26-docutils 
+BuildRequires: ordereddict 
 %else
 Requires: python(abi) >= 2.6, mod_wsgi, python-httplib2, python-redis, python-ordereddict, python-docutils
+#BuildRequires: python-ordereddict 
 %endif
 
 %if "%dist" == ".el6"
@@ -19,6 +23,7 @@ Requires: python-dateutil15
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch: noarch
+BuildRequires: django-picklefield
 BuildRequires: django-grappelli
 BuildRequires: django-guardian
 BuildRequires: django-celery
@@ -26,19 +31,15 @@ BuildRequires: django-kombu
 
 %description
 Mcollective WebUI
-Quick start :
-cd /usr/share/kermit-webui
-python webui/manage.py syncdb --noinput
-/etc/init.d/httpd restart
 
 %prep
 %setup -n %{name}
 
 %build
 %if "%dist" == ".el5"
-	python26 ./src/webui/manage.py syncdb --noinput
+	python26 src/webui/manage.py syncdb --noinput
 %else
-	python ./src/webui/manage.py syncdb --noinput
+	python src/webui/manage.py syncdb --noinput
 %endif
 
 %install
