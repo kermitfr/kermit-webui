@@ -1,0 +1,651 @@
+[
+ {
+    "model": "puppetclasses.puppetclass",
+    "pk": 1,
+    "fields": {
+      "name": "retail",
+      "description": "Retail Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 0,
+      "order": 0
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 2,
+    "fields": {
+      "name": "industry",
+      "description": "Industry Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 0,
+      "order": 1
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 3,
+    "fields": {
+      "name": "peoplenfigures",
+      "description": "People en Figures Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 0,
+      "order": 2
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 4,
+    "fields": {
+      "name": "logistic",
+      "description": "Logistic Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 0,
+      "order": 3
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 5,
+    "fields": {
+      "name": "normsnmethod",
+      "description": "Normsnmethod Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 0,
+      "order": 4
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 6,
+    "fields": {
+      "name": "oxit",
+      "description": "Oxit Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 0,
+      "order": 5
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 7,
+    "fields": {
+      "name": "passionbrands",
+      "description": "Passionbrands Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 0,
+      "order": 6
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 8,
+    "fields": {
+      "name": "buxy",
+      "description": "buxy Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 1,
+      "order": 0
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 9,
+    "fields": {
+      "name": "centralise",
+      "description": "Centralise Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 1,
+      "order": 1
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 10,
+    "fields": {
+      "name": "crm",
+      "description": "Crm Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 1,
+      "order": 2
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 11,
+    "fields": {
+      "name": "easymailing",
+      "description": "Easymailing Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 1,
+      "order": 3
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 12,
+    "fields": {
+      "name": "finance",
+      "description": "Finance Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 1,
+      "order": 4
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 13,
+    "fields": {
+      "name": "hr",
+      "description": "HR Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 1,
+      "order": 5
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 14,
+    "fields": {
+      "name": "imedia",
+      "description": "IMedia Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 1,
+      "order": 6
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 15,
+    "fields": {
+      "name": "infra",
+      "description": "Infra Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 1,
+      "order": 7
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 16,
+    "fields": {
+      "name": "itool",
+      "description": "ITool Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 1,
+      "order": 8
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 17,
+    "fields": {
+      "name": "logistique",
+      "description": "Logistique Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 1,
+      "order": 9
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 18,
+    "fields": {
+      "name": "masterdatas",
+      "description": "Masterdatas Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 1,
+      "order": 10
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 19,
+    "fields": {
+      "name": "offer",
+      "description": "Offer Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 1,
+      "order": 11
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 20,
+    "fields": {
+      "name": "oxygift",
+      "description": "Oxy Gift Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 1,
+      "order": 12
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 21,
+    "fields": {
+      "name": "oxylaneconnect",
+      "description": "Oxylane Connect Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 1,
+      "order": 13
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 22,
+    "fields": {
+      "name": "proddotcom",
+      "description": "Prod.com Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 1,
+      "order": 14
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 23,
+    "fields": {
+      "name": "project",
+      "description": "Project Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 1,
+      "order": 15
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 24,
+    "fields": {
+      "name": "retailcentralise",
+      "description": "Retail Centralise Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 1,
+      "order": 16
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 25,
+    "fields": {
+      "name": "rfid",
+      "description": "Rfid Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 1,
+      "order": 17
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 26,
+    "fields": {
+      "name": "stores",
+      "description": "Stores Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 1,
+      "order": 18
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 27,
+    "fields": {
+      "name": "vada",
+      "description": "Vada Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 1,
+      "order": 19
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 28,
+    "fields": {
+      "name": "webdesk",
+      "description": "WebDesk Class",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 1,
+      "order": 20
+    }
+  },
+  
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 29,
+    "fields": {
+      "name": "preprod",
+      "description": "PreProd Environment",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 2,
+      "order": 0
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 30,
+    "fields": {
+      "name": "prod",
+      "description": "Prod Environment",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 2,
+      "order": 1
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 31,
+    "fields": {
+      "name": "integration",
+      "description": "Integration Environment",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 2,
+      "order": 2
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 32,
+    "fields": {
+      "name": "development",
+      "description": "Development Environment",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 2,
+      "order": 3
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 33,
+    "fields": {
+      "name": "sandbox",
+      "description": "SandBox Environment",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 2,
+      "order": 4
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 34,
+    "fields": {
+      "name": "zen",
+      "description": "Zen Zone",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 3,
+      "order": 0
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 35,
+    "fields": {
+      "name": "zes",
+      "description": "Zes Zone",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 3,
+      "order": 1
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 36,
+    "fields": {
+      "name": "franchise",
+      "description": "Franchise Zone",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 3,
+      "order": 2
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 37,
+    "fields": {
+      "name": "produ",
+      "description": "Produ Zone",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 3,
+      "order": 3
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 38,
+    "fields": {
+      "name": "ad",
+      "description": "AD Appli",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 4,
+      "order": 0
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 39,
+    "fields": {
+      "name": "fs",
+      "description": "FS Appli",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 4,
+      "order": 1
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 40,
+    "fields": {
+      "name": "oas",
+      "description": "OAS Appli",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 4,
+      "order": 2
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 41,
+    "fields": {
+      "name": "odb",
+      "description": "ODB Appli",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 4,
+      "order": 3
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 42,
+    "fields": {
+      "name": "ohs",
+      "description": "OHS Appli",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 4,
+      "order": 4
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 43,
+    "fields": {
+      "name": "oms",
+      "description": "OMS Appli",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 4,
+      "order": 5
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 44,
+    "fields": {
+      "name": "mgt",
+      "description": "MGT Appli",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 4,
+      "order": 6
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 45,
+    "fields": {
+      "name": "zasie",
+      "description": "Zone Asie",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 3,
+      "order": 4
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 46,
+    "fields": {
+      "name": "wlo",
+      "description": "Weblogic",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 4,
+      "order": 7
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 47,
+    "fields": {
+      "name": "ows",
+      "description": "Weblogic",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 4,
+      "order": 8
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 48,
+    "fields": {
+      "name": "nozone",
+      "description": "NoZone",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 3,
+      "order": 4
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 49,
+    "fields": {
+      "name": "twist",
+      "description": "Twist",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 4,
+      "order": 9
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 50,
+    "fields": {
+      "name": "permit",
+      "description": "Permit",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 4,
+      "order": 10
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 51,
+    "fields": {
+      "name": "bcx",
+      "description": "Bar",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 4,
+      "order": 11
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 52,
+    "fields": {
+      "name": "spid",
+      "description": "Spid",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 1,
+      "order": 22
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 53,
+    "fields": {
+      "name": "jbs",
+      "description": "JBpss",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 4,
+      "order": 12
+    }
+  },
+  {
+    "model": "puppetclasses.puppetclass",
+    "pk": 54,
+    "fields": {
+      "name": "pgs",
+      "description": "PostgreSQL",
+      "icon": "Platform_up_16.png",
+      "enabled": true,
+      "level": 4,
+      "order": 13
+    }
+  }
+]
