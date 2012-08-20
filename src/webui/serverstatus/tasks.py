@@ -108,7 +108,7 @@ def add_puppet_classes(server, puppet_classes):
                 logger.debug("Skipping class %s" % current)
                 continue
             logger.info("Creating new class %s" % current)
-            retrieved = PuppetClass.objects.create(name=current)
+            retrieved = PuppetClass.objects.create(name=current, level=-1)
         
         server.puppet_classes.add(retrieved)
             
