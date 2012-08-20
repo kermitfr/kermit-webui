@@ -1,19 +1,19 @@
 Summary: Mcollective WebUI
 Name: kermit-webui
 Version: 1.0.2
-Release: 1.%{dist}
+Release: 1%{dist}
 License: GPL
 Group: Applications/System
 URL: https://github.com/thinkfr/kermit-webui
 Source: %{name}-%{version}.tar.gz
 Requires: httpd, Django, django-grappelli, django-guardian, django-celery, django-kombu, uuid, redis, django-picklefield
-%if "%dist" == "el5"
+%if "%dist" == ".el5"
 Requires: python(abi) = 2.6, python26-mod_wsgi, python26-httplib2, ordereddict, python26-redis, python26-docutils 
 %else
 Requires: python(abi) >= 2.6, mod_wsgi, python-httplib2, python-redis, python-ordereddict, python-docutils
 %endif
 
-%if "%dist" == "el6"
+%if "%dist" == ".el6"
 Requires: python-dateutil15
 %endif 
 
@@ -35,7 +35,7 @@ python webui/manage.py syncdb --noinput
 %setup -n %{name}
 
 %build
-%if "%dist" == "el5"
+%if "%dist" == ".el5"
 	python26 ./src/webui/manage.py syncdb --noinput
 %else
 	python ./src/webui/manage.py syncdb --noinput
@@ -78,7 +78,7 @@ install -m 755 ./misc/init/init.d/celerybeat $RPM_BUILD_ROOT/etc/rc.d/init.d/cel
 %{__cp} ./misc/init/sysconfig/celeryd $RPM_BUILD_ROOT/etc/sysconfig/celeryd
 %{__cp} ./misc/init/sysconfig/celeryev $RPM_BUILD_ROOT/etc/sysconfig/celeryev
 %{__cp} ./misc/init/sysconfig/celerybeat $RPM_BUILD_ROOT/etc/sysconfig/celerybeat
-%if "%dist" == "el5"
+%if "%dist" == ".el5"
 %{__cp} ./misc/fixes/manage.py $RPM_BUILD_ROOT/usr/share/%{name}/webui/manage.py
 %endif
 #create version file

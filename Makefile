@@ -12,6 +12,8 @@ RELEASE=`expr substr '${VERSION}' 10 5`
 TMPDIR=/tmp
 BUILDDIR=build
 
+DIST=$(shell rpm --eval "%dist")
+
 all: rpms
 
 
@@ -24,9 +26,10 @@ bumprelease:
 #setversion: 
 
 build: clean
-	echo $(RELEASE)
-	echo $(TOPDIR)
-	echo "- Create Changelog file"
+	@echo 'DIST: $(DIST)'
+	@echo '$(RELEASE)'
+	@echo '$(TOPDIR)'
+	@echo "- Create Changelog file"
 	git shortlog > changelog.txt
 	mkdir -p ./dist
 	git archive --format=tar --prefix=$(PROGRAMNAME)/ master | gzip > ./dist/$(PROGRAMNAME)-$(RELEASE).tar.gz
