@@ -1,4 +1,4 @@
-LoadModule wsgi_module modules/python-mod_wsgi.so
+LoadModule wsgi_module modules/python26-mod_wsgi.so
 
 Alias /robots.txt /var/www/kermit-webui/static/robots.txt
 Alias /favicon.ico /var/www/kermit-webui/images/favicon.ico
