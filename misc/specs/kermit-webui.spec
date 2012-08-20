@@ -41,6 +41,7 @@ Mcollective WebUI
 %else
 	python src/webui/manage.py syncdb --noinput
 %endif
+./load_data.sh
 
 %install
 %{__rm} -rf $RPM_BUILD_ROOT
