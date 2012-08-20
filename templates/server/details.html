@@ -44,7 +44,7 @@
 <div class="fg-toolbar">
 	<div class="toolbar-group">
 				<div class="toolbar-group-title">{{group_name}}</div>
-				<a href="{% url editserver hostname%}"><img class="opbutton" src="{{STATIC_URL}}/images/toolbar/edit.png" width="32px"/></a>
+				<a href="{% url editserver hostname%}"><img class="opbutton" src="{{STATIC_URL}}/images/toolbar/server_edit.png" width="32px"/></a>
 	</div>
 	{% if server_operations %}	
 		{%for group_name, operations in server_operations.items %}
