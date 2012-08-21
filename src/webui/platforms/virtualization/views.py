@@ -44,7 +44,7 @@ def get_server_details(request, hostname, instance_name, resource_name):
                     'novnc_url': novnc_url
                     }
             domains.append(info)
-        return render_to_response('platforms/virtualization/server.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname, 'filter': filter ,'virtual': virtual['data'], 'domains': domains}, context_instance=RequestContext(request))
+        return render_to_response('platforms/virtualization/server.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname, 'filter': filter ,'virtual': virtual.getData(), 'domains': domains}, context_instance=RequestContext(request))
     else:     
         return render_to_response('platforms/virtualization/server.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname}, context_instance=RequestContext(request))
     
