@@ -36,7 +36,7 @@ class KermitMcoContent(object):
         return self.status_message
     
     def to_dict(self):
-        {"data":self.data, "statuscode":self.status_code,"sender":self.sender,"statusmsg":self.status_message}
+        return {"data":self.data, "statuscode":self.status_code,"sender":self.sender,"statusmsg":self.status_message}
         
     
         

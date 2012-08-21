@@ -28,7 +28,7 @@ def update_single_dyna(user, dynag):
         response, content = callRestServer(user, "no-filter", 'rpcutil', 'get_fact', "fact=%s" % dynag.obj_name, True, False)
         if response.getStatus() == 200:
             for sresp in content:
-                if utils.evaluate_response(sresp.getData()["value"], dynag.rule, dynag.value):
+                if sresp.getData()["value"] and utils.evaluate_response(sresp.getData()["value"], dynag.rule, dynag.value):
                     logger.info("Rule match for %s" % sresp.getSender())
                     try:
                         server = Server.objects.get(hostname=sresp.getSender())

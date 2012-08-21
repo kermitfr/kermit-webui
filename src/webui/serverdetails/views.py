@@ -87,6 +87,7 @@ def hostCallInventory(request, hostname):
         jsonObj = []
         for entry in content:
             jsonObj.append(entry.to_dict())
+            
         return render_to_response('server/inventory.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname, 'service_status_url':settings.RUBY_REST_PING_URL, "c": jsonObj[0]}, context_instance=RequestContext(request))
     else:
         return render_to_response('server/inventory.html', {"base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "hostname": hostname, 'service_status_url':settings.RUBY_REST_PING_URL}, context_instance=RequestContext(request))
