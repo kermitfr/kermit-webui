@@ -314,15 +314,18 @@ djcelery.setup_loader()
 
 #To use directly the django database as a broker (no other tools required)
 #With this configuration you can't use celery monitor
-BROKER_TRANSPORT = "django"
+#BROKER_TRANSPORT = "django"
 
 #Sample Configuration for Redis
-#BROKER_TRANSPORT = "redis"
-#BROKER_URL = "redis://127.0.0.1:6379/0"
-#CELERY_RESULT_BACKEND = "redis"
-#CELERY_REDIS_HOST = "127.0.0.1"
-#CELERY_REDIS_PORT = 6379
-#CELERY_REDIS_DB = 0
+BROKER_TRANSPORT = CONF.get('webui-broker', 'transport')
+BROKER_URL = CONF.get('webui-broker', 'url')
+BROKER_USER = CONF.get('webui-broker', 'user')
+BROKER_PASSWORD = CONF.get('webui-broker', 'password')
+CELERY_RESULT_BACKEND = CONF.get('webui-broker', 'celery_results_backend')
+CELERY_REDIS_HOST = CONF.get('webui-broker', 'redis_host')
+CELERY_REDIS_PORT = CONF.getint('webui-broker', 'redis_port')
+CELERY_REDIS_DB = CONF.get('webui-broker', 'redis_db')
+
 
 #Sample configuration for mongodb
 #CELERY_RESULT_BACKEND = "mongodb"

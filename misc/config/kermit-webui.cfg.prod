@@ -43,6 +43,16 @@ password=
 #user=kermit
 #password=kermit
 
+[webui-broker]
+transport=redis
+url=redis://localhost:6379/0
+user=
+password=
+celery_results_backend=redis
+redis_host=localhost
+redis_port=6379
+redis_db=0
+
 [webui_logs]
 main.file=/var/log/kermit/kermit-webui.log
 main.level=INFO

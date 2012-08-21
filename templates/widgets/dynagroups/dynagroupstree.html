@@ -2,9 +2,104 @@
 {% load i18n %}
 {% block widget-content %}
 <script>
+	function bindDynaContextMenu(span) {
+		// Add context menu to this node:
+		$(span).jeegoocontext('dynamenu', {
+			widthOverflowOffset : 100,
+			heightOverflowOffset : 100,
+			submenuLeftOffset : -4,
+			submenuTopOffset : -5,
+			onSelect : function(e, context) {
+				var node = $.ui.dynatree.getNode(context);
+				var filterType
+				//Verifying if the context menu is for a folder or for a server
+				if(node.data.isFolder) {
+					filterType = "identity_filter"
+				} else {
+					filterType = "identity_filter"
+				}
+
+				//If we are working on a folder the filter should be ffor all servers in the selected group
+				var filtersList = ''
+				if(node.data.isFolder) {
+					var servers_names = node.data.filtername.split(';');
+					for(i in servers_names) {
+						if(servers_names[i] != '') {
+							if(filtersList != '') {
+								filtersList += ';'
+							}
+							filtersList += filterType + '=' + servers_names[i];
+						}
+					}
+				} else {
+					filtersList += filterType + '=' + node.data.filtername
+				}
+				if($(this).attr('type') == "agent") {
+					getExecutionForm('{{settings.BASE_URL}}', 'context-dyna-execution-dialog', $(this).attr('agent'), $(this).attr('action'), filtersList, 'response-container')
+				} else if($(this).attr('type') == "operation") {
+					var action = $(this).attr('action');
+					var agent = $(this).attr('agent');
+					var parameters = $(this).attr('parameters');
+					base_url = "{{settings.BASE_URL}}";
+					if (base_url.substr(-1) === "/" ) {
+						var strLen = base_url.length;
+						base_url = base_url.slice(0,strLen-1);
+					}
+					url = base_url + "/restapi/mcollective/" + filtersList + '/' + agent + '/' + action + '/';
+					if (parameters!=null && parameters!='') {
+						url = url + parameters;
+					}
+					sendRequestToMcollective(url, 'response-container');			
+				} else if ($(this).attr('type') == "automatic_op") {
+					var javascript_op = $(this).attr('javascript');
+					if (javascript_op) {
+						//Parsing javascript to replace known templates tag
+						javascript_op = javascript_op.replace('$$filterlist$$',filtersList);
+						eval(javascript_op);			
+					} 
+				}
+
+				$(context).animate({
+					borderWidth : '0',
+					paddingLeft : '0',
+					paddingTop : '0',
+					paddingBottom : '0',
+					paddingRight : '0'
+				}, 200);
+			},
+			onHover : function(e, context) {
+				if($(this).hasClass('disabled'))
+					return false;
+			},
+			onShow : function(e, context) {
+				var node = $.ui.dynatree.getNode(context);
+				var children = $(this).children('li');
+				for (child_id in children) {
+					if (parseInt(child_id)) {
+						var current_child = children[child_id];
+						if ($(current_child).attr('groups')) {
+							if (contains(node.data.classes, $(current_child).attr('groups'))) {
+								$(current_child).show();
+							} else {
+								$(current_child).hide();
+							}
+						}
+					}
+					
+				}
+				return true;
+			},
+			onHide : function(e, context) {
+
+			}
+		});
+
+	};
+
+
 	$(document).ready(function() {
 		$("#dynagroup-dialog").hide();
-		$("#context-execution-dialog").hide();
+		$("#context-dyna-execution-dialog").hide();
 		$("#dynagroups").dynatree({
 			title : "Dyna Groups",
 			fx : {
@@ -13,7 +108,7 @@
 			},
 			autoFocus : false, // Set focus to first child, when expanding or lazy-loading.
 			onCreate: function(node, span){
-				//bindContextMenu(span);
+				bindDynaContextMenu(span);
       		},
 			initAjax : {
 				url : "{% url get_dynamicgroup_tree %}",
@@ -129,7 +224,78 @@
 	});
 
 </script>
-<div id="context-execution-dialog"></div>
+<!--  Context menu -->
+<div class="context">
+	<ul id="dynamenu" class="jeegoocontext cm_default">
+		<li class="icon" style="display: none;"></li>
+		{% if agents %}
+		<li class="icon">
+			<span class="icon folder"></span>Agents
+			<ul>
+				{% if user.is_superuser %}
+					{%for agent in agents %}
+						 {% if agent.actions.values %}
+							<li class="icon">
+								<span class="icon folder"></span>{{agent.name}}
+								<ul>
+									{%for action in agent.actions.values %}
+									<li class="icon" type="agent" agent="{{agent.name}}" action="{{action.name}}">
+										<span class="icon file"></span>{{action.name}}
+									</li>
+									{% endfor %}
+								</ul>
+							</li>
+						{%endif%}
+					{% endfor %}
+				{% else %}
+					{%for key, value in actions.items %}
+						 {% if value %}
+							<li class="icon">
+								<span class="icon folder"></span>{{key}}
+								<ul>
+									{%for action in value %}
+									<li class="icon" type="agent" agent="{{key}}" action="{{action.name}}">
+										<span class="icon file"></span>{{action.name}}
+									</li>
+									{% endfor %}
+								</ul>
+							</li>
+						{%endif%}
+					{% endfor %}
+				{% endif %}
+			</ul>
+		</li>
+		{% endif %}
+		{% if automatic_operations %}
+			{%for menu_name, menu_ops in automatic_operations.items %}
+			<li class="icon" groups="{{menu_name}}">
+				<span class="icon folder"></span>{{menu_name}}
+				<ul>
+					{%for current_op in menu_ops %}
+					<li class="icon" type="automatic_op" javascript="{{current_op.javascript}}">
+						<span class="icon file"></span>{{current_op.description}}
+					</li>
+					{% endfor %}
+				</ul>
+			</li>
+			{% endfor %}
+		{% endif %}
+		
+		{% if operations %}
+		<li class="icon">
+			<span class="icon folder"></span>Operations
+			<ul>
+				{%for op in operations %}
+				<li class="icon" type="operation" agent="{{op.agent.name}}" action="{{op.action.name}}" parameters={{op.parameters}}>
+					<span class="icon file"></span>{{op.name}}
+				</li>
+				{% endfor %}
+			</ul>
+		</li>
+		{% endif %}
+	</ul>
+</div>
+<div id="context-dyna-execution-dialog"></div>
 <div id="dynagroup-dialog"></div>
 <img id="addDynaGroup" src="{{settings.STATIC_URL}}/images/expand.png" width="24" height="24"/>
 <div id="filter">

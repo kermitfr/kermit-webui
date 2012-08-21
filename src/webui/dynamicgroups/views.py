@@ -13,6 +13,7 @@ from webui.dynamicgroups.forms import DynaGroupEditForm
 from django.template.loader import render_to_string
 from django.template.context import RequestContext
 from webui.dynamicgroups import tasks
+from webui.puppetclasses.views import check_context_operation_visibility_list
 
 logger = logging.getLogger(__name__)
 
@@ -28,11 +29,20 @@ def get_dynamicgroup_tree(request):
         for dbs in dbservers.iterator():
             if request.user.has_perm('use_server', dbs):
                 servers.append(dbs)
-        content = {"isFolder": "true", "title": dynag.name, "key":dynag.name}
+        classes = check_context_operation_visibility_list(servers)
+        filtername = None
+        for s in servers:
+            if filtername:
+                filtername = "%s;%s" % (filtername, s.hostname)
+            else:
+                filtername = s.hostname
+                
+        content = {"isFolder": "true", "title": dynag.name, "key":dynag.name, "filtername":filtername, "classes":classes}
         if len(servers) > 0:
             children = []
             for s in servers:
-                action_data = {"title": s.hostname, "key":s.hostname, "group":dynag.name}
+                classes = check_context_operation_visibility_list(servers)
+                action_data = {"title": s.hostname, "key":s.hostname, "group":dynag.name, "filtername":s.hostname, "classes":classes}
                 children.append(action_data)
             content['children'] = children
             
