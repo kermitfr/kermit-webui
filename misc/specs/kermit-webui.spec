@@ -1,7 +1,7 @@
 Summary: Mcollective WebUI
 Name: kermit-webui
 Version: 1.0.2
-Release: 1%{dist}
+Release: 2%{dist}
 License: GPL
 Group: Applications/System
 URL: https://github.com/thinkfr/kermit-webui
