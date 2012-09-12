@@ -9,7 +9,6 @@ from webui import settings
 from django.template.context import RequestContext
 import logging
 from webui.restserver.communication import callRestServer
-from django.utils import simplejson as json
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from webui.serverstatus.models import Server

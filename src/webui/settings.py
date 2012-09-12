@@ -318,13 +318,14 @@ djcelery.setup_loader()
 
 #Sample Configuration for Redis
 BROKER_TRANSPORT = CONF.get('webui-broker', 'transport')
-BROKER_URL = CONF.get('webui-broker', 'url')
-BROKER_USER = CONF.get('webui-broker', 'user')
-BROKER_PASSWORD = CONF.get('webui-broker', 'password')
-CELERY_RESULT_BACKEND = CONF.get('webui-broker', 'celery_results_backend')
-CELERY_REDIS_HOST = CONF.get('webui-broker', 'redis_host')
-CELERY_REDIS_PORT = CONF.getint('webui-broker', 'redis_port')
-CELERY_REDIS_DB = CONF.get('webui-broker', 'redis_db')
+if CONF.get('webui-broker', 'transport') != 'django':
+    BROKER_URL = CONF.get('webui-broker', 'url')
+    BROKER_USER = CONF.get('webui-broker', 'user')
+    BROKER_PASSWORD = CONF.get('webui-broker', 'password')
+    CELERY_RESULT_BACKEND = CONF.get('webui-broker', 'celery_results_backend')
+    CELERY_REDIS_HOST = CONF.get('webui-broker', 'redis_host')
+    CELERY_REDIS_PORT = CONF.getint('webui-broker', 'redis_port')
+    CELERY_REDIS_DB = CONF.get('webui-broker', 'redis_db')
 
 
 #Sample configuration for mongodb

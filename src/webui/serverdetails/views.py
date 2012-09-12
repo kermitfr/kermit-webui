@@ -148,10 +148,10 @@ def submit_server_edit(request, hostname):
             server = Server.objects.get(fqdn=hostname)
         try:
             redis_server = redis.Redis(host=settings.HIERA_REDIS_SERVER, password=settings.HIERA_REDIS_PASSWORD, port=settings.HIERA_REDIS_PORT, db=settings.HIERA_REDIS_DB)
-            redis_server.delete("common:%s" % hostname)
+            redis_server.delete("%s:%s" % (hostname, "classes"))
             for current_class in server_classes:
-                redis_server.sadd("common:%s" % hostname, current_class)
-            logger.debug("New server classes in the Hiera Redis Database: %s" % redis_server.smembers("common:%s" % hostname))
+                redis_server.sadd("%s:%s" % (hostname, "classes"), current_class)
+            logger.debug("New server classes in the Hiera Redis Database: %s" % redis_server.smembers("%s:%s" % (hostname, "classes")))
             server.puppet_classes.clear()
             for current in server_classes:
                 retrieved = PuppetClass.objects.filter(name=current)
