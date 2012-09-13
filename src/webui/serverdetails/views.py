@@ -148,16 +148,23 @@ def submit_server_edit(request, hostname):
             server = Server.objects.get(fqdn=hostname)
         try:
             redis_server = redis.Redis(host=settings.HIERA_REDIS_SERVER, password=settings.HIERA_REDIS_PASSWORD, port=settings.HIERA_REDIS_PORT, db=settings.HIERA_REDIS_DB)
-            redis_server.delete("%s:%s" % (hostname, "classes"))
+
+            current_server_classes = redis_server.smembers("%s:%s" % (hostname, "classes"))
             for current_class in server_classes:
-                redis_server.sadd("%s:%s" % (hostname, "classes"), current_class)
+                retrieved = PuppetClass.objects.filter(name=current_class)
+                if not current_class in current_server_classes and not retrieved[0] in server.puppet_classes.all():
+                    redis_server.sadd("%s:%s" % (hostname, "classes"), current_class)
+                    if retrieved:     
+                        server.puppet_classes.add(retrieved[0])
+            
+            for current_class in current_server_classes:
+                if not current_class in server_classes:
+                    redis_server.srem("%s:%s" % (hostname, "classes"), current_class)
+                    retrieved = PuppetClass.objects.filter(name=current_class)
+                    if retrieved:     
+                        server.puppet_classes.remove(retrieved[0])
             logger.debug("New server classes in the Hiera Redis Database: %s" % redis_server.smembers("%s:%s" % (hostname, "classes")))
-            server.puppet_classes.clear()
-            for current in server_classes:
-                retrieved = PuppetClass.objects.filter(name=current)
-                if retrieved:     
-                    server.puppet_classes.add(retrieved[0])
-                    
+            
             if "forceUpdate" in request.POST and request.POST["forceUpdate"] == "true":
                 logger.info("Calling puppet force update for modified server %s" % hostname)
                 filters = "identity_filter=%s" % hostname
