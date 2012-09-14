@@ -24,7 +24,12 @@
                             $(id).parent().next().html(errmsg);
                         });
                     } else {
-                        showMessageDialog("{% trans 'Dynamic Group Created'%}", '{% trans "OK"%}');
+                    	if (eval(data.created)) {
+	                     	message = "{% trans 'Dynamic Group Created'%}";   
+                        } else {
+                       		message = "{% trans 'Dynamic Group Updated'%}";
+                        }
+                        showMessageDialog(message, '{% trans "OK"%}');
                         $( "#dynagroup-dialog" ).dialog( "close" );
                     }
             	}

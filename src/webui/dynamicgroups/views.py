@@ -37,7 +37,7 @@ def get_dynamicgroup_tree(request):
             else:
                 filtername = s.hostname
                 
-        content = {"isFolder": "true", "title": dynag.name, "key":dynag.name, "filtername":filtername, "classes":classes}
+        content = {"isFolder": "true", "id":dynag.id, "title": dynag.name, "key":dynag.name, "filtername":filtername, "classes":classes}
         if len(servers) > 0:
             children = []
             for s in servers:
@@ -57,7 +57,14 @@ def get_dynamicgroup_form(request, dynagroup_id=None):
         form = DynaGroupEditForm()
         return HttpResponse(render_to_string('widgets/dynagroups/modalform.html', {'form':form}, context_instance=RequestContext(request)))
     else:
-        return None
+        logger.debug('Loading dynamic group with id')
+        try:
+            dynag = DynaGroup.objects.get(id=dynagroup_id)
+            form = DynaGroupEditForm(initial={'dynag_id':dynagroup_id, 'name': dynag.name, 'engine':dynag.engine, 'objname':dynag.obj_name, 'rule':dynag.rule, 'value':dynag.value})
+        except:
+            logger.warn("No DynamicGroup found with id %s" % dynagroup_id)
+            form = DynaGroupEditForm()
+        return HttpResponse(render_to_string('widgets/dynagroups/modalform.html', {'form':form}, context_instance=RequestContext(request)))
     
 @login_required()
 def post_dynagroup_mods(request, xhr=None):
@@ -73,9 +80,26 @@ def post_dynagroup_mods(request, xhr=None):
                 rule = form.cleaned_data['rule']
                 value = form.cleaned_data['value']
                 update = form.cleaned_data['force_update']
+                if 'dynag_id' in form.cleaned_data:
+                    dynag_id = form.cleaned_data['dynag_id']
                 
-                dynag = DynaGroup.objects.create(name=name, engine=engine, obj_name=objname, rule=rule, value=value)
-                
+                if dynag_id:
+                    try:
+                        dynag = DynaGroup.objects.get(id=dynag_id)
+                        dynag.name=name
+                        dynag.engine=engine
+                        dynag.obj_name=objname
+                        dynag.rule=rule
+                        dynag.value=value
+                        dynag.save()
+                        rdict.update({'created':'false'})
+                        logger.debug("DynaGroup updated")
+                    except: 
+                        logger.warn("No DynaGroup with provided id found: %s" % dynag_id)
+                else:
+                    dynag = DynaGroup.objects.create(name=name, engine=engine, obj_name=objname, rule=rule, value=value)
+                    rdict.update({'created':'true'})
+                    logger.debug("DynaGroup created")
                 if update:
                     logger.debug("Forcing dynagroup update")
                     tasks.update_single_dyna(request.user, dynag)
@@ -89,4 +113,14 @@ def post_dynagroup_mods(request, xhr=None):
             rdict.update({'dialog_name':'course-form'})
             return HttpResponse(json.dumps(rdict, ensure_ascii=False), mimetype='application/javascript') 
         
+    return HttpResponse('', mimetype='application/javascript')
+
+
+def delete_dynamicgroup(request, dynagroup_id):
+    logger.debug("Deleting DynamicGroup with id %s" % dynagroup_id)
+    try:
+        dynag = DynaGroup.objects.get(id=dynagroup_id)
+        dynag.delete()
+    except:
+        logger.warn("Cannot find DynamicGroup with provided id")
     return HttpResponse('', mimetype='application/javascript')

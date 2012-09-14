@@ -2,6 +2,40 @@
 {% load i18n %}
 {% block widget-content %}
 <script>
+	function showDynaEdit(id) {
+		$.ajax({
+			// The link we are accessing.
+			url : "{% url get_dynamicgroup_form dynagroup_id=12345%}".replace("12345", id),
+			// The type of request.
+			type : "get",
+			// The type of data that is getting returned.
+			dataType : "html",
+			error : function() {
+				//TODO: Show error message
+				//$('#loading').hide();
+				showMessageDialog("{% trans 'Cannot get form. Error communicating with server' %}", "{% trans 'OK' %}");
+			},
+			beforeSend : function() {
+				//$('#loading').show();
+			},
+			complete : function() {
+				//$('#loading').hide();
+			},
+			success : function(data) {
+				if(data != 'None') {
+					$("#dynagroup-dialog").html(data);
+					$("#dynagroup-dialog").dialog({
+						modal : true,
+						title : 'Dynamic Group',
+						minHeight : 200,
+						minWidth : 500
+					});
+					$("#dynagroup-dialog").show();
+				} 
+			}
+		});
+	}
+
 	function bindDynaContextMenu(span) {
 		// Add context menu to this node:
 		$(span).jeegoocontext('dynamenu', {
@@ -57,6 +91,48 @@
 						javascript_op = javascript_op.replace('$$filterlist$$',filtersList);
 						eval(javascript_op);			
 					} 
+				} else if ($(this).attr('type') == "dynagroup_edit") {
+					showDynaEdit(node.data.id);
+				} else if ($(this).attr('type') == "dynagroup_del") {
+					$("#dynagroup-dialog").html("{% trans 'Are you sure you want to delete the selected dynamic group?' %}");
+					$("#dynagroup-dialog").dialog({
+						modal : true,
+						title : 'Dynamic Group',
+						minHeight : 200,
+						minWidth : 500,
+				      buttons : {
+				        "Confirm" : function() {
+				        	$("#dynagroup-dialog").dialog("close");
+				        	$.ajax({
+								// The link we are accessing.
+								url : "{% url delete_dynamicgroup dynagroup_id=12345%}".replace('12345', node.data.id),
+								// The type of request.
+								type : "get",
+								// The type of data that is getting returned.
+								dataType : "html",
+								error : function() {
+									//TODO: Show error message
+									//$('#loading').hide();
+									showMessageDialog("{% trans 'Cannot contact server for delete group operation' %}", "{% trans 'OK' %}");
+								},
+								beforeSend : function() {
+									//$('#loading').show();
+								},
+								complete : function() {
+									//$('#loading').hide();
+								},
+								success : function(data) {
+									showMessageDialog("{% trans 'DynamicGroup successfully deleted' %}", "{% trans 'OK' %}");	
+								}
+							});  
+				        },
+				        "Cancel" : function() {
+				          $(this).dialog("close");
+				        }
+				      }
+				    });
+				
+				    $("#dynagroup-dialog").dialog("open");
 				}
 
 				$(context).animate({
@@ -82,6 +158,12 @@
 								$(current_child).show();
 							} else {
 								$(current_child).hide();
+							}
+						} else if ($(current_child).attr('dynagroup')) {
+							if (node.data.isFolder) {
+								$(current_child).show();	
+							} else {
+								$(current_child).hide();	
 							}
 						}
 					}
@@ -161,15 +243,22 @@
 				logMsg("onDblClick(%o, %o)", node, event);
 				node.toggleSelect();
 			},
-			onKeydown : function(node, event) {
-				logMsg("onKeydown(%o, %o)", node, event);
-				switch( event.which ) {
-					case 32:
-						// [space]
-						node.toggleSelect();
-						return false;
-				}
-			},
+			onKeydown: function(node, event) {
+		      switch( event.which ) {
+		      case 113: // [F2]
+		        if (node.data.isFolder) {
+		        	editNode(node);
+		        }
+		        return false;
+		      case 13: // [enter]
+		        if( isMac ){
+		         if (node.data.isFolder) {
+		          editNode(node);
+		         }
+		          return false;
+		        }
+		      }
+		    },
 			onKeypress : function(node, event) {
 				logMsg("onKeypress(%o, %o)", node, event);
 			}
@@ -293,6 +382,18 @@
 			</ul>
 		</li>
 		{% endif %}
+		
+		<li class="icon" dynagroup="dynagroup">
+			<span class="icon folder"></span>DynaGroup
+			<ul>
+				<li class="icon" type="dynagroup_edit">
+					<span class="icon edit"></span>Edit Group
+				</li>
+				<li class="icon" type="dynagroup_del">
+					<span class="icon delete"></span>Delete Group
+				</li>
+			</ul>
+		</li>
 	</ul>
 </div>
 <div id="context-dyna-execution-dialog"></div>

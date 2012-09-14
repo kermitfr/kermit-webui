@@ -418,3 +418,35 @@ function showMessageDialog(message, confirm_button) {
 
     $('#message-dialog').dialog('open');
 }
+
+function editNode(node){
+  var prevTitle = node.data.title,
+    tree = node.tree;
+  // Disable dynatree mouse- and key handling
+  tree.$widget.unbind();
+  // Replace node with <input>
+  $(".dynatree-title", node.span).html("<input id='editNode' value='" + prevTitle + "'>");
+  // Focus <input> and bind keyboard handler
+  $("input#editNode")
+    .focus()
+    .keydown(function(event){
+      switch( event.which ) {
+      case 27: // [esc]
+        // discard changes on [esc]
+        $("input#editNode").val(prevTitle);
+        $(this).blur();
+        break;
+      case 13: // [enter]
+        // simulate blur to accept new value
+        $(this).blur();
+        break;
+      }
+    }).blur(function(event){
+      // Accept new value, when user leaves <input>
+      var title = $("input#editNode").val();
+      node.setTitle(title);
+      // Re-enable mouse and keyboard handlling
+      tree.$widget.bind();
+      node.focus();
+    });
+}
