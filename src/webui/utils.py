@@ -11,9 +11,9 @@ import logging
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 
-MAINCONF = SITE_ROOT+'/kermit-webui.cfg'
+MAINCONF = '/etc/kermit/kermit-webui.cfg'
 if not os.path.isfile(MAINCONF):
-    MAINCONF = '/etc/kermit/kermit-webui.cfg'
+	MAINCONF = SITE_ROOT + '/kermit-webui.cfg'
 
 CONF = ConfigParser.ConfigParser()
 CONF.read(MAINCONF)
@@ -29,4 +29,4 @@ def read_kermit_version():
     except:
         logger.warn("No version file found in /etc/kermit/webui/version.txt")
         return None
-    
+
