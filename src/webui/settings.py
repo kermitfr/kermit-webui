@@ -30,9 +30,9 @@ DATABASES = {
         'HOST': CONF.get('webui-database', 'host'),    # Set to empty string for localhost. Not used with sqlite3.
         'PORT': CONF.get('webui-database', 'port'),    # Set to empty string for default. Not used with sqlite3.
         #Options for PostgreSQL database backend
-        #'OPTIONS': {
-        #    'autocommit': True,
-        #}
+        'OPTIONS': {
+            'autocommit': True,
+        }
     }
 }
 
