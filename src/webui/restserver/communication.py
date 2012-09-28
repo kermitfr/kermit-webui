@@ -16,6 +16,7 @@ def callRestServer(user, filters, agent, action, args=None, wait_response=False,
     if use_task:
         task_name = "webui.restserver.tasks.httpcall"
         if use_backend_scheduler:
+            logger.info("Action will be executed with the backend scheduler")
             task_name = "webui.restserver.tasks.httpcallscheduler"
         result = send_task(task_name, [filters, agent, action, args])
         logger.debug("Storing task reference in database")
