@@ -60,7 +60,7 @@
 			onClick : function(node, event) {
 				logMsg("onClick(%o, %o)", node, event);
 				if (node.data.isFolder == false) {
-					getExecutionForm("{{settings.BASE_URL}}", "execution-dialog", node.data.agent, node.data.key, "no-filter",  "response-container");	
+					getExecutionForm("{{settings.BASE_URL}}", "execution-dialog", node.data.agent, node.data.key, null,  "response-container");	
 				}
 			},
 			onDblClick : function(node, event) {

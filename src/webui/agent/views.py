@@ -54,7 +54,7 @@ class QueryMethods(object):
      
 @login_required()    
 @permission_required('agent.call_mcollective', return_403=True)
-def query(request, operation, agent=None, action=None, filters='no-filter', dialog_name=None, response_container=None):
+def query(request, operation, agent=None, action=None, filters=None, dialog_name=None, response_container=None):
     query_methods = QueryMethods()
     methodToCall = getattr(query_methods, operation)
     return HttpResponse(methodToCall(request, agent, action, filters, dialog_name, response_container))

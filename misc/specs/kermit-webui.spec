@@ -101,15 +101,13 @@ echo %{version} > $RPM_BUILD_ROOT/etc/kermit/webui/version.txt
 
 %config /etc/httpd/conf.d/*
 #%config /usr/share/%{name}/settings.py
-%config /var/lib/kermit/webui/db/sqlite.db
-%config /etc/kermit/kermit-webui.cfg
+%config(noreplace) %attr(0777,apache,apache) /var/lib/kermit/webui/db/sqlite.db
+%config(noreplace) %attr(0644,apache,apache) /etc/kermit/kermit-webui.cfg
 %attr(0777,apache,apache) %dir /var/lib/kermit/webui/db
-%attr(0777,apache,apache) %dir /var/lib/kermit/webui/db/sqlite.db
 %attr(0750,apache,apache) %dir /var/www/%{name}/uploads
 %attr(0755,apache,apache) %dir /var/log/kermit
 %attr(0755,apache,apache) %dir /var/log/celery
 %attr(0755,apache,apache) %dir /var/run/celery
-%attr(0644,apache,apache) %dir /etc/kermit/kermit-webui.cfg
 %attr(0755,apache,apache) /usr/share/kermit-webui/webui/manage.py
 %attr(0755, root, root) /etc/rc.d/init.d/celeryd
 %attr(0755, root, root) /etc/rc.d/init.d/celeryev

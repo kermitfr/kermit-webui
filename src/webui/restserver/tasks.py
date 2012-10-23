@@ -10,24 +10,30 @@ from webui import settings
 import socket
 from django.utils import simplejson as json
 import time
+from webui.restserver.utils import convert_parameters_to_hash, convert_filters_to_hash
 
 logger = logging.getLogger(__name__)
 
 @task()
 #TODO: refactor using HTTP lib url generation
 def httpcall(filters, agent, action, args, use_task=True):
+    #Fix for javascript "null" value
+    if filters and filters=='null':
+        filters = None
     http = httplib2.Http(timeout=settings.RUBY_REST_SERVER_TIMEOUT)
     url = settings.RUBY_REST_BASE_URL
-    url += filters + "/"
     url += agent + "/"
     url += action + "/"
+    dictionary = {
+        "filters": convert_filters_to_hash(filters)
+    }
     if args:
-        url += args
+        dictionary["parameters"] = convert_parameters_to_hash(args)
         logger.debug('Calling RestServer on: ' + url)
     if use_task:
         httpcall.update_state(state="PROGRESS", meta={"current": 50, "total": 100})
     try:
-        response, content = http.request(url, "GET")
+        response, content = http.request(url, "POST", headers={'Content-Type': 'application/json; charset=UTF-8'}, body=json.dumps(dictionary),)
     except socket.timeout:
         logger.error("Timeout exception")
         content = "Request Timeout"
@@ -46,19 +52,23 @@ def httpcall(filters, agent, action, args, use_task=True):
 
 @task()
 def httpcallscheduler(filters, agent, action, args, use_task=True):
-    #/schedule/in/0s/no-filter/rpcutil/ping/
+    #Fix for javascript "null" value
+    if filters and filters=='null':
+        filters = None
     http = httplib2.Http(timeout=settings.RUBY_REST_SERVER_TIMEOUT)
     url = settings.RUBY_REST_SCHEDULER_URL + "in/0s/"
-    url += filters + "/"
     url += agent + "/"
     url += action + "/"
+    dictionary = {
+        "filters": convert_filters_to_hash(filters)
+    }
     if args:
-        url += args
+        dictionary["parameters"] = convert_parameters_to_hash(args)
         logger.debug('Calling RestServer on: ' + url)
     if use_task:
         httpcallscheduler.update_state(state="PROGRESS", meta={"current": 50, "total": 100})
     try:
-        response, content = http.request(url, "GET")
+        response, content = http.request(url, "POST", headers={'Content-Type': 'application/json; charset=UTF-8'}, body=json.dumps(dictionary),)
     except socket.timeout:
         logger.error("Timeout exception")
         content = "Request Timeout"
@@ -96,10 +106,13 @@ def httpcallscheduler(filters, agent, action, args, use_task=True):
         
         logger.debug('Job scheduled on backend with id: %s' % jobid)
         finished = False
-        status_url = settings.RUBY_REST_SCHEDULER_STATUS_URL + jobid + '/' + filters
+        status_url = settings.RUBY_REST_SCHEDULER_STATUS_URL + jobid + '/'
+        status_dict = {
+            "filters": convert_filters_to_hash(filters)
+        }
         while not finished:
             logger.debug("Calling status url %s" % status_url)
-            status_response, status_content = http.request(status_url, "GET")
+            status_response, status_content = http.request(status_url, "POST", headers={'Content-Type': 'application/json; charset=UTF-8'}, body=json.dumps(status_dict),)
             if status_response.status == 200:
                 json_content_status = json.loads(status_content)
                 finished = True
@@ -112,8 +125,8 @@ def httpcallscheduler(filters, agent, action, args, use_task=True):
                 if finished:
                     logger.debug('Job finished')
                     finished = True
-                    output_url = settings.RUBY_REST_SCHEDULER_OUTPUT_URL + jobid + '/' + filters
-                    output_response, output_content = http.request(output_url, "GET")
+                    output_url = settings.RUBY_REST_SCHEDULER_OUTPUT_URL + jobid + '/'
+                    output_response, output_content = http.request(output_url, "POST", headers={'Content-Type': 'application/json; charset=UTF-8'}, body=json.dumps(dictionary),)
                     logger.debug('Response: ' + str(output_response))
                     logger.debug('Content: ' + str(output_content))
                     return output_response, output_content, agent, action

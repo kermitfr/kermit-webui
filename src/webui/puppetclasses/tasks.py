@@ -15,7 +15,7 @@ def update_all_puppet_classes(user):
             filters = 'identity_filter=%s' % settings.PUPPET_MASTER_SERVER_HOSTNAME
         else:
             logger.warn("You should specify your puppet master hostname in settings file to improve KermIT performances")
-            filters = "no-filter"
+            filters = None
         resp, content = callRestServer(user, filters, 'puppetagent', 'classlist', None, True, False)
         if resp.getStatus() == 200:
             i = 0

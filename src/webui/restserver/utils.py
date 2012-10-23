@@ -98,9 +98,34 @@ def convert_response(response):
 
 def convert_content(content):
     content_list = []
+    logger.info(content)
     json_content = json.loads(content)
     for msg in json_content:
         content_list.append(KermitMcoContent(msg['data'], msg['statuscode'], msg['sender'], msg['statusmsg']))
     return content_list
-                
+
+def convert_filters_to_hash(filters):
+    filters_dict = {}
+    logger.debug("Passed Filters: %s" % filters)
+    if filters:
+        params_list = filters.split(";")
+        for current_param in params_list:
+            values = current_param.split("=")
+            if not values[0] in filters_dict:
+                filters_dict[values[0]] = []
+            filters_dict[values[0]].append(values[1])
         
+    logger.debug("Filters: %s" % filters_dict)
+    return filters_dict
+        
+def convert_parameters_to_hash(params):
+    params_dict = {}
+    if params:
+        params_list = params.split(";")
+        for current_param in params_list:
+            values = current_param.split("=")
+            if not values[0] in params_dict:
+                params_dict[values[0]] = values[1] 
+        
+    logger.debug("Parameters: %s" % params_dict)
+    return params_dict

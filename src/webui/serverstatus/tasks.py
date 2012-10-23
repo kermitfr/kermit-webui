@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 @task
 def server_basic_info(user):
     try: 
-        response, content = callRestServer(user, 'no-filter', 'nodeinfo', 'basicinfo', None, True, False)
+        response, content = callRestServer(user, None, 'nodeinfo', 'basicinfo', None, True, False)
         if response.getStatus() == 200:
             update_time = datetime.now()
             total_servers = len(content)

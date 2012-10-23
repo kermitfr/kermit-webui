@@ -5,7 +5,7 @@
 
 	function executeOp(baseurl, agent, action, filters, parameters) {
 		if (filters == null || filters == '') {
-			filters = "no-filter";
+			filters = null;
 		}
 		if (baseurl.substr(-1) === "/" ) {
 			var strLen = baseurl.length;
