@@ -81,10 +81,10 @@ install -m 755 ./misc/init/init.d/celerybeat $RPM_BUILD_ROOT/etc/rc.d/init.d/cel
 %{__cp} ./misc/init/sysconfig/celeryd $RPM_BUILD_ROOT/etc/sysconfig/celeryd
 %{__cp} ./misc/init/sysconfig/celeryev $RPM_BUILD_ROOT/etc/sysconfig/celeryev
 %{__cp} ./misc/init/sysconfig/celerybeat $RPM_BUILD_ROOT/etc/sysconfig/celerybeat
+%{__cp} ./misc/selinux/kermitweb.te %$RPM_BUILD_ROOT/etc/kermit/webui/selinux/kermitweb.te
 %if "%dist" == ".el5"
 %{__cp} ./misc/fixes/manage.py $RPM_BUILD_ROOT/usr/share/%{name}/webui/manage.py
 %{__cp} ./misc/httpd.conf/kermit-webui.conf.el5 $RPM_BUILD_ROOT/etc/httpd/conf.d/kermit-webui.conf
-%{__cp} ./misc/selinux/kermitweb.te %$RPM_BUILD_ROOT/etc/kermit/webui/selinux/kermitweb.te
 %{__cp} ./misc/scripts/django.wsgi.el5 $RPM_BUILD_ROOT/etc/kermit/webui/scripts/django.wsgi
 %endif
 #create version file
