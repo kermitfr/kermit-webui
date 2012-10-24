@@ -1,7 +1,7 @@
 Summary: Mcollective WebUI
 Name: kermit-webui
 Version: 1.1
-Release: 1%{dist}
+Release: 2%{dist}
 License: GPL
 Group: Applications/System
 URL: https://github.com/thinkfr/kermit-webui
@@ -47,6 +47,7 @@ Mcollective WebUI
 %{__rm} -rf $RPM_BUILD_ROOT
 %{__mkdir} -p $RPM_BUILD_ROOT/etc/httpd/conf.d
 %{__mkdir} -p $RPM_BUILD_ROOT/etc/kermit/webui
+%{__mkdir} -p $RPM_BUILD_ROOT/etc/kermit/webui/selinux
 %{__mkdir} -p $RPM_BUILD_ROOT/etc/sysconfig
 %{__mkdir} -p $RPM_BUILD_ROOT/etc/rc.d/init.d
 %{__mkdir} -p $RPM_BUILD_ROOT/usr/share/%{name}
@@ -83,6 +84,7 @@ install -m 755 ./misc/init/init.d/celerybeat $RPM_BUILD_ROOT/etc/rc.d/init.d/cel
 %if "%dist" == ".el5"
 %{__cp} ./misc/fixes/manage.py $RPM_BUILD_ROOT/usr/share/%{name}/webui/manage.py
 %{__cp} ./misc/httpd.conf/kermit-webui.conf.el5 $RPM_BUILD_ROOT/etc/httpd/conf.d/kermit-webui.conf
+%{__cp} ./misc/selinux/kermitweb.te %$RPM_BUILD_ROOT/etc/kermit/webui/selinux/kermitweb.te
 %{__cp} ./misc/scripts/django.wsgi.el5 $RPM_BUILD_ROOT/etc/kermit/webui/scripts/django.wsgi
 %endif
 #create version file
