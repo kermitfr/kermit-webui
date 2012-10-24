@@ -1,7 +1,7 @@
 Summary: Mcollective WebUI
 Name: kermit-webui
-Version: 1.0.2
-Release: 4%{dist}
+Version: 1.1
+Release: 1%{dist}
 License: GPL
 Group: Applications/System
 URL: https://github.com/thinkfr/kermit-webui
@@ -115,15 +115,6 @@ echo %{version} > $RPM_BUILD_ROOT/etc/kermit/webui/version.txt
 %pre
 
 %post
-#if [ "$1" -le "1" ] ; then # First install
-#selinux_mode=`/usr/sbin/getenforce`
-#if [ "$selinux_mode" == "Enforcing" ]; then
-#/usr/sbin/semanage fcontext -a -t httpd_sys_content_t /usr/share/%{name}
-#/usr/sbin/semanage fcontext -a -t httpd_sys_content_t "/usr/share/%{name}/db(/.*)?"
-#/sbin/restorecon -R /usr/share/%{name}
-#fi
-#/sbin/service httpd restart > /dev/null 2>&1
-#fi
 
 %preun
 
