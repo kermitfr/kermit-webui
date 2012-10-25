@@ -201,7 +201,7 @@ class StartOC4JInstance(ServerOperation):
         return 'startinstance'
     
     def get_filter(self, hostname):
-        return 'identity_filter=%s' % hostname
+        return 'identity=%s' % hostname
     
     def get_url(self, hostname):
         return None
@@ -249,7 +249,7 @@ class StopOC4JInstance(ServerOperation):
         return 'stopinstance'
     
     def get_filter(self, hostname):
-        return 'identity_filter=%s' % hostname
+        return 'identity=%s' % hostname
     
     def get_url(self, hostname):
         return None

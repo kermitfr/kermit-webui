@@ -199,7 +199,7 @@ def clone_db(request, filters, dialog_name, xhr=None):
                         if server_response.getStatusCode()==0:
                             s_resps.append({"server": server_response.getSender(), "response":server_response.getStatusMessage()})
                             logger.debug("Calling Import on the target server and target instance: %s, %s" % (target_server, target_instance))
-                            new_filter = "identity_filter=%s"%target_server
+                            new_filter = "identity=%s"%target_server
                             if server_response.getData() and "filename" in server_response.getData():
                                 file_name = server_response.getData()["filename"]
                                 response, content = callRestServer(request.user, new_filter, 'oracledb', 'import_database', 'instancename=%s;schema=%s;filename=%s' %(target_instance, schema, file_name), True, True, True)

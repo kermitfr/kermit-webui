@@ -22,7 +22,7 @@ def construct_filters(servers, agent_name=None):
             if not server_db.hostname in filters:
                 filters = "%s_OR_%s" % (filters, server_db.hostname)
         else:
-            filters = "identity_filter=%s" % server_db.hostname
+            filters = "identity=%s" % server_db.hostname
     logger.debug("Filter generated: %s" % filters)
     return filters
     

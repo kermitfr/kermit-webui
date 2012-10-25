@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 def update_all_puppet_classes(user):
     try: 
         if settings.PUPPET_MASTER_SERVER_HOSTNAME:
-            filters = 'identity_filter=%s' % settings.PUPPET_MASTER_SERVER_HOSTNAME
+            filters = 'identity=%s' % settings.PUPPET_MASTER_SERVER_HOSTNAME
         else:
             logger.warn("You should specify your puppet master hostname in settings file to improve KermIT performances")
             filters = None

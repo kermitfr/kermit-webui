@@ -29,7 +29,7 @@ def update_info(user, agent, use_another_task):
     filters = None
     for current in servers_list:
         if current.hostname:
-            filters = "identity_filter=%s" % current.hostname
+            filters = "identity=%s" % current.hostname
             break;
     if filters:
         response, content = callRestServer(user, filters, "agentinfo", "desc", "agentname="+agent.name, True, use_another_task)

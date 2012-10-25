@@ -21,7 +21,7 @@ class StartServer(ServerOperation):
         return 'start.png'
     
     def get_url(self, hostname):
-        return reverse('call_mcollective', kwargs={'filters':'identity_filter=%s'%hostname, 'agent':'rpcutil', 'action':'ping'})
+        return reverse('call_mcollective', kwargs={'filters':'identity=%s'%hostname, 'agent':'rpcutil', 'action':'ping'})
     
 
 class StopServer(ServerOperation):
@@ -39,7 +39,7 @@ class StopServer(ServerOperation):
         return 'stop.png'
     
     def get_url(self, hostname):
-        return reverse('call_mcollective', kwargs={'filters':'identity_filter=%s'%hostname, 'agent':'rpcutil', 'action':'ping'})
+        return reverse('call_mcollective', kwargs={'filters':'identity=%s'%hostname, 'agent':'rpcutil', 'action':'ping'})
     
 #kermit_modules.register(StartServer)
 #kermit_modules.register(StopServer)
