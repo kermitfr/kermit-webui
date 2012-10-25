@@ -61,7 +61,7 @@ def extract_servers(filters, user):
     class_list = filters.split(';')
     for puppet_class in class_list:
         current_filter = puppet_class.split('=')
-        if current_filter[0] == 'class_filter':
+        if current_filter[0] == 'class':
             classes.append(PuppetClass.objects.get(name=current_filter[1]))
         else: 
             try:

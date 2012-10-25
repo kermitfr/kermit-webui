@@ -81,7 +81,7 @@ def hostInventory(request, hostname):
 
 @login_required()
 def hostCallInventory(request, hostname):
-    filters = "identity_filter=%s" % hostname
+    filters = "identity=%s" % hostname
     response, content = callRestServer(request.user, filters, "rpcutil", "inventory", None, True)
     if response.getStatus() == 200:
         jsonObj = []
@@ -167,7 +167,7 @@ def submit_server_edit(request, hostname):
             
             if "forceUpdate" in request.POST and request.POST["forceUpdate"] == "true":
                 logger.info("Calling puppet force update for modified server %s" % hostname)
-                filters = "identity_filter=%s" % hostname
+                filters = "identity=%s" % hostname
                 response, content = callRestServer(request.user, filters, "puppetd", "runonce", None, wait_response=True, use_task=False)
                 if response.getStatus() == 200:
                     for msg in content:

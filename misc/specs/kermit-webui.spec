@@ -1,7 +1,7 @@
 Summary: Mcollective WebUI
 Name: kermit-webui
 Version: 1.1
-Release: 2%{dist}
+Release: 3%{dist}
 License: GPL
 Group: Applications/System
 URL: https://github.com/thinkfr/kermit-webui
@@ -36,12 +36,6 @@ Mcollective WebUI
 %setup -n %{name}
 
 %build
-%if "%dist" == ".el5"
-	python26 src/webui/manage.py syncdb --noinput
-%else
-	python src/webui/manage.py syncdb --noinput
-%endif
-./load_data.sh
 
 %install
 %{__rm} -rf $RPM_BUILD_ROOT
@@ -51,7 +45,6 @@ Mcollective WebUI
 %{__mkdir} -p $RPM_BUILD_ROOT/etc/sysconfig
 %{__mkdir} -p $RPM_BUILD_ROOT/etc/rc.d/init.d
 %{__mkdir} -p $RPM_BUILD_ROOT/usr/share/%{name}
-%{__mkdir} -p $RPM_BUILD_ROOT/var/lib/kermit/webui/db
 %{__mkdir} -p $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}
 %{__mkdir} -p $RPM_BUILD_ROOT/var/www/%{name}
 %{__mkdir} -p $RPM_BUILD_ROOT/var/www/%{name}/uploads
@@ -60,9 +53,7 @@ Mcollective WebUI
 %{__mkdir} -p $RPM_BUILD_ROOT/var/run/celery
 
 %{__cp} -R ./src/* $RPM_BUILD_ROOT/usr/share/%{name}
-%{__cp} -R /tmp/sqlite.db $RPM_BUILD_ROOT/var/lib/kermit/webui/db
 %{__cp} -R ./misc/config/kermit-webui.cfg.prod $RPM_BUILD_ROOT/etc/kermit/kermit-webui.cfg
-#%{__rm} -Rf $RPM_BUILD_ROOT/var/lib/kermit/webui/db/sqlite.db
 %{__rm} -Rf $RPM_BUILD_ROOT/usr/share/%{name}/webui/kermit-webui.cfg
 
 %{__cp} -R ./misc/saml2/* $RPM_BUILD_ROOT/etc/kermit/webui
@@ -73,8 +64,6 @@ Mcollective WebUI
 %{__cp} -R ./README $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}
 %{__cp} ./misc/httpd.conf/kermit-webui.conf $RPM_BUILD_ROOT/etc/httpd/conf.d
 %{__cp} -R README $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}
-#%{__cp} -R ./misc/sql $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}
-#%{__ln_s} -f ../../usr/share/%{name}/settings.py $RPM_BUILD_ROOT/etc/%{name}/
 install -m 755 ./misc/init/init.d/celeryd $RPM_BUILD_ROOT/etc/rc.d/init.d/celeryd
 install -m 755 ./misc/init/init.d/celeryev $RPM_BUILD_ROOT/etc/rc.d/init.d/celeryev
 install -m 755 ./misc/init/init.d/celerybeat $RPM_BUILD_ROOT/etc/rc.d/init.d/celerybeat
@@ -93,7 +82,6 @@ echo %{version} > $RPM_BUILD_ROOT/etc/kermit/webui/version.txt
 
 %clean
 %{__rm} -rf $RPM_BUILD_ROOT
-%{__rm} -rf /tmp/sqlite.db
 
 %files
 %defattr(-,root,root,-) 
@@ -102,10 +90,7 @@ echo %{version} > $RPM_BUILD_ROOT/etc/kermit/webui/version.txt
 %doc /usr/share/doc/*
 
 %config /etc/httpd/conf.d/*
-#%config /usr/share/%{name}/settings.py
-%config(noreplace) %attr(0777,apache,apache) /var/lib/kermit/webui/db/sqlite.db
 %config(noreplace) %attr(0644,apache,apache) /etc/kermit/kermit-webui.cfg
-%attr(0777,apache,apache) %dir /var/lib/kermit/webui/db
 %attr(0750,apache,apache) %dir /var/www/%{name}/uploads
 %attr(0755,apache,apache) %dir /var/log/kermit
 %attr(0755,apache,apache) %dir /var/log/celery

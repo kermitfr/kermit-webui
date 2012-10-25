@@ -171,7 +171,7 @@ class StartWeblogicInstance(ServerOperation):
         return 'startinstance'
     
     def get_filter(self, hostname):
-        return 'identity_filter=%s' % hostname
+        return 'identity=%s' % hostname
     
     def get_url(self, hostname):
         return None
@@ -219,7 +219,7 @@ class StopWeblogicInstance(ServerOperation):
         return 'stopinstance'
     
     def get_filter(self, hostname):
-        return 'identity_filter=%s' % hostname
+        return 'identity=%s' % hostname
     
     def get_url(self, hostname):
         return None

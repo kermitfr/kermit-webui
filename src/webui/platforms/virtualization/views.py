@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 @login_required
 def get_server_details(request, hostname, instance_name, resource_name):
-    filter = "identity_filter=%s"%hostname
+    filter = "identity=%s"%hostname
     server = Server.objects.get(hostname=hostname)
     response, content = callRestServer(request.user, filter, "libvirt", "hvinfo", None, True)
     if response.getStatus() == 200:
@@ -49,7 +49,7 @@ def get_server_details(request, hostname, instance_name, resource_name):
     
     
 def start_vnc_proxy(request, hostname, domain):
-    response, content = callRestServer(request.user, "identity_filter=%s"%hostname, "libvirtvnc", "start_proxy", "domain=%s"%domain, True)
+    response, content = callRestServer(request.user, "identity=%s"%hostname, "libvirtvnc", "start_proxy", "domain=%s"%domain, True)
     if response.getStatus() == 200:
         json_data = []
         for entry in content:
