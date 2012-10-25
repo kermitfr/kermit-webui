@@ -72,6 +72,7 @@ install -m 755 ./misc/init/init.d/celerybeat $RPM_BUILD_ROOT/etc/rc.d/init.d/cel
 %{__cp} ./misc/init/sysconfig/celerybeat $RPM_BUILD_ROOT/etc/sysconfig/celerybeat
 %{__cp} ./misc/selinux/kermitweb.te $RPM_BUILD_ROOT/usr/share/%{name}/selinux/kermitweb.te
 %{__cp} ./misc/selinux/applyse.sh $RPM_BUILD_ROOT/usr/share/%{name}/selinux/applyse.sh
+%{__cp} ./setup.sh $RPM_BUILD_ROOT/usr/share/%{name}/setup.sh
 %if "%dist" == ".el5"
 %{__cp} ./misc/fixes/manage.py $RPM_BUILD_ROOT/usr/share/%{name}/webui/manage.py
 %{__cp} ./misc/httpd.conf/kermit-webui.conf.el5 $RPM_BUILD_ROOT/etc/httpd/conf.d/kermit-webui.conf
@@ -98,6 +99,7 @@ echo %{version} > $RPM_BUILD_ROOT/etc/kermit/webui/version.txt
 %attr(0755,apache,apache) %dir /var/run/celery
 %attr(0755,apache,apache) /usr/share/kermit-webui/webui/manage.py
 %attr(0755,root,root) /usr/share/kermit-webui/selinux/applyse.sh
+%attr(0755,root,root) /usr/share/kermit-webui/setup.sh
 %attr(0755, root, root) /etc/rc.d/init.d/celeryd
 %attr(0755, root, root) /etc/rc.d/init.d/celeryev
 %attr(0755, root, root) /etc/rc.d/init.d/celerybeat
