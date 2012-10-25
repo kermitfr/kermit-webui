@@ -34,10 +34,15 @@ build: clean
 	@echo 'DIST: $(DIST)'
 	@echo '$(RELEASE)'
 	@echo '$(TOPDIR)'
-	@echo "- Create Changelog file"
-	git shortlog > changelog.txt
+	@if test -d .git; then \
+		echo Create changelog file; \
+		git shortlog > changelog.txt; \
+	else \
+		echo Not a git repository. Skipping changelog file creation; \
+	fi
 	mkdir -p ./dist
-	git archive --format=tar --prefix=$(PROGRAMNAME)/ master | gzip > ./dist/$(PROGRAMNAME)-$(RELEASE).tar.gz
+	#git archive --format=tar --prefix=$(PROGRAMNAME)/ master | gzip > ./dist/$(PROGRAMNAME)-$(RELEASE).tar.gz
+	tar czvf ./dist/$(PROGRAMNAME)-$(RELEASE).tar.gz --transform "s,^,/$(PROGRAMNAME)/," *
 
 clean:
 	-rm -rf dist/ 
