@@ -30,12 +30,7 @@ def get_dynamicgroup_tree(request):
             if request.user.has_perm('use_server', dbs):
                 servers.append(dbs)
         classes = check_context_operation_visibility_list(servers)
-        filtername = None
-        for s in servers:
-            if filtername:
-                filtername = "%s;%s" % (filtername, s.hostname)
-            else:
-                filtername = s.hostname
+        filtername = dynag.obj_name
                 
         content = {"isFolder": "true", "id":dynag.id, "title": dynag.name, "key":dynag.name, "filtername":filtername, "classes":classes}
         if len(servers) > 0:
@@ -77,8 +72,8 @@ def post_dynagroup_mods(request, xhr=None):
                 name = form.cleaned_data['name']
                 engine = form.cleaned_data['engine']
                 objname = form.cleaned_data['objname']
-                rule = form.cleaned_data['rule']
-                value = form.cleaned_data['value']
+                #rule = form.cleaned_data['rule']
+                #value = form.cleaned_data['value']
                 update = form.cleaned_data['force_update']
                 if 'dynag_id' in form.cleaned_data:
                     dynag_id = form.cleaned_data['dynag_id']
@@ -89,15 +84,15 @@ def post_dynagroup_mods(request, xhr=None):
                         dynag.name=name
                         dynag.engine=engine
                         dynag.obj_name=objname
-                        dynag.rule=rule
-                        dynag.value=value
+                        #dynag.rule=rule
+                        #dynag.value=value
                         dynag.save()
                         rdict.update({'created':'false'})
                         logger.debug("DynaGroup updated")
                     except: 
                         logger.warn("No DynaGroup with provided id found: %s" % dynag_id)
                 else:
-                    dynag = DynaGroup.objects.create(name=name, engine=engine, obj_name=objname, rule=rule, value=value)
+                    dynag = DynaGroup.objects.create(name=name, engine=engine, obj_name=objname)
                     rdict.update({'created':'true'})
                     logger.debug("DynaGroup created")
                 if update:

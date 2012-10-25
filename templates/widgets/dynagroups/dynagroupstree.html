@@ -49,7 +49,7 @@
 				var filterType
 				//Verifying if the context menu is for a folder or for a server
 				if(node.data.isFolder) {
-					filterType = "identity_filter"
+					filterType = "compound"
 				} else {
 					filterType = "identity_filter"
 				}
@@ -57,7 +57,7 @@
 				//If we are working on a folder the filter should be ffor all servers in the selected group
 				var filtersList = ''
 				if(node.data.isFolder) {
-					var servers_names = node.data.filtername.split(';');
+					/*var servers_names = node.data.filtername.split(';');
 					for(i in servers_names) {
 						if(servers_names[i] != '') {
 							if(filtersList != '') {
@@ -65,7 +65,8 @@
 							}
 							filtersList += filterType + '=' + servers_names[i];
 						}
-					}
+					}*/
+					filtersList += filterType + '=' + node.data.filtername
 				} else {
 					filtersList += filterType + '=' + node.data.filtername
 				}

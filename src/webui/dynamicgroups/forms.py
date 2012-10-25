@@ -22,9 +22,9 @@ class DynaGroupEditForm(forms.Form):
     dynag_id = forms.CharField(widget=HiddenInput, required=False)
     name = forms.CharField(label=u"DynaGroup Name", required=True)
     engine = forms.ChoiceField(label=u"Engine", required=True, choices=ENGINES)
-    objname = forms.CharField(label=u"Object Name", required=True)
-    rule = forms.ChoiceField(label=u"Rule", required=True, choices=RULES)
-    value = forms.CharField(label=u"Value", required=False)
+    objname = forms.CharField(label=u"Expression", required=True, widget=forms.TextInput(attrs={'size':'50'}), help_text="<br/><b>Example</b>:  <i>(kernelversion>2.3 and operatingsystem=Fedora) or operatingsystem=CentOS</i>")
+    #rule = forms.ChoiceField(label=u"Rule", required=False, choices=RULES)
+    #value = forms.CharField(label=u"Value", required=False)
     force_update = forms.BooleanField(required=False,initial=False,label='Force immediately group update')
     
     

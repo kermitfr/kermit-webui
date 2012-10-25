@@ -14,6 +14,8 @@ from webui.core import KermitMcoResponse, KermitMcoContent
 
 logger = logging.getLogger(__name__)
 
+FILTERS_NO_LIST = ['compound']
+
 class Actions(object):
 
     def refresh_dashboard(self, user):
@@ -112,8 +114,20 @@ def convert_filters_to_hash(filters):
         for current_param in params_list:
             values = current_param.split("=")
             if not values[0] in filters_dict:
-                filters_dict[values[0]] = []
-            filters_dict[values[0]].append(values[1])
+                if values[0] not in FILTERS_NO_LIST:
+                    filters_dict[values[0]] = []
+                else:
+                    filters_dict[values[0]] = ""
+            #Fix to allow '=' chars in filter values
+            if len(values)>2:
+                to_apply = '='.join(values[1:])
+            else:
+                to_apply = values[1]
+        
+            if values[0] not in FILTERS_NO_LIST:
+                filters_dict[values[0]].append(to_apply)
+            else:
+                filters_dict[values[0]] = to_apply
         
     logger.debug("Filters: %s" % filters_dict)
     return filters_dict
