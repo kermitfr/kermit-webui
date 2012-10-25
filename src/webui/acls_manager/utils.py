@@ -96,7 +96,7 @@ def add_acl(acl, group=None, user=None):
             add_agent_acl(db_agent, group, user)
         else:
             logger.debug("Assign permission to all agents")
-            all_agents = Agent.objects.filter(enabled=True)
+            all_agents = Agent.objects.filter(enabled=True).order_by("name")
             for agent in all_agents:
                 add_agent_acl(agent, group, user)
             

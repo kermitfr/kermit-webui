@@ -18,23 +18,23 @@ class DashBoardPuppetClasses(Widget):
     
     def get_context(self):
         super_context = super(self.__class__,self).get_context()
-        agents = Agent.objects.filter(enabled=True)
+        agents = Agent.objects.filter(enabled=True).order_by("name")
         actions = {}
         if not self.user.is_superuser:
             if self.user.has_perm('agent.show_widget_agent'):
-                agents = get_objects_for_user(self.user, 'use_agent', Agent).filter(enabled=True)
+                agents = get_objects_for_user(self.user, 'use_agent', Agent).filter(enabled=True).order_by("name")
                 #Fix added to filter agents actions on set acls
                 for agent in agents:
                     if not self.user.is_superuser:
-                        current_actions = get_objects_for_user(self.user, 'use_action', Action).filter(agent=agent)
+                        current_actions = get_objects_for_user(self.user, 'use_action', Action).filter(agent=agent).order_by("name")
                         actions[agent.name] = current_actions
                 if not actions:
                     agents = {}
             else: 
                 agents = {}
-        operations = Operation.objects.filter(enabled=True)
+        operations = Operation.objects.filter(enabled=True).order_by("name")
         if not self.user.is_superuser:
-            operations = get_objects_for_user(self.user, 'execute_operation', Operation).filter(enabled=True)
+            operations = get_objects_for_user(self.user, 'execute_operation', Operation).filter(enabled=True).order_by("name")
             
         context_operations = kermit_modules.extract(ContextOperation)
         automatic_operations = {}

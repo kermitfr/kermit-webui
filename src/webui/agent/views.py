@@ -18,12 +18,12 @@ logger = logging.getLogger(__name__)
 class QueryMethods(object):
     
     def get_action_tree(self, request, agent, action, filters, dialog_name, response_container):
-        agents = Agent.objects.filter(enabled=True)
+        agents = Agent.objects.filter(enabled=True).order_by("name")
         if not request.user.is_superuser:
             agents = get_objects_for_user(request.user, 'use_agent', Agent).filter(enabled=True)
         data = []
         for agent in agents:
-            db_actions = agent.actions
+            db_actions = agent.actions.order_by("name")
             actions = []
             for action in db_actions.iterator():
                 if request.user.has_perm('use_action', action):

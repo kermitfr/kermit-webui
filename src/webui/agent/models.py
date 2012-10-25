@@ -36,6 +36,7 @@ class Action(models.Model):
         permissions = (
             ('use_action', 'Can use action'),
         )
+        ordering = ['name']
     
 class ActionOutput(models.Model):
     name = models.CharField(max_length=255)

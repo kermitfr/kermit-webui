@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 def get_dynamicgroup_tree(request):
     dynagroups = DynaGroup.objects.all()
     if not request.user.is_superuser:
-        dynagroups = get_objects_for_user(request.user, 'use_agent', DynaGroup).filter(enabled=True)
+        dynagroups = get_objects_for_user(request.user, 'use_agent', DynaGroup).filter(enabled=True).order_by("name")
     data = []
     for dynag in dynagroups:
         dbservers = dynag.servers
