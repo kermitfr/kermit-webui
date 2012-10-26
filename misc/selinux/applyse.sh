@@ -2,7 +2,7 @@
 /usr/sbin/setsebool -P httpd_can_network_connect on
 /usr/sbin/setsebool -P httpd_can_network_connect_db on
 
-cp /etc/kermit/webui/selinux/kermitweb.te /tmp
+cp /usr/share/kermit-webui/selinux/kermitweb.te /tmp
 cd /tmp
 make -f /usr/share/selinux/devel/Makefile
 semodule -i kermitweb.pp

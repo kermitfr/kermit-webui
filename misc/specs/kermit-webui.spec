@@ -10,10 +10,10 @@ Source: %{name}-%{version}.tar.gz
 Requires: httpd, Django, django-grappelli, django-guardian, django-celery, django-kombu, uuid, redis, django-picklefield
 
 %if "%dist" == ".el5"
-Requires: python(abi) = 2.6, python26-mod_wsgi, python26-httplib2, ordereddict, python26-redis, python26-docutils 
+Requires: python(abi) = 2.6, python26-mod_wsgi, python26-httplib2, ordereddict, python26-redis, python26-docutils, selinux-policy-devel 
 BuildRequires: ordereddict 
 %else
-Requires: python(abi) >= 2.6, mod_wsgi, python-httplib2, python-redis, python-ordereddict, python-docutils
+Requires: python(abi) >= 2.6, mod_wsgi, python-httplib2, python-redis, python-ordereddict, python-docutils, selinux-policy
 #BuildRequires: python-ordereddict 
 %endif
 
@@ -51,6 +51,7 @@ Mcollective WebUI
 %{__mkdir} -p $RPM_BUILD_ROOT/var/log/kermit
 %{__mkdir} -p $RPM_BUILD_ROOT/var/log/celery
 %{__mkdir} -p $RPM_BUILD_ROOT/var/run/celery
+%{__mkdir} -p $RPM_BUILD_ROOT/var/lib/kermit/webui/db
 
 %{__cp} -R ./src/* $RPM_BUILD_ROOT/usr/share/%{name}
 %{__cp} -R ./misc/config/kermit-webui.cfg.prod $RPM_BUILD_ROOT/etc/kermit/kermit-webui.cfg
@@ -93,6 +94,7 @@ echo %{version} > $RPM_BUILD_ROOT/etc/kermit/webui/version.txt
 
 %config /etc/httpd/conf.d/*
 %config(noreplace) %attr(0644,apache,apache) /etc/kermit/kermit-webui.cfg
+%attr(0777,apache,apache) %dir /var/lib/kermit/webui/db
 %attr(0750,apache,apache) %dir /var/www/%{name}/uploads
 %attr(0755,apache,apache) %dir /var/log/kermit
 %attr(0755,apache,apache) %dir /var/log/celery
