@@ -5,19 +5,25 @@
 
 <!-- JAVASCRIPTS -->
 {% block javascripts %}
-    {{ block.super }}
+{{ block.super }}
 {% endblock %}
+
+{% block title %}{% trans 'Kermit Admin Area' %}{% endblock %}
 
 <!-- COLTYPE/BODYCLASS-- >
 {% block bodyclass %}dashboard{% endblock %}
 {% block content-class %}content-grid{% endblock %}
 
 <!-- BREADCRUMBS -->
-{% block breadcrumbs %}<div id="breadcrumbs">{% trans "Home" %}</div>{% endblock %}
+{% block breadcrumbs %}
+<div id="breadcrumbs">
+	{% trans "Home" %}
+</div>
+{% endblock %}
 {% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
 
 <!-- Extra Heads -->
-{% block extrahead %} 
+{% block extrahead %}
 {{ block.super }}
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery-1.6.2.min.js"></script>
 <link type="text/css" href="{{STATIC_URL}}css/kermit/jquery-ui-1.8.15.custom.css" rel="stylesheet" />
@@ -37,19 +43,42 @@
 		z-index: 99999999;
 		background-image: url("{{STATIC_URL}}images/transparentbg.png");
 	}
-	
+
 	#loader {
 		position: relative;
 		left: 50%;
 		top: 50%;
 	}
+
+	.ui-accordion-header {
+		color: #444;
+	}
+	
+	.ui-accordion-header.ui-state-default, .module .ui-accordion-header.ui-state-default {
+		border: 1px solid #BDBDBD;
+		background-color: #A1D4E5;
+		background: -moz-linear-gradient(top, #E3E3E3, #D6D6D6);
+		background: -webkit-gradient(linear, left top, left bottom, from(#E3E3E3), to(#D6D6D6));
+		background: -o-linear-gradient(top, #E3E3E3, #D6D6D6);
+	}
+	
+	.ui-accordion-header.ui-state-active, .module .ui-accordion-header.ui-state-active {
+		border: 1px solid #BDBDBD;
+		background: -moz-linear-gradient(top, #E3E3E3, #D6D6D6);
+		background: -webkit-gradient(linear, left top, left bottom, from(#E3E3E3), to(#D6D6D6));
+		background: -o-linear-gradient(top, #E3E3E3, #D6D6D6);
+    }
+	
+	
 </style>
 {% endblock %}
 
 <!-- CONTENT -->
 {% block content %}
 <style>
-	.ui-progressbar-value { background-image: url("{{STATIC_URL}}images/redmond/pbar-ani.gif"); }
+	.ui-progressbar-value {
+		background-image: url("{{STATIC_URL}}images/redmond/pbar-ani.gif");
+	}
 </style>
 <div id="modalprogress">
 	<div id="progressbar"></div>
@@ -59,8 +88,8 @@
 	function executeActionNoProgress(url) {
 		//$("#" + destination).empty();
 		$.ajax({
-			url: url,
-			type: 'get',
+			url : url,
+			type : 'get',
 			beforeSend : function() {
 				$('#loading').show()
 			},
@@ -73,7 +102,7 @@
 			success : function() {
 				showMessageDialog("{% trans 'Operation Completed' %}", "{% trans 'OK'%}");
 			},
-			timeout: 120000
+			timeout : 120000
 		});
 	}
 
@@ -84,45 +113,49 @@
 			height : 100,
 			width : 500
 		});
-		$( "#progressbar" ).progressbar({ value: 0 });
-		$( "#taskstate").html('<b>Waiting...	</b>');
+		$("#progressbar").progressbar({
+			value : 0
+		});
+		$("#taskstate").html('<b>Waiting...	</b>');
 		//$("#" + destination).empty();
 		$.get(url, function(data) {
 			//$('#' + destination).html(data);
 			var checkStatus = function() {
 				var generated_url = generate_url(data.taskname, data.UUID);
-		    	$.getJSON(generated_url, function(result) {
-		    		$( "#progressbar").progressbar({ value: result.value });
-					$( "#taskstate").html('<b>' + result.state + '</b>');	
-			        if(result.state!='SUCCESS' && result.state!='FAILURE') {
-			            setTimeout(checkStatus, 2000);
-			        } else {
-			        	$('#modalprogress').dialog('close');
-			        }
-		        // do something else
-    		 	});
+				$.getJSON(generated_url, function(result) {
+					$("#progressbar").progressbar({
+						value : result.value
+					});
+					$("#taskstate").html('<b>' + result.state + '</b>');
+					if (result.state != 'SUCCESS' && result.state != 'FAILURE') {
+						setTimeout(checkStatus, 2000);
+					} else {
+						$('#modalprogress').dialog('close');
+					}
+					// do something else
+				});
 			}
 			if (data.UUID) {
 				checkStatus();
 			} else {
 				if (data.error) {
-					$( "#taskstate").html(data.error);
+					$("#taskstate").html(data.error);
 				}
-				//$('#modalprogress').dialog('close');	
+				//$('#modalprogress').dialog('close');
 			}
 		});
 	}
-	
-	function generate_url(taskname, uuid){
-	    return "{% url get_progress taskname=12345 taskid=6789 %}".replace("12345", taskname).replace("6789", uuid);
+
+	function generate_url(taskname, uuid) {
+		return "{% url get_progress taskname=12345 taskid=6789 %}".replace("12345", taskname).replace("6789", uuid);
 	}
-	
+
 	$(function() {
-        $( "#accordion" ).accordion({
-            collapsible: true,
-            active: false
-        });
-    });
+		$("#accordion").accordion({
+			collapsible : true,
+			active : false
+		});
+	}); 
 </script>
 
 <div id="loading">
@@ -135,58 +168,64 @@
 <div class="container-grid">
 	<div id="uploadForm"></div>
 	<div class="span-22" style="padding-bottom: 10px;">
-	<div id="accordion">
-    	<h3>&nbsp;&nbsp;{% trans 'DataBase' %}</h3>
-    	<div>
-			{% if app_list %}
-	            {% for app in app_list %}
-	                <div class="module" id="app_{{ app.name|lower }}">
-	                    <h2><a href="{{ app.app_url }}" class="section">{% trans app.name %}</a></h2>
-	                    {% for model in app.models %}
-	                        <div class="row">
-	                            {% if model.perms.change %}<a href="{{ model.admin_url }}">{{ model.name }}</a>{% else %}<span>{{ model.name }}</span>{% endif %}
-	                            <ul class="actions">
-	                                <li class="add-link">{% if model.perms.add %}<a href="{{ model.admin_url }}add/">{% trans 'Add' %}</a>{% else %}&nbsp;{% endif %}</li>
-	                                <li class="change-link"> {% if model.perms.change %}<a href="{{ model.admin_url }}">{% trans 'Change' %}</a>{% else %}&nbsp;{% endif %}</li>
-	                            </ul>
-	                       </div>
-	                   {% endfor %}
-	               </div>
-	           {% endfor %}
-	        {% else %}
-	            <p>{% trans "You don´t have permission to edit anything." %}</p>
-	        {% endif %}
+		<div id="accordion">
+			<h3>&nbsp;&nbsp;{% trans 'DataBase' %}</h3>
+			<div>
+				{% if app_list %}
+				{% for app in app_list %}
+				<div class="module" id="app_{{ app.name|lower }}">
+					<h2><a href="{{ app.app_url }}" class="section">{% trans app.name %}</a></h2>
+					{% for model in app.models %}
+					<div class="row">
+						{% if model.perms.change %}<a href="{{ model.admin_url }}">{{ model.name }}</a>{% else %}<span>{{ model.name }}</span>{% endif %}
+						<ul class="actions">
+							<li class="add-link">
+								{% if model.perms.add %}<a href="{{ model.admin_url }}add/">{% trans 'Add' %}</a>{% else %}&nbsp;{% endif %}
+							</li>
+							<li class="change-link">
+								{% if model.perms.change %}<a href="{{ model.admin_url }}">{% trans 'Change' %}</a>{% else %}&nbsp;{% endif %}
+							</li>
+						</ul>
+					</div>
+					{% endfor %}
+				</div>
+				{% endfor %}
+				{% else %}
+				<p>
+					{% trans "You don´t have permission to edit anything." %}
+				</p>
+				{% endif %}
+			</div>
 		</div>
-	</div>
 	</div>
 	<div class="column span-12">
 		<div class="module actions" id="custom-refresh-action-module">
-		<h2>{% trans 'Refresh Actions' %}</h2>
-		<ul class="actionlist">
-			<li>
-				<a href="#" onclick="executeActionNoProgress('{% url action_executer "refresh_dashboard" "SYNC"%}');">{% trans 'Refresh Widgets' %}</a>
-			</li>
-			<li>
-				<a href="#" onclick="executeAction('Refresh Server Basic Info', '{% url action_executer "refresh_server_basic_info" "ASYNC"%}');">{% trans 'Refresh Server Basic Info' %}</a>
-			</li>
-			<li>
-				<a href="#" onclick="executeAction('Refresh Server Inventory', '{% url action_executer "refresh_server_inventory" "ASYNC" %}');">{% trans 'Refresh Server Inventory' %}</a>
-			</li>
-			<li>
-				<a href="#" onclick="executeAction('Update Agents Info', '{% url action_executer "update_agents" "ASYNC"%}');">{% trans 'Update Agents Info' %}</a>
-			</li>
-			<li>
-				<a href="#" onclick="executeAction('Update User Groups', '{% url action_executer "update_user_groups" "ASYNC"%}');">{% trans 'Update User Groups' %}</a>
-			</li>
-			<li>
-				<a href="#" oncliactive: false,ck="executeAction('Update Puppet Classes', '{% url action_executer "updated_puppet_classes" "ASYNC"%}');">{% trans 'Update Puppet Classes' %}</a>
-			</li>
-			<li>
-				<a href="#" onclick="executeAction('Update Dynamic Groups', '{% url action_executer "updated_dyna_groups" "ASYNC"%}');">{% trans 'Update Dynamic Groups' %}</a>
-			</li>
-		</ul>
+			<h2>{% trans 'Refresh Actions' %}</h2>
+			<ul class="actionlist">
+				<li>
+					<a href="#" onclick="executeActionNoProgress('{% url action_executer "refresh_dashboard" "SYNC"%}');">{% trans 'Refresh Widgets' %}</a>
+				</li>
+				<li>
+					<a href="#" onclick="executeAction('Refresh Server Basic Info', '{% url action_executer "refresh_server_basic_info" "ASYNC"%}');">{% trans 'Refresh Server Basic Info' %}</a>
+				</li>
+				<li>
+					<a href="#" onclick="executeAction('Refresh Server Inventory', '{% url action_executer "refresh_server_inventory" "ASYNC" %}');">{% trans 'Refresh Server Inventory' %}</a>
+				</li>
+				<li>
+					<a href="#" onclick="executeAction('Update Agents Info', '{% url action_executer "update_agents" "ASYNC"%}');">{% trans 'Update Agents Info' %}</a>
+				</li>
+				<li>
+					<a href="#" onclick="executeAction('Update User Groups', '{% url action_executer "update_user_groups" "ASYNC"%}');">{% trans 'Update User Groups' %}</a>
+				</li>
+				<li>
+					<a href="#" oncliactive: false,ck="executeAction('Update Puppet Classes', '{% url action_executer "updated_puppet_classes" "ASYNC"%}');">{% trans 'Update Puppet Classes' %}</a>
+				</li>
+				<li>
+					<a href="#" onclick="executeAction('Update Dynamic Groups', '{% url action_executer "updated_dyna_groups" "ASYNC"%}');">{% trans 'Update Dynamic Groups' %}</a>
+				</li>
+			</ul>
 		</div>
-    </div>
+	</div>
 	<div class="column span-10">
 		<div class="module actions" id="custom-import-action-module">
 			<h2>{% trans 'Import Actions' %}</h2>
@@ -208,21 +247,27 @@
 			</ul>
 		</div>
 		<div class="module actions" id="recent-actions-module">
-            <h2>{% trans 'Recent Actions' %}</h2>
-            <div class="module">
-                <h3>{% trans 'My Actions' %}</h3>
-                {% get_admin_log 10 as admin_log for_user user %}
-                {% if not admin_log %}
-                    <p>{% trans 'None available' %}</p>
-                {% else %}
-                    <ul>
-                        {% for entry in admin_log %}
-                            <li class="{% if entry.is_addition %}add-link{% endif %}{% if entry.is_change %}change-link{% endif %}{% if entry.is_deletion %}delete-link{% endif %}">{% if not entry.is_deletion %}<a href="{{ entry.get_admin_url }}">{% endif %}{{ entry.object_repr }}{% if not entry.is_deletion %}</a>{% endif %}<br /><span class="mini quiet">{% filter capfirst %}{% trans entry.content_type.name %}{% endfilter %}</span></li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </div>
-        </div>
+			<h2>{% trans 'Recent Actions' %}</h2>
+			<div class="module">
+				<h3>{% trans 'My Actions' %}</h3>
+				{% get_admin_log 10 as admin_log for_user user %}
+				{% if not admin_log %}
+				<p>
+					{% trans 'None available' %}
+				</p>
+				{% else %}
+				<ul>
+					{% for entry in admin_log %}
+					<li class="{% if entry.is_addition %}add-link{% endif %}{% if entry.is_change %}change-link{% endif %}{% if entry.is_deletion %}delete-link{% endif %}">
+						{% if not entry.is_deletion %}<a href="{{ entry.get_admin_url }}">{% endif %}{{ entry.object_repr }}{% if not entry.is_deletion %}</a>{% endif %}
+						<br />
+						<span class="mini quiet">{% filter capfirst %}{% trans entry.content_type.name %}{% endfilter %}</span>
+					</li>
+					{% endfor %}
+				</ul>
+				{% endif %}
+			</div>
+		</div>
 	</div>
 </div>
 {% endblock %}

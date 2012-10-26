@@ -10,7 +10,7 @@ from webui.restserver.utils import convert_response, convert_content
 
 logger = logging.getLogger(__name__)
 
-def callRestServer(user, filters, agent, action, args=None, wait_response=False, use_task=True, use_backend_scheduler=False):
+def callRestServer(user, filters, agent, action, args=None, wait_response=False, use_task=True, use_backend_scheduler=False, limit=None):
     logger.info("%s is calling agent %s action %s on %s" % (user, agent, action, filters))
     
     if use_task:
@@ -18,7 +18,7 @@ def callRestServer(user, filters, agent, action, args=None, wait_response=False,
         if use_backend_scheduler:
             logger.info("Action will be executed with the backend scheduler")
             task_name = "webui.restserver.tasks.httpcallscheduler"
-        result = send_task(task_name, [filters, agent, action, args])
+        result = send_task(task_name, [filters, agent, action, args, use_task, limit])
         logger.debug("Storing task reference in database")
         try:
             BackendJob.objects.create(user=user, task_uuid=result.task_id, run_at=datetime.now())
@@ -34,9 +34,9 @@ def callRestServer(user, filters, agent, action, args=None, wait_response=False,
     else:
         logger.debug("Running MCollective call without using another task")
         if use_backend_scheduler:
-            response, content, agent, action = httpcallscheduler(filters, agent, action, args, use_task)
+            response, content, agent, action = httpcallscheduler(filters, agent, action, args, use_task, limit)
         else:
-            response, content, agent, action = httpcall(filters, agent, action, args, use_task)
+            response, content, agent, action = httpcall(filters, agent, action, args, use_task, limit)
             
     return convert_response(response), convert_content(content)
 

@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 @task()
 #TODO: refactor using HTTP lib url generation
-def httpcall(filters, agent, action, args, use_task=True):
+def httpcall(filters, agent, action, args, use_task=True, limit=None):
     #Fix for javascript "null" value
     if filters and filters=='null':
         filters = None
@@ -27,6 +27,8 @@ def httpcall(filters, agent, action, args, use_task=True):
     dictionary = {
         "filters": convert_filters_to_hash(filters)
     }
+    if limit:
+        dictionary["limit"] = {"targets": 1, "method":"random"}
     if args:
         dictionary["parameters"] = convert_parameters_to_hash(args)
         logger.debug('Calling RestServer on: ' + url)
