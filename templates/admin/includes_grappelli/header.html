@@ -31,16 +31,19 @@
             <!-- Userlinks -->
             {% block userlinks %}
             	<li><a href="{% url main_kermit %}">{% trans 'Back to Dashboard' %}</a></li>
+            	<li><a href="http://www.kermit.fr" target="_black">{% trans 'KermIT WebSite' %}</a></li>
                 <!-- JS tests -->
                 {% url test-index as testindexurl %}
                 {% if testindexurl %}
                     <li><a href="{{ testindexurl }}">{% trans 'Tests' %}</a></li>
                 {% endif %}
+                <li><a href="http://www.kermit.fr/kermit/doc/">{% trans 'Documentation' %}</a></li>
                 <!-- Documentation -->
                 {% url django-admindocs-docroot as docsroot %}
                 {% if docsroot %}
-                    <li><a href="{{ docsroot }}">{% trans 'Documentation' %}</a></li>
+                    <li><a href="{{ docsroot }}">{% trans 'Development Doc' %}</a></li>
                 {% endif %}
+                
             {% endblock %}
         </ul>
     {% endif %}
