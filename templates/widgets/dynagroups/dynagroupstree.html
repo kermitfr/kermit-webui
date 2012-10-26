@@ -123,10 +123,33 @@
 				          $(this).dialog("close");
 				        }
 				      }
-				    });
+				    } );
 				
 				    $("#dynagroup-dialog").dialog("open");
-				}
+				} else if ($(this).attr('type') == "dynagroup_refresh") {
+		        	$.ajax({
+						// The link we are accessing.
+						url : "{% url refresh_dynamicgroup dynagroup_id=12345%}".replace('12345', node.data.id),
+						// The type of request.
+						type : "get",
+						// The type of data that is getting returned.
+						dataType : "html",
+						error : function() {
+							//TODO: Show error message
+							$('#loading').hide();
+							showMessageDialog("{% trans 'Cannot contact server for refresh group operation' %}", "{% trans 'OK' %}");
+						},
+						beforeSend : function() {
+							$('#loading').show();
+						},
+						complete : function() {
+							$('#loading').hide();
+						},
+						success : function(data) {
+							showMessageDialog("{% trans 'DynamicGroup successfully refreshed' %}", "{% trans 'OK' %}");	
+						}
+					});  
+			    }
 
 				$(context).animate({
 					borderWidth : '0',
@@ -384,6 +407,9 @@
 				</li>
 				<li class="icon" type="dynagroup_del">
 					<span class="icon delete"></span>Delete Group
+				</li>
+				<li class="icon" type="dynagroup_refresh">
+					<span class="icon refresh"></span>Refresh Group
 				</li>
 			</ul>
 		</li>

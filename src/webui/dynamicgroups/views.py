@@ -14,6 +14,7 @@ from django.template.loader import render_to_string
 from django.template.context import RequestContext
 from webui.dynamicgroups import tasks
 from webui.puppetclasses.views import check_context_operation_visibility_list
+from webui import dynamicgroups
 
 logger = logging.getLogger(__name__)
 
@@ -116,6 +117,15 @@ def delete_dynamicgroup(request, dynagroup_id):
     try:
         dynag = DynaGroup.objects.get(id=dynagroup_id)
         dynag.delete()
+    except:
+        logger.warn("Cannot find DynamicGroup with provided id")
+    return HttpResponse('', mimetype='application/javascript')
+
+def refresh_dynamicgroup(request, dynagroup_id):
+    logger.debug("Refreshing DynamicGroup with id %s" % dynagroup_id)
+    try:
+        dynag = DynaGroup.objects.get(id=dynagroup_id)
+        dynamicgroups.tasks.update_single_dyna(request.user, dynag)
     except:
         logger.warn("Cannot find DynamicGroup with provided id")
     return HttpResponse('', mimetype='application/javascript')
