@@ -2,7 +2,7 @@
 #
 # celeryd - Starts the Celery worker daemon.
 #
-# chkconfig: 345 20 80
+# chkconfig: 345 90 10
 # description: Starts and stops Celery Service
 #
 # /etc/rc.d/init.d/celeryd

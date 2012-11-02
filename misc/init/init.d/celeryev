@@ -2,7 +2,7 @@
 #
 # celeryev - Starts the CeleryEV Snapshot worker daemon.
 #
-# chkconfig: 345 20 80
+# chkconfig: 345 90 20
 # description: Starts and stops CeleryEV Snapshot Service
 #
 # /etc/rc.d/init.d/celeryev
