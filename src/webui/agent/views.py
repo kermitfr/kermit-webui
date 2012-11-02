@@ -89,13 +89,13 @@ def execute_action_form(request, agent, action, filters, dialog_name, response_c
                 logger.debug("Parameters check: OK.")
                 logger.debug("Creating args")
                 arguments=None
-                for input in inputs:
-                    if form.cleaned_data[input['name']]:
+                for input_data in inputs:
+                    if form.cleaned_data[input_data['name']]:
                         if arguments:
                             arguments = arguments + ';'
                         else:
                             arguments = ''
-                        arguments = arguments + input['name'] + '=' + form.cleaned_data[input['name']] 
+                        arguments = arguments + input_data['name'] + '=' + form.cleaned_data[input_data['name']] 
                 
                 logger.debug("Arguments for MCollective call %s" % arguments)
                 wait_for_response = False

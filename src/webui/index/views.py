@@ -33,7 +33,3 @@ def logout_view(request):
     logout(request)
     response = redirect(settings.LOGIN_URL)
     return response
- 
-@login_required()
-def credits(request):
-    return render_to_response('index/credits.html', context_instance=RequestContext(request))
