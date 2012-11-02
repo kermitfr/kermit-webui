@@ -1,5 +1,4 @@
 import logging
-from webui.django_cron.base import Job, cronScheduler
 import sys
 from webui import settings
 from django.utils.importlib import import_module
