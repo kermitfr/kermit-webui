@@ -31,7 +31,7 @@ def get(request, filters, agent, action, args=None, wait_for_response=False):
     #Fix for unicode wait_for_response variable (actually used in url only for Virtualization Platform)
     if wait_for_response == "false" or wait_for_response == "False":
         wait_for_response = False
-    else:
+    elif wait_for_response == "true" or wait_for_response == "True":
         wait_for_response = True
         
     if verify_agent_acl(request.user, agent) and verify_action_acl(request.user, agent, action):
