@@ -1,10 +1,10 @@
 [webui]
 base_url=
-rest_server_url=http://localhost:4567/mcollective/
-rest_server_ping_url=http://localhost:4567/
-rest_server_scheduler=http://localhost:4567/schedule/
-rest_server_scheduler_status=http://localhost:4567/schedstatus/
-rest_server_scheduler_output=http://localhost:4567/schedoutput/
+rest_server_url=http://localhost/mcollective/
+rest_server_ping_url=http://localhost/
+rest_server_scheduler=http://localhost/schedule/
+rest_server_scheduler_status=http://localhost/schedstatus/
+rest_server_scheduler_output=http://localhost/schedoutput/
 amqp_receive_inventory_folder=/var/lib/kermit/queue/kermit.inventory
 amqp_receive_log_folder=/var/lib/kermit/queue/kermit.log
 static_file_location=/var/www/kermit-webui/
@@ -36,7 +36,7 @@ user=
 password=
 
 #Sample PostgreSQL configuration
-#driver=postgresql_psycopg2
+#driver=django.db.backends.postgresql_psycopg2
 #name=kermit
 #host=
 #port=
@@ -72,9 +72,9 @@ puppetmaster_hostname=puppet
 xmlsec.binary=/usr/bin/xmlsec1
 entityId=AutomatixD1
 serviceprovider.name="Automatix Service Provider"
-serviceprovider.url.login=http://npplam01.preprod.org/automatix/auth/saml2/SSO/
-serviceprovider.url.logout=http://npplam01.preprod.org/automatix/saml2/logout/
-idp.url.login=https://preprod.idpdecathlon.oxylane.com:9031/idp/SSO.saml2
-idp.url.logout=https://preprod.idpdecathlon.oxylane.com:9031/idp/SLO.saml2
+serviceprovider.url.login=http://kermit/auth/saml2/SSO/
+serviceprovider.url.logout=http://kermit/auth/saml2/logout/
+idp.url.login=https://server/idp/SSO.saml2
+idp.url.logout=https://server/idp/SLO.saml2
 
 
