@@ -30,9 +30,9 @@ DATABASES = {
         'HOST': CONF.get('webui-database', 'host'),    # Set to empty string for localhost. Not used with sqlite3.
         'PORT': CONF.get('webui-database', 'port'),    # Set to empty string for default. Not used with sqlite3.
         #Options for PostgreSQL database backend
-        'OPTIONS': {
-            'autocommit': True,
-        }
+        #'OPTIONS': {
+        #    'autocommit': True,
+        #}
     }
 }
 
@@ -86,7 +86,7 @@ STATIC_URL = '/static/'
 # Make sure to use a trailing slash.
 # Examples: "http://foo.com/static/admin/", "/static/admin/".
 #ADMIN_MEDIA_PREFIX = '/static/admin/'
-ADMIN_MEDIA_PREFIX = STATIC_URL + "grappelli/"
+#ADMIN_MEDIA_PREFIX = STATIC_URL + "grappelli/"
 
 # Additional locations of static files
 #Configuring static file by-exception

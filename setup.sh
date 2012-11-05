@@ -13,7 +13,7 @@ fi
 echo "* Importing base data"
 rpm -q Django | grep -q 1.4
 if [ $? -eq 0 ]; then
-    $PY $MANAGE_FILE loaddata basedata-django1.4.1
+    $PY $MANAGE_FILE loaddata basedata-django14
 else
     $PY $MANAGE_FILE loaddata basedata
 fi

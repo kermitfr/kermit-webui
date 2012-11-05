@@ -1,13 +1,13 @@
 Summary: Mcollective WebUI
 Name: kermit-webui
-Version: 1.1
-Release: 6%{dist}
+Version: 1.2
+Release: 1%{dist}
 License: GPL
 Group: Applications/System
 URL: https://github.com/thinkfr/kermit-webui
 Source: %{name}-%{version}.tar.gz
 
-Requires: httpd, Django, django-grappelli, django-guardian, django-celery, django-kombu, uuid, redis, django-picklefield
+Requires: httpd, Django >= 1.4, django-grappelli = 2.4.2, django-guardian = 1.0.4, django-celery, django-kombu, uuid, redis, django-picklefield
 
 %if "%dist" == ".el5"
 Requires: python(abi) = 2.6, python26-mod_wsgi, python26-httplib2, ordereddict, python26-redis, python26-docutils, selinux-policy-devel 
@@ -23,9 +23,10 @@ Requires: python-dateutil15
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch: noarch
+BuildRequires: Django >= 1.4
 BuildRequires: django-picklefield
-BuildRequires: django-grappelli
-BuildRequires: django-guardian
+BuildRequires: django-grappelli = 2.4.2
+BuildRequires: django-guardian = 1.0.4
 BuildRequires: django-celery
 BuildRequires: django-kombu
 
