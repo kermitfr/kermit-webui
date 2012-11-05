@@ -2,7 +2,6 @@ from celery.task import task
 from webui.restserver.communication import callRestServer
 import logging
 from webui.dynamicgroups.models import DynaGroup
-from webui.dynamicgroups import utils
 from webui.serverstatus.models import Server
 
 logger = logging.getLogger(__name__)
@@ -25,7 +24,6 @@ def update_dyna_group(user):
 def update_single_dyna(user, dynag):
     dynag.servers.clear()
     if dynag.engine == 'Facter':
-        #response, content = callRestServer(user, None, 'rpcutil', 'get_fact', "fact=%s" % dynag.obj_name, True, False)
         response, content = callRestServer(user, "compound=%s"%dynag.obj_name, 'rpcutil', 'ping', None, True, False)
         if response.getStatus() == 200:
             for sresp in content:
