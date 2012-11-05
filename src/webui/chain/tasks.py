@@ -4,7 +4,7 @@ Created on Dec 20, 2011
 @author: mmornati
 '''
 
-from celery.decorators import task
+from celery.task import task
 import logging
 from webui.restserver.communication import callRestServer
 from django.utils import simplejson as json

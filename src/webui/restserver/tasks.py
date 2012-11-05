@@ -3,7 +3,7 @@ Created on Nov 23, 2011
 
 @author: mmornati
 '''
-from celery.decorators import task
+from celery.task import task
 import logging
 import httplib2
 from webui import settings

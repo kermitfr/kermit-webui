@@ -1,4 +1,4 @@
-from celery.decorators import task
+from celery.task import task
 from webui.restserver.communication import callRestServer
 import logging
 from webui.dynamicgroups.models import DynaGroup

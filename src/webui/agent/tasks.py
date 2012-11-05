@@ -3,7 +3,7 @@ Created on Nov 16, 2011
 
 @author: mmornati
 '''
-from celery.decorators import task
+from celery.task import task
 from webui.agent.models import Agent
 import logging
 from webui.agent.utils import update_info

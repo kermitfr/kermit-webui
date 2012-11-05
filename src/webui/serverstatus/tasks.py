@@ -3,7 +3,7 @@ Created on Nov 17, 2011
 
 @author: mmornati
 '''
-from celery.decorators import task
+from celery.task import task
 import logging
 from webui.restserver.communication import callRestServer
 from datetime import datetime

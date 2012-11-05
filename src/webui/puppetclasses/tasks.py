@@ -1,5 +1,5 @@
 #mco rpc puppetagent classlist --with-id=/puppet/ --verbose
-from celery.decorators import task
+from celery.task import task
 from webui.restserver.communication import callRestServer
 from webui import settings
 from webui.puppetclasses.models import PuppetClass
