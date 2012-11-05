@@ -37,8 +37,8 @@ def get_server_details(request, hostname, instance_name, resource_name):
                 novnc_url = '%s/novnc/vnc_auto.html?host=%s&port=6080' % (settings.STATIC_URL, hostname)
             info = {'name': dom,
                     'active': True,
-                    'start_url': reverse('call_mcollective_with_arguments', kwargs={'filters':filter, 'agent':"libvirt", 'action':"start", 'args':"domain=%s"%dom, 'wait_for_response':True}),
-                    'stop_url': reverse('call_mcollective_with_arguments', kwargs={'filters':filter, 'agent':"libvirt", 'action':"shutdown", 'args':"domain=%s"%dom, 'wait_for_response':True}),
+                    'start_url': reverse('call_mcollective_with_arguments', kwargs={'filters':filter, 'agent':"libvirt", 'action':"start", 'args':"domain=%s"%dom, 'wait_for_response':False}),
+                    'stop_url': reverse('call_mcollective_with_arguments', kwargs={'filters':filter, 'agent':"libvirt", 'action':"shutdown", 'args':"domain=%s"%dom, 'wait_for_response':False}),
                     'start_vnc_proxy_url': reverse('start_vnc_proxy', kwargs={'hostname':hostname, 'domain': dom}),
                     'novnc_url': novnc_url
                     }

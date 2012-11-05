@@ -28,6 +28,12 @@ logger = logging.getLogger(__name__)
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)
 def get(request, filters, agent, action, args=None, wait_for_response=False):
+    #Fix for unicode wait_for_response variable (actually used in url only for Virtualization Platform)
+    if wait_for_response == "false" or wait_for_response == "False":
+        wait_for_response = False
+    else:
+        wait_for_response = True
+        
     if verify_agent_acl(request.user, agent) and verify_action_acl(request.user, agent, action):
         response, content = callRestServer(request.user, filters, agent, action, args, wait_for_response)
         if wait_for_response:
