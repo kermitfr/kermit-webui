@@ -8,6 +8,7 @@ URL: https://github.com/thinkfr/kermit-webui
 Source: %{name}-%{version}.tar.gz
 
 Requires: httpd, Django >= 1.4, django-grappelli = 2.4.2, django-guardian = 1.0.4, django-celery, django-kombu, uuid, redis, django-picklefield
+Requires: policycoreutils-python
 
 %if "%dist" == ".el5"
 Requires: python(abi) = 2.6, python26-mod_wsgi, python26-httplib2, ordereddict, python26-redis, python26-docutils, selinux-policy-devel 
