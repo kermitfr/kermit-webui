@@ -12,6 +12,7 @@ Source: %{name}-%{version}.tar.gz
 
 %package main
 Summary: KermIT WebUI Main Package
+Requires: kermit-webui-celery = %{version}
 Requires: httpd, Django >= 1.4, django-grappelli = 2.4.2, django-guardian = 1.0.4, django-celery, django-kombu, uuid, redis, django-picklefield
 Requires: policycoreutils-python
 %if "%dist" == ".el5"
@@ -25,12 +26,6 @@ Requires: python-dateutil15
 %endif 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch: noarch
-#BuildRequires: Django >= 1.4
-#BuildRequires: django-picklefield
-#BuildRequires: django-grappelli = 2.4.2
-#BuildRequires: django-guardian = 1.0.4
-#BuildRequires: django-celery
-#BuildRequires: django-kombu
 
 %description main
 %{summary}.
@@ -91,6 +86,15 @@ Requires: kermit-webui-main = %{version}
 
 %description platform-weblogic
 %{summary}.
+
+%package celery
+Summary: Celery Init.d Scripts
+Group: Applications/System
+Requires: python-amqplib >= 0.6
+
+%description celery
+%{summary}.
+
 
 
 %prep
@@ -159,6 +163,7 @@ echo %{version} > $RPM_BUILD_ROOT/etc/kermit/webui/version.txt
 %exclude /usr/share/%{name}/webui/platforms/postgresql
 %exclude /usr/share/%{name}/webui/platforms/virtualization
 %exclude /usr/share/%{name}/webui/platforms/weblogic
+
 #Exclude all platforms templates
 %exclude /usr/share/%{name}/templates/platforms/bar
 %exclude /usr/share/%{name}/templates/platforms/jboss
@@ -168,6 +173,14 @@ echo %{version} > $RPM_BUILD_ROOT/etc/kermit/webui/version.txt
 %exclude /usr/share/%{name}/templates/platforms/virtualization
 %exclude /usr/share/%{name}/templates/platforms/weblogic
 
+#Exclude Celery Scripts
+%exclude /etc/sysconfig/celeryd
+%exclude /etc/sysconfig/celeryev
+%exclude /etc/sysconfig/celerybeat
+%exclude /etc/init.d/celeryd
+%exclude /etc/init.d/celeryev
+%exclude /etc/init.d/celerybeat
+ 
 #Exclude Custom Stuffs
 %exclude /usr/share/%{name}/webui/chain
 %exclude /usr/share/%{name}/templates/chain
@@ -188,6 +201,15 @@ echo %{version} > $RPM_BUILD_ROOT/etc/kermit/webui/version.txt
 %attr(0755,root,root) /etc/rc.d/init.d/celeryd
 %attr(0755,root,root) /etc/rc.d/init.d/celeryev
 %attr(0755,root,root) /etc/rc.d/init.d/celerybeat
+
+%files celery
+%defattr(-,root,root)
+/etc/sysconfig/celeryd
+/etc/sysconfig/celeryev
+/etc/sysconfig/celerybeat
+/etc/init.d/celeryd
+/etc/init.d/celeryev
+/etc/init.d/celerybeat
 
 %files platform-bar
 %defattr(-,root,root)

@@ -82,21 +82,27 @@ wait_pid () {
     forever=1
     i=0
     while [ $forever -gt 0 ]; do
-        kill -0 $pid 1>/dev/null 2>&1
-        if [ $? -eq 1 ]; then
-            echo "OK"
-            forever=0
-        else
-            kill -TERM "$pid"
-            i=$((i + 1))
-            if [ $i -gt 60 ]; then
-                echo "ERROR"
-                echo "Timed out while stopping (30s)"
-                forever=0
-            else
-                sleep 0.5
-            fi
-        fi
+    	PID=$(ps aux | grep celerybeat | grep -v grep | grep -v stop | awk '{print $2}')
+  		if [ -z "$PID" ]; then
+  			echo "OK"
+	    	forever=0
+  		else
+	        kill -0 $pid 1>/dev/null 2>&1
+	        if [ $? -eq 1 ]; then
+	            echo "OK"
+	            forever=0
+	        else
+	            kill -TERM "$pid"
+	            i=$((i + 1))
+	            if [ $i -gt 60 ]; then
+	                echo "ERROR"
+	                echo "Timed out while stopping (30s)"
+	                forever=0
+	            else
+	                sleep 0.5
+	            fi
+	        fi
+	    fi
     done
 }
 
@@ -108,6 +114,7 @@ stop_beat () {
     else
         echo "NOT RUNNING"
     fi
+    return 0
 }
 
 start_beat () {
@@ -117,6 +124,8 @@ start_beat () {
     fi
     $CELERYBEAT $CELERYBEAT_OPTS $DAEMON_OPTS --detach \
                 --pidfile="$CELERYBEAT_PID_FILE"
+    RETVAL=$?
+    return $RETVAL
 }
 
 
@@ -137,9 +146,21 @@ case "$1" in
     stop_beat
     start_beat
     ;;
+  status)
+  	PID=$(ps aux | grep celerybeat | grep -v grep | grep -v status | awk '{print $2}')
+  	if [ -z "$PID" ]; then
+  		echo "celerybeat is not running"
+        if [ -f "$CELERYBEAT_PID_FILE" ]; then
+            echo "Pid file found. Removing..."
+            rm -f $CELERYBEAT_PID_FILE
+        fi
+  	else
+  		echo "celerybeat (pid $PID) is running..."
+  	fi
+    ;;
 
   *)
-    echo "Usage: /etc/init.d/celerybeat {start|stop|restart}"
+    echo "Usage: /etc/init.d/celerybeat {start|stop|restart|status}"
     exit 1
 esac
 

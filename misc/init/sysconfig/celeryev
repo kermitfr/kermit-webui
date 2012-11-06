@@ -13,4 +13,12 @@ CELERYEV_OPTS="celeryev"
 # Camera class to use (required)
 CELERYEV_CAM="djcelery.snapshot.Camera"
 
+# Camera PID File
+#CELERYEV_PID_FILE="/var/run/celeryev.pid"
+
+# Camera LogFile
+#CELERYEV_LOG_FILE="/var/log/celeryev.log"
+
+# Camera LogLevel
+#CELERYEV_LOG_LEVEL="INFO"
 
