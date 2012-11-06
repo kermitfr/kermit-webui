@@ -3,10 +3,10 @@ import copy
 from django.conf import settings
 from django.utils.importlib import import_module
 from django.utils.module_loading import module_has_submodule
-import settings as platform_settings
 import imp
 from webui.platforms.platforms import platforms
 import sys
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +19,14 @@ def initialize():
     Auto-discover INSTALLED_PLATFORMS with MODULES_TO_IMPORT modules.
     """
 
-    for platform in settings.INSTALLED_PLATFORMS:
+    path = os.path.dirname(__file__)
+    installed_platforms = []
+    for module in os.listdir(path):
+        if os.path.isdir(path + '/' + module) == True:
+            installed_platforms.append(module)
+
+    logger.info("Installed Platforms: %s" % installed_platforms)
+    for platform in installed_platforms:
         mod = import_module(BASE_PLATFORM_PATH + platform)
         for current_module in MODULES_TO_IMPORT:
             try:
