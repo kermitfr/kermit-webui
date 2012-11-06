@@ -256,6 +256,29 @@ function sendRequestToMcollectiveSync(url, destination) {
 	});
 }
 
+function sendRequestToMcollectiveCallBack(url, callBackFunction) {
+	$.ajax({
+		// The link we are accessing.
+		url : url,
+		// The type of request.
+		type : "get",
+		// The type of data that is getting returned.
+		dataType : "json",
+		error : function() {
+			//TODO: Show error message
+			$('#loading').hide();
+		},
+		beforeSend : function() {
+			$('#loading').show();
+		},
+		complete : function() {
+			$('#loading').hide();
+		},
+		timeout: 600000,
+		success : callBackFunction()
+	});
+}
+
 function sendRequestToMcollective(url, destination) {
 	$("#" + destination).empty();
 	$('#modalprogress').dialog({
@@ -334,8 +357,7 @@ function callMcollectiveWithTemplateRsp(url, destination) {
 }
 
 function openVNC(vncproxy_url, redirect_url) {
-	callMcollective(vncproxy_url, 'none');
-	window.open(redirect_url, '_blank');
+	sendRequestToMcollectiveCallBack(vncproxy_url, function() { alert('calling'); window.open(redirect_url, '_blank'); } );
 }
 
 jQuery.expr[':'].Contains = function(a,i,m){
