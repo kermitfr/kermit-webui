@@ -177,9 +177,9 @@ echo %{version} > $RPM_BUILD_ROOT/etc/kermit/webui/version.txt
 %exclude /etc/sysconfig/celeryd
 %exclude /etc/sysconfig/celeryev
 %exclude /etc/sysconfig/celerybeat
-%exclude /etc/init.d/celeryd
-%exclude /etc/init.d/celeryev
-%exclude /etc/init.d/celerybeat
+%exclude /etc/rc.d/init.d/celeryd
+%exclude /etc/rc.d/init.d/celeryev
+%exclude /etc/rc.d/init.d/celerybeat
  
 #Exclude Custom Stuffs
 %exclude /usr/share/%{name}/webui/chain
@@ -198,18 +198,15 @@ echo %{version} > $RPM_BUILD_ROOT/etc/kermit/webui/version.txt
 %attr(0755,apache,apache) /etc/httpd/conf.d/kermit-webui.conf
 %attr(0755,root,root) /usr/share/kermit-webui/selinux/applyse.sh
 %attr(0755,root,root) /usr/share/kermit-webui/setup.sh
-%attr(0755,root,root) /etc/rc.d/init.d/celeryd
-%attr(0755,root,root) /etc/rc.d/init.d/celeryev
-%attr(0755,root,root) /etc/rc.d/init.d/celerybeat
 
 %files celery
 %defattr(-,root,root)
 /etc/sysconfig/celeryd
 /etc/sysconfig/celeryev
 /etc/sysconfig/celerybeat
-/etc/init.d/celeryd
-/etc/init.d/celeryev
-/etc/init.d/celerybeat
+/etc/rc.d/init.d/celeryd
+/etc/rc.d/init.d/celeryev
+/etc/rc.d/init.d/celerybeat
 
 %files platform-bar
 %defattr(-,root,root)
