@@ -10,6 +10,14 @@ from guardian.shortcuts import get_objects_for_user
 
 logger = logging.getLogger(__name__)
 
+def installed_platforms_list():
+    path = os.path.dirname(__file__)
+    installed_platforms = []
+    for module in os.listdir(path):
+        if os.path.isdir(path + '/' + module) == True:
+            installed_platforms.append(module)
+    return installed_platforms
+
 def convert_keys_names(dict):
     for key,value in dict.items():
         if key.__contains__('-'):

@@ -176,7 +176,7 @@ INSTALLED_APPS = (
     'webui.acls_manager',
     'webui.dynamicgroups',
     'webui.alerting',
-    'webui.chain',
+    #'webui.chain',
     #'a7x_wsgroups',
 )
 

@@ -357,7 +357,7 @@ function callMcollectiveWithTemplateRsp(url, destination) {
 }
 
 function openVNC(vncproxy_url, redirect_url) {
-	sendRequestToMcollectiveCallBack(vncproxy_url, function() { alert('calling'); window.open(redirect_url, '_blank'); } );
+	sendRequestToMcollectiveCallBack(vncproxy_url, function() { window.open(redirect_url, '_blank'); } );
 }
 
 jQuery.expr[':'].Contains = function(a,i,m){

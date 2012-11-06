@@ -42,8 +42,8 @@ urlpatterns = patterns('',
     (r'^progress/', include('webui.progress.urls')),
     (r'^alerts/', include('webui.alerting.urls')),
     (r'^dynagroups/', include('webui.dynamicgroups.urls')),
-    (r'^chain/', include('webui.chain.urls')),
     
+    #(r'^chain/', include('webui.chain.urls')),
     #(r'^wsgroups/', include('a7x_wsgroups.urls')),
     
     (r'', include('webui.index.urls')),

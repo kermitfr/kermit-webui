@@ -7,6 +7,7 @@ import imp
 from webui.platforms.platforms import platforms
 import sys
 import os
+from webui.platforms import utils
 
 logger = logging.getLogger(__name__)
 
@@ -19,12 +20,7 @@ def initialize():
     Auto-discover INSTALLED_PLATFORMS with MODULES_TO_IMPORT modules.
     """
 
-    path = os.path.dirname(__file__)
-    installed_platforms = []
-    for module in os.listdir(path):
-        if os.path.isdir(path + '/' + module) == True:
-            installed_platforms.append(module)
-
+    installed_platforms = utils.installed_platforms_list()
     logger.info("Installed Platforms: %s" % installed_platforms)
     for platform in installed_platforms:
         mod = import_module(BASE_PLATFORM_PATH + platform)
