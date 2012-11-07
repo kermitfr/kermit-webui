@@ -21,9 +21,7 @@ def httpcall(filters, agent, action, args, use_task=True, limit=None):
     if filters and filters=='null':
         filters = None
     http = httplib2.Http(timeout=settings.RUBY_REST_SERVER_TIMEOUT)
-    url = settings.RUBY_REST_BASE_URL
-    url += agent + "/"
-    url += action + "/"
+    url = "%s%s/%s/" % (settings.RUBY_REST_BASE_URL, agent, action)
     dictionary = {
         "filters": convert_filters_to_hash(filters)
     }

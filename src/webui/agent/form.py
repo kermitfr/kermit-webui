@@ -20,6 +20,8 @@ def create_action_form(inputs):
                 val = val.strip()[1:-1]
                 choices.append( (val, val) )
             fields[input['name']] = forms.ChoiceField(label=input['prompt'], required=required, choices=choices)
+        elif input['type']=='boolean':
+            fields[input['name']] = forms.BooleanField(label=input['prompt'], required=required)
         else:
             fields[input['name']] = forms.RegexField(label=input['prompt'], required=required, regex=validator)
     

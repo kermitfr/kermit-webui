@@ -139,7 +139,17 @@ def convert_parameters_to_hash(params):
         for current_param in params_list:
             values = current_param.split("=")
             if not values[0] in params_dict:
-                params_dict[values[0]] = values[1] 
+                #Quick and Dirty fix for Boolean
+                #TODO: Send parameter type with any params. If not provided is String by default
+                if values[1]=="True":
+                    to_assign = True
+                elif values[1]=="False":
+                    to_assign = False
+                else:
+                    to_assign=values[1]
+                #end fix    
+                
+                params_dict[values[0]] = to_assign
         
     logger.debug("Parameters: %s" % params_dict)
     return params_dict
