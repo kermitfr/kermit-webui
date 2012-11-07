@@ -1,7 +1,7 @@
 Summary: KermIT WebUI Framework
 Name: kermit-webui
 Version: 1.3
-Release: 1%{dist}
+Release: 2%{dist}
 License: GPLv3
 Group: Applications/System
 URL: https://github.com/kermitfr/kermit-webui
@@ -95,7 +95,21 @@ Requires: python-amqplib >= 0.6
 %description celery
 %{summary}.
 
+%package plugin-puppet
+Summary: Plugin to integrate some puppet function into KermIT
+Group: Applications/System
+Requires: kermit-webui-main = %{version}
 
+%description plugin-puppet
+%{summary}.
+
+%package plugin-servercontrol
+Summary: Plugin to add server operations on server details page
+Group: Applications/System
+Requires: kermit-webui-main = %{version}
+
+%description plugin-servercontrol
+%{summary}.
 
 %prep
 %setup -n %{name}
@@ -185,6 +199,10 @@ echo %{version} > $RPM_BUILD_ROOT/etc/kermit/webui/version.txt
 %exclude /usr/share/%{name}/webui/chain
 %exclude /usr/share/%{name}/templates/chain
 
+#Exclude Plugins
+%exclude /usr/share/%{name}/webui/plugins/puppet
+%exclude /usr/share/%{name}/webui/plugins/servercontrol
+
 %doc /usr/share/doc/*
 
 %config /etc/httpd/conf.d/*
@@ -242,6 +260,14 @@ echo %{version} > $RPM_BUILD_ROOT/etc/kermit/webui/version.txt
 %defattr(-,root,root)
 /usr/share/%{name}/webui/platforms/weblogic
 /usr/share/%{name}/templates/platforms/weblogic
+
+%files plugin-puppet
+%defattr(-,root,root)
+/usr/share/%{name}/webui/plugins/puppet
+
+%files plugin-servercontrol
+%defattr(-,root,root)
+/usr/share/%{name}/webui/plugins/servercontrol
 
 %pre
 
