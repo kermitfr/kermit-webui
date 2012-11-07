@@ -57,6 +57,9 @@ class ServerOperation(object):
     def request_parameters(self):
         return False
     
+    def is_mcollective(self):
+        return True
+    
     def get_agent(self):
         return ''
     

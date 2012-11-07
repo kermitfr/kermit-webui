@@ -472,3 +472,30 @@ function editNode(node){
       node.focus();
     });
 }
+
+function executeToolbarOperation(url) {
+	callMcollective(url, 'toolbar-response');
+	$("#toolbar-response").dialog({
+		modal : true,
+		title : 'Operation Result',
+		height : 200,
+		width : 400,
+		open: function(event, ui){
+			$('body').css('overflow','auto');
+			$('.ui-widget-overlay').css('width','100%'); 
+		} 
+	});		
+}	
+
+function checkExecution(baseurl, ismco, hasparameters, agent, action, filter, url) {
+	if (ismco == 'True') {
+		if (hasparameters=='True') {
+			getExecutionForm(baseurl, "execution-dialog", agent, action, filter,  "actual-resource-details");
+		} else {
+			executeToolbarOperation(url);
+		}
+	}else {
+		window.location = url;
+	}
+}
+

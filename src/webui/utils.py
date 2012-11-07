@@ -13,7 +13,7 @@ SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 
 MAINCONF = '/etc/kermit/kermit-webui.cfg'
 if not os.path.isfile(MAINCONF):
-	MAINCONF = SITE_ROOT + '/kermit-webui.cfg'
+    MAINCONF = SITE_ROOT + '/kermit-webui.cfg'
 
 CONF = ConfigParser.ConfigParser()
 CONF.read(MAINCONF)

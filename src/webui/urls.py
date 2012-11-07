@@ -5,16 +5,15 @@ from django.conf import settings
 from django.contrib import admin
 admin.autodiscover()
 
-from webui import initialize
-initialize()
-
 #Discovering all widgets
 if 'webui.widgets' in settings.INSTALLED_APPS:
     from widgets.loading import registry
     registry.discover_widgets()
     
-#import platforms
-#platforms.initialize()
+    
+from webui import initialize
+initialize()
+
 
 urlpatterns = patterns('',
     # Examples:
@@ -34,6 +33,7 @@ urlpatterns = patterns('',
     (r'^agent/', include('webui.agent.urls')),
     (r'^index/(.*)', include('webui.index.urls')),
     (r'^platform/', include('webui.platforms.urls')),
+    (r'^plugins/', include('webui.plugins.urls')),
     (r'^accounts/login/$', 'django.contrib.auth.views.login'),
     (r'^accounts/logout/$', 'webui.index.views.logout_view'),
     (r'^export/', include('webui.exporter.urls')),

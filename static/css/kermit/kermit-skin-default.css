@@ -2001,11 +2001,9 @@ fieldset.infohighlight {
 .opbutton {
 	cursor:pointer;
 	padding-left: 2px;
+	padding-right: 4px;
 	width: 18px;
-}
-
-.opbutton:hover {
-	width: 20px;
+	vertical-align: middle;
 }
 
 .toolbar-group {

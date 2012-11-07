@@ -16,49 +16,25 @@
 	   $("#toolbar-response").hide();
 	   $('img[title]').qtip();
 	 });
-	 
-	function executeToolbarOperation(url) {
-		callMcollective(url, 'toolbar-response');
-		$("#toolbar-response").dialog({
-			modal : true,
-			title : 'Operation Result',
-			height : 200,
-			width : 400,
-			open: function(event, ui){
-				$('body').css('overflow','auto');
-				$('.ui-widget-overlay').css('width','100%'); 
-			} 
-		});		
-	}	
-	
-	function checkExecution(baseurl, hasparameters, agent, action, filter, url) {
-		if (hasparameters=='True') {
-			getExecutionForm(baseurl, "execution-dialog", agent, action, filter,  "actual-resource-details");
-		} else {
-			executeToolbarOperation(url);
-		}
-	}
-	
 </script>
 <div id="execution-dialog"></div>
 <div id="toolbar-response"></div>
 <div class="fg-toolbar">
-	<div class="toolbar-group">
-				<div class="toolbar-group-title">{{group_name}}</div>
-				<a href="{% url editserver hostname%}"><img class="opbutton" src="{{STATIC_URL}}/images/toolbar/server_edit.png" width="32px"/></a>
-	</div>
 	{% if server_operations %}	
+		<ul id="nav">
 		{%for group_name, operations in server_operations.items %}
-			<div class="toolbar-group">
-				<div class="toolbar-group-title">{{group_name}}</div>
+  			<li><a>{{group_name}}</a>
+    			<ul>
 				{% for current_op in operations %}
-					<img class="opbutton" onclick="checkExecution('{{settings.BASE_URL}}', '{{current_op.hasparameters}}', '{{current_op.agent}}', '{{current_op.action}}', '{{current_op.filter}}');" src="{{static_url}}/images/toolbar/{{current_op.img}}" title="{{current_op.name}}">
+					<li><a onclick="checkExecution('{{settings.BASE_URL}}', '{{current_op.ismco}}', '{{current_op.hasparameters}}', '{{current_op.agent}}', '{{current_op.action}}', '{{current_op.filter}}', '{{current_op.url}}');"><img class="opbutton" src="{{static_url}}/images/toolbar/{{current_op.img}}">{{current_op.name}}</a></li>
 				{% endfor %}
-			</div>
+				</ul>
+			</li>
 		{%endfor%}
+		</ul>
 	{% endif %}
 </div>
-
+<!--  -->
 <div id="columns">
 	<ul id="column1" class="column">
 		{% widget "ServerDetails" user hostname %}

@@ -1,5 +1,3 @@
-import copy
-
 from django.conf import settings
 from webui.widgets.models import Widget
 import logging
@@ -28,6 +26,10 @@ class WidgetCache(object):
             # Just loading the module will do the trick
             __import__(app, {}, {}, ['widgets'])
         self.discovered = True
+        
+    def inject_widget(self, module_name):
+        logger.debug("Injecting widgets from module %s" % module_name)
+        __import__(module_name, {}, {}, ['widgets'])
 
     def get_all_widgets(self):
         self.discover_widgets()

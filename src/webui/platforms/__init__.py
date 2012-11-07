@@ -11,7 +11,7 @@ from webui.platforms import utils
 
 logger = logging.getLogger(__name__)
 
-BASE_PLATFORM_PATH = "webui.platforms."
+BASE_PLATFORM_PATH = "webui.platforms"
 MODULES_TO_IMPORT = ["tree", "updates", "applications", "operations"]
 
 def initialize():
@@ -23,11 +23,11 @@ def initialize():
     installed_platforms = utils.installed_platforms_list()
     logger.info("Installed Platforms: %s" % installed_platforms)
     for platform in installed_platforms:
-        mod = import_module(BASE_PLATFORM_PATH + platform)
+        mod = import_module("%s.%s" % (BASE_PLATFORM_PATH, platform))
         for current_module in MODULES_TO_IMPORT:
             try:
                 before_import_registry = copy.copy(platforms._registry)
-                import_module('%s%s.%s' % (BASE_PLATFORM_PATH, platform, current_module))
+                import_module('%s.%s.%s' % (BASE_PLATFORM_PATH, platform, current_module))
             except:
                 platforms._registry = before_import_registry
                 if module_has_submodule(mod, current_module):

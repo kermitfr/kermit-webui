@@ -162,6 +162,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     "djcelery",
     "djkombu",
+    'webui.plugins',
     'webui.platforms',
     'webui.restserver',
     'webui.widgets',

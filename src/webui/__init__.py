@@ -23,7 +23,7 @@ def initialize():
             try:
                 mod.initialize()
             except:
-                logger.error("ERROR initializing module %s! %s" % (app, sys.exc_info))
+                logger.error("Problem initializing module %s! %s" % (app, sys.exc_info()))
         else:
             logger.debug("App %s does not have initialization method" % app)
         

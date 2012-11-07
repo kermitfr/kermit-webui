@@ -18,18 +18,18 @@ def installed_platforms_list():
             installed_platforms.append(module)
     return installed_platforms
 
-def convert_keys_names(dict):
-    for key,value in dict.items():
+def convert_keys_names(dictionary):
+    for key,value in dictionary.items():
         if key.__contains__('-'):
-            dict[key.replace('-', '_')]=value
-            dict.pop(key, value)
-            if type(value).__name__=='dict':
+            dictionary[key.replace('-', '_')]=value
+            dictionary.pop(key, value)
+            if type(value).__name__=='dictionary':
                 convert_keys_names(value)
             elif type(value).__name__=='list':
                 check_list(value)
 
-def check_list(list):
-    for content in list:
+def check_list(type_list):
+    for content in type_list:
         if type(content).__name__=='dict':
             convert_keys_names(content)
         elif type(content).__name__=='list':

@@ -7,7 +7,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-class Platform(object):
+class Plugin(object):
 
     def __init__(self, name=None, platform_name=None):
         self._registry = {} 
@@ -30,15 +30,15 @@ class Platform(object):
                 logger.warn("No class registered with %s BaseClass and %s plugin" % (base_class, plugin))
                 return None
         else:
-            platforms_classes = []
+            plugins_classes = []
             if base_class in self._registry:
                 for plat, model_class in self._registry[base_class].items():
-                    platforms_classes.append(model_class)
+                    plugins_classes.append(model_class)
             else:
                 logger.warn("No class registered with %s BaseClass" % base_class)
             
-            return platforms_classes
+            return plugins_classes
                 
         
 
-platforms = Platform()
+plugins = Plugin()
