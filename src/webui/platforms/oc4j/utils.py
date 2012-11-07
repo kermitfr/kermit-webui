@@ -24,7 +24,7 @@ def get_apps_list(user, filters, file_type):
     try: 
         response, content = callRestServer(user, filters, "a7xoas", "applist", "apptype="+str(file_type), False, False)
         if response.getStatus() == 200:
-            if jsonObj:
+            if content:
                 #Looking for "intersections"
                 app_list = None
                 for server_response in content:
