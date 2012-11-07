@@ -7,7 +7,7 @@ import logging
 from webui.restserver.communication import callRestServer
 from django.utils import simplejson as json
 from webui.platforms.oracledb.communication import read_server_info
-from webui.serverstatus.models import Server
+from webui.servers.models import Server
 
 logger = logging.getLogger(__name__)
 

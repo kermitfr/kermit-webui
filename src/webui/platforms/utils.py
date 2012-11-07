@@ -1,6 +1,6 @@
 import logging
 from webui import settings
-from webui.serverstatus.models import Server
+from webui.servers.models import Server
 import os
 import glob
 from django.utils import simplejson as json

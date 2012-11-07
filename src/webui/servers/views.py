@@ -10,7 +10,7 @@ from webui.platforms.abstracts import ServerTree
 from webui.abstracts import CoreService, ServerOperation
 from django.core.urlresolvers import reverse
 from webui.restserver.communication import callRestServer
-from webui.serverstatus.models import Server
+from webui.servers.models import Server
 from webui.utils import read_kermit_version
 from webui.puppetclasses.models import PuppetClass
 import redis

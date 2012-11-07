@@ -16,6 +16,7 @@
 	   $("#toolbar-response").hide();
 	   $('img[title]').qtip();
 	 });
+	 
 	function executeToolbarOperation(url) {
 		callMcollective(url, 'toolbar-response');
 		$("#toolbar-response").dialog({

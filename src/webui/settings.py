@@ -168,8 +168,7 @@ INSTALLED_APPS = (
     'webui.defaultop',
     'webui.agent',
     'webui.puppetclasses', 
-    'webui.serverstatus',
-    'webui.serverdetails',
+    'webui.servers',
     'webui.exporter',
     'webui.servicestatus',
     'webui.upload',
@@ -360,12 +359,12 @@ CELERY_IMPORTS = ("webui", )
 CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
 CELERYBEAT_SCHEDULE = {
     "runs-server-basic-info-update-every-hour": {
-        "task": "webui.serverstatus.tasks.server_basic_info",
+        "task": "webui.servers.tasks.server_basic_info",
         "schedule": crontab(minute=0, hour="*/1"),
         "args": ('CronJob',)
     },
     "runs-inventory-once-a-day": {
-        "task": "webui.serverstatus.tasks.server_inventory",
+        "task": "webui.servers.tasks.server_inventory",
         "schedule": crontab(hour=6, minute=30),
         "args": ('CronJob',)
     }, 
@@ -383,7 +382,7 @@ CELERYBEAT_SCHEDULE = {
 #    }, 
 
 #    "runs-update-user-groups-once-a-day": {
-#        "task": "webui.serverstatus.tasks.server_inventory",
+#        "task": "webui.servers.tasks.server_inventory",
 #        "schedule": crontab(hour=6, minute=30),
 #        "args": ('CronJob',)
 #    },                   

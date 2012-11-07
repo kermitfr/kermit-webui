@@ -7,13 +7,14 @@ from webui.widgets.base import Widget
 import logging
 from django.template.loader import get_template
 from django.template.context import Context
-from webui.serverstatus.models import Server
+from webui.servers.models import Server
 from webui.puppetclasses.models import PuppetClass
+from webui.servers import utils
 
 logger = logging.getLogger(__name__)
 
 class ServerDetails(Widget):
-    template = "widgets/serverdetails/serverdetails.html"
+    template = "widgets/servers/serverdetails.html"
     
     def get_context(self):
         super_context = super(self.__class__,self).get_context()
@@ -30,7 +31,7 @@ class ServerDetails(Widget):
         return template_instance.render(Context(data))
     
 class SelectedResourceDetails(Widget):
-    template = "widgets/serverdetails/resourcedetails.html"
+    template = "widgets/servers/resourcedetails.html"
     
     def get_context(self):
         super_context = super(self.__class__,self).get_context()
@@ -47,7 +48,7 @@ class SelectedResourceDetails(Widget):
         return template_instance.render(Context(data))
     
 class ServerSummary(Widget):
-    template = "widgets/serverdetails/summary.html"
+    template = "widgets/servers/summary.html"
     
     def get_context(self):
         super_context = super(self.__class__,self).get_context()
@@ -65,7 +66,7 @@ class ServerSummary(Widget):
         return template_instance.render(Context(data))
     
 class ServerEdit(Widget):
-    template = "widgets/serverdetails/editserver.html"
+    template = "widgets/servers/editserver.html"
     
     def get_context(self):
         super_context = super(self.__class__,self).get_context()
@@ -91,3 +92,43 @@ class ServerEdit(Widget):
         data.update(available_classes=available_classes)
         return template_instance.render(Context(data))
 
+class SystemStatus(Widget):
+    template = "widgets/servers/systemstatus.html"
+    
+    def get_context(self):
+        super_context = super(self.__class__,self).get_context()
+        servers = utils.extract_user_servers(self.user)
+        
+        widget_context = {"servers":servers}
+        return dict(super_context.items() + widget_context.items())
+    
+class ServerStatus(Widget):
+    template = "widgets/servers/serverstatus.html"
+    
+    def get_context(self):
+        super_context = super(self.__class__,self).get_context()
+        servers = utils.extract_user_servers(self.user)
+        #Extracting puppet classes level
+        serverslist=[]
+        for server in servers:
+            serverdict = {}
+            serverdict["online"]=server.online
+            serverdict["fqdn"]=server.fqdn
+            serverdict["hostname"]=server.hostname
+            for puppetclass in server.puppet_classes.values():
+                if puppetclass["level"]==0:
+                    serverdict["lvl1"]=puppetclass["name"]
+                elif puppetclass["level"]==1:
+                    serverdict["lvl2"]=puppetclass["name"]
+                elif puppetclass["level"]==2:
+                    serverdict["lvl3"]=puppetclass["name"]
+                elif puppetclass["level"]==3:
+                    serverdict["lvl4"]=puppetclass["name"]
+                elif puppetclass["level"]==4:
+                    if "lvl5" in serverdict:
+                        serverdict["lvl5"]=serverdict["lvl5"] + ', ' + puppetclass["name"]
+                    else:    
+                        serverdict["lvl5"]=puppetclass["name"]
+            serverslist.append(serverdict)
+        widget_context = {"servers":serverslist}
+        return dict(super_context.items() + widget_context.items())

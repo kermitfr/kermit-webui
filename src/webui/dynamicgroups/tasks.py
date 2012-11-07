@@ -2,7 +2,7 @@ from celery.task import task
 from webui.restserver.communication import callRestServer
 import logging
 from webui.dynamicgroups.models import DynaGroup
-from webui.serverstatus.models import Server
+from webui.servers.models import Server
 
 logger = logging.getLogger(__name__)
 

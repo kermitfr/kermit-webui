@@ -35,8 +35,8 @@ class Actions(object):
     def refresh_server_basic_info(self, user):
         logger.info("Calling Refresh Basic Info")
         try: 
-            result = send_task("webui.serverstatus.tasks.server_basic_info", [user])    
-            json_data = json.dumps({'UUID': result.task_id, 'taskname':"webui.serverstatus.tasks.server_basic_info"})
+            result = send_task("webui.servers.tasks.server_basic_info", [user])    
+            json_data = json.dumps({'UUID': result.task_id, 'taskname':"webui.servers.tasks.server_basic_info"})
             return json_data
         except Exception, err:
             logger.error('ERROR: ' + str(err))
@@ -45,8 +45,8 @@ class Actions(object):
         logger.info("Calling Refresh Inventory")
         try: 
             updates_defined = platforms.extract(UpdatePlatform)
-            result = send_task("webui.serverstatus.tasks.server_inventory", [user, updates_defined])    
-            json_data = json.dumps({'UUID': result.task_id, 'taskname':"webui.serverstatus.tasks.server_inventory"})
+            result = send_task("webui.servers.tasks.server_inventory", [user, updates_defined])    
+            json_data = json.dumps({'UUID': result.task_id, 'taskname':"webui.servers.tasks.server_inventory"})
             return json_data
         except Exception, err:
             logger.error('ERROR: ' + str(err))

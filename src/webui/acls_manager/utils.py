@@ -8,7 +8,7 @@ from django.contrib.auth.models import Group, User, Permission
 from guardian.models import GroupObjectPermission, UserObjectPermission
 import sys
 from webui.puppetclasses.models import PuppetClass
-from webui.serverstatus.models import Server
+from webui.servers.models import Server
 from webui.agent.models import Agent, Action
 from django.contrib.contenttypes.models import ContentType
 

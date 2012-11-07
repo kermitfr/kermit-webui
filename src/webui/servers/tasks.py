@@ -7,7 +7,7 @@ from celery.task import task
 import logging
 from webui.restserver.communication import callRestServer
 from datetime import datetime
-from webui.serverstatus.models import Server
+from webui.servers.models import Server
 from webui.agent.models import Agent
 from webui.puppetclasses.models import PuppetClass
 from webui import settings

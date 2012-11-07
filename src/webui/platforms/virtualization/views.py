@@ -11,7 +11,7 @@ import logging
 from webui.restserver.communication import callRestServer
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
-from webui.serverstatus.models import Server
+from webui.servers.models import Server
 
 logger = logging.getLogger(__name__)
 

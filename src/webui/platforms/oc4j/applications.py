@@ -3,7 +3,7 @@ Created on Oct 25, 2011
 
 @author: mmornati
 '''
-from webui.serverstatus.models import Server
+from webui.servers.models import Server
 from guardian.shortcuts import get_objects_for_user
 import logging
 from webui.platforms.oc4j.utils import extract_appli_info, check_contains,\
@@ -11,7 +11,7 @@ from webui.platforms.oc4j.utils import extract_appli_info, check_contains,\
 from webui.platforms.abstracts import Application
 from webui.platforms.oc4j import settings
 from webui.platforms.platforms import platforms
-from webui.serverdetails import utils
+from webui.servers import utils
 
 
 logger = logging.getLogger(__name__)

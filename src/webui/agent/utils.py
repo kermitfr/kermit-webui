@@ -2,7 +2,7 @@ from webui.agent.models import Agent, Action, ActionInput, ActionOutput
 from webui.restserver.communication import callRestServer
 import logging
 from django.utils import simplejson as json
-from webui.serverstatus.models import Server
+from webui.servers.models import Server
 
 logger = logging.getLogger(__name__)
 

@@ -6,7 +6,7 @@ Created on Sep 20, 2011
 import csv
 #import xlwt
 import logging
-from webui.serverdetails import utils
+from webui.servers import utils
 
 logger = logging.getLogger(__name__)
 

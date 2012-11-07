@@ -26,7 +26,7 @@ from datetime import datetime
 import djcelery
 from django.template.loader import render_to_string
 import ast
-from webui.serverdetails import utils
+from webui.servers import utils
 from webui.utils import read_kermit_version
 from webui.abstracts import CoreService
 from webui import settings as kermitsettings

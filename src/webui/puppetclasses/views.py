@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from webui.puppetclasses.models import PuppetClass
 from django.utils import simplejson as json
 import logging
-from webui.serverstatus.models import Server
+from webui.servers.models import Server
 from django.contrib.auth.decorators import login_required
 from guardian.shortcuts import get_objects_for_user
 from webui import settings

@@ -7,10 +7,10 @@ from webui.widgets.base import Widget
 import logging
 from webui.chain.models import Scheduler
 from django.utils import simplejson as json
-from webui.serverstatus.models import Server
+from webui.servers.models import Server
 from webui import settings
 from guardian.shortcuts import get_objects_for_user
-from webui.serverdetails import utils
+from webui.servers import utils
 
 logger = logging.getLogger(__name__)
 

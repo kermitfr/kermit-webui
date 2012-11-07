@@ -1,4 +1,4 @@
-from webui.serverstatus.models import Server
+from webui.servers.models import Server
 from webui import settings
 from guardian.shortcuts import get_objects_for_user
 from webui.puppetclasses.models import PuppetClass

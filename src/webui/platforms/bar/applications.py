@@ -3,14 +3,12 @@ Created on Oct 25, 2011
 
 @author: mmornati
 '''
-from webui.serverstatus.models import Server
-from guardian.shortcuts import get_objects_for_user
 import logging
 from webui.platforms.bar.utils import extract_appli_info, check_contains, extract_appli_details
 from webui.platforms.abstracts import Application
 from webui.platforms.bar import settings
 from webui.platforms.platforms import platforms
-from webui.serverdetails import utils
+from webui.servers import utils
 
 
 logger = logging.getLogger(__name__)

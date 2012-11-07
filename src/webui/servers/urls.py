@@ -6,7 +6,7 @@ Created on Aug 18, 2011
 
 from django.conf.urls.defaults import patterns, url
 
-urlpatterns = patterns('webui.serverdetails.views',
+urlpatterns = patterns('webui.servers.views',
   url(r'^tree/(?P<hostname>[\w|\W]+)/$', 'getDetailsTree', name = "serverdetailstree"),
   url(r'^details/(?P<hostname>[\w|\W]+)/$', 'hostInventory', name = "serverdetails"),
   url(r'^edit/(?P<hostname>[\w|\W]+)/$', 'server_edit', name = "editserver"),

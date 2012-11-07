@@ -1,5 +1,5 @@
 from django.db import models
-from webui.serverstatus.models import Server
+from webui.servers.models import Server
 
 class DynaGroup(models.Model):
     name = models.CharField(max_length=255)

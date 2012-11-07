@@ -3,7 +3,7 @@ Created on Nov 27, 2011
 
 @author: mmornati
 '''
-from webui.serverstatus.models import Server
+from webui.servers.models import Server
 import logging
 
 logger = logging.getLogger(__name__)

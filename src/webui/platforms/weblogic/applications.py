@@ -9,7 +9,7 @@ from webui.platforms.weblogic.utils import extract_appli_info, check_contains,\
 from webui.platforms.abstracts import Application
 from webui.platforms.platforms import platforms
 from webui.platforms.weblogic import settings
-from webui.serverdetails import utils
+from webui.servers import utils
 
 
 logger = logging.getLogger(__name__)

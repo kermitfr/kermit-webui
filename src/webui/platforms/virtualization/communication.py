@@ -1,5 +1,5 @@
 import logging
-from webui.serverstatus.models import Server
+from webui.servers.models import Server
 
 logger = logging.getLogger(__name__)
 

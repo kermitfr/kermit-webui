@@ -28,7 +28,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     
     (r'^grappelli/', include('grappelli.urls')),
-    (r'^server/', include('webui.serverdetails.urls')),
+    (r'^server/', include('webui.servers.urls')),
     (r'^restapi/', include('webui.restserver.urls')),
     (r'^puppetclasses/', include('webui.puppetclasses.urls')),
     (r'^agent/', include('webui.agent.urls')),
