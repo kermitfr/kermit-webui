@@ -43,7 +43,7 @@ class QueryMethods(object):
         return json.dumps(data)
     
     def get_dialog_form(self, request, agent, action, filters, dialog_name, response_container):
-        inputs = get_inputs(agent, action)
+        inputs = get_inputs(agent, action, with_filters=(filters!=None and filters!='null'))
         if inputs:
             logger.debug('Rendering form')
             form = create_action_form(inputs)
@@ -64,7 +64,7 @@ def query(request, operation, agent=None, action=None, filters=None, dialog_name
 @permission_required('agent.call_mcollective', return_403=True)
 def execute_action_form(request, agent, action, filters, dialog_name, response_container, xhr=None):
     if request.method == "POST":
-        inputs = get_inputs(agent, action)
+        inputs = get_inputs(agent, action, with_filters=(filters!=None and filters!='null'))
         logger.debug("Recreating form")
         form_type = create_action_form(inputs)
         form = form_type(request.POST)
@@ -100,7 +100,7 @@ def execute_action_form(request, agent, action, filters, dialog_name, response_c
                                 arguments = ''
                             arguments = "%s%s=%s" % (arguments, input_data['name'], form.cleaned_data[input_data['name']]) 
                             
-                if form.cleaned_data["identityfilter"]:
+                if "identityfilter" in form.cleaned_data and form.cleaned_data["identityfilter"]:
                     logger.debug("Applying identity filter")
                     if filters and filters != "null":
                         filters = "%s;" % filters
@@ -113,7 +113,7 @@ def execute_action_form(request, agent, action, filters, dialog_name, response_c
                             filters = "%s;" % filters
                         filters = "%sidentity=%s" % (filters, filt)
                         
-                if form.cleaned_data["classfilter"]:
+                if "classfilter" in form.cleaned_data and form.cleaned_data["classfilter"]:
                     logger.debug("Applying class filter")
                     if filters and filters != "null":
                         filters = "%s;" % filters
@@ -126,7 +126,7 @@ def execute_action_form(request, agent, action, filters, dialog_name, response_c
                             filters = "%s;" % filters
                         filters = "%sclass=%s" % (filters, filt)
                 
-                if form.cleaned_data["compoundfilter"]:
+                if "compoundfilter" in form.cleaned_data and form.cleaned_data["compoundfilter"]:
                     logger.debug("Applying compound filter")
                     if filters and filters != "null":
                         filters = "%s;" % filters
@@ -135,8 +135,11 @@ def execute_action_form(request, agent, action, filters, dialog_name, response_c
                     
                     filters = "%scompound=%s" % (filters, form.cleaned_data["compoundfilter"])
                 
+                if "limit" in form.cleaned_data and form.cleaned_data["limit"]:
+                    limit = form.cleaned_data["limit"]
+                else: 
+                    limit = None
                 use_backend_scheduler = form.cleaned_data["usesched"]
-                limit = form.cleaned_data["limit"]
                     
                 logger.debug("Arguments for MCollective call %s" % arguments)
                 wait_for_response = False

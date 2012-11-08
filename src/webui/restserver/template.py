@@ -51,7 +51,7 @@ def get_action_inputs(agent, action):
                     return action_db.inputs.values()
     return None
 
-def get_inputs(agent, action):
+def get_inputs(agent, action, with_filters=False):
     inputs = get_action_inputs(agent, action)
     #Adding inputs for any operation: 
     # * Use Scheduler
@@ -61,37 +61,38 @@ def get_inputs(agent, action):
     else:
         inputs = list(inputs)
         
-    inputs.append({'prompt': 'Identity filter', 
-                    'description': 'Identity filter', 
-                    'optional': True, 
-                    'max_length': 600, 
-                    'validation': '.', 
-                    'type': 'string', 
-                    'name': 'identityfilter'})
-    
-    inputs.append({'prompt': 'Class filter', 
-                    'description': 'Class filter', 
-                    'optional': True, 
-                    'max_length': 600, 
-                    'validation': '.', 
-                    'type': 'string', 
-                    'name': 'classfilter'})
+    if not with_filters:
+        inputs.append({'prompt': 'Identity filter', 
+                        'description': 'Identity filter', 
+                        'optional': True, 
+                        'max_length': 600, 
+                        'validation': '.', 
+                        'type': 'string', 
+                        'name': 'identityfilter'})
         
-    inputs.append({'prompt': 'Compound filter', 
-                    'description': 'Expression to apply as filter', 
-                    'optional': True, 
-                    'max_length': 600, 
-                    'validation': '.', 
-                    'type': 'string', 
-                    'name': 'compoundfilter'})
-    
-    inputs.append({'prompt': 'Limit', 
-                    'description': 'Apply limit to request', 
-                    'optional': True, 
-                    'max_length': 10, 
-                    'validation': '.', 
-                    'type': 'string', 
-                    'name': 'limit'})
+        inputs.append({'prompt': 'Class filter', 
+                        'description': 'Class filter', 
+                        'optional': True, 
+                        'max_length': 600, 
+                        'validation': '.', 
+                        'type': 'string', 
+                        'name': 'classfilter'})
+            
+        inputs.append({'prompt': 'Compound filter', 
+                        'description': 'Expression to apply as filter', 
+                        'optional': True, 
+                        'max_length': 600, 
+                        'validation': '.', 
+                        'type': 'string', 
+                        'name': 'compoundfilter'})
+        
+        inputs.append({'prompt': 'Limit', 
+                        'description': 'Apply limit to request', 
+                        'optional': True, 
+                        'max_length': 10, 
+                        'validation': '.', 
+                        'type': 'string', 
+                        'name': 'limit'})
     
     inputs.append({'prompt': 'Use backend scheduler', 
                     'description': 'Execute operation using backend scheduler', 
