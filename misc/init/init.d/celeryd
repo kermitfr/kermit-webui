@@ -116,7 +116,7 @@ case "$1" in
     ;;
 
     status)
-        celeryctl status
+        $CELERYD_CHDIR/manage.py celeryctl status
     ;;
 
     restart)
