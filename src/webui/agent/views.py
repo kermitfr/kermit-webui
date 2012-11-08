@@ -6,7 +6,8 @@ from django.template.loader import render_to_string
 from webui.agent.form import create_action_form
 from django.template.context import RequestContext
 from webui.restserver.communication import callRestServer
-from webui.restserver.template import render_agent_template, get_action_inputs
+from webui.restserver.template import render_agent_template, get_inputs,\
+    get_action_inputs
 from django.contrib.auth.decorators import login_required
 from guardian.shortcuts import get_objects_for_user
 from guardian.decorators import permission_required
@@ -42,7 +43,7 @@ class QueryMethods(object):
         return json.dumps(data)
     
     def get_dialog_form(self, request, agent, action, filters, dialog_name, response_container):
-        inputs = get_action_inputs(agent, action)
+        inputs = get_inputs(agent, action)
         if inputs:
             logger.debug('Rendering form')
             form = create_action_form(inputs)
@@ -63,7 +64,7 @@ def query(request, operation, agent=None, action=None, filters=None, dialog_name
 @permission_required('agent.call_mcollective', return_403=True)
 def execute_action_form(request, agent, action, filters, dialog_name, response_container, xhr=None):
     if request.method == "POST":
-        inputs = get_action_inputs(agent, action)
+        inputs = get_inputs(agent, action)
         logger.debug("Recreating form")
         form_type = create_action_form(inputs)
         form = form_type(request.POST)
@@ -89,17 +90,57 @@ def execute_action_form(request, agent, action, filters, dialog_name, response_c
                 logger.debug("Parameters check: OK.")
                 logger.debug("Creating args")
                 arguments=None
-                for input_data in inputs:
-                    if form.cleaned_data[input_data['name']]:
-                        if arguments:
-                            arguments = "%;" % arguments
-                        else:
-                            arguments = ''
-                        arguments = "%s%s=%s" % (arguments, input_data['name'], form.cleaned_data[input_data['name']]) 
+                action_inputs = get_action_inputs(agent, action)
+                if action_inputs:
+                    for input_data in action_inputs:
+                        if form.cleaned_data[input_data['name']]:
+                            if arguments:
+                                arguments = "%;" % arguments
+                            else:
+                                arguments = ''
+                            arguments = "%s%s=%s" % (arguments, input_data['name'], form.cleaned_data[input_data['name']]) 
+                            
+                if form.cleaned_data["identityfilter"]:
+                    logger.debug("Applying identity filter")
+                    if filters and filters != "null":
+                        filters = "%s;" % filters
+                    else:
+                        filters = ""
+                    
+                    id_filts = form.cleaned_data["identityfilter"].split(';')
+                    for filt in id_filts:
+                        if filters:
+                            filters = "%s;" % filters
+                        filters = "%sidentity=%s" % (filters, filt)
+                        
+                if form.cleaned_data["classfilter"]:
+                    logger.debug("Applying class filter")
+                    if filters and filters != "null":
+                        filters = "%s;" % filters
+                    else:
+                        filters = ""
+                    
+                    id_filts = form.cleaned_data["classfilter"].split(';')
+                    for filt in id_filts:
+                        if filters:
+                            filters = "%s;" % filters
+                        filters = "%sclass=%s" % (filters, filt)
                 
+                if form.cleaned_data["compoundfilter"]:
+                    logger.debug("Applying compound filter")
+                    if filters and filters != "null":
+                        filters = "%s;" % filters
+                    else:
+                        filters = ""
+                    
+                    filters = "%scompound=%s" % (filters, form.cleaned_data["compoundfilter"])
+                
+                use_backend_scheduler = form.cleaned_data["usesched"]
+                limit = form.cleaned_data["limit"]
+                    
                 logger.debug("Arguments for MCollective call %s" % arguments)
                 wait_for_response = False
-                response, content = callRestServer(request.user, filters, agent, action, arguments, wait_for_response)
+                response, content = callRestServer(request.user, filters, agent, action, arguments, wait_for_response, use_backend_scheduler=use_backend_scheduler, limit=limit)
                 #Leave wait for response check it to support both two in the future (read wait_for_response from config file)
                 if wait_for_response:
                     if response.getStatus() == 200:

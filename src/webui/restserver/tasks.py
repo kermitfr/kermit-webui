@@ -15,7 +15,6 @@ from webui.restserver.utils import convert_parameters_to_hash, convert_filters_t
 logger = logging.getLogger(__name__)
 
 @task()
-#TODO: refactor using HTTP lib url generation
 def httpcall(filters, agent, action, args, use_task=True, limit=None):
     #Fix for javascript "null" value
     if filters and filters=='null':
@@ -26,7 +25,7 @@ def httpcall(filters, agent, action, args, use_task=True, limit=None):
         "filters": convert_filters_to_hash(filters)
     }
     if limit:
-        dictionary["limit"] = {"targets": 1, "method":"random"}
+        dictionary["limit"] = {"targets": limit, "method":"random"}
     if args:
         dictionary["parameters"] = convert_parameters_to_hash(args)
         logger.debug('Calling RestServer on: ' + url)
@@ -51,17 +50,22 @@ def httpcall(filters, agent, action, args, use_task=True, limit=None):
     return response, content, agent, action
 
 @task()
-def httpcallscheduler(filters, agent, action, args, use_task=True):
+def httpcallscheduler(filters, agent, action, args, use_task=True, limit=None):
     #Fix for javascript "null" value
     if filters and filters=='null':
         filters = None
     http = httplib2.Http(timeout=settings.RUBY_REST_SERVER_TIMEOUT)
-    url = settings.RUBY_REST_SCHEDULER_URL + "in/0s/"
-    url += agent + "/"
-    url += action + "/"
+    url = "%s%s/%s/" % (settings.RUBY_REST_BASE_URL, agent, action)
     dictionary = {
-        "filters": convert_filters_to_hash(filters)
+        "filters": convert_filters_to_hash(filters),
+        "schedule": {
+             "schedtype": "in",
+             "schedarg": "0s"
+        }
     }
+    
+    if limit:
+        dictionary["limit"] = {"targets": limit, "method":"random"}
     if args:
         dictionary["parameters"] = convert_parameters_to_hash(args)
         logger.debug('Calling RestServer on: ' + url)

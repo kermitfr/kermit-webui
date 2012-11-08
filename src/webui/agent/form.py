@@ -1,7 +1,8 @@
 from django import forms
+from django.utils.datastructures import SortedDict
 
 def create_action_form(inputs):
-    fields = {}
+    fields = SortedDict()
     for input in inputs:
         required = not input['optional']
         if 'max_length' in input and input['max_length']:
