@@ -32,8 +32,9 @@ def render_agent_template(request, resp_dict, content, form_data, agent, action)
                 rendered_template = render_to_string(template_name, {'settings':settings, 'content': jsonObj, 'outputs':outputs,'agent': agent, 'action': action, 'arguments':form_data, 'page_context': RequestContext( request )})
                 resp_dict.update({'response': rendered_template, 'type':'html', 'state':'SUCCESS'})
             else:
-                logger.debug('No DDL outputs found for ' + agent + ' ' + action + '. Send default JSON')
-                resp_dict.update({'response': jsonObj, 'type':'json', 'state':'SUCCESS'})
+                logger.info('No DDL outputs found for ' + agent + ' ' + action + ' or no outputs for action. Send default JSON')
+                rendered_template = render_to_string(template_name, {'settings':settings, 'content': jsonObj, 'outputs':[],'agent': agent, 'action': action, 'arguments':form_data, 'page_context': RequestContext( request )})
+                resp_dict.update({'response': rendered_template, 'type':'html', 'state':'SUCCESS'})
         except:
             logger.debug('No template found for ' + agent + ' - ' + action + '! Using default JSON viewer')
             resp_dict.update({'response': jsonObj, 'type':'json', 'state':'SUCCESS'})
