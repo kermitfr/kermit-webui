@@ -85,6 +85,9 @@ def complete_server_info(server, mcresponse, update_time):
                 server.fqdn = mcresponse.getData()['facts']['fqdn']
             except KeyError:
                 server.fqdn = server.hostname
+                
+            if server.fqdn == None or server.fqdn == "":
+                server.fqdn = server.hostname
         else:
             server.os = 'Unknown'
             server.architecture = 'Unknown'
