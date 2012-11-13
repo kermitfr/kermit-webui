@@ -1,8 +1,6 @@
 from django.conf.urls.defaults import patterns, include, url
 from webui.platforms import utils
 import logging
-import imp
-import os
 
 logger = logging.getLogger(__name__)
 

@@ -70,11 +70,11 @@ def getWithTemplate(request, template, filters, agent, action, args=None):
 
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)
-def executeAction(request, action, type='SYNC'):
+def executeAction(request, action, call_type='SYNC'):
     logger.info("Executing action " + action)
     actions = Actions()
     actionToExecute = getattr(actions, action)
-    if type == 'ASYNC':
+    if call_type == 'ASYNC':
         result = actionToExecute(request.user)
     else:
         actionToExecute(request.user)
@@ -83,11 +83,11 @@ def executeAction(request, action, type='SYNC'):
     
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)
-def executeGeneralAction(request, action, filter, type):
+def executeGeneralAction(request, action, filters, call_type):
     logger.info("Executing action " + action)
     actions = Actions()
     actionToExecute = getattr(actions, action)
-    actionToExecute(request.user, filter, type)
+    actionToExecute(request.user, filters, call_type)
     return HttpResponse('')
 
 @login_required()
