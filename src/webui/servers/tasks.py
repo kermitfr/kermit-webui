@@ -42,12 +42,6 @@ def server_basic_info(user):
                     complete_server_info(new_server, server, update_time)
                     new_server.save()
                 
-                #Retrieving not updated/created server and set them to OFFLINE
-                logger.info("Checking offline servers")
-                not_updated = Server.objects.filter(updated_time__lt=update_time)
-                for not_updated_server in not_updated:
-                    not_updated_server.online = False
-                    not_updated_server.save()
                 i = i + 1
                 server_basic_info.update_state(state="PROGRESS", meta={"current": i, "total": total_servers})
                         
