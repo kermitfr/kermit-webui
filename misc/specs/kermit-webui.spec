@@ -1,7 +1,7 @@
 Summary: KermIT WebUI Framework
 Name: kermit-webui
 Version: 1.3
-Release: 2%{dist}
+Release: 3%{dist}
 License: GPLv3
 Group: Applications/System
 URL: https://github.com/kermitfr/kermit-webui

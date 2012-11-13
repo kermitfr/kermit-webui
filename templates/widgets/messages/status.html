@@ -1,0 +1,137 @@
+{% extends "widgets/base_widget.html" %}
+{% load i18n %}
+{% block widget-content %}
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#statustable').dataTable({
+			 "oLanguage": {
+	            "sSearch": "Search:"
+        	},
+        	"aaSorting": [[ 1, "asc" ]],
+        	"bStateSave": true,
+        	"bRetrieve": true
+		});
+	} );
+	
+	
+	function buttonActions(action, id) {
+		var message1;
+		var message2;
+		var url;
+		if (action == "delete") {
+			message1 = "{% trans 'Are you sure you want to delete the selected dynamic group?' %}";
+			message2 = "{% trans 'Message successfully deleted' %}";
+			url = "{% url delete_message message_id=12345%}".replace('12345', id);
+		} else if (action == "ignore") {
+			message1 = "{% trans 'Are you sure you want to ignore in the future, the message for this server?' %}";
+			message2 = "{% trans 'Message successfully ignored' %}";
+			url = "{% url ignore_message message_id=12345%}".replace('12345', id);	
+		} else {
+			return;
+		}
+		$("#confirm-status-dialog").html(message1);
+		$("#confirm-status-dialog").dialog({
+			modal : true,
+			title : 'Confirm',
+			minHeight : 200,
+			minWidth : 500,
+	      buttons : {
+	        "Confirm" : function() {
+	        	$("#confirm-status-dialog").dialog("close");
+	        	$.ajax({
+					url : url,
+					type : "get",
+					dataType : "json",
+					error : function() {
+						showMessageDialog("{% trans 'Cannot contact server' %}", "{% trans 'OK' %}");
+					},
+					beforeSend : function() {
+						$('#loading').show();
+					},
+					complete : function() {
+						$('#loading').hide();
+					},
+					success : function(data) {
+						if (data.result == "OK") {
+							showMessageDialog(message2, "{% trans 'OK' %}");
+						} else {
+							showMessageDialog(data.message, "{% trans 'OK' %}");	
+						}
+					}
+				});  
+	        },
+	        "Cancel" : function() {
+	          $(this).dialog("close");
+	        }
+	      }
+		});
+	}
+	
+</script>
+<style type="text/css">
+table.status {
+	border-width: 2px;
+	border-spacing: 2px;
+	border-style: outset;
+	border-color: gray;
+	border-collapse: collapse;
+	background-color: white;
+	width: 100%;
+}
+
+table.status th {
+	font-size: 12px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	color: #000;
+}
+
+table.status td {
+	vertical-align: middle;
+}
+
+table.status tr.even {
+	background: #CCCCCC;
+}
+table.status tr.odd {
+	background: #F0F0F0
+}
+
+</style>
+<div id="confirm-status-dialog">
+</div>
+<div id="status-messages">
+	<table id="statustable" class="status">
+		<thead>
+			<th width="60px">{% trans 'Level'%}</th>
+			<th>{% trans 'Server'%}</th>
+			<th>{% trans 'Date'%}</th>
+			<th>{% trans 'Message'%}</th>
+			<th>{% trans 'Operations'%}</th>
+		</thead>
+		<tbody>
+			{% for message in messages %}
+			<tr class="{% cycle odd,even %}">
+				<td width="5%">
+					{% if message.level == 1 %}
+						<img src="{{settings.STATIC_URL}}images/icons/messages/info.png" style="border: 0px; height: 20px;float:none;" title="{% trans 'Info'%}"/>
+					{% else %}{% if message.level == 2 %}
+						<img src="{{settings.STATIC_URL}}images/icons/messages/warning.png" style="border: 0px; height: 20px;float:none;" title="{% trans 'Warning'%}"/>
+					{% else %}{% if message.level == 3 %}
+						<img src="{{settings.STATIC_URL}}images/icons/messages/error.png" style="border: 0px; height: 20px;float:none;" title="{% trans 'Error'%}"/>
+					{% endif %}{% endif %}{% endif %}
+				</td>
+				<td><a href="{% url serverdetails message.server %}"><b>{{message.server}}</b></a></td>
+				<td>{{message.time|date:"d/m/Y H:i:s"}}</td>
+				<td>{{message.message}}</td>
+				<td width="5%">
+					<img src="{{settings.STATIC_URL}}images/icons/messages/ignore.png" style="border: 0px; height: 20px;float:none; cursor: pointer;" onclick="buttonActions('ignore', '{{message.id}}')" title="{% trans 'Ignore this kind of message for this server'%}"/>
+					&nbsp;
+					<img src="{{settings.STATIC_URL}}images/icons/messages/delete.png" style="border: 0px; height: 20px;float:none; cursor: pointer;" onclick="buttonActions('delete', '{{message.id}}')" title="{% trans 'Delete this message'%}"/>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% endblock %} 

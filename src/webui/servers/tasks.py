@@ -54,6 +54,25 @@ def server_basic_info(user):
     except Exception, err:
         logger.error('ERROR: ' + str(err))
         
+        
+@task
+def check_online(user):
+    response, content = callRestServer(user, None, "rpcutil", "ping", use_task=False)
+    if response.getStatus() == 200:
+        servers_list = []
+        for resp in content:
+            servers_list.append(resp.getSender())
+            
+        servers = Server.objects.all()
+        for server in servers:
+            if server.hostname in servers_list or server.fqdn in servers_list:
+                server.online=True
+            else:
+                server.online=False
+                
+            server.save()    
+            
+        
 @task()
 def server_inventory(user, updates_defined=None):
     if not updates_defined:

@@ -35,7 +35,7 @@ class BackendJobHistory(Widget):
                              "action": arguments_list[2],
                              "arguments": arguments_list[3]}
             except:
-                logger.error("Cannot find celery task in database. Not filled yet by celeryev")
+                logger.error("Cannot find celery task %s in database. Not filled yet by celeryev" % job.task_uuid)
                 status = "Waiting"
                 arguments = None
             job_obj = {"user": job.user,

@@ -101,9 +101,13 @@ def convert_response(response):
 def convert_content(content):
     content_list = []
     logger.info(content)
-    json_content = json.loads(content)
-    for msg in json_content:
-        content_list.append(KermitMcoContent(msg['data'], msg['statuscode'], msg['sender'], msg['statusmsg']))
+    try:
+        json_content = json.loads(content)
+        for msg in json_content:
+            content_list.append(KermitMcoContent(msg['data'], msg['statuscode'], msg['sender'], msg['statusmsg']))
+    except:
+        logger.error("Cannot convert content to a json object! Response error. Check Kermit-RestMCO log")
+        
     return content_list
 
 def convert_filters_to_hash(filters):

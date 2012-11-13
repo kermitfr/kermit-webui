@@ -43,8 +43,6 @@ def httpcall(filters, agent, action, args, use_task=True, limit=None):
                             })
         content = [{"data":{},"statuscode":1,"sender":filters,"statusmsg":"Connection Timeout!"}]
         return response, content, agent, action
-    logger.debug('Response: ' + str(response))
-    logger.debug('Content: ' + str(content))
     if use_task:
         httpcall.update_state(state="COMPLETED", meta={"current": 100, "total": 100})
     return response, content, agent, action
@@ -136,9 +134,6 @@ def httpcallscheduler(filters, agent, action, args, use_task=True, limit=None):
                     return output_response, output_content, agent, action
                 else:
                     time.sleep(10)
-    
-    logger.debug('Response: ' + str(response))
-    logger.debug('Content: ' + str(content))
     if use_task:
         httpcallscheduler.update_state(state="COMPLETED", meta={"current": 100, "total": 100})
     return response, content, agent, action

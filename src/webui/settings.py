@@ -164,6 +164,8 @@ INSTALLED_APPS = (
     "djkombu",
     'webui.plugins',
     'webui.platforms',
+    'webui.scheduler',
+    'webui.messages',
     'webui.restserver',
     'webui.widgets',
     'webui.defaultop',
@@ -359,9 +361,9 @@ CELERY_IMPORTS = ("webui", )
 
 CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
 CELERYBEAT_SCHEDULE = {
-    "runs-server-basic-info-update-every-hour": {
+    "runs-server-basic-info-update-once-a-day": {
         "task": "webui.servers.tasks.server_basic_info",
-        "schedule": crontab(minute=0, hour="*/1"),
+        "schedule": crontab(minute=0, hour="12"),
         "args": ('CronJob',)
     },
     "runs-inventory-once-a-day": {
