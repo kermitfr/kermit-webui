@@ -87,7 +87,7 @@ def execute_sql(request, filters, dialog_name, xhr=None):
                 logger.debug("Calling MCollective to deploy %s sql on %s filtered server" % (sql_script, filters))
                 user_ip_address = request.META.get('REMOTE_ADDR') 
                 #;user=%s;userip=%s
-                response, content = callRestServer(request.user, filters, 'oracledb', 'execute_sql', 'sqlfile=%s;instancename=%s' % (sql_script, dbname), True, True, True)
+                response, content = callRestServer(request.user, filters, 'oracledb', 'execute_sql', 'sqlfile=%s;instancename=%s' % (sql_script, dbname), wait_response=True, use_task=True, use_backend_scheduler=True)
                 #TODO: Improve reading content data
                 if response.getStatus() == 200:
                     s_resps = []
@@ -192,7 +192,7 @@ def clone_db(request, filters, dialog_name, xhr=None):
             if instance and schema and target_server and target_instance:
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to export %s from %s to %s" % (schema, instance, target_server))
-                response, content = callRestServer(request.user, filters, 'oracledb', 'export_database', 'instancename=%s;schema=%s' %(instance, schema), True, True, True)
+                response, content = callRestServer(request.user, filters, 'oracledb', 'export_database', 'instancename=%s;schema=%s' %(instance, schema), wait_response=True, use_task=True, use_backend_scheduler=True)
                 if response.getStatus() == 200:
                     s_resps = []
                     for server_response in content:
@@ -202,7 +202,7 @@ def clone_db(request, filters, dialog_name, xhr=None):
                             new_filter = "identity=%s"%target_server
                             if server_response.getData() and "filename" in server_response.getData():
                                 file_name = server_response.getData()["filename"]
-                                response, content = callRestServer(request.user, new_filter, 'oracledb', 'import_database', 'instancename=%s;schema=%s;filename=%s' %(target_instance, schema, file_name), True, True, True)
+                                response, content = callRestServer(request.user, new_filter, 'oracledb', 'import_database', 'instancename=%s;schema=%s;filename=%s' %(target_instance, schema, file_name), wait_response=True, use_task=True, use_backend_scheduler=True)
                                 if response.getStatus() == 200:
                                     s_json_content = json.loads(content)
                                     s_resps = []

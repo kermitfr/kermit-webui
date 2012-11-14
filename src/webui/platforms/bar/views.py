@@ -135,7 +135,7 @@ def deploy_bar(request, filters, dialog_name, xhr=None):
             if bcname and barname:
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to deploy %s application on %s filtered server" % (barname, filters))
-                response, content = callRestServer(request.user, filters, 'a7xbar', 'deploy', 'bcname=%s;filename=%s' %(bcname, barname), True, True, True)
+                response, content = callRestServer(request.user, filters, 'a7xbar', 'deploy', 'bcname=%s;filename=%s' %(bcname, barname), wait_response=True, use_task=True, use_backend_scheduler=True)
                 if response.getStatus() == 200:
                     s_resps = []
                     for server_response in content:

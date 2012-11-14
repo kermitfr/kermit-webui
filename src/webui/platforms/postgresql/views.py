@@ -89,7 +89,7 @@ def execute_sql(request, filters, dialog_name, xhr=None):
                 logger.debug("Calling MCollective to deploy %s sql on %s filtered server" % (sql_script, filters))
                 user_ip_address = request.META.get('REMOTE_ADDR') 
                 #;user=%s;userip=%s
-                response, content = callRestServer(request.user, filters, 'postgresql', 'execute_sql', 'sqlfile=%s;dbname=%s' % (sql_script, dbname), True, True, True)
+                response, content = callRestServer(request.user, filters, 'postgresql', 'execute_sql', 'sqlfile=%s;dbname=%s' % (sql_script, dbname), wait_response=True, use_task=True, use_backend_scheduler=True)
                 #TODO: Improve reading content data
                 if response.getStatus() == 200:
                     s_resps = []

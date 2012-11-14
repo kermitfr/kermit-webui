@@ -127,7 +127,7 @@ def deploy_app(request, filters, dialog_name, xhr=None):
             if appname and app_type and action:
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to deploy %s application on %s filtered server" % (appfile, filters))
-                response, content = callRestServer(request.user, filters, 'a7xows', action, 'appname=%s;instancename=%s;appfile=%s' %(appname, instancename, appfile), True, True, True)
+                response, content = callRestServer(request.user, filters, 'a7xows', action, 'appname=%s;instancename=%s;appfile=%s' %(appname, instancename, appfile), wait_response=True, use_task=True, use_backend_scheduler=True)
                 if response.getStatus() == 200:
                     s_resps = []
                     for server_response in content:
@@ -193,7 +193,7 @@ def get_log(request, filters, dialog_name, xhr=None):
             if instancename:
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to get log on %s filtered server" % (filters))
-                response, content = callRestServer(request.user, filters, 'a7xows', 'get_log', 'instancename=%s' % (instancename), True, True, True)
+                response, content = callRestServer(request.user, filters, 'a7xows', 'get_log', 'instancename=%s' % (instancename), wait_response=True, use_task=True, use_backend_scheduler=True)
                 if response.getStatus() == 200:
                     s_resps = []
                     for server_response in content:
@@ -271,7 +271,7 @@ def create_instance(request, filters, dialog_name, xhr=None):
             if instancename:
                 logger.debug("Parameters check: OK.")
                 logger.debug("Calling MCollective to create instance %s on %s filtered server" % (instancename, filters))
-                response, content = callRestServer(request.user, filters, 'a7xows', 'createinstace', 'instancename=%s' %(instancename), True, True, True)
+                response, content = callRestServer(request.user, filters, 'a7xows', 'createinstace', 'instancename=%s' %(instancename), wait_response=True, use_task=True, use_backend_scheduler=True)
                 if response.getStatus() == 200:
                     s_resps = []
                     for server_response in content:
