@@ -29,4 +29,3 @@ def read_kermit_version():
     except:
         logger.warn("No version file found in /etc/kermit/webui/version.txt")
         return None
-

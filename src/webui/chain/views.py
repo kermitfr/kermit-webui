@@ -27,26 +27,14 @@ import djcelery
 from django.template.loader import render_to_string
 import ast
 from webui.servers import utils
-from webui.utils import read_kermit_version
-from webui.abstracts import CoreService
-from webui import settings as kermitsettings
+from webui.core import generate_commons_page_dict
 
 logger = logging.getLogger(__name__)
 
 @login_required
 def show_page(request):
     logger.debug("Rendering Scheduler Page")
-    version = read_kermit_version()
-    services = core.kermit_modules.extract(CoreService)
-    service_status = []
-    show_status_bar = request.user.is_superuser or kermitsettings.SHOW_STATUS_BAR 
-    if services and show_status_bar:
-        for service in services:
-            data = {"name": service.get_name(),
-                    "description" : service.get_description(),
-                    "status": service.get_status()}
-            service_status.append(data)
-    return render_to_response('chain/chain.html', {"settings":settings, "base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, 'service_status_url':settings.RUBY_REST_PING_URL, "service_status":service_status, "kermit_version":version}, context_instance=RequestContext(request))
+    return render_to_response('chain/chain.html', generate_commons_page_dict(request), context_instance=RequestContext(request))
 
 
 @login_required

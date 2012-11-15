@@ -4,8 +4,31 @@ Created on Nov 3, 2011
 @author: mmornati
 '''
 import logging
+from webui.abstracts import CoreService
+from webui import settings as kermitsettings
+from webui.utils import read_kermit_version
 
 logger = logging.getLogger(__name__)
+
+def generate_commons_page_dict(request):
+    services = kermit_modules.extract(CoreService)
+    service_status = []
+    show_status_bar = request.user.is_superuser or kermitsettings.SHOW_STATUS_BAR 
+    if services and show_status_bar:
+        for service in services:
+            data = {"name": service.get_name(),
+                    "description" : service.get_description(),
+                    "status": service.get_status()}
+            service_status.append(data)
+    version = read_kermit_version()
+    
+    return {"settings": kermitsettings, 
+            "base_url": kermitsettings.BASE_URL, 
+            "static_url":kermitsettings.STATIC_URL,
+            'service_status_url':kermitsettings.RUBY_REST_PING_URL,
+            "service_status":service_status, 
+            "kermit_version":version} 
+
 
 class KermitMcoResponse(object):
     

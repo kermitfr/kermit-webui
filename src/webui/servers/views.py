@@ -7,11 +7,11 @@ from django.utils import simplejson as json
 from django.contrib.auth.decorators import login_required
 from webui.platforms.platforms import platforms
 from webui.platforms.abstracts import ServerTree
-from webui.abstracts import CoreService, ServerOperation
+from webui.abstracts import ServerOperation
 from django.core.urlresolvers import reverse
 from webui.restserver.communication import callRestServer
 from webui.servers.models import Server
-from webui.utils import read_kermit_version
+from webui.core import generate_commons_page_dict
 
 logger = logging.getLogger(__name__)
 
@@ -36,16 +36,6 @@ def getDetailsTree(request, hostname):
 @login_required()
 def hostInventory(request, hostname):
     server_info = []   
-    services = core.kermit_modules.extract(CoreService)
-    service_status = []
-    show_status_bar = request.user.is_superuser or settings.SHOW_STATUS_BAR 
-    if services and show_status_bar:
-        for service in services:
-            data = {"name": service.get_name(),
-                    "description" : service.get_description(),
-                    "status": service.get_status()}
-            service_status.append(data)
-    version = read_kermit_version()
     my_server = Server.objects.get(hostname=hostname)
     operations = {}  
     server_operations = core.kermit_modules.extract(ServerOperation)
@@ -76,7 +66,7 @@ def hostInventory(request, hostname):
                 logger.debug("Operation %s is not visible for %s server" % (op.get_name(), hostname))
 
     #TODO: Make a refactor to remove base_url and statis_url from context
-    return render_to_response('server/details.html', {"settings": settings, "base_url": settings.BASE_URL, "static_url":settings.STATIC_URL, "serverdetails": server_info, "hostname": hostname, "service_status":service_status, 'server_operations': operations, "kermit_version":version}, context_instance=RequestContext(request))
+    return render_to_response('server/details.html', dict({"serverdetails": server_info, "hostname": hostname, 'server_operations': operations}, **generate_commons_page_dict(request)), context_instance=RequestContext(request))
 
 @login_required()
 def hostCallInventory(request, hostname):
