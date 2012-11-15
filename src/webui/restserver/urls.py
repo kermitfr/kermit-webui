@@ -15,7 +15,7 @@ urlpatterns = patterns('webui.restserver.views',
   url(r'^mcollective-template/(?P<template>[\w|\W]+)/(?P<filters>[\w|\W]+)/(?P<agent>[\w|\W]+)/(?P<action>[\w|\W]+)/(?P<args>[\w|\W]+)/$', 'getWithTemplate', name = "call_mcollective_template_with_arguments"),
   
   #Admin Actions
-  url(r'^execute/(?P<action>[\w|\W]+)/(?P<type>[\w|\W]+)/$', 'executeAction', name = "action_executer"),
+  url(r'^execute/(?P<action>[\w|\W]+)/(?P<call_type>[\w|\W]+)/$', 'executeAction', name = "action_executer"),
   
   #Task information
   url(r'^taskinfo/(?P<uuid>[\w|\W]+)/$', 'get_task_info', name = "get_task_info"),
