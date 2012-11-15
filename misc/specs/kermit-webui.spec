@@ -111,6 +111,14 @@ Requires: kermit-webui-main = %{version}
 %description plugin-servercontrol
 %{summary}.
 
+%package plugin-ovirt
+Summary: Plugin to manage oVirt Hypervisors
+Group: Applications/System
+Requires: kermit-webui-main = %{version}
+
+%description plugin-ovirt
+%{summary}.
+
 %prep
 %setup -n %{name}
 
@@ -202,6 +210,8 @@ echo %{version} > $RPM_BUILD_ROOT/etc/kermit/webui/version.txt
 #Exclude Plugins
 %exclude /usr/share/%{name}/webui/plugins/puppet
 %exclude /usr/share/%{name}/webui/plugins/servercontrol
+%exclude /usr/share/%{name}/webui/plugins/ovirt
+%exclude /usr/share/%{name}/templates/plugins/ovirt
 
 %doc /usr/share/doc/*
 
@@ -268,6 +278,11 @@ echo %{version} > $RPM_BUILD_ROOT/etc/kermit/webui/version.txt
 %files plugin-servercontrol
 %defattr(-,root,root)
 /usr/share/%{name}/webui/plugins/servercontrol
+
+%files plugin-ovirt
+%defattr(-,root,root)
+/usr/share/%{name}/webui/plugins/ovirt
+/usr/share/%{name}/templates/plugins/ovirt
 
 %pre
 

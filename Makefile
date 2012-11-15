@@ -103,3 +103,5 @@ rpms: build manpage sdist
 	--define "_sourcedir  %{_topdir}" \
 	--define "vendor Think" \
 	-ba misc/specs/kermit-webui.spec
+	cp rpm-build/*.rpm dist/
+	rm -rf rpm-build
