@@ -239,7 +239,7 @@ var iNettuts = {
                 var thisWidgetData = this.split(','),
                     clonedWidget = $('#' + thisWidgetData[0]),
                     colorStylePattern = /\bcolor-[\w]{1,}\b/,
-                    thisWidgetColorClass = $(clonedWidget).attr('class').match(colorStylePattern);
+                    thisWidgetColorClass = $(clonedWidget).attr('class') ? $(clonedWidget).attr('class').match(colorStylePattern) : "";
                 
                 /* Add/Replace new colour class: */
                 if (thisWidgetColorClass) {
