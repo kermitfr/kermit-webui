@@ -1,0 +1,45 @@
+{% extends "theme/meta.html" %}
+{% load widgets %}
+{% load i18n %}
+
+{% block navbar %}{% endblock %}
+
+{% block breadcrumbs %}
+<div id="breadcrumbs">
+	<a href="{{base_url}}/">{% trans 'Home' %}</a>{% if title %} &rsaquo; {{ title }}{% endif %} <a href="{{base_url}}/server/details/{{hostname}}/">{% trans 'Server Details' %} - {{hostname}}</a>
+</div>
+{% endblock %}
+{% block content %} 
+<div id="execution-dialog"></div>
+<div id="toolbar-response"></div>
+<div class="fg-toolbar">
+	{% if server_operations %}	
+		<ul id="nav">
+		{%for group_name, operations in server_operations.items %}
+  			<li><a>{{group_name}}</a>
+    			<ul>
+				{% for current_op in operations %}
+					<li><a onclick="checkExecution('{{settings.BASE_URL}}', '{{current_op.ismco}}', '{{current_op.hasparameters}}', '{{current_op.agent}}', '{{current_op.action}}', '{{current_op.filter}}', '{{current_op.url}}');"><img class="opbutton" src="{{static_url}}/images/toolbar/{{current_op.img}}">{{current_op.name}}</a></li>
+				{% endfor %}
+				</ul>
+			</li>
+		{%endfor%}
+		</ul>
+	{% endif %}
+</div>
+
+<div id="columns">
+	<ul id="column1" class="column">
+		{% widget "ServerDetails" user hostname %}
+		&nbsp;<br/>&nbsp;<br/>
+	</ul>
+	<ul id="column2" class="column">
+		{% widget "CreateoVirtVM" user hostname%}
+		{% widget "SelectedResourceDetails" user %}
+		&nbsp;<br/>&nbsp;<br/>
+	</ul>
+</div>
+
+​
+
+{% endblock %} 

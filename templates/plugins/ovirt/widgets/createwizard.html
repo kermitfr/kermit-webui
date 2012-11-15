@@ -1,0 +1,31 @@
+{% extends "widgets/base_widget.html" %}
+{% load i18n %}
+
+{% block widget-extra-title %}{{hostname}}{% endblock %}
+
+{% block widget-content %}
+<script>
+</script>
+
+<br/>
+<img src="{{settings.STATIC_URL}}images/icons/server.png" height="64px" style="float:left;"/>
+<form action="" method="post" id="createvmwizard">
+	{% csrf_token %}
+	<fieldset>
+		{% for field in base_form %}
+	        <div class="fieldWrapper">
+	            {{ field.errors }}
+	            {% if field.field.required %}
+	            <p><b>{{ field.label_tag }}</b>: {{ field }}</p>
+	            {% else %}
+	            <p>{{ field.label_tag }}: {{ field }}</p>
+	            {% endif %}
+	        </div>
+	    {% endfor %}
+		<br/>
+		<input class="input" type="submit" value="Execute" id="bt"/>
+	</fieldset>
+</form>
+{{storage_form}}
+{{network_form}}
+{% endblock %}
