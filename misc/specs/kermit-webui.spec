@@ -211,7 +211,8 @@ echo %{version} > $RPM_BUILD_ROOT/etc/kermit/webui/version.txt
 %exclude /usr/share/%{name}/webui/plugins/puppet
 %exclude /usr/share/%{name}/webui/plugins/servercontrol
 %exclude /usr/share/%{name}/webui/plugins/ovirt
-%exclude /usr/share/%{name}/templates/plugins/ovirt
+%exclude /usr/share/%{name}/templates/plugins
+%exclude /var/www/%{name}/static/images/plugins
 
 %doc /usr/share/doc/*
 
@@ -283,6 +284,7 @@ echo %{version} > $RPM_BUILD_ROOT/etc/kermit/webui/version.txt
 %defattr(-,root,root)
 /usr/share/%{name}/webui/plugins/ovirt
 /usr/share/%{name}/templates/plugins/ovirt
+/var/www/%{name}/static/images/plugins/ovirt
 
 %pre
 

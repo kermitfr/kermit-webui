@@ -9,8 +9,8 @@ from webui.plugins.ovirt import settings
 
 class CreateVMForm(forms.Form):
     name = forms.CharField(label=u"VirtualMachine Name", required=True)
-    cluster = forms.ChoiceField(choices=settings.AVAILABLE_TYPES, required=True)
-    template = forms.ChoiceField(choices=settings.AVAILABLE_TYPES, required=True)
+    cluster = forms.ChoiceField(required=True)
+    template = forms.ChoiceField(required=True)
     memory = forms.CharField(label=u"Memory", required=True)
 
 class AddStorageForm(forms.Form):
