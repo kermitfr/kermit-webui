@@ -7,6 +7,9 @@ import logging
 from webui.abstracts import CoreService
 from webui import settings as kermitsettings
 from webui.utils import read_kermit_version
+from django import forms
+from django.forms.fields import ChoiceField
+from django.core.exceptions import ValidationError
 
 logger = logging.getLogger(__name__)
 
@@ -88,5 +91,14 @@ class KermitModule(object):
         return None
                 
         
+class KermitDynamicChoiceField(forms.ChoiceField):
+    def validate(self, value):
+        """
+        Validates that the input is in self.choices.
+        """
+        logger.debug("Value %s" % value)
+        super(ChoiceField, self).validate(value)
+        if value and not self.valid_value(value):
+            raise ValidationError(self.error_messages['invalid_choice'] % {'value': value})
 
 kermit_modules = KermitModule()

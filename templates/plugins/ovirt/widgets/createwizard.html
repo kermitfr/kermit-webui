@@ -41,10 +41,15 @@ $(document).ready(function() {
 	}
    );
    
-   update_combo("{% url ovirt_get_clusters hostname%}", "#id_base-cluster", 
-   				function() {
-   					update_combo("{% url ovirt_get_templates hostname%}", "#id_base-template");
-   				});
+   update_combo("{% url ovirt_get_clusters hostname%}", "#id_base-cluster"); 
+   update_combo("{% url ovirt_get_templates hostname%}", "#id_base-template", function() {
+   		//Automatically select the default template if exist
+   		$("#id_base-template").val("00000000-0000-0000-0000-000000000000");	
+   });
+   
+   $("#id_base-template").change(function() {
+   		alert("change");
+   });
 });
 </script>
 
@@ -115,7 +120,7 @@ $(document).ready(function() {
 	}
 </style>
 <br/>
-<form action="" method="post" id="createvmwizard">
+<form action="{% url ovirt_submit_vm hostname%}" method="post" id="createvmwizard">
 	{% csrf_token %}
 	<div id="fieldWrapper">
 		<div class="step" id="first">

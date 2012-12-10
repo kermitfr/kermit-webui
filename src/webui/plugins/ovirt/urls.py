@@ -9,4 +9,5 @@ urlpatterns = patterns('%s.views' % __package__,
   url(r'^createvm/(?P<hostname>[\w|\W]+)/$', 'create_vm', name = "ovirt_create_vm"),
   url(r'^get_clusters/(?P<hostname>[\w|\W]+)/$', 'get_clusters', name = "ovirt_get_clusters"),
   url(r'^get_templates/(?P<hostname>[\w|\W]+)/$', 'get_templates', name = "ovirt_get_templates"),
+  url(r'^submit_vm/(?P<hostname>[\w|\W]+)/$', 'submit_vm', name = "ovirt_submit_vm"),
 )

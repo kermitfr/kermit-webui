@@ -12,6 +12,8 @@ from webui.servers.utils import get_server_operations
 from django.http import HttpResponse
 from django.utils import simplejson as json
 from webui.restserver.communication import callRestServer
+from webui.plugins.ovirt.forms import CreateVMForm, AddStorageForm,\
+    AddNetworkForm
 
 logger = logging.getLogger(__name__)
 
@@ -49,4 +51,31 @@ def get_templates(request, hostname):
             for template in content[0].getData()["templates"]:
                 templates_list.append({"id": template["id"], "name": template["name"]})
     return HttpResponse(json.dumps(templates_list, ensure_ascii=False), mimetype='application/javascript')
+
+def submit_vm(request, hostname):
+    if request.POST:
+        
+        vm_form = CreateVMForm(request.POST)
+        storage_form = AddStorageForm(request.POST)
+        network_form = AddNetworkForm(request.POST)
+        
+        logger.debug(vm_form.is_valid())
+        logger.debug(storage_form.is_valid())
+        logger.debug(network_form.is_valid())
+        
+#        vm_name = request.POST["base-name"]
+#        storage_format = request.POST['storage-format']
+#        storage_bootable = request.POST['storage-bootable']
+#        storage_type = request.POST['storage-type']
+#        template_id = request.POST['base-template']
+#        memory = request.POST['base-memory']
+#        network_name = request.POST['network-name']
+#        cluster_id = request.POST['base-cluster']
+#        storage_size = request.POST['storage-size']
+#        network_interface = request.POST['network-interface']
+#        network_name = request.POST['network-network_name']
+#        storage_interface = request.POST['storage-interface']
+        
+    return HttpResponse()
+    
     
