@@ -27,7 +27,16 @@ logger = logging.getLogger(__name__)
 
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)
-def get(request, filters, agent, action, args=None, wait_for_response=False):
+def get(request, wait_for_response=False):
+    if request.method != "POST":
+        return HttpResponseForbidden()
+
+    agent = request.POST["agent"]
+    action = request.POST["action"]
+    filters = request.POST["filters"]
+    if request.POST["parameters"]:
+        args = request.POST["parameters"]
+        
     #Fix for unicode wait_for_response variable (actually used in url only for Virtualization Platform)
     if wait_for_response == "false" or wait_for_response == "False":
         wait_for_response = False
@@ -50,7 +59,16 @@ def get(request, filters, agent, action, args=None, wait_for_response=False):
 
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)
-def getWithTemplate(request, template, filters, agent, action, args=None):
+def getWithTemplate(request, template):
+    if request.method != "POST":
+        return HttpResponseForbidden()
+
+    agent = request.POST["agent"]
+    action = request.POST["action"]
+    filters = request.POST["filters"]
+    if request.POST["parameters"]:
+        args = request.POST["parameters"]
+        
     if verify_agent_acl(request.user, agent) and verify_action_acl(request.user, agent, action):
         response, content = callRestServer(request.user, filters, agent, action, args, True)
         if response.getStatus() == 200:

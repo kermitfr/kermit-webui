@@ -26,8 +26,14 @@ def get_server_details(request, hostname, instance_name, resource_name):
         for dom in virtual.getData()['inactive_domains']:
             info = {'name': dom,
                     'active': False,
-                    'start_url': reverse('call_mcollective_with_arguments', kwargs={'filters':filters, 'agent':"libvirt", 'action':"start", 'args':"domain=%s"%dom, 'wait_for_response':True}),
-                    'stop_url': reverse('call_mcollective_with_arguments', kwargs={'filters':filters, 'agent':"libvirt", 'action':"shutdown", 'args':"domain=%s"%dom, 'wait_for_response':True})
+                    'start_url': reverse('call_mcollective_with_arguments', kwargs={'wait_for_response':True}),
+                    'stop_url': reverse('call_mcollective_with_arguments', kwargs={'wait_for_response':True}),
+                    'filters': filters, 
+                    'args':"domain=%s"%dom,
+                    'agent_start':'libvirt',
+                    'action_start':'start',
+                    'agent_stop': 'libvirt',
+                    'action_stop':'shutdown'
                     }
             domains.append(info)
         for dom in virtual.getData()['active_domains']:
@@ -37,8 +43,14 @@ def get_server_details(request, hostname, instance_name, resource_name):
                 novnc_url = '%s/novnc/vnc_auto.html?host=%s&port=6080' % (settings.STATIC_URL, hostname)
             info = {'name': dom,
                     'active': True,
-                    'start_url': reverse('call_mcollective_with_arguments', kwargs={'filters':filters, 'agent':"libvirt", 'action':"start", 'args':"domain=%s"%dom, 'wait_for_response':False}),
-                    'stop_url': reverse('call_mcollective_with_arguments', kwargs={'filters':filters, 'agent':"libvirt", 'action':"shutdown", 'args':"domain=%s"%dom, 'wait_for_response':False}),
+                    'start_url': reverse('call_mcollective_with_arguments', kwargs={'wait_for_response':False}),
+                    'stop_url': reverse('call_mcollective_with_arguments', kwargs={'wait_for_response':False}),
+                    'filters': filters, 
+                    'args':"domain=%s"%dom,
+                    'agent_start':'libvirt',
+                    'action_start':'start',
+                    'agent_stop': 'libvirt',
+                    'action_stop':'shutdown',
                     'start_vnc_proxy_url': reverse('start_vnc_proxy', kwargs={'hostname':hostname, 'domain': dom}),
                     'novnc_url': novnc_url
                     }

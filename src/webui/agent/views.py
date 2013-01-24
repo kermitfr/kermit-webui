@@ -58,12 +58,28 @@ class QueryMethods(object):
 def query(request, operation, agent=None, action=None, filters=None, dialog_name=None, response_container=None):
     query_methods = QueryMethods()
     methodToCall = getattr(query_methods, operation)
+    if request.method == "POST":
+        if request.POST['agent']:
+            agent=request.POST['agent']
+        if request.POST['action']:
+            action=request.POST['action']
+        if request.POST['filters']:
+            filters=request.POST['filters']
+        if request.POST['execution_dialog_name']:
+            dialog_name=request.POST['execution_dialog_name']
+        if request.POST['response_container_name']:
+            response_container=request.POST['response_container_name']
     return HttpResponse(methodToCall(request, agent, action, filters, dialog_name, response_container))
 
 @login_required()
 @permission_required('agent.call_mcollective', return_403=True)
-def execute_action_form(request, agent, action, filters, dialog_name, response_container, xhr=None):
+def execute_action_form(request, xhr=None):
     if request.method == "POST":
+        agent=request.POST['agent']
+        action=request.POST['action']
+        filters=request.POST['filters']
+        dialog_name=request.POST['execution_dialog_name']
+        response_container=request.POST['response_container_name']
         inputs = get_inputs(agent, action, with_filters=(filters!=None and filters!='null'))
         logger.debug("Recreating form")
         form_type = create_action_form(inputs)

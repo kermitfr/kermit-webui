@@ -9,12 +9,13 @@ function contains(a, obj) {
 }
 
 function getExecutionForm(base_url, execution_dialog_name, agent, action, filters, response_container_name) {
-	url = base_url + '/agent/action/get_dialog_form/' + agent + '/' + action + '/' + filters + '/' + execution_dialog_name + '/' + response_container_name + '/';
+	url = base_url + '/agent/action/get_dialog_form/';
 	$.ajax({
 		// The link we are accessing.
 		url : url,
 		// The type of request.
-		type : "get",
+		type : "POST",
+		data : "agent=" + agent +";action=" + action +";filters=" + filters + ";execution_dialog_name=" + execution_dialog_name + ";response_container_name=" + response_container_name,
 		// The type of data that is getting returned.
 		dataType : "html",
 		error : function() {
@@ -39,7 +40,7 @@ function getExecutionForm(base_url, execution_dialog_name, agent, action, filter
 				});
 				$("#" + execution_dialog_name).show();
 			} else {
-				callMcollective(base_url + '/restapi/mcollective/' + filters + '/' + agent + '/' + action + '/', response_container_name);
+				callMcollective(base_url + '/restapi/mcollective/', filters, agent, action, null, response_container_name);
 			}
 
 		}
@@ -216,13 +217,14 @@ function getLogForm(base_url, platform_name, container, operation, filters) {
 	});
 }
 
-function sendRequestToMcollectiveSync(url, destination) {
+function sendRequestToMcollectiveSync(url, filters, agent, action, parameters, destination) {
 	$("#" + destination).empty();
 	$.ajax({
 		// The link we are accessing.
 		url : url,
 		// The type of request.
-		type : "get",
+		type : "POST",
+		data: "filters="+filters+";agent="+agent+";action="+action+"parameters="+parameters,
 		// The type of data that is getting returned.
 		dataType : "json",
 		error : function() {
@@ -256,12 +258,13 @@ function sendRequestToMcollectiveSync(url, destination) {
 	});
 }
 
-function sendRequestToMcollectiveCallBack(url, callBackFunction) {
+function sendRequestToMcollectiveCallBack(url, filters, agent, action, parameters, callBackFunction) {
 	$.ajax({
 		// The link we are accessing.
 		url : url,
 		// The type of request.
-		type : "get",
+		type : "POST",
+		data: "filters="+filters+";agent="+agent+";action="+action+";parameters="+parameters,
 		// The type of data that is getting returned.
 		dataType : "json",
 		error : function() {
@@ -279,7 +282,7 @@ function sendRequestToMcollectiveCallBack(url, callBackFunction) {
 	});
 }
 
-function sendRequestToMcollective(url, destination) {
+function sendRequestToMcollective(url, filters, agent, action, parameters, destination) {
 	$("#" + destination).empty();
 	$('#modalprogress').dialog({
 			modal : true,
@@ -289,8 +292,26 @@ function sendRequestToMcollective(url, destination) {
 		});
 		$( "#progressbar" ).progressbar({ value: 0 });
 		$( "#taskstate").html('<b>Waiting...	</b>');
-		//$("#" + destination).empty();
-		$.get(url, function(data) {
+		$.ajax({
+			// The link we are accessing.
+			url : url,
+			// The type of request.
+			type : "POST",
+			data: "filters="+filters+";agent="+agent+";action="+action+";parameters="+parameters,
+			// The type of data that is getting returned.
+			dataType : "json",
+			error : function() {
+				//TODO: Show error message
+				$('#loading').hide();
+			},
+			beforeSend : function() {
+				$('#loading').show();
+			},
+			complete : function() {
+				$('#loading').hide();
+			},
+			timeout: 600000,
+			success : function(data) {
 			//$('#' + destination).html(data);
 			var checkStatus = function() {
 		    	$.getJSON(data.update_url, function(result) {
@@ -326,6 +347,7 @@ function sendRequestToMcollective(url, destination) {
 				}
 				//$('#modalprogress').dialog('close');	
 			}
+		}
 		});
 }
 
@@ -340,20 +362,20 @@ function randomString() {
 	return randomstring;
 }
 
-function callMcollective(url, destination) {
-	sendRequestToMcollective(url, destination);
+function callMcollective(url, filters, agent, action, parameters, destination) {
+	sendRequestToMcollective(url, filters, agent, action, parameters, destination);
 }
 
-function callMcollectiveModal(url, destination) {
+function callMcollectiveModal(url, filters, agent, action, parameters, destination) {
 	$('#'+destination).dialog({
             width: 600,
             modal: true,
     });
-	sendRequestToMcollective(url, destination);
+	sendRequestToMcollective(url, filters, agent, action, parameters, destination);
 }
 
-function callMcollectiveWithTemplateRsp(url, destination) {
-	sendRequestToMcollective(url, destination)
+function callMcollectiveWithTemplateRsp(url, filters, agent, action, parameters, destination) {
+	sendRequestToMcollective(url, filters, agent, action, parameters, destination)
 }
 
 function openVNC(vncproxy_url, redirect_url) {
@@ -473,8 +495,8 @@ function editNode(node){
     });
 }
 
-function executeToolbarOperation(url) {
-	callMcollective(url, 'toolbar-response');
+function executeToolbarOperation(url, filters, agent, action) {
+	callMcollective(url, filters, agent, action, null, 'toolbar-response');
 	$("#toolbar-response").dialog({
 		modal : true,
 		title : 'Operation Result',
@@ -492,7 +514,7 @@ function checkExecution(baseurl, ismco, hasparameters, agent, action, filter, ur
 		if (hasparameters=='True') {
 			getExecutionForm(baseurl, "execution-dialog", agent, action, filter,  "actual-resource-details");
 		} else {
-			executeToolbarOperation(url);
+			executeToolbarOperation(url, filters, agent, action);
 		}
 	}else {
 		window.location = url;

@@ -11,11 +11,8 @@
 			var strLen = baseurl.length;
 			baseurl = baseurl.slice(0,strLen-1);
 		}
-		url = baseurl + '/restapi/mcollective/' + filters + '/' + agent + '/' + action +'/';
-		if (parameters!=null && parameters!='') {
-			url = url + parameters;
-		} 
-		callMcollective(url, 'response-container');
+		url = baseurl + '/restapi/mcollective/';
+		callMcollective(url, filters, agent, action, parameters, 'response-container');
 	}
 	
 </script>

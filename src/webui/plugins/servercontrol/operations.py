@@ -25,9 +25,17 @@ class StartServer(ServerOperation):
         return 'start.png'
     
     def get_url(self, hostname, instancename=None):
-        return reverse('call_mcollective_with_arguments', kwargs={'filters':'identity=%s'%hostname, 'agent':'rpcutil', 'action':'ping', 'args':'areyoursure=true', 'wait_for_response':'True'})
+        return reverse('call_mcollective_with_arguments', kwargs={'wait_for_response':'True'})
     
-
+    def get_agent(self):
+        return 'rpcutil'
+    
+    def get_action(self):
+        return 'ping'
+    
+    def get_filter(self, hostname):
+        return 'identity=%s'%hostname
+    
 class StopServer(ServerOperation):
     
     def get_visible(self, server, user):
@@ -46,7 +54,16 @@ class StopServer(ServerOperation):
         return 'stop.png'
     
     def get_url(self, hostname, instancename=None):
-        return reverse('call_mcollective', kwargs={'filters':'identity=%s'%hostname, 'agent':'system', 'action':'halt'})
+        return reverse('call_mcollective')
+    
+    def get_agent(self):
+        return 'system'
+    
+    def get_action(self):
+        return 'halt'
+    
+    def get_filter(self, hostname):
+        return 'identity=%s'%hostname
     
 kermit_modules.register(StartServer)
 kermit_modules.register(StopServer)

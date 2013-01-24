@@ -9,7 +9,7 @@
 	$(document).ready(function() {
 		// prepare Options Object
 		var options = {
-			url : '{% url actionform agent action filters dialog_name response_container "xhr"%}', // Here we pass the xhr flag
+			url : '{% url actionform "xhr"%}', // Here we pass the xhr flag
 			dataType : 'json',
 			success : parseResponse, //What to call after a reply from Django
 			beforeSubmit : beforeForm
@@ -117,7 +117,12 @@
 <div id="emsg">
 	&nbsp;
 </div>
-<form action="{% url actionform agent action filters dialog_name response_container None %}" method="post" id="tf">
+<form action="{% url actionform None %}" method="post" id="tf">
+	<input type="hidden" name="action" id="action" value="{{ action }}"/>
+	<input type="hidden" name="agent" id="agent" value="{{ agent }}"/>
+	<input type="hidden" name="filters" id="filters" value="{{ filters }}"/>
+	<input type="hidden" name="execution_dialog_name" id="execution_dialog_name" value="{{ dialog_name }}"/>
+	<input type="hidden" name="response_container_name" id="response_container_name" value="{{ response_container }}"/>
 	{% csrf_token %}
 	<fieldset>
 		{% for field in form %}

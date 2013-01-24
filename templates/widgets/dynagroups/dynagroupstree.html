@@ -72,11 +72,8 @@
 						var strLen = base_url.length;
 						base_url = base_url.slice(0,strLen-1);
 					}
-					url = base_url + "/restapi/mcollective/" + filtersList + '/' + agent + '/' + action + '/';
-					if (parameters!=null && parameters!='') {
-						url = url + parameters;
-					}
-					sendRequestToMcollective(url, 'response-container');			
+					url = base_url + "/restapi/mcollective/";
+					sendRequestToMcollective(url, filtersList, agent, action, parameters, 'response-container');			
 				} else if ($(this).attr('type') == "automatic_op") {
 					var javascript_op = $(this).attr('javascript');
 					if (javascript_op) {
