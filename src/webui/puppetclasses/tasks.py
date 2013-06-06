@@ -1,4 +1,4 @@
-#mco rpc puppetagent classlist --with-id=/puppet/ --verbose
+#mco rpc puppetmaster classlist --with-id=/puppet/ --verbose
 from celery.task import task
 from webui.restserver.communication import callRestServer
 from webui import settings
@@ -16,7 +16,7 @@ def update_all_puppet_classes(user):
         else:
             logger.warn("You should specify your puppet master hostname in settings file to improve KermIT performances")
             filters = None
-        resp, content = callRestServer(user, filters, 'puppetagent', 'classlist', None, True, False)
+        resp, content = callRestServer(user, filters, 'puppetmaster', 'classlist', None, True, False)
         if resp.getStatus() == 200:
             i = 0
             total_classes = 0
