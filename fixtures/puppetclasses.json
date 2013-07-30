@@ -243,8 +243,8 @@
     "model": "puppetclasses.puppetclass",
     "pk": 21,
     "fields": {
-      "name": "oxylaneconnect",
-      "description": "Oxylane Connect Class",
+      "name": "fooconnect",
+      "description": "Foo Connect Class",
       "icon": "Platform_up_16.png",
       "enabled": true,
       "level": 1,
