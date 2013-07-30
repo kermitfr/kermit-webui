@@ -21,7 +21,7 @@ SAML_CONFIG = {
     'xmlsec_binary': '/usr/bin/xmlsec1',
 
     # your entity id, usually your subdomain plus the url to the metadata view
-    'entityid': 'AutomatixD1',
+    'entityid': 'KermitIDP',
     
     #Added to prevent time not synchro between webui-server and IDP server
     'timeslack': '5000' ,
@@ -33,18 +33,18 @@ SAML_CONFIG = {
     'service': {
         # we are just a lonely SP
         'sp' : {
-            'name': 'Automatix Service Provider',
+            'name': 'Example Service Provider',
             'endpoints': {
                 # url and binding to the assetion consumer service view
                 # do not change the binding or service name
                 'assertion_consumer_service': [
-                    ('http://npplam01.preprod.org/automatix/auth/saml2/SSO/',
+                    ('http://saml.kermit.fr/saml2/login/',
                      saml2.BINDING_HTTP_POST),
                     ],
                 # url and binding to the single logout service view
                 # do not change the binding or service name
                 'single_logout_service': [
-                    ('http://npplam01.preprod.org/automatix/auth/saml2/SLO/',
+                    ('http://saml.kermit.fr/auth/saml2/logout/',
                      saml2.BINDING_HTTP_REDIRECT),
                     ],
                 },
@@ -63,12 +63,12 @@ SAML_CONFIG = {
 
                 # the keys of this dictionary are entity ids
                 #'https://localhost/simplesaml/saml2/idp/metadata.php': {
-                'idpdecathlon.preprod.org': {
+                'identity.kermit.fr': {
                     'single_sign_on_service': {
-                        saml2.BINDING_HTTP_REDIRECT: 'https://preprod.idpdecathlon.oxylane.com:9031/idp/SSO.saml2',
+                        saml2.BINDING_HTTP_REDIRECT: 'https://saml.kremit.fr/login/',
                         },
                     'single_logout_service': {
-                        saml2.BINDING_HTTP_REDIRECT: 'https://preprod.idpdecathlon.oxylane.com:9031/idp/SLO.saml2',
+                        saml2.BINDING_HTTP_REDIRECT: 'https://saml.kermit.fr/logout/',
                         },
                     },
                 },
@@ -91,20 +91,20 @@ SAML_CONFIG = {
     'contact_person': [
         {'given_name': 'Test',
          'sur_name': 'Test',
-         'company': 'Oxylane',
-         'email_address': 'test@oxylane.com',
+         'company': 'Think',
+         'email_address': 'test@kermit.fr',
          'contact_type': 'technical'},
         {'given_name': 'Test2',
          'sur_name': 'Test2',
-         'company': 'Oxylane',
-         'email_address': 'test2@oxylane.com',
+         'company': 'Think',
+         'email_address': 'test2@kermit.fr',
          'contact_type': 'administrative'},
         ],
     # you can set multilanguage information here
     'organization': {
-        'name': [('Oxylane', 'fr'), ('Oxylane', 'en')],
-        'display_name': [('Oxylane', 'fr'), ('Oxylane', 'en')],
-        'url': [('http://www.oxylane.com', 'fr'), ('http://www.oxylane.com/en', 'en')],
+        'name': [('Kermit', 'fr'), ('Kermit', 'en')],
+        'display_name': [('Kermit', 'fr'), ('Kermit', 'en')],
+        'url': [('http://www.kermit.fr', 'fr'), ('http://www.kermit.fr', 'en')],
         },
     'valid_for': 1,  # how long is our metadata valid
     }
